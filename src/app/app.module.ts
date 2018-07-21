@@ -12,6 +12,10 @@ import { SidenavComponent,
 		ProfileComponent,
     ConfirmDialogComponent } from '@app/modules/';
 
+import { JwtModule } from '@auth0/angular-jwt';
+export function tokenGetter() {
+  return localStorage.getItem('access_token');
+}
 
 @NgModule({
   declarations: [
@@ -26,7 +30,14 @@ import { SidenavComponent,
   ],
   imports: [
     BrowserModule,
-    CoreModule
+    CoreModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        whitelistedDomains: [],
+        blacklistedRoutes: []
+      }
+    })
   ],
   providers: [],
   bootstrap: [AppComponent],

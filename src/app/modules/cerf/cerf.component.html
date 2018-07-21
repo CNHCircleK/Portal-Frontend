@@ -13,11 +13,11 @@ Approve
 <br/>
 
 <form #cerfForm="ngForm">
-
+	<fieldset [disabled]="read">
 	<h3 class="mat-headline">CERF Info</h3>
 	<div>
 		<mat-form-field>
-			<input matInput placeholder="Event Chair" name="author" [(ngModel)]="data.data.chair_id"/>
+			<input matInput placeholder="Event Chair" name="author" [(ngModel)]="data.data.chair_id" readonly/>
 		</mat-form-field>
 		<mat-form-field>
 			<input matInput placeholder="Event Name" name="eventName" [(ngModel)]="data.name"/>
@@ -94,7 +94,7 @@ Approve
 		    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 		</mat-table>
 
-		<a mat-raised-button (click)="addMember()">Add Member</a>
+		<a mat-raised-button [disabled]="read" (click)="addMember()">Add Member</a>
 	</div>
 
 	
@@ -112,9 +112,10 @@ Approve
 	</mat-form-field> -->
 
 	<div>
-		<button mat-raised-button (click)="saveCerf()">save</button>
-		<button mat-raised-button (click)="submitCerf()">submit</button>
+		<button mat-raised-button [disabled]="read" (click)="saveCerf()">save</button>
+		<button mat-raised-button [disabled]="read" (click)="submitCerf()">submit</button>
 	</div>
 
 	<!-- <p *ngIf="data.data.attendees[2]">{{data.data.attendees[2]}}</p> -->
+	</fieldset>
 </form>

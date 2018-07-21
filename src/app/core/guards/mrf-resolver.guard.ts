@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
+import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot, NavigationEnd } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { map, take, filter, pairwise } from 'rxjs/operators';
 
 import { Mrf } from '@core/data/mrf';
 import { DataService } from '@core/data/data.service';
@@ -13,12 +13,6 @@ export class MrfnavResolver implements Resolve<Mrf[]> {
 	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Mrf[]> {
 		let data: Mrf[];
 		return this.dataService.getMrfs();
-
-		// if(!Array.isArray(data))	// Mrfs haven't been loaded. Note, "!data" doesn't work because the empty array returns false
-		// {
-		// 	this.router.navigate(['/']);
-		// 	return null;
-		// }
 	}
 }
 

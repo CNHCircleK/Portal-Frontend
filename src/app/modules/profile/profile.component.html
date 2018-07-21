@@ -1,3 +1,29 @@
-<p>
-  Hi! The next MRF is due August 5th, 2018 by 11:59PM
-</p>
+<ng-container *ngIf="user">
+  <p>
+    Hi! The next MRF is due August 5th, 2018 by 11:59PM
+  </p>
+
+  <mat-divider></mat-divider>
+  <p>{{ user | json }}</p>
+  <form #accessForm="ngForm">
+    <mat-form-field>
+     <mat-label>Club</mat-label>
+     <input matInput name="club" [(ngModel)]="user.access.club">
+   </mat-form-field>
+
+   <mat-form-field>
+     <mat-label>Division</mat-label>
+     <input matInput name="division" [(ngModel)]="user.access.division">
+   </mat-form-field>
+
+   <mat-form-field>
+     <mat-label>District</mat-label>
+     <input matInput name="district" [(ngModel)]="user.access.district">
+   </mat-form-field>
+   <button mat-button (click)="setAccess()">Update</button>
+   <!-- <button mat-button disabled *ngIf="refresh">Ok Refresh the page</button> -->
+ </form>
+</ng-container>
+
+<button mat-button *ngIf="user" (click)="logout()">Log out</button>
+<button mat-button *ngIf="!user" (click)="login()">Log in</button>

@@ -11,6 +11,9 @@ import { MatSort, MatTableDataSource } from '@angular/material';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ConfirmDialogComponent } from '@app/modules/confirm-dialog/confirm-dialog.component';
 
+import { Member, AuthService } from '@core/authentication/auth.service';
+
+import { Observable, zip } from 'rxjs';
 
 // @Directive({
 // 	selector: 'input'
@@ -34,19 +37,30 @@ export class CerfComponent {
 	@Input() mrfView: boolean = false;
 
 	constructor(private route: ActivatedRoute, private dataService: DataService,
-		private _location: Location, public dialog: MatDialog) {
+		private auth: AuthService, private _location: Location, public dialog: MatDialog) {
 	}
 
 	//id: number;
+	user: Member; read: boolean = true;
 	data: Cerf;
 	members: MatTableDataSource<string>;
 	displayedColumns = ['members'];
 	@ViewChild(MatSort) sort;
+
 	ngOnInit() {
 		let id = this.route.snapshot.params.id;
-		this.dataService.getCerf(id).subscribe(cerf => this.data = cerf);
+		zip(
+			this.dataService.getCerf(id),
+			this.auth.getUser()
+		).subscribe(response => {
+			this.data = response[0];
+			this.user = response[1];
 
-		this.members = new MatTableDataSource(this.data.data.attendees);
+			this.members = new MatTableDataSource(this.data.data.attendees);
+			this.read = this.user.access.club < 2 && this.auth.navFromMrf;
+		});
+
+		
 	}
 	ngAfterViewInit() {
 		this.members.sort = this.sort;

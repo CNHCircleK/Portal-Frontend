@@ -5,7 +5,7 @@
 			<img src="https://cdn.frontify.com/api/screen/thumbnail/XpAQmPIeugwk-YlQmqh5IG1cjaOlgmHMP6yU-0U2RikNGjJdPLw7tzaKc0J94K2y55GA44JvKPsBo6SwSiNLhg/798">
 			<span style="padding-left: 30px;">Insert word art</span>
 		</li>
-		<li *ngFor="let link of links">
+		<li *ngFor="let link of authLinks">
 			<a [routerLink]="link.route">
 				<mat-icon>{{ link.icon }}</mat-icon>
 				<span>{{ link.text }}</span>

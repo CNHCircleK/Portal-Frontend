@@ -20,3 +20,7 @@ button.mat-raised-button & a.mat-icon-button {
 div {	/* Distinguish input fields from header by pushing it to the right */
 	margin-left: 20px;
 }
+
+fieldset {
+	border: 0;
+}

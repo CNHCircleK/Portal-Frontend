@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap, defaultIfEmpty } from 'rxjs/operators';
 
+import { LocalStorage } from '@ngx-pwa/local-storage';
 
 export interface Member {
   id: number,
@@ -10,56 +11,120 @@ export interface Member {
   club_id: number,
   division_id: number,
   access?: {
-    type: number,
-    level: number
+    club: number,
+    division: number,
+    district: number
   }
 }
 
+export const tokenName = 'access_token';
 
-@Injectable()
+@Injectable( {providedIn: 'root'} )
 export class AuthService {
 	private user = new BehaviorSubject<Member>(undefined); // ReplaySubject with buffer size 1 behaves like a BehaviorSubject,
                                                 // except it emits nothing (not even null) until the first publish
-  private loggedIn: boolean = false;
+  private loggedIn: boolean = localStorage.getItem(tokenName) != null;
+  public navFromMrf: boolean;
+  
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private storage: LocalStorage) {
+
+    
+  }
+
+  private loadUser(): Observable<Member> {
+    return this.storage.getItem('auth').pipe(map(user => {
+      if(user) {
+        this.user.next(user);
+      }
+      else{
+        this.user.next({
+                        id: 1,
+                        name: "Chris",
+                        club_id: 71230,
+                        division_id: 4,
+                        access: {
+                          club: 2,
+                          division: 0,
+                          district: 0
+                        }
+                      });
+      }
+      this.loggedIn=true;
+      localStorage.setItem(tokenName, "loggedintoken");
+      return this.user.value;
+    }));
 
   }
 
-  public getUser(): Observable<Member> {
+  public getUser(refresh?: boolean): Observable<Member> {
     // if(!this.loggedIn)
     //   this.fetchUser();
+    if(this.loggedIn)
+      this.login("user", "pass").subscribe(success => this.user.asObservable());  // persist login
     return this.user.asObservable();
   }
 
   public login(user: string, password: string): Observable<boolean>  // Success or not in logging in
   {
-    return this.http.post<any>('/login', {user, password}).pipe(
-                map(res => {
-                  if(res.success) {
-                    localStorage.setItem('auth_token', res.auth_token);
-                    // Do more stuff with the response
-                    // this.user.next(res.user);
-                    this.loggedIn = true;
-                  }
-                  return res.success;
-                }));
+    // return this.http.post<any>('/login', {user, password}).pipe(
+    //             map(res => {
+    //               if(res.success) {
+    //                 localStorage.setItem(tokenName, res.auth_token);
+    //                 // Do more stuff with the response
+    //                 // this.user.next(res.user);
+    //                 this.loggedIn = true;
+    //               }
+    //               return res.success;
+    //             }));
+    return this.storage.getItem('auth').pipe(map(user => {
+      if(user) {
+        this.user.next(user);
+      }
+      else{
+        this.user.next({
+                        id: 1,
+                        name: "Chris",
+                        club_id: 71230,
+                        division_id: 4,
+                        access: {
+                          club: 2,
+                          division: 0,
+                          district: 0
+                        }
+                      });
+      }
+      this.loggedIn=true;
+      localStorage.setItem(tokenName, "loggedintoken");
+      return true;
+    }));
   }
 
   public logout(): void {
-    localStorage.removeItem('auth_token');
+    localStorage.removeItem(tokenName);
     this.loggedIn=false;
     this.user.next(undefined);
   }
 
   public isLoggedIn(): boolean {
-    return this.loggedIn;
+    return localStorage.getItem(tokenName) != null;
   }
 
   public getAccess() {
     if(!this.loggedIn)
       return undefined;
     return this.user.value.access;
+  }
+
+  setAccess(club: number,
+    division: number,
+    district: number) {
+    let tempUser = this.user.value;
+    tempUser.access.club = club;
+    tempUser.access.division = division;
+    tempUser.access.district = district;
+    this.storage.setItem('auth', tempUser).subscribe(()=>{});
+    this.user.next(tempUser);
   }
 
 // getConfig() {
