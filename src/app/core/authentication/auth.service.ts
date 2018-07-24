@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, of } from 'rxjs';
 import { map, tap, defaultIfEmpty } from 'rxjs/operators';
 
 import { LocalStorage } from '@ngx-pwa/local-storage';
@@ -29,7 +29,6 @@ export class AuthService {
 
   constructor(private http: HttpClient, private storage: LocalStorage) {
 
-    
   }
 
   private loadUser(): Observable<Member> {
@@ -61,7 +60,7 @@ export class AuthService {
     // if(!this.loggedIn)
     //   this.fetchUser();
     if(this.loggedIn)
-      this.login("user", "pass").subscribe(success => this.user.asObservable());  // persist login
+      return this.loadUser();  // persist login
     return this.user.asObservable();
   }
 
@@ -77,27 +76,10 @@ export class AuthService {
     //               }
     //               return res.success;
     //             }));
-    return this.storage.getItem('auth').pipe(map(user => {
-      if(user) {
-        this.user.next(user);
-      }
-      else{
-        this.user.next({
-                        id: 1,
-                        name: "Chris",
-                        club_id: 71230,
-                        division_id: 4,
-                        access: {
-                          club: 2,
-                          division: 0,
-                          district: 0
-                        }
-                      });
-      }
-      this.loggedIn=true;
-      localStorage.setItem(tokenName, "loggedintoken");
-      return true;
-    }));
+    
+    // if user and pass, post request
+    localStorage.setItem(tokenName, "loggedintoken");
+    return of(true);
   }
 
   public logout(): void {

@@ -23,9 +23,17 @@ export class AuthGuard implements CanActivate {
 		}
 
 		return this.auth.getUser().pipe(map(user => {
+			if(!user) return false;
 			console.log(state.url);
 			if(state.url=='/mrfs')
-					return user.access.club > 0;
+			{
+				if(user.access.club > 0) return true;
+				else {
+					window.alert("You do not have permission to view this");
+					this.router.navigate(['']);
+					return false;
+				}
+			}
 			if(state.url=='/cerfs')
 					return true;
 			return true;	// should definitely default false, but need to figure out how to authorize '/cerf/:id'

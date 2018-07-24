@@ -34,6 +34,12 @@
       <mat-cell *matCellDef="let row">{{row}}</mat-cell>
     </ng-container> -->
 
+    <!-- Club ID Column -->
+    <ng-container matColumnDef="club_id">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Club ID </mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.club_id}}</mat-cell>
+    </ng-container>
+
 
     <!-- Action Column -->
     <ng-container matColumnDef="action">

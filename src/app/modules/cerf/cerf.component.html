@@ -1,11 +1,11 @@
 <a mat-icon-button (click)="goBack()">
 	<mat-icon>arrow_back</mat-icon>
 </a>
-<p id="cerf-info">Cerf ID: {{ data._id }} </p>
+<p id="cerf-info">Cerf ID: {{ cerf._id }} </p>
 <a mat-icon-button (click)="deleteCerf()">
 	<mat-icon>delete_outline</mat-icon>
 </a>
-<button *ngIf="data.data.status==1 && mrfView" mat-raised-button (click)="approveCerf()">
+<button *ngIf="cerf.data.status==1 && mrfView" mat-raised-button (click)="approveCerf()">
 Approve
 </button>
 
@@ -17,34 +17,34 @@ Approve
 	<h3 class="mat-headline">CERF Info</h3>
 	<div>
 		<mat-form-field>
-			<input matInput placeholder="Event Chair" name="author" [(ngModel)]="data.data.chair_id" readonly/>
+			<input matInput placeholder="Event Chair" name="author" [(ngModel)]="cerf.data.chair_id" readonly/>
 		</mat-form-field>
 		<mat-form-field>
-			<input matInput placeholder="Event Name" name="eventName" [(ngModel)]="data.name"/>
+			<input matInput placeholder="Event Name" name="eventName" [(ngModel)]="cerf.name"/>
 		</mat-form-field>
 		<mat-form-field>
-			<input matInput placeholder="Location" name="location" [(ngModel)]="data.data.location"/>
+			<input matInput placeholder="Location" name="location" [(ngModel)]="cerf.data.location"/>
 		</mat-form-field>
 	</div>
 
 	<h3 class="mat-headline">Hours Info</h3>
 	<div>
 		<mat-form-field>
-			<input matInput placeholder="Time Start" name="start" [(ngModel)]="data.data.time.start"/>
+			<input matInput placeholder="Time Start" name="start" [(ngModel)]="cerf.data.time.start"/>
 		</mat-form-field>
 		<mat-form-field>
-			<input matInput placeholder="Time End" name="end" [(ngModel)]="data.data.time.end"/>
+			<input matInput placeholder="Time End" name="end" [(ngModel)]="cerf.data.time.end"/>
 		</mat-form-field>
 	</div>
 	<div>
 		<mat-form-field>
-			<input matInput placeholder="Service Hours" name="serviceHours" [(ngModel)]="data.data.hours_per_attendee.service"/>
+			<input matInput placeholder="Service Hours" name="serviceHours" [(ngModel)]="cerf.data.hours_per_attendee.service"/>
 		</mat-form-field>
 		<mat-form-field>
-			<input matInput placeholder="Leadership Hours" name="leadershipHours" [(ngModel)]="data.data.hours_per_attendee.leadership"/>
+			<input matInput placeholder="Leadership Hours" name="leadershipHours" [(ngModel)]="cerf.data.hours_per_attendee.leadership"/>
 		</mat-form-field>
 		<mat-form-field>
-			<input matInput placeholder="Fellowship Hours" name="fellowshipHours" [(ngModel)]="data.data.hours_per_attendee.fellowship"/>
+			<input matInput placeholder="Fellowship Hours" name="fellowshipHours" [(ngModel)]="cerf.data.hours_per_attendee.fellowship"/>
 		</mat-form-field>
 	</div>
 
@@ -63,7 +63,7 @@ Approve
 
 	<div>
 		<mat-form-field>
-			<input matInput placeholder="Amount Fundraised" name="money" [(ngModel)]="data.data.fundraised"/>
+			<input matInput placeholder="Amount Fundraised" name="money" [(ngModel)]="cerf.data.fundraised"/>
 		</mat-form-field>
 	</div>
 
@@ -72,7 +72,7 @@ Approve
 		<!-- <a mat-raised-button (click)="addMember()">Add Member</a>
 		<div style="display: flex; flex-flow: row wrap; background-color: #eeeeee">
 			<mat-form-field *ngFor="let member of data.data.attendees; let i = index; trackBy: trackByIndex">
-				<input matInput placeholder="Member {{i}}" name="membersAttended{{i}}" [(ngModel)]="data.data.attendees[i]">
+				<input matInput placeholder="Member {{i}}" name="membersAttended{{i}}" [(ngModel)]="cerf.data.attendees[i]">
 				<button matSuffix mat-icon-button (click)="removeMember(i)"><mat-icon>remove_circle</mat-icon></button>
 			</mat-form-field>
 		</div> -->
@@ -99,15 +99,15 @@ Approve
 
 	
 	<!-- <mat-form-field>
-		<input matInput placeholder="Member 0" name="membersAttended0" [(ngModel)]="data.data.attendees[0]"/>
+		<input matInput placeholder="Member 0" name="membersAttended0" [(ngModel)]="cerf.data.attendees[0]"/>
 		<button matSuffix mat-icon-button (click)="removeMember(0)"><mat-icon>remove</mat-icon></button>
 	</mat-form-field>
 	<mat-form-field>
-		<input matInput placeholder="Member 1" name="membersAttended1" [(ngModel)]="data.data.attendees[1]"/>
+		<input matInput placeholder="Member 1" name="membersAttended1" [(ngModel)]="cerf.data.attendees[1]"/>
 		<button matSuffix mat-icon-button (click)="removeMember(1)"><mat-icon>remove</mat-icon></button>
 	</mat-form-field>
 	<mat-form-field>
-		<input matInput placeholder="Member 2" name="membersAttended2" [(ngModel)]="data.data.attendees[2]"/>
+		<input matInput placeholder="Member 2" name="membersAttended2" [(ngModel)]="cerf.data.attendees[2]"/>
 		<button matSuffix mat-icon-button (click)="removeMember(2)"><mat-icon>remove</mat-icon></button>
 	</mat-form-field> -->
 
@@ -116,6 +116,6 @@ Approve
 		<button mat-raised-button [disabled]="read" (click)="submitCerf()">submit</button>
 	</div>
 
-	<!-- <p *ngIf="data.data.attendees[2]">{{data.data.attendees[2]}}</p> -->
+	<!-- <p *ngIf="cerf.data.attendees[2]">{{data.data.attendees[2]}}</p> -->
 	</fieldset>
 </form>

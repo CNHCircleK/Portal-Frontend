@@ -5,14 +5,13 @@ export interface Mrf {
 	year: number,
 	month: number,
 	status: 0,	// Enum?
-	events: number[],	// Cerf[] or number[] (id)
 	submission_time: string,
+	club_id: number,
 	data?: MrfData
 }
 
 export interface MrfData {
-	reflection: string,
-	totalHours: number
+	events: Cerf[];
 }
 
 /*

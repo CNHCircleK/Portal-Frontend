@@ -7,12 +7,27 @@ import { Mrf } from '@core/data/mrf';
 import { DataService } from '@core/data/data.service';
 
 @Injectable( { providedIn: 'root' })
-export class MrfnavResolver implements Resolve<Mrf[]> {
+export class MrfSecretaryResolver implements Resolve<Mrf[]> {
 	constructor(private dataService: DataService, private router: Router) { }
 
 	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Mrf[]> {
-		let data: Mrf[];
-		return this.dataService.getMrfs();
+		return this.dataService.getMrfList();
+	}
+}
+@Injectable( { providedIn: 'root' })
+export class MrfDivisionResolver implements Resolve<Mrf[]> {
+	constructor(private dataService: DataService, private router: Router) { }
+
+	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Mrf[]> {
+		return this.dataService.getDivisionMrfs();	// get division mrfs
+	}
+}
+@Injectable( { providedIn: 'root' })
+export class MrfDistrictResolver implements Resolve<Mrf[]> {
+	constructor(private dataService: DataService, private router: Router) { }
+
+	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Mrf[]> {
+		return this.dataService.getMrfList();	// get district mrfs
 	}
 }
 
@@ -21,20 +36,12 @@ export class MrfResolver implements Resolve<Mrf> {
 	constructor(private dataService: DataService, private router: Router) { }
 
 	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Mrf> {
-		let data: Mrf;
-		return this.dataService.getMrf(route.params.id).pipe(map(
-			mrf => {
+		return this.dataService.getMrfById(route.params.id).pipe(map(mrf => {
 				if(!mrf){
 					this.router.navigate(['/mrfs']);
 					return null;
 				}
 				return mrf;
 		}));
-
-		// if(!Array.isArray(data))	// Mrfs haven't been loaded. Note, "!data" doesn't work because the empty array returns false
-		// {
-		// 	this.router.navigate(['/']);
-		// 	return null;
-		// }
 	}
 }

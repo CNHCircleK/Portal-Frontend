@@ -12,32 +12,27 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 })
 
 export class MrfListComponent {
-	data: Mrf[];
 	displayedColumns = ['month', 'year', 'action'];
 	list: MatTableDataSource<Mrf>;
 
 	@ViewChild(MatPaginator) paginator;
 	@ViewChild(MatSort) sort;
 
+	@Input() mrfList: Mrf[];
+	@Input() display: string[];
+
 	constructor(private dataService: DataService, private router: Router) {
-
-	}
-
-	getMrfs(): void {
-		this.dataService.getMrfs()
-			.subscribe(mrfs => this.data = mrfs);	// replaced "this.importedData = this.cerfDataServce.getCerfs()"
-															// bc we're using Observable<Cerf[]> now
-		// The old method was synchronous. We need an async way to get data
-
-		this.list = new MatTableDataSource(this.data);
+		
 	}
 
 	ngOnInit() {
-		this.getMrfs();
-		this.dataService.saveToClient();
+		this.list = new MatTableDataSource(this.mrfList);
+		if(this.display) this.displayedColumns = this.displayedColumns.concat(this.display);
 	}
 
 	ngAfterViewInit() {
+		
+		
 		this.list.paginator = this.paginator;
 		this.list.sort = this.sort;
 	}

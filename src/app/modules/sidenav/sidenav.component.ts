@@ -15,8 +15,8 @@ export class SidenavComponent {
 			{icon: 'assessment', text:'CERFs', route: '/cerfs', color: '#C7D6EE'},
 			{icon: 'table_cell', text:'MRFs', route: '/mrfs', color: '#9EA374'},
 			// {icon: 'library_books', text: 'Past MRFs'},
-			{icon: 'library_books', text: 'Division MRFs'},
-			{icon: 'library_books', text: 'District MRFs'},
+			{icon: 'library_books', text: 'Division MRFs', route: '/divmrfs'},
+			{icon: 'library_books', text: 'District MRFs', route: '/distmrfs'},
 		];
 	authLinks = [];
 

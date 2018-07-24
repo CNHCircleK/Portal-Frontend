@@ -9,6 +9,7 @@ import { CoreModule } from '@core/core.module';
 import { SidenavComponent,
 		CerfComponent, CerfListComponent, 
 		MrfComponent, MrfListComponent,
+    MyCerfsComponent, MrfSecretaryComponent, MrfDivisionComponent, MrfDistrictComponent,
 		ProfileComponent,
     ConfirmDialogComponent } from '@app/modules/';
 
@@ -25,6 +26,10 @@ export function tokenGetter() {
     MrfComponent,
     CerfListComponent,
     MrfListComponent,
+    MyCerfsComponent,
+    MrfSecretaryComponent,
+    MrfDivisionComponent,
+    MrfDistrictComponent,
     ProfileComponent,
     ConfirmDialogComponent
   ],

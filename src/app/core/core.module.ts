@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { SidenavComponent,
 		CerfComponent, CerfListComponent, 
 		MrfComponent, MrfListComponent,
+    MyCerfsComponent,
 		ProfileComponent,
     ConfirmDialogComponent } from '@app/modules/';
 

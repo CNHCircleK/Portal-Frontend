@@ -2,18 +2,20 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Resolve, CanActivate } from '@angular/router';
 
-import { CerfListComponent, CerfComponent,
-		MrfListComponent, MrfComponent,
+import { CerfComponent, MyCerfsComponent,
+		MrfComponent, MrfSecretaryComponent, MrfDivisionComponent, MrfDistrictComponent,
 		ProfileComponent } from '@app/modules/';
-import { CerfnavResolver, CerfResolver } from '@core/guards/cerf-resolver.guard';
-import { MrfnavResolver, MrfResolver } from '@core/guards/mrf-resolver.guard';
+import { MyCerfsResolver, CerfResolver } from '@core/guards/cerf-resolver.guard';
+import { MrfResolver, MrfSecretaryResolver, MrfDivisionResolver, MrfDistrictResolver } from '@core/guards/mrf-resolver.guard';
 import { AuthGuard } from '@core/guards/auth.guard';
 
 const routes: Routes = [
-	{ path: 'cerfs', component: CerfListComponent, resolve: { CerfnavResolver }, canActivate: [AuthGuard]  },
+	{ path: 'cerfs', component: MyCerfsComponent, resolve: { myCerfs: MyCerfsResolver }, canActivate: [AuthGuard]  },
 	{ path: 'cerf/:id', component: CerfComponent, resolve: { CerfResolver }, canActivate: [AuthGuard] },
-	{ path: 'mrfs', component: MrfListComponent, resolve: { MrfnavResolver }, canActivate: [AuthGuard] },
+	{ path: 'mrfs', component: MrfSecretaryComponent, resolve: { secretaryMrfs: MrfSecretaryResolver }, canActivate: [AuthGuard] },
 	{ path: 'mrf/:id', component: MrfComponent, resolve: { MrfResolver }, canActivate: [AuthGuard]  },
+	{ path: 'divmrfs', component: MrfDivisionComponent, resolve: { divisionMrfs: MrfDivisionResolver }, canActivate: [AuthGuard] },
+	{ path: 'distmrfs', component: MrfDistrictComponent, resolve: { districtMrfs: MrfDistrictResolver }, canActivate: [AuthGuard] },
 	{ path: '', component: ProfileComponent}	// DEFAULT ROUTE
 ]
 

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
 import { AuthService } from '@core/authentication/auth.service';
 
 @Component({

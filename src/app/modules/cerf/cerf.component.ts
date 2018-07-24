@@ -42,7 +42,7 @@ export class CerfComponent {
 
 	//id: number;
 	user: Member; read: boolean = true;
-	data: Cerf;
+	cerf: Cerf;
 	members: MatTableDataSource<string>;
 	displayedColumns = ['members'];
 	@ViewChild(MatSort) sort;
@@ -50,13 +50,13 @@ export class CerfComponent {
 	ngOnInit() {
 		let id = this.route.snapshot.params.id;
 		zip(
-			this.dataService.getCerf(id),
+			this.dataService.getCerfById(id),
 			this.auth.getUser()
 		).subscribe(response => {
-			this.data = response[0];
+			this.cerf = response[0];
 			this.user = response[1];
 
-			this.members = new MatTableDataSource(this.data.data.attendees);
+			this.members = new MatTableDataSource(this.cerf.data.attendees);
 			this.read = this.user.access.club < 2 && this.auth.navFromMrf;
 		});
 
@@ -71,8 +71,8 @@ export class CerfComponent {
 		this.saveCerf();
 	}
 	saveCerf() {
-		this.data.data.attendees = this.members.data;
-		this.dataService.updateCerf(this.data);
+		this.cerf.data.attendees = this.members.data;
+		this.dataService.updateCerf(this.cerf);
 	}
 
 	goBack() {
@@ -85,13 +85,13 @@ export class CerfComponent {
 	}
 
 	addMember() {
-		this.data.data.attendees = this.members.data;
-		this.data.data.attendees.push("Member " + this.data.data.attendees.length);
-		this.members.data = this.data.data.attendees;
+		this.cerf.data.attendees = this.members.data;
+		this.cerf.data.attendees.push("Member " + this.cerf.data.attendees.length);
+		this.members.data = this.cerf.data.attendees;
 	}
 
 	removeMember(i: number) {
-		this.data.data.attendees.splice(i, 1);
+		this.cerf.data.attendees.splice(i, 1);
 	}
 
 	deleteCerf() {
@@ -102,7 +102,7 @@ export class CerfComponent {
 		dialogRef.afterClosed().subscribe(result => {
 			if(result)
 			{
-				this.dataService.deleteCerf(this.data._id);
+				this.dataService.deleteCerf(this.cerf._id);
 				this._location.back();
 			}
 		})
@@ -122,11 +122,11 @@ export class CerfComponent {
 	}
 
 	submitCerf() {
-		this.dataService.submitCerf(this.data._id);
+		this.dataService.submitCerf(this.cerf._id);
 
 	}
 
 	approveCerf() {
-		this.data.data.status = 0;
+		this.cerf.data.status = 0;
 	}
 }
