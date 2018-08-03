@@ -1,5 +1,6 @@
 import { Component, Input, Directive, Renderer2, ElementRef, ViewChild } from '@angular/core';
 // import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Cerf } from '@core/data/cerf';
 import { DataService } from '@core/data/data.service';
@@ -36,8 +37,16 @@ import { Observable, zip } from 'rxjs';
 export class CerfComponent {
 	@Input() mrfView: boolean = false;
 
+	myForm: FormGroup;
+	comment: string = "HEY";
+
 	constructor(private route: ActivatedRoute, private dataService: DataService,
-		private auth: AuthService, private _location: Location, public dialog: MatDialog) {
+		private auth: AuthService, private _location: Location, public dialog: MatDialog,
+		private builder: FormBuilder) {
+		// this.route.data.subscribe(response => this.cerf = response.cerf);
+		this.cerf = this.route.snapshot.data['cerf'];
+		this.myForm = this.createForm(this.cerf);
+		console.log(this.myForm);
 	}
 
 	//id: number;
@@ -48,28 +57,18 @@ export class CerfComponent {
 	@ViewChild(MatSort) sort;
 
 	ngOnInit() {
-		let id = this.route.snapshot.params.id;
-		zip(
-			this.dataService.getCerfById(id),
-			this.auth.getUser()
-		).subscribe(response => {
-			this.cerf = response[0];
-			this.user = response[1];
-
-			this.members = new MatTableDataSource(this.cerf.data.attendees);
-			this.read = this.user.access.club < 2 && this.auth.navFromMrf;
+		this.auth.getUser().subscribe(user => {
+			this.user = user;
+			this.read = user.access.club < 2 && this.auth.navFromMrf;
 		});
 
+		this.members = new MatTableDataSource(this.cerf.data.attendees);
 		
 	}
 	ngAfterViewInit() {
 		this.members.sort = this.sort;
 	}
 
-
-	ngOnDestroy() {
-		this.saveCerf();
-	}
 	saveCerf() {
 		this.cerf.data.attendees = this.members.data;
 		this.dataService.updateCerf(this.cerf);
@@ -102,8 +101,8 @@ export class CerfComponent {
 		dialogRef.afterClosed().subscribe(result => {
 			if(result)
 			{
-				this.dataService.deleteCerf(this.cerf._id);
 				this._location.back();
+				this.dataService.deleteCerf(this.cerf._id);
 			}
 		})
 		
@@ -128,5 +127,153 @@ export class CerfComponent {
 
 	approveCerf() {
 		this.cerf.data.status = 0;
+	}
+
+
+	private createForm(model: Cerf): FormGroup {
+		/* Fill in CERF with null values so we can at least create a form */
+		/* We're assuming a Cerf IS passed in (i.e. has all the non-optional properties at least */
+		if(!model.data) {
+			model.data = {
+				cerf_author: "",
+				chair_id: "",
+				chair_name: "",
+				event_contact: "",
+				event_number: "",
+				time: {
+					start: new Date('2018-01-01T00:00:00'),
+					end: new Date('2018-01-01T00:00:00')
+				},
+				location: "",
+				hours_per_attendee: {
+					service: 0,
+					leadership: 0,
+					fellowship: 0
+				},
+				attendees: [],
+				total_attendees: 0,
+				tags: {
+					service: "",
+					leadership: "",
+					fellowship: "",
+					miscellaneous: "",
+				},
+				
+				drivers: [],
+				total_drivers: 0,
+				total_mileageTo: 0,
+				total_mileageFrom: 0,
+				total_mileage: 0,
+
+				funds_raised: 0,
+				funds_spent: 0,
+				funds_profit: 0,
+				funds_usage: "",
+
+				commentary: {
+					summary: "",
+					strengths: "",
+					weaknesses: "",
+					advice: ""
+				},
+
+				comments: [],
+
+				history: [],
+
+				status: 1
+			}
+		} else {
+			if(!model.data.hours_per_attendee) {
+				model.data.hours_per_attendee = {
+					service: 0,
+					leadership: 0,
+					fellowship: 0
+				}
+			}
+			if(!model.data.attendees)
+				model.data.attendees = [];
+			if(!model.data.tags) {
+				model.data.tags = {
+					service: "",
+					leadership: "",
+					fellowship: "",
+					miscellaneous: ""
+				}
+			}
+			if(!model.data.drivers)
+				model.data.drivers = []
+			if(!model.data.commentary){
+				model.data.commentary = {
+					summary: "",
+					strengths: "",
+					weaknesses:  "",
+					advice: ""
+				}
+				if(!model.data.comments)
+					model.data.comments = [];
+				if(!model.data.history)
+					model.data.history = [];
+			}
+
+		}
+
+		return this.builder.group({
+				_id: [model._id],
+			 	event_name: [model.event_name],
+			 	date: [model.date],
+
+			 	// cerf.data
+			 	cerf_author: [model.data.cerf_author],
+			 	chair_id: [model.data.chair_id],
+			 	chair_name: [model.data.chair_name],
+			 	event_contact: [model.data.event_contact],
+			 	event_number: [model.data.event_number],
+
+			 		// cerf.data.time
+			 		time_start: [model.data.time.start],
+			 		time_end: [model.data.time.end],
+
+			 	location: [model.data.time.end],
+
+			 		// cerf.data.hours_per_attendee
+			 		service_hours: [model.data.hours_per_attendee.service],
+			 		leadership_hours: [model.data.hours_per_attendee.leadership],
+			 		fellowship_hours: [model.data.hours_per_attendee.fellowship],
+
+			 	attendees: this.builder.array( [] ),
+			 		/** push formgroup { name, service, fellowship, leadership, paid: bool } **/
+			 	total_attendees: [model.data.attendees.length],	// READONLY
+
+			 		// cerf.data.tags
+			 		service_tags: [model.data.tags.service],
+			 		leadership_tags: [model.data.tags.leadership],
+			 		fellowship_tags: [model.data.tags.fellowship],
+			 		miscellaneous_tags: [model.data.tags.miscellaneous],
+			 	
+			 	drivers: this.builder.array( [] ),
+			 		/** push group { name, mileageTo, mileageFrom } **/
+			 	total_drivers: [model.data.drivers.length],
+				total_mileageTo: [model.data.total_mileageTo],
+				total_mileageFrom: [model.data.total_mileageFrom],
+				total_mileage: [model.data.total_mileage],
+
+				funds_raised: [model.data.funds_raised],
+				funds_spent: [model.data.funds_spent],
+				funds_profit: [model.data.funds_profit],
+				funds_usage: [model.data.funds_usage],
+
+				commentary: this.builder.group({
+					summary: [model.data.commentary.summary],
+					strengths: [model.data.commentary.strengths],
+					weaknesses: [model.data.commentary.weaknesses],
+					advice: [model.data.commentary.advice]
+				}),
+
+				// comments: this.builder.array( [] ),
+				// history: this.builder.group( [] ),
+
+				status: [model.data.status] // READONLY
+		});
 	}
 }

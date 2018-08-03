@@ -16,14 +16,16 @@ export class MrfComponent {
 
 	constructor(private route: ActivatedRoute, private dataService: DataService,
 				private _location: Location) {
+		this.mrf = this.route.snapshot.data['mrf'];
 	}
 
 	//id: number;
 	mrf: Mrf;
 	cerfs: Cerf[] = [];
 	ngOnInit() {
-		let id = this.route.snapshot.params.id;
-		this.dataService.getMrfById(id).subscribe(mrf => this.mrf = mrf);
+		this.cerfs=this.mrf.data.events;
+		// let id = this.route.snapshot.params.id;
+		// this.dataService.getMrfById(id).subscribe(mrf => this.mrf = mrf);
 	}
 
 

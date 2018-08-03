@@ -4,6 +4,7 @@ import { Observable, BehaviorSubject, of } from 'rxjs';
 import { map, tap, defaultIfEmpty } from 'rxjs/operators';
 
 import { LocalStorage } from '@ngx-pwa/local-storage';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 export interface Member {
   id: number,
@@ -25,9 +26,8 @@ export class AuthService {
                                                 // except it emits nothing (not even null) until the first publish
   private loggedIn: boolean = localStorage.getItem(tokenName) != null;
   public navFromMrf: boolean;
-  
 
-  constructor(private http: HttpClient, private storage: LocalStorage) {
+  constructor(private http: HttpClient, private storage: LocalStorage, private helper: JwtHelperService) {
 
   }
 
@@ -93,6 +93,10 @@ export class AuthService {
   }
 
   public getAccess() {
+    /*
+    tokenData = helper.decodeToken(mytoken);
+    user._id = tokenData._id;
+    */
     if(!this.loggedIn)
       return undefined;
     return this.user.value.access;

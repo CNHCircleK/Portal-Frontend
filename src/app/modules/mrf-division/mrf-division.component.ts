@@ -14,6 +14,6 @@ export class MrfDivisionComponent {
 	resolve;
 
 	constructor(private dataService: DataService, private router: ActivatedRoute) {
-		this.resolve = this.router.data;
+		this.resolvedData = this.router.snapshot.data['divisionMrfs'];
 	}
 }

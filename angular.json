@@ -23,6 +23,7 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/@coachcare/datepicker/prebuilt-themes/indigo-pink.css",
               "src/styles.css"
             ],
             "stylePreprocessorOptions": {
@@ -79,6 +80,7 @@
             ],
             "scripts": [],
             "assets": [
+              "src/cnhfavicon.ico",
               "src/favicon.ico",
               "src/assets"
             ]

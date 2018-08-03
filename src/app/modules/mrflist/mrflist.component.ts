@@ -12,7 +12,7 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 })
 
 export class MrfListComponent {
-	displayedColumns = ['month', 'year', 'action'];
+	displayedColumns;
 	list: MatTableDataSource<Mrf>;
 
 	@ViewChild(MatPaginator) paginator;
@@ -27,6 +27,7 @@ export class MrfListComponent {
 
 	ngOnInit() {
 		this.list = new MatTableDataSource(this.mrfList);
+		this.displayedColumns = ['month', 'year', 'action']
 		if(this.display) this.displayedColumns = this.displayedColumns.concat(this.display);
 	}
 

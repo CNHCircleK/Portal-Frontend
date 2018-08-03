@@ -20,7 +20,8 @@
       "@app/*": ["src/app/*"],
       "@env/*": ["src/environments/*"],
       "@core/*": ["src/app/core/*"],
-      "@themes/*": ["src/themes/*"]
+      "@themes/*": ["src/themes/*"],
+      "@assets/*": ["src/assets/*"]
     }
   }
 }

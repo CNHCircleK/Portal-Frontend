@@ -27,16 +27,24 @@ export class CerfListComponent {
 		// this.getCerfs();
 	}
 
+	ngOnInit() {
+		if(this.cerfList)
+			this.list = new MatTableDataSource(this.cerfList);
+	}
+
 	ngAfterViewInit() {
-		this.list = new MatTableDataSource(this.cerfList);
-		this.list.paginator = this.paginator;
-		this.list.sort = this.sort;
+		if(this.list) {
+			this.list.paginator = this.paginator;
+			this.list.sort = this.sort;
+		}
 	}
 
 	applyFilter(filterValue: string) {
-	    filterValue = filterValue.trim(); // Remove whitespace
-	    filterValue = filterValue.toLowerCase(); // list defaults to lowercase matches
-	    this.list.filter = filterValue;
+		if(this.list) {
+		    filterValue = filterValue.trim(); // Remove whitespace
+		    filterValue = filterValue.toLowerCase(); // list defaults to lowercase matches
+		    this.list.filter = filterValue;
+		}
 	}
 
 	newCerf() {

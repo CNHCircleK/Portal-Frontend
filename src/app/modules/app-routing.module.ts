@@ -11,9 +11,9 @@ import { AuthGuard } from '@core/guards/auth.guard';
 
 const routes: Routes = [
 	{ path: 'cerfs', component: MyCerfsComponent, resolve: { myCerfs: MyCerfsResolver }, canActivate: [AuthGuard]  },
-	{ path: 'cerf/:id', component: CerfComponent, resolve: { CerfResolver }, canActivate: [AuthGuard] },
+	{ path: 'cerf/:id', component: CerfComponent, resolve: { cerf: CerfResolver }, canActivate: [AuthGuard] },
 	{ path: 'mrfs', component: MrfSecretaryComponent, resolve: { secretaryMrfs: MrfSecretaryResolver }, canActivate: [AuthGuard] },
-	{ path: 'mrf/:id', component: MrfComponent, resolve: { MrfResolver }, canActivate: [AuthGuard]  },
+	{ path: 'mrf/:id', component: MrfComponent, resolve: { mrf: MrfResolver }, canActivate: [AuthGuard]  },
 	{ path: 'divmrfs', component: MrfDivisionComponent, resolve: { divisionMrfs: MrfDivisionResolver }, canActivate: [AuthGuard] },
 	{ path: 'distmrfs', component: MrfDistrictComponent, resolve: { districtMrfs: MrfDistrictResolver }, canActivate: [AuthGuard] },
 	{ path: '', component: ProfileComponent}	// DEFAULT ROUTE

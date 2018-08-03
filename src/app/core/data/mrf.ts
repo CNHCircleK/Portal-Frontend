@@ -14,6 +14,101 @@ export interface MrfData {
 	events: Cerf[];
 }
 
+export interface Mrf2 {
+	club_id: string,
+	year: number,
+	month: number,
+	status: 0,
+	submissionTime: null,
+	updates: {
+		duesPaid: null,
+		newDuesPaid: null
+	},
+	goals: string[],
+	meetings: [
+		{
+			members: null,
+			nonHomeMembers: null,
+			kiwanis: null,
+			guests: null,
+			advisorAttendance:{
+				faculty: null,
+				kiwanis: null
+			}
+		},
+
+		{
+			members: null,
+			nonHomeMembers: null,
+			kiwanis: null,
+			guests: null,
+			advisorAttendance:{
+				faculty: null,
+				kiwanis: null
+			}
+		},
+
+		{
+			members: null,
+			nonHomeMembers: null,
+			kiwanis: null,
+			guests: null,
+			advisorAttendance:{
+				faculty: null,
+				kiwanis: null
+			}
+		},
+
+		{
+			members: null,
+			nonHomeMembers: null,
+			kiwanis: null,
+			guests: null,
+			advisorAttended:{
+				faculty: null,
+				kiwanis: null
+			}
+		},
+
+		{
+			members: null,
+			nonHomeMembers: null,
+			kiwanis: null,
+			guests: null,
+			advisorAttendance:{
+				faculty: null,
+				kiwanis: null
+			}
+		}
+	],
+
+	dcm:{
+		date: null,
+		presidentAttended: null,
+		members: null,
+		nextDcmDate: null
+	},
+
+	feedback:{
+		ltg:{
+			message: null,
+			contacted:{
+				visit: null,
+				phone: null,
+				email: null,
+				newsletter: null,
+				other: null
+			}
+		},
+		dboard: null
+	},
+
+	kfamReport:{
+		completed: null
+	}
+}
+
+
 /*
 TODO:
 -> localstorage persistant data when jumping between files (saving data locally shouldn't be too much of a risk)

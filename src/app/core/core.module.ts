@@ -18,9 +18,10 @@ import { MaterialsModule } from '@app/modules/';
 import { AppRoutingModule } from '@app/modules/app-routing.module';
 
 /* Other modules */
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
+import { MatDatepickerModule, MatMomentDateModule } from '@coachcare/datepicker';
 
 
 
@@ -32,7 +33,10 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     FlexLayoutModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatMomentDateModule
   ],
   declarations: [
 	 
@@ -46,7 +50,10 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     FlexLayoutModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatMomentDateModule
   ]
 })
 export class CoreModule {

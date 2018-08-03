@@ -12,6 +12,8 @@ $graphic-standard-warn:    #820024;
 // Create the theme object (a Sass map containing all of the palettes).
 $graphic-standard-theme: mat-light-theme($graphic-standard-primary, $graphic-standard-accent, $graphic-standard-warn);*/
 
+/*@import '~@coachcare/datepicker/theming';*/
+@import '~@coachcare/datepicker/prebuilt-themes/indigo-pink.css';
 
 $standardColors: (
 	white: #ffffff,

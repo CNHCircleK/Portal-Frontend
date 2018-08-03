@@ -7,8 +7,10 @@ For building in production and uploading to Github Pages
 
 Modules used:
 	angular-cli-ghpages (pushes to github pages)
-	ngx-pwa/local-storage (Angular IndexedDB implementation for client-side storage)
-	angular-jwt (Token interceptor)
+	@ngx-pwa/local-storage (Angular IndexedDB implementation for client-side storage)
+	@auth0/angular-jwt (Token interceptor)
+	@coachcare/datepicker
+
 
 Folder structure (src/app)
 	|-- app

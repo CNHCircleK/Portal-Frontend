@@ -7,7 +7,9 @@
 		</li>
 		<li *ngFor="let link of authLinks">
 			<a [routerLink]="link.route">
-				<mat-icon>{{ link.icon }}</mat-icon>
+				<mat-icon *ngIf="link.icon">{{ link.icon }}</mat-icon>
+				<img *ngIf="link.division" src="/assets/Emblem_Divisional_{{link.division}}-miny.png">
+				<!-- <img *ngIf="link.division" src='https://cdn.frontify.com/api/screen/thumbnail/XpAQmPIeugwk-YlQmqh5IG1cjaOlgmHMP6yU-0U2RikNGjJdPLw7tzaKc0J94K2y55GA44JvKPsBo6SwSiNLhg/798'> -->
 				<span>{{ link.text }}</span>
 			</a>
 		</li>

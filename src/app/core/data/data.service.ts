@@ -32,12 +32,25 @@ export class DataService {
     });
   }
 
+  resetData()
+  {
+    this.localStorage.clear().subscribe(()=>{});  // removes token also
+  }
+
 	// CREATE
   blankCerf = (): Cerf => ({  // a factory
-    "_id":this.nextCerfId,"name":"New Event","date":"01/01/2018","data": { "chair_id" : this.user.id.toString(),"time" : {"start" : "2018-00-00T00Z:00:00Z","end" : ""},
-    "location" : "","attendees" : [ ],"hours_per_attendee" : {"service" : 0,"leadership" : 0,"fellowship" : 0},
-    "override_hours" : [ ],"tags" : [ ],"fundraised" : 0,"status" : 1} 
-  });
+    "_id":this.nextCerfId,"event_name":"New Event","date":new Date('2018-01-01T00:00:00'),"data": {chair_id:"",    // not shown
+    time: {start: new Date('2018-01-01T00:00:00'),end: new Date('2018-01-01T00:00:00')},
+    location:"",
+    hours_per_attendee: {
+      service: 0,
+      leadership: 0,
+      fellowship: 0
+    },
+    attendees:[],
+    status: 1
+  }});
+
   newCerf(): Cerf {
     let blankCerf =  this.blankCerf();
     this.cerfs.push(blankCerf);
@@ -170,6 +183,13 @@ export class DataService {
 
     }
   	removeCerfAll(id: number) {	// Remove CERF from every MRF
+      if(!this.mrfs)
+      {
+        this.getCerfList().subscribe(mrfs => {
+          this.removeCerfAll(id);  // wow recursion
+        });
+        return;
+      }
   		this.mrfs.forEach(mrf => {
   			let ind = mrf.data.events.findIndex(event => event._id == id)
   			if(ind != -1 && this.mrfs[ind].data)
@@ -178,6 +198,13 @@ export class DataService {
       });
   	}
   	removeCerf(cerfId: number, mrfId: number) {
+      if(!this.mrfs)
+      {
+        this.getCerfList().subscribe(mrfs => {
+          this.removeCerf(cerfId, mrfId);  // wow recursion
+        });
+        return;
+      }
   		let mrf: Mrf = this.mrfs.find(mrf => mrf._id == mrfId);
   		if(mrf) {
   			let ind = mrf.data.events.findIndex(event => event._id == cerfId)

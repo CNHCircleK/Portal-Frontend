@@ -25,7 +25,7 @@ export class MyCerfsComponent {
 	constructor(private route: ActivatedRoute, private dataService: DataService,
 		private auth: AuthService, private _location: Location) {
 		// this.route.data.subscribe(response => this.resolvedData = response.myCerfs);
-		this.resolve = this.route.data;
+		this.resolvedData = this.route.snapshot.data['myCerfs'];
 	}
 
 	ngOnInit() {
