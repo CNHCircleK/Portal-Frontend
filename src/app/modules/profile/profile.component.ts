@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@core/authentication/auth.service';
 import { DataService } from '@core/data/data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -9,7 +10,7 @@ import { DataService } from '@core/data/data.service';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(private auth: AuthService, private dataService: DataService) { }
+  constructor(private auth: AuthService, private dataService: DataService, private router: Router) { }
 
   user;
   refresh: boolean;
@@ -27,12 +28,16 @@ export class ProfileComponent implements OnInit {
   logout()
   {
   	this.auth.logout();
+    this.user = null;
+    this.router.navigate(['/login']);
   }
 
-  login()
-  {
-  	this.auth.login("user", "pass").subscribe(()=>{}, error=>console.error(error), ()=> {});
-  }
+  // login()
+  // {
+  // 	this.auth.login("user", "pass").subscribe(()=>{ this.auth.getUser().subscribe(user => this.user = user) }, error=>console.error(error), ()=> {});
+
+  // }
+  // moved to login component
 
   resetData()
   {

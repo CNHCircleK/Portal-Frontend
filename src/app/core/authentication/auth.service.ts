@@ -66,18 +66,24 @@ export class AuthService {
 
   public login(user: string, password: string): Observable<boolean>  // Success or not in logging in
   {
-    // return this.http.post<any>('/login', {user, password}).pipe(
+    // return this.http.post<any>('http://192.168.1.22:3000/signin', {'name': user, 'password': password}).pipe(
     //             map(res => {
     //               if(res.success) {
-    //                 localStorage.setItem(tokenName, res.auth_token);
+    //                 localStorage.setItem(tokenName, res.result);
+    //                 console.log(res.result);
     //                 // Do more stuff with the response
     //                 // this.user.next(res.user);
+    //                 this.http.get('http://192.168.1.22:3000/clubs/5b498a5b200a8f6afa46c1d0/members').subscribe(res => {
+    //                   console.log(res);
+    //                 })
     //                 this.loggedIn = true;
     //               }
     //               return res.success;
     //             }));
     
     // if user and pass, post request
+
+
     localStorage.setItem(tokenName, "loggedintoken");
     return of(true);
   }

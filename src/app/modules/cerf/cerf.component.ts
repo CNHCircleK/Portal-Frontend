@@ -74,11 +74,6 @@ export class CerfComponent {
 		this.dataService.updateCerf(this.cerf);
 	}
 
-	goBack() {
-		this._location.back();
-	}
-
-
 	trackByIndex(index: number, obj: any): any {
 		return index;
 	}
@@ -275,5 +270,16 @@ export class CerfComponent {
 
 				status: [model.data.status] // READONLY
 		});
+	}
+
+	goBack() {
+		const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+
+		});
+		dialogRef.componentInstance.confirmMessage = "You have not saved yet. Leave?";
+		dialogRef.afterClosed().subscribe(result => {
+			if(result) this._location.back();
+			return result;
+		})
 	}
 }

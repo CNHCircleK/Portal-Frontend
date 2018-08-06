@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Test Page</title>
+</head>
+<body>
+	<script
+		src="https://code.jquery.com/jquery-3.3.1.min.js"
+		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		crossorigin="anonymous">		
+	</script>
+
+	<script>
+		var token = null;
+		$.ajax({
+			url: "http://192.168.1.22:3000/signin",
+			type: 'post',
+			data: {
+				name: "user",
+				password: "pass"
+			},
+			dataType: 'json',
+			success: function(res){
+				if(res.success){
+					token = res.result;
+
+					$.ajax({
+						url: "http://192.168.1.22:3000/clubs/5b498a5b200a8f6afa46c1d0/members",
+						type: 'get',
+						beforeSend: function(req){
+							req.setRequestHeader("Authorization", "Basic " + token);
+						},
+						dataType: 'json',
+						data:{
+							memberId: "5b612d47da97ca515b590db5",
+							access: 2,
+							position: "President"
+						},
+						success: function(res){
+							console.log(res);
+						},
+						error: function(res){
+							console.log(res.responseText);
+						}
+					});		
+				}		
+			}
+		});
+	</script>
+
+</body>
+</html>
