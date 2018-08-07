@@ -12,7 +12,8 @@ import { MatSort, MatTableDataSource } from '@angular/material';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ConfirmDialogComponent } from '@app/modules/confirm-dialog/confirm-dialog.component';
 
-import { Member, AuthService } from '@core/authentication/auth.service';
+import { AuthService } from '@core/authentication/auth.service';
+import { Member } from '@core/authentication/member';
 
 import { Observable, zip } from 'rxjs';
 
@@ -101,18 +102,6 @@ export class CerfComponent {
 			}
 		})
 		
-	}
-
-	generateExcel() {
-		// const items: any[] = [this.data];
-		// const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
-		// const header = Object.keys(items[0])
-		// let csv = items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','))
-		// csv.unshift(header.join(','))
-		// let csvString = csv.join('\r\n')
-		// let fields = ['_id', 'chair_id', 'time.start', 'time.end', 'location', 'attendees', 'hours_per_attendee.service',
-		// 				'hours_per_attendee.leadership', 'hours_per_attendee.fellowship', 'override_hours', 'tags', 'fundraised', 'status'];
-		// console.log(json2csv({ data: this.data, fields: fields }));
 	}
 
 	submitCerf() {

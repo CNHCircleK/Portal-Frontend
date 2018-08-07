@@ -2,11 +2,15 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { defaultIfEmpty, map, tap, filter, catchError, first, last } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
+import { LocalStorage } from '@ngx-pwa/local-storage';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 import { CerfData, Cerf } from './cerf';
 import { MrfData, Mrf } from './mrf';
-import { LocalStorage } from '@ngx-pwa/local-storage';
 // import { CoreModule } from '@core/core.module';   CIRCULAR DEPENDENCY
-import { Member, AuthService } from '@core/authentication/auth.service';
+import { AuthService } from '@core/authentication/auth.service';
+import { Member } from '@core/authentication/member';
+import { HttpConfig } from '@env/api_config.js';
 
 @Injectable( { providedIn: 'root' } )
 export class DataService {
@@ -23,7 +27,7 @@ export class DataService {
   {"_id": 6,"year": 2018,"month": 6,"status": 0,"submission_time": null,"club_id":1}
   ];
 
-  constructor(protected localStorage: LocalStorage, private auth: AuthService) {
+  constructor(protected localStorage: LocalStorage, private auth: AuthService, private http: HttpClient) {
     this.auth.getUser().subscribe(user => {
       if(user)
         this.user = user;
@@ -52,6 +56,9 @@ export class DataService {
   }});
 
   newCerf(): Cerf {
+    /*
+    return this.http.get( HttpConfig.baseUrl + HttpsConfig.generateCerf );  // an observable
+    */
     let blankCerf =  this.blankCerf();
     this.cerfs.push(blankCerf);
     this.nextCerfId++;

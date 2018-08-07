@@ -6,7 +6,8 @@ import { DataService } from '@core/data/data.service';
 import { NgForm } from '@angular/forms';
 import { Location } from '@angular/common';
 
-import { Member, AuthService } from '@core/authentication/auth.service';
+import { AuthService } from '@core/authentication/auth.service';
+import { Member } from '@core/authentication/member';
 
 import { Observable, zip } from 'rxjs';
 

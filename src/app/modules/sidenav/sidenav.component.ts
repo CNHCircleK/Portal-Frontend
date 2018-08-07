@@ -1,6 +1,8 @@
 import {Component, Input} from '@angular/core'
 // import {FormControl} from '@angular/forms'
+import { Observable } from 'rxjs';
 import { AuthService } from '@core/authentication/auth.service';
+import { Member } from '@core/authentication/member';
 
 @Component({
 	selector: 'app-sidenav',
@@ -18,12 +20,13 @@ export class SidenavComponent {
 			{division: "Metro", text: 'Division MRFs', route: '/divmrfs'},
 			{icon: 'library_books', text: 'District MRFs', route: '/distmrfs'},
 		];
+	userSubject: Observable<Member>;
 	authLinks = [];
 
 	// @Input() level: number = 1;
 
 	constructor(private auth: AuthService) {
-
+		this.userSubject = this.auth.getUser();
 	 }
 
 	ngOnInit() {
@@ -31,7 +34,7 @@ export class SidenavComponent {
 	}
 
 	refreshView() {
-		this.auth.getUser().subscribe(user => {
+		this.userSubject.subscribe(user => {
 			this.authLinks = [];
 			if(user)
 			{

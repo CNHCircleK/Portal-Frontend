@@ -1,4 +1,4 @@
-<nav class="menu" [class.active]="isExpanded" #sidenav
+<nav *ngIf="userSubject | async" class="menu" [class.active]="isExpanded" #sidenav
 		(mouseover)="isExpanded = true" (mouseout)="isExpanded = false">
 	<ul>
 		<li>

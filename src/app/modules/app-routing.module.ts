@@ -18,7 +18,7 @@ const routes: Routes = [
 	{ path: 'distmrfs', component: MrfDistrictComponent, resolve: { districtMrfs: MrfDistrictResolver }, canActivate: [AuthGuard] },
 	{ path: 'login', component: LoginComponent },
 	{ path: 'signup', component: SignupComponent },
-	{ path: '', component: ProfileComponent, canActivate: [AuthGuard] }// DEFAULT ROUTE
+	{ path: '', component: ProfileComponent, canActivate: [AuthGuard] } // DEFAULT ROUTE
 ]
 
 @NgModule({

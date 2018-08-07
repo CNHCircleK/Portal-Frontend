@@ -6,17 +6,8 @@ import { map, tap, defaultIfEmpty } from 'rxjs/operators';
 import { LocalStorage } from '@ngx-pwa/local-storage';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
-export interface Member {
-  id: number,
-  name: string,
-  club_id: number,
-  division_id: number,
-  access?: {
-    club: number,
-    division: number,
-    district: number
-  }
-}
+import { Member } from './member';
+import { HttpConfig } from '@env/api_config.js';
 
 export const tokenName = 'access_token';
 
@@ -28,52 +19,22 @@ export class AuthService {
   public navFromMrf: boolean;
 
   constructor(private http: HttpClient, private storage: LocalStorage, private helper: JwtHelperService) {
-
-  }
-
-  private loadUser(): Observable<Member> {
-    return this.storage.getItem('auth').pipe(map(user => {
-      if(user) {
-        this.user.next(user);
-      }
-      else{
-        this.user.next({
-                        id: 1,
-                        name: "Chris",
-                        club_id: 71230,
-                        division_id: 4,
-                        access: {
-                          club: 2,
-                          division: 0,
-                          district: 0
-                        }
-                      });
-      }
-      this.loggedIn=true;
-      localStorage.setItem(tokenName, "loggedintoken");
-      return this.user.value;
-    }));
-
-  }
-
-  public getUser(refresh?: boolean): Observable<Member> {
-    // if(!this.loggedIn)
-    //   this.fetchUser();
-    if(this.loggedIn)
-      return this.loadUser();  // persist login
-    return this.user.asObservable();
+    if(this.isLoggedIn()) {  // persist login
+      if(!this.decodeUser(localStorage.getItem(tokenName)))
+        this.logout();  // logout if token is expired
+    }
   }
 
   public login(user: string, password: string): Observable<boolean>  // Success or not in logging in
   {
-    // return this.http.post<any>('http://192.168.1.22:3000/signin', {'name': user, 'password': password}).pipe(
+    // return this.http.post<any>( HttpConfig.baseUrl + HttpConfig.signin, {'name': user, 'password': password}).pipe(
     //             map(res => {
     //               if(res.success) {
     //                 localStorage.setItem(tokenName, res.result);
     //                 console.log(res.result);
     //                 // Do more stuff with the response
-    //                 // this.user.next(res.user);
-    //                 this.http.get('http://192.168.1.22:3000/clubs/5b498a5b200a8f6afa46c1d0/members').subscribe(res => {
+    //                 this.decodeUser(res.result);
+    //                 this.http.get( HttpConfig.baseUrl + '/clubs/5b498a5b200a8f6afa46c1d0/members').subscribe(res => {
     //                   console.log(res);
     //                 })
     //                 this.loggedIn = true;
@@ -81,10 +42,9 @@ export class AuthService {
     //               return res.success;
     //             }));
     
-    // if user and pass, post request
-
-
-    localStorage.setItem(tokenName, "loggedintoken");
+    localStorage.setItem(tokenName, "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC93cC5kcmFmdHNpdGUudGsiLCJpYXQiOjE1MzM1ODczOTgsIm5iZiI6MTUzMzU4NzM5OCwiZXhwIjoxNTMzNjczNzk4LCJkYXRhIjp7InVzZXIiOnsiaWQiOiIyIn19fQ.KEnvHM_JKCFP-0ZIsWAG7zEPF3Kr7HXGnqJqUu8lZxA");
+    // Make sure the token is a valid token by trying to run a helper function on it first;
+    this.decodeUser(localStorage.getItem(tokenName));
     return of(true);
   }
 
@@ -94,8 +54,37 @@ export class AuthService {
     this.user.next(undefined);
   }
 
+  private decodeUser(token: string): boolean {
+    if(this.helper.isTokenExpired(token))
+      return false;
+    let data;
+    try {
+      this.helper.decodeToken(token);
+    } catch (error) {
+      this.logout();
+      throw error;
+    }
+    // this.user = data.user;    The token doesn't model the user yet
+    this.user.next({id: 1,
+                name: "Chris",
+                club_id: 5,
+                division_id: 6,
+                access: {
+                  club: 1,
+                  division: 0,
+                  district: 0
+                }
+              });
+    return true;
+  }
+
   public isLoggedIn(): boolean {
-    return localStorage.getItem(tokenName) != null;
+    let token = localStorage.getItem(tokenName);
+    return  token != null && !this.helper.isTokenExpired(token);
+  }
+
+  public getUser(refresh?: boolean): Observable<Member> {
+    return this.user.asObservable();
   }
 
   public getAccess() {
@@ -108,7 +97,7 @@ export class AuthService {
     return this.user.value.access;
   }
 
-  setAccess(club: number,
+  public setAccess(club: number,
     division: number,
     district: number) {
     let tempUser = this.user.value;
@@ -118,17 +107,6 @@ export class AuthService {
     this.storage.setItem('auth', tempUser).subscribe(()=>{});
     this.user.next(tempUser);
   }
-
-// getConfig() {
-//   // now returns an Observable of Config
-//   return this.http.get<Config>(this.configUrl);
-// }
-
-// 	getConfigResponse(): Observable<HttpResponse<Config>> {
-//   return this.http.get<Config>(
-//     this.configUrl, { observe: 'response' });
-// }
-
 
 /*
 .subscribe( (data: Config) => { },

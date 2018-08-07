@@ -23,7 +23,8 @@ export class MrfComponent {
 	mrf: Mrf;
 	cerfs: Cerf[] = [];
 	ngOnInit() {
-		this.cerfs=this.mrf.data.events;
+		if(this.mrf.data)
+			this.cerfs=this.mrf.data.events;
 		// let id = this.route.snapshot.params.id;
 		// this.dataService.getMrfById(id).subscribe(mrf => this.mrf = mrf);
 	}
