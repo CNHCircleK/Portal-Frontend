@@ -1,6 +1,6 @@
 import { Component, Input, Directive, Renderer2, ElementRef, ViewChild } from '@angular/core';
 // import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, FormArray } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Cerf } from '@core/data/cerf';
 import { DataService } from '@core/data/data.service';
@@ -38,6 +38,9 @@ import { Observable, zip } from 'rxjs';
 export class CerfComponent {
 	@Input() mrfView: boolean = false;
 
+	tabs: string[] = ["main", "attendance", "fundraising", "drivers", "commentary"];
+	currentTab: string;
+
 	myForm: FormGroup;
 	comment: string = "HEY";
 
@@ -48,6 +51,8 @@ export class CerfComponent {
 		this.cerf = this.route.snapshot.data['cerf'];
 		this.myForm = this.createForm(this.cerf);
 		console.log(this.myForm);
+
+		this.currentTab = "main";
 	}
 
 	//id: number;
@@ -83,6 +88,9 @@ export class CerfComponent {
 		this.cerf.data.attendees = this.members.data;
 		this.cerf.data.attendees.push("Member " + this.cerf.data.attendees.length);
 		this.members.data = this.cerf.data.attendees;
+
+		const attendees = this.myForm.controls['attendees'];
+		(attendees as FormArray).push(this.builder.control(""));
 	}
 
 	removeMember(i: number) {
