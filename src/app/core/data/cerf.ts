@@ -21,7 +21,7 @@ export interface CerfData {
 		leadership: number,
 		fellowship: number
 	},
-	attendees: string[],//{ name: string, service: number, leadership: number, fellowship: number, paid: boolean }[],
+	attendees: { name: string, service: number, leadership: number, fellowship: number, unpaid: boolean }[],//{ name: string, service: number, leadership: number, fellowship: number, paid: boolean }[],
 	total_attendees?: number,	// not editable
 	tags?: {
 		service?: string,

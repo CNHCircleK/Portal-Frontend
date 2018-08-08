@@ -14,17 +14,27 @@ export class AuthGuard implements CanActivate {
 	}
 
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+		console.log(state.url);
 		if(!this.auth.isLoggedIn())
 		{
 			// router.navigate(['/login']);
 			// window.alert("You must be logged in");
-			this.router.navigate(['/login']);
-			return false;
+			if(state.url != '/login') {
+				this.router.navigate(['/login']);
+				return false;
+			}
+			return true;	// YES you're allowed to access /login if you're not logged in
 		}
 
 		return this.auth.getUser().pipe(map(user => {
 			if(!user) return false;
-			console.log(state.url);
+
+			if(state.url=='/login' || state.url=='/signup') {
+				this.router.navigate(['']);
+				return false;	// ur already logged in
+			}
+			
+			
 			if(state.url=='/mrfs')
 			{
 				if(user.access.club > 0) return true;

@@ -14,7 +14,7 @@
 			Approve
 		</button>
 
-		<button mat-raised-button [disabled]="!myForm.touched">Save</button>
+		<button mat-raised-button [disabled]="!myForm.touched" (click)="saveCerf()">Save</button>
 		<button mat-raised-button [disabled]="!myForm.valid">Submit</button>
 	</div>
 
@@ -124,23 +124,6 @@
 		<br/>
 
 		<mat-form-field>
-			<mat-label>Service Hours</mat-label>
-			<input matInput formControlName="service_hours">
-		</mat-form-field>
-
-		<mat-form-field>
-			<mat-label>Leadership Hours</mat-label>
-			<input matInput formControlName="leadership_hours">
-		</mat-form-field>
-
-		<mat-form-field>
-			<mat-label>Fellowship Hours</mat-label>
-			<input matInput formControlName="fellowship_hours">
-		</mat-form-field>
-
-		<br/>
-
-		<mat-form-field>
 			<mat-label>Service Tags</mat-label>
 			<input matInput formControlName="service_tags">
 		</mat-form-field>
@@ -162,13 +145,78 @@
 	<div id="attendance" *ngIf="currentTab=='attendance'">
 
 		<h4 class="title">Attendance</h4>
+
+		<mat-form-field>
+			<mat-label>Service Hours</mat-label>
+			<input matInput formControlName="service_hours">
+		</mat-form-field>
+
+		<mat-form-field>
+			<mat-label>Leadership Hours</mat-label>
+			<input matInput formControlName="leadership_hours">
+		</mat-form-field>
+
+		<mat-form-field>
+			<mat-label>Fellowship Hours</mat-label>
+			<input matInput formControlName="fellowship_hours">
+		</mat-form-field>
+
+		<br/>
+
 		<!-- ngFor attendees -->
-		<button mat-button (click)="addMember()">Add Member</button>
-		<div formArrayName="attendees">
-			<mat-form-field *ngFor="let member of myForm.controls.attendees.controls; let i = index" [formGroupName]="i">
-				<mat-label>Member {{i}}</mat-label>
-				<input matInput>
-			</mat-form-field>
+		<div id="memberTable">
+		<mat-table [dataSource]="members" formArrayName="attendees">
+
+		    <ng-container matColumnDef="members">
+		      <mat-header-cell *matHeaderCellDef> Members </mat-header-cell>
+		      <mat-cell *matCellDef="let member; let i=index" [formGroupName]="i">
+		      	<button mat-icon-button (click)="removeMember(i)"> <mat-icon>cancel</mat-icon> </button>
+		      	<mat-form-field>
+		      		<input matInput formControlName="name" (change)="myForm.markAsTouched()"/>
+		      	</mat-form-field>
+		      </mat-cell>
+		    </ng-container>
+
+		    <ng-container matColumnDef="service">
+		      <mat-header-cell *matHeaderCellDef> Service Override Hours </mat-header-cell>
+		      <mat-cell *matCellDef="let service; let i=index" [formGroupName]="i">
+		      	<mat-form-field>
+		      		<input matInput formControlName="service" (change)="myForm.markAsTouched()"/>
+		      	</mat-form-field>
+		      </mat-cell>
+		    </ng-container>
+
+		    <ng-container matColumnDef="leadership">
+		      <mat-header-cell *matHeaderCellDef> Leadership Override Hours </mat-header-cell>
+		      <mat-cell *matCellDef="let leadership; let i=index" [formGroupName]="i">
+		      	<mat-form-field>
+		      		<input matInput formControlName="leadership" (change)="myForm.markAsTouched()"/>
+		      	</mat-form-field>
+		      </mat-cell>
+		    </ng-container>
+
+		    <ng-container matColumnDef="fellowship">
+		      <mat-header-cell *matHeaderCellDef> Fellowship Override Hours </mat-header-cell>
+		      <mat-cell *matCellDef="let fellowship; let i=index" [formGroupName]="i">
+		      	<mat-form-field>
+		      		<input matInput formControlName="fellowship" (change)="myForm.markAsTouched()"/>
+		      	</mat-form-field>
+		      </mat-cell>
+		    </ng-container>
+
+		    <ng-container matColumnDef="unpaid">
+		      <mat-header-cell *matHeaderCellDef> Not Paid? </mat-header-cell>
+		      <mat-cell *matCellDef="let unpaid; let i=index" [formGroupName]="i">
+		      		<mat-checkbox formControlName="unpaid" (change)="myForm.markAsTouched()"></mat-checkbox>
+		      </mat-cell>
+		    </ng-container>
+
+		    <mat-header-row *matHeaderRowDef="attendanceColumns"></mat-header-row>
+		    <mat-row *matRowDef="let row; columns: attendanceColumns;"></mat-row>
+
+		    
+		</mat-table>
+		<button mat-raised-button (click)="addMember()">Add Member</button>
 		</div>
 		
 		<mat-form-field>
@@ -181,18 +229,22 @@
 	<div id="fundraising" *ngIf="currentTab=='fundraising'">
 
 		<h4 class="title">Fundraising</h4>
-		<!-- ngFor attendees -->
-		<button mat-button (click)="addMember()">Add Member</button>
-		<div formArrayName="attendees">
-			<mat-form-field *ngFor="let member of myForm.controls.attendees.controls; let i = index" [formGroupName]="i">
-				<mat-label>Member {{i}}</mat-label>
-				<input matInput>
-			</mat-form-field>
-		</div>
-		
+
 		<mat-form-field>
-			<mat-label>Total Attendees</mat-label>
-			<input matInput formControlName="total_attendees">
+			<mat-label>Raised</mat-label>
+			<input matInput formControlName="funds_raised">
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Spent</mat-label>
+			<input matInput formControlName="funds_spent">
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Profit</mat-label>	<!-- readonly -->
+			<input matInput formControlName="funds_profit">
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Usage</mat-label>
+			<input matInput formControlName="funds_usage">
 		</mat-form-field>
 
 	</div>
@@ -201,27 +253,44 @@
 
 		<h4 class="title">Drivers</h4>
 		<!-- ngFor attendees -->
-		<button mat-button (click)="addMember()">Add Member</button>
-		<div formArrayName="attendees">
-			<mat-form-field *ngFor="let member of myForm.controls.attendees.controls; let i = index" [formGroupName]="i">
-				<mat-label>Member {{i}}</mat-label>
-				<input matInput>
-			</mat-form-field>
-		</div>
 		
 		<mat-form-field>
-			<mat-label>Total Attendees</mat-label>
-			<input matInput formControlName="total_attendees">
+			<mat-label>Total Drivers</mat-label>
+			<input matInput formControlName="total_drivers">
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Total Mileage To</mat-label>
+			<input matInput formControlName="total_mileageTo">
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Total Mileage From</mat-label>
+			<input matInput formControlName="total_mileageFrom">
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Total Mileage</mat-label>
+			<input matInput formControlName="total_mileage">
 		</mat-form-field>
 
 	</div>
 
-	<div id="commentary" *ngIf="currentTab=='commentary'">
+	<div id="commentary" *ngIf="currentTab=='commentary'" formGroupName="commentary">
 
 		<h4 class="title">Commentary</h4>
 		<mat-form-field>
-			<mat-label>Total Attendees</mat-label>
-			<input matInput formControlName="total_attendees">
+			<mat-label>Summary</mat-label>
+			<textarea matInput formControlName="summary"></textarea>
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Strengths</mat-label>
+			<textarea matInput formControlName="strengths"></textarea>
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Weaknesses</mat-label>
+			<textarea matInput formControlName="weaknesses"></textarea>
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Advice</mat-label>
+			<textarea matInput formControlName="advice"></textarea>
 		</mat-form-field>
 
 	</div>
@@ -291,7 +360,7 @@
 	<div>
 		<mat-table [dataSource]="members" matSort>
 
-			<!-- Month Column
+			 Month Column
 		    <ng-container matColumnDef="members">
 		      <mat-header-cell *matHeaderCellDef> Members </mat-header-cell>
 		      <mat-cell *matCellDef="let member">
@@ -301,7 +370,7 @@
 		      </mat-cell>
 		    </ng-container>
 
-		    <!-- Header columns
+		     Header columns
 		    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 		    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 		</mat-table>

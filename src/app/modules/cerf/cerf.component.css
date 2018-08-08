@@ -41,6 +41,18 @@
 	border-radius: 8px 8px 0 0;
 }
 
+#memberTable {
+	margin: 5% 0;
+}
+#memberTable .mat-header-row {
+	background-color: #dddddd;
+}
+
+#commentary {
+	display: flex;
+	flex-direction: column;
+}
+
 /*#cerf-info {
 	display: inline-block;
 	vertical-align: middle;

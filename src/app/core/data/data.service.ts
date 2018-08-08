@@ -102,22 +102,23 @@ export class DataService {
 
 	// UPDATE
 	updateCerf(data: Cerf) {
-      let existing = this.cerfs.find(cerf => cerf._id == data._id); // can probably store index in the CERF cerfs for easy access
-      if(!existing) {
+      let index = this.cerfs.findIndex(cerf => cerf._id == data._id); // can probably store index in the CERF cerfs for easy access
+      if(index == -1) {
         console.error("Cerf with id " + data._id + " does not exist");
         return of(null);
       }
-      existing = data;
-      this.localStorage.setItem('cerfs' + data._id, data).subscribe(()=>{});
+      this.cerfs[index] = data;
       this.localStorage.setItem('cerfList', this.cerfs).subscribe(()=>{});
+      this.localStorage.setItem('cerfs' + data._id, data).subscribe(()=>{});
+      
     }
     submitCerf(id: number) {
-      let existing = this.cerfs.find(cerf => cerf._id == id);
-      if(!existing) {
+      let index = this.cerfs.findIndex(cerf => cerf._id == id);
+      if(index == -1) {
         console.error("Cerf with id " + id + " does not exist");
         return;
       }
-      this.addCerfToMrf(existing, 1); // POST request
+      this.addCerfToMrf(this.cerfs[index], 1); // POST request
     }
 
   	// DELETE
@@ -127,7 +128,7 @@ export class DataService {
       this.localStorage.removeItem('cerfs' + id).subscribe(()=>{});
       this.localStorage.setItem('cerfList', this.cerfs).subscribe(()=>{});
 
-    	this.removeCerfAll(id);	// Propagate changes to MRFs. This will be done through MongoDB eventually
+    	// this.removeCerfAll(id);	// Propagate changes to MRFs. This will be done through MongoDB eventually
     }
 
 

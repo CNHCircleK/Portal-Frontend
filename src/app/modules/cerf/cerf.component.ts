@@ -40,6 +40,8 @@ export class CerfComponent {
 
 	tabs: string[] = ["main", "attendance", "fundraising", "drivers", "commentary"];
 	currentTab: string;
+	members: MatTableDataSource<string>;
+	attendanceColumns: string[] = ['members', 'service', 'leadership', 'fellowship', 'unpaid'];
 
 	myForm: FormGroup;
 	comment: string = "HEY";
@@ -50,7 +52,6 @@ export class CerfComponent {
 		// this.route.data.subscribe(response => this.cerf = response.cerf);
 		this.cerf = this.route.snapshot.data['cerf'];
 		this.myForm = this.createForm(this.cerf);
-		console.log(this.myForm);
 
 		this.currentTab = "main";
 	}
@@ -58,8 +59,7 @@ export class CerfComponent {
 	//id: number;
 	user: Member; read: boolean = true;
 	cerf: Cerf;
-	members: MatTableDataSource<string>;
-	displayedColumns = ['members'];
+	
 	@ViewChild(MatSort) sort;
 
 	ngOnInit() {
@@ -68,7 +68,9 @@ export class CerfComponent {
 			this.read = user.access.club < 2 && this.auth.navFromMrf;
 		});
 
-		this.members = new MatTableDataSource(this.cerf.data.attendees);
+		// this.members = new MatTableDataSource(this.cerf.data.attendees);
+		let membersControl = this.myForm.get('attendees') as FormArray;
+		this.members = new MatTableDataSource(new Array(membersControl.length).map((v, index) => membersControl.at(index).value as string))
 		
 	}
 	ngAfterViewInit() {
@@ -76,8 +78,8 @@ export class CerfComponent {
 	}
 
 	saveCerf() {
-		this.cerf.data.attendees = this.members.data;
-		this.dataService.updateCerf(this.cerf);
+		// this.cerf.data.attendees = this.members.data;
+		this.dataService.updateCerf(this.getCerfFromForm());
 	}
 
 	trackByIndex(index: number, obj: any): any {
@@ -85,16 +87,23 @@ export class CerfComponent {
 	}
 
 	addMember() {
-		this.cerf.data.attendees = this.members.data;
-		this.cerf.data.attendees.push("Member " + this.cerf.data.attendees.length);
-		this.members.data = this.cerf.data.attendees;
+		// this.cerf.data.attendees = this.members.data;
+		// this.cerf.data.attendees.push("Member " + this.cerf.data.attendees.length);
+		// this.members.data = this.cerf.data.attendees;
 
-		const attendees = this.myForm.controls['attendees'];
-		(attendees as FormArray).push(this.builder.control(""));
+		const attendees = this.myForm.controls['attendees'] as FormArray;
+		attendees.controls.push(this.builder.group({name: [""], service: [""], leadership: [""], fellowship: [""], unpaid: [""]}));
+
+		this.members.data = new Array(attendees.length).map((v, index) => attendees.at(index).value as string);
+		this.myForm.markAsTouched();
 	}
 
 	removeMember(i: number) {
-		this.cerf.data.attendees.splice(i, 1);
+		const attendees = this.myForm.controls['attendees'] as FormArray;
+		attendees.removeAt(i);
+
+		this.members.data = new Array(attendees.length).map((v, index) => attendees.at(index).value as string);
+		this.myForm.markAsTouched();
 	}
 
 	deleteCerf() {
@@ -210,7 +219,7 @@ export class CerfComponent {
 
 		}
 
-		return this.builder.group({
+		let form = this.builder.group({
 				_id: [model._id],
 			 	event_name: [model.event_name],
 			 	date: [model.date],
@@ -226,15 +235,15 @@ export class CerfComponent {
 			 		time_start: [model.data.time.start],
 			 		time_end: [model.data.time.end],
 
-			 	location: [model.data.time.end],
+			 	location: [model.data.location],
 
 			 		// cerf.data.hours_per_attendee
 			 		service_hours: [model.data.hours_per_attendee.service],
 			 		leadership_hours: [model.data.hours_per_attendee.leadership],
 			 		fellowship_hours: [model.data.hours_per_attendee.fellowship],
 
-			 	attendees: this.builder.array( [] ),
-			 		/** push formgroup { name, service, fellowship, leadership, paid: bool } **/
+			 	attendees: this.builder.array( [] ), //this.builder.group({name: [""], service: [""], leadership: [""], fellowship: [""], unpaid: [""]})
+			 		/** push formgroup { name, service, fellowship, leadership, unpaid: bool } **/
 			 	total_attendees: [model.data.attendees.length],	// READONLY
 
 			 		// cerf.data.tags
@@ -267,9 +276,93 @@ export class CerfComponent {
 
 				status: [model.data.status] // READONLY
 		});
+
+		model.data.attendees.forEach( (v, index) => (form.controls['attendees'] as FormArray).push(this.builder.group({
+			 										name: [v.name], service: [v.service], leadership: [v.leadership], fellowship: [v.fellowship], unpaid: [v.unpaid]})));
+		return form;
+	}
+
+	public getCerfFromForm() {
+		let rawCerf = this.myForm.getRawValue();
+
+		// Object Destructuring https://stackoverflow.com/questions/17781472/how-to-get-a-subset-of-a-javascript-objects-properties
+		/*let rawData = ( ({cerf_author, chair_id, chair_name, event_contact, event_number,location, total_attendees, total_drivers,
+							total_mileageTo,total_mileageFrom, totale_mileage, funds_raised, funds_spent,
+							funds_profit, funds_usage, status}) =>
+							({cerf_author, chair_id, chair_name, event_contact, event_number,
+							location, total_attendees, total_drivers, total_mileageTo,
+							total_mileageFrom, totale_mileage, funds_raised, funds_spent,
+							funds_profit, funds_usage, status}) ) (rawCerf);
+		console.log(rawData);*/	
+		// manually attach time, hours_per_attendee, attendance, tags, drivers, commentary
+		// rawData['time'] = ( ({time_start: start, time_end: end}) => ( {time_start: start, time_end: end}) ) (rawCerf);
+		// rawData['hour_per_attendee'] = ( ({service_hours, leadership_hours, fellowship_hours}) => ( {service_hours, leadership_hours, fellowship_hours}) ) (rawCerf);
+		// rawData['attendees'] = rawCerf['attendees'];
+		// rawData['tags'] = ( ({service_tags, leadership_tags, fellowship_tags, miscellaneous_tags}) => ( {service_tags, leadership_tags, fellowship_tags, miscellaneous_tags}) ) (rawCerf);
+		// rawData['drivers'] = rawCerf['drivers'];
+		// rawData['commentary'] = rawCerf['commentary'];
+
+
+		let cookedCerf: Cerf = {
+			_id: rawCerf._id,
+			event_name: rawCerf.event_name,
+			date: rawCerf.date,
+			data: {
+				cerf_author: rawCerf.cerf_author,	// not shown
+				chair_id: rawCerf.chair_id,		// not shown
+				chair_name: rawCerf.chair_name,
+				event_contact: rawCerf.event_contact,
+				event_number: rawCerf.event_number,
+				time: {
+					start: rawCerf.time_start,	// dupe cerf.date
+					end: rawCerf.time_end
+				},
+				location: rawCerf.location,
+				hours_per_attendee: {
+					service: rawCerf.service,
+					leadership: rawCerf.leadership,
+					fellowship: rawCerf.fellowship
+				},
+				attendees: rawCerf.attendees,
+				total_attendees: rawCerf.total_attendees,	// not editable
+				tags: {
+					service: rawCerf.service,
+					leadership: rawCerf.leadership,
+					fellowship: rawCerf.fellowship,
+					miscellaneous: rawCerf.miscellaneous,
+				},
+				drivers: rawCerf.drivers,
+				total_drivers: rawCerf.total_drivers,	// not editable
+				total_mileageTo: rawCerf.total_mileageTo,	// not shown
+				total_mileageFrom: rawCerf.total_mileageFrom,	// not shown
+				total_mileage: rawCerf.total_mileage,	// not editable
+
+				funds_raised: rawCerf.funds_raised,
+				funds_spent: rawCerf.funds_spent,
+				funds_profit: rawCerf.funds_profit,	// not editable
+				funds_usage: rawCerf.funds_usage,
+
+				commentary: {
+					summary: rawCerf.summary,
+					strengths: rawCerf.strengths,
+					weaknesses: rawCerf.weaknesses,
+					advice: rawCerf.advice
+				},
+
+
+				status: rawCerf.status	// Enums. not editable
+			}
+		}
+		return cookedCerf;
+		/*
+		a
+		*/
 	}
 
 	goBack() {
+		if(!this.myForm.dirty) {	// No changes made. May have to add another condition to check for newly generated (unsaved)
+			this._location.back();
+		} // else
 		const dialogRef = this.dialog.open(ConfirmDialogComponent, {
 
 		});
@@ -279,4 +372,11 @@ export class CerfComponent {
 			return result;
 		})
 	}
+
+	/*
+	@HostListener('window:beforeunload')
+	canDeactivate(): Observable<boolean> | boolean {
+	
+	}
+	*/
 }

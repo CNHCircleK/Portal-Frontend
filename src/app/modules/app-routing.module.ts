@@ -16,8 +16,8 @@ const routes: Routes = [
 	{ path: 'mrf/:id', component: MrfComponent, resolve: { mrf: MrfResolver }, canActivate: [AuthGuard] },
 	{ path: 'divmrfs', component: MrfDivisionComponent, resolve: { divisionMrfs: MrfDivisionResolver }, canActivate: [AuthGuard] },
 	{ path: 'distmrfs', component: MrfDistrictComponent, resolve: { districtMrfs: MrfDistrictResolver }, canActivate: [AuthGuard] },
-	{ path: 'login', component: LoginComponent },
-	{ path: 'signup', component: SignupComponent },
+	{ path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
+	{ path: 'signup', component: SignupComponent, canActivate: [AuthGuard] },
 	{ path: '', component: ProfileComponent, canActivate: [AuthGuard] } // DEFAULT ROUTE
 ]
 

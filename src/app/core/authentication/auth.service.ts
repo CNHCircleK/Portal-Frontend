@@ -55,15 +55,16 @@ export class AuthService {
   }
 
   private decodeUser(token: string): boolean {
-    if(this.helper.isTokenExpired(token))
-      return false;
+    // if(this.helper.isTokenExpired(token))  The whole app breaks since we're using a static token LOL
+      // return false;
     let data;
-    try {
-      this.helper.decodeToken(token);
-    } catch (error) {
-      this.logout();
-      throw error;
-    }
+    // try {
+    //   this.helper.decodeToken(token);
+    // } catch (error) {
+    //   this.logout();
+    //   console.log(error);
+    //   throw error;
+    // }
     // this.user = data.user;    The token doesn't model the user yet
     this.user.next({id: 1,
                 name: "Chris",
@@ -80,7 +81,7 @@ export class AuthService {
 
   public isLoggedIn(): boolean {
     let token = localStorage.getItem(tokenName);
-    return  token != null && !this.helper.isTokenExpired(token);
+    return  token != null; //&& !this.helper.isTokenExpired(token);
   }
 
   public getUser(refresh?: boolean): Observable<Member> {
