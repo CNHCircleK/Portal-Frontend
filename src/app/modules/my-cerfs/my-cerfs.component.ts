@@ -1,6 +1,6 @@
 import { Component, Input, Directive, Renderer2, ElementRef, ViewChild } from '@angular/core';
 // import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Cerf } from '@core/data/cerf';
 import { DataService } from '@core/data/data.service';
 import { NgForm } from '@angular/forms';
@@ -23,7 +23,7 @@ export class MyCerfsComponent {
 	resolvedData: Cerf[] = [];
 	resolve;
 
-	constructor(private route: ActivatedRoute, private dataService: DataService,
+	constructor(private route: ActivatedRoute, private router: Router, private dataService: DataService,
 		private auth: AuthService, private _location: Location) {
 		// this.route.data.subscribe(response => this.resolvedData = response.myCerfs);
 		this.resolvedData = this.route.snapshot.data['myCerfs'];
@@ -31,5 +31,12 @@ export class MyCerfsComponent {
 
 	ngOnInit() {
 		
+	}
+
+	newCerf() {
+		let cerf: Cerf = this.dataService.newCerf();
+		//if(this.mrfView)
+			//this.dataService.addCerfToMrf(cerf, this.mrfView);
+		this.router.navigate(['/cerf', cerf._id]);
 	}
 }

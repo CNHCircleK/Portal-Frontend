@@ -1,11 +1,50 @@
-div.flex {
+/* Stolen from CerfNav */
+/*div.flex {
 	display: flex;
 	flex-flow: row wrap;
 	padding: 20px;
-}
-app-cerfcard {
+}*/
+/*app-cerfcard {
 	margin: 20px;
 	position: relative;
 	z-index: 1;
+}*/
+
+/* Stolen from Cerf.css */
+#mrf-header {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
 }
-/* Stolen from CerfNav */
+#mrf-actions {
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+}
+#mrf-actions button {
+	margin: 0 5px;
+}
+
+#mrf-tabs {
+	display: flex;
+	right: 0;
+	flex-flow: row nowrap;
+}
+#mrf-tabs ul {
+	display: flex;	/* Change vertical nav to horizontal nav*/
+	align-self: flex-end;
+	padding: 0;
+	margin: 0;	/* Some style sheet is forcing auto-centering margins onto ul */
+	list-style: none;
+}
+#mrf-tabs ul li {
+	margin: 0 5px;
+}
+
+#main .mat-checkbox {
+	padding: 0 1%;
+}
+
+.mat-elevation-z4 {	/* Using this as an 'active tab' selector, though we can add a bit more code to separate the two */
+	border-radius: 8px 8px 0 0;
+}

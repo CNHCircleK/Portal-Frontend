@@ -14,7 +14,7 @@ import { Cerf } from '@core/data/cerf';
 })
 
 export class CerfListComponent {
-	displayedColumns = ["event_name", "action"];	// Add "status" to display notification of status
+	displayedColumns = ["event_name", "search"];	// Add "status" to display notification of status
 	list: MatTableDataSource<Cerf>;
 
 	@ViewChild(MatPaginator) paginator: MatPaginator;
@@ -22,6 +22,7 @@ export class CerfListComponent {
 
   	@Input() mrfId: number;	// Change some logic if viewing through an MRF
   	@Input() cerfList: Cerf[];
+  	@Input() pagination: boolean;
 
 	constructor(private dataService: DataService, private router: Router) {
 		// this.getCerfs();
@@ -30,11 +31,13 @@ export class CerfListComponent {
 	ngOnInit() {
 		if(this.cerfList)
 			this.list = new MatTableDataSource(this.cerfList);
+		this.pagination = this.cerfList.length > 10 || this.pagination;	// even if not specified, automatically attach pagination when there's enough elements
 	}
 
 	ngAfterViewInit() {
 		if(this.list) {
-			this.list.paginator = this.paginator;
+			if(this.pagination)
+				this.list.paginator = this.paginator;
 			this.list.sort = this.sort;
 		}
 	}
@@ -47,14 +50,7 @@ export class CerfListComponent {
 		}
 	}
 
-	newCerf() {
-		let cerf: Cerf = this.dataService.newCerf();
-		if(this.mrfId)
-			this.dataService.addCerfToMrf(cerf, this.mrfId);
-		this.router.navigate(['/cerf', cerf._id]);
-	}
-	
-	removeCerfFromMrf(id: number) {
-		this.dataService.removeCerf(this.mrfId, id);
+	clickRow(row) {
+		this.router.navigate(['/cerf', row._id]);
 	}
 }

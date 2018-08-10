@@ -14,3 +14,24 @@ mat-row:nth-child(even){
 mat-row:nth-child(odd){
 	background-color: get-light(tableColor2);
 }
+
+mat-row {
+	cursor: pointer;
+}
+mat-row::after {
+	position: absolute;
+	content: '';
+	border-left: solid 3px black;
+	transform: scaleY(0);
+	transition: transform 250ms ease-in-out;
+}
+mat-row:hover::after {
+	transform: scaleY(1);
+}
+
+.search-bar mat-placeholder {
+	color: white;
+}
+.search-bar div.mat-form-field-underline {
+	background-color: white !important;
+}

@@ -44,8 +44,8 @@
     <!-- Action Column -->
     <ng-container matColumnDef="action">
       <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
-      <mat-cell *matCellDef="let row">
-      	<a mat-icon-button [routerLink]="['/mrf', row._id]"><mat-icon>open_in_new</mat-icon></a>
+      <mat-cell *matCellDef="let row; let i=index">
+      	<a mat-icon-button [routerLink]="['/mrf', i]"><mat-icon>open_in_new</mat-icon></a>
       	<button mat-icon-button><mat-icon>delete_outline</mat-icon></button>
       </mat-cell>
     </ng-container>

@@ -1,6 +1,6 @@
 import { Component, Input, Directive, Renderer2, ElementRef, ViewChild } from '@angular/core';
 // import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
-import { FormGroup, FormControl, FormBuilder, FormArray } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, FormArray, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Cerf } from '@core/data/cerf';
 import { DataService } from '@core/data/data.service';
@@ -51,7 +51,8 @@ export class CerfComponent {
 		private builder: FormBuilder) {
 		// this.route.data.subscribe(response => this.cerf = response.cerf);
 		this.cerf = this.route.snapshot.data['cerf'];
-		this.myForm = this.createForm(this.cerf);
+		this.myForm = this.createCerf(this.cerf);
+		console.log(this.myForm);
 
 		this.currentTab = "main";
 	}
@@ -69,7 +70,7 @@ export class CerfComponent {
 		});
 
 		// this.members = new MatTableDataSource(this.cerf.data.attendees);
-		let membersControl = this.myForm.get('attendees') as FormArray;
+		let membersControl = this.attendees;	// invoke getter
 		this.members = new MatTableDataSource(new Array(membersControl.length).map((v, index) => membersControl.at(index).value as string))
 		
 	}
@@ -91,7 +92,7 @@ export class CerfComponent {
 		// this.cerf.data.attendees.push("Member " + this.cerf.data.attendees.length);
 		// this.members.data = this.cerf.data.attendees;
 
-		const attendees = this.myForm.controls['attendees'] as FormArray;
+		const attendees = this.attendees;
 		attendees.controls.push(this.builder.group({name: [""], service: [""], leadership: [""], fellowship: [""], unpaid: [""]}));
 
 		this.members.data = new Array(attendees.length).map((v, index) => attendees.at(index).value as string);
@@ -99,7 +100,7 @@ export class CerfComponent {
 	}
 
 	removeMember(i: number) {
-		const attendees = this.myForm.controls['attendees'] as FormArray;
+		const attendees = this.attendees;	// invoke the getter
 		attendees.removeAt(i);
 
 		this.members.data = new Array(attendees.length).map((v, index) => attendees.at(index).value as string);
@@ -131,9 +132,23 @@ export class CerfComponent {
 	}
 
 
-	private createForm(model: Cerf): FormGroup {
+	get attendees() {
+		return (this.myForm.controls.data.get('attendees') as FormArray);
+	}
+
+	private createCerf(model: Cerf): FormGroup {
 		/* Fill in CERF with null values so we can at least create a form */
 		/* We're assuming a Cerf IS passed in (i.e. has all the non-optional properties at least */
+		this.fillDefaults(model);
+		const form = this.cookData(model);
+		this.setValidators(form, [
+			]);
+		return form;
+	}
+
+	private fillDefaults(model: Cerf): void
+	{
+		// Set default values of a Partial<Cerf>
 		if(!model.data) {
 			model.data = {
 				cerf_author: "",
@@ -185,6 +200,8 @@ export class CerfComponent {
 				status: 1
 			}
 		} else {
+			if(!model.data.cerf_author)
+				model.data.cerf_author = "";
 			if(!model.data.hours_per_attendee) {
 				model.data.hours_per_attendee = {
 					service: 0,
@@ -218,72 +235,45 @@ export class CerfComponent {
 			}
 
 		}
+	}
 
-		let form = this.builder.group({
-				_id: [model._id],
-			 	event_name: [model.event_name],
-			 	date: [model.date],
-
-			 	// cerf.data
-			 	cerf_author: [model.data.cerf_author],
-			 	chair_id: [model.data.chair_id],
-			 	chair_name: [model.data.chair_name],
-			 	event_contact: [model.data.event_contact],
-			 	event_number: [model.data.event_number],
-
-			 		// cerf.data.time
-			 		time_start: [model.data.time.start],
-			 		time_end: [model.data.time.end],
-
-			 	location: [model.data.location],
-
-			 		// cerf.data.hours_per_attendee
-			 		service_hours: [model.data.hours_per_attendee.service],
-			 		leadership_hours: [model.data.hours_per_attendee.leadership],
-			 		fellowship_hours: [model.data.hours_per_attendee.fellowship],
-
-			 	attendees: this.builder.array( [] ), //this.builder.group({name: [""], service: [""], leadership: [""], fellowship: [""], unpaid: [""]})
-			 		/** push formgroup { name, service, fellowship, leadership, unpaid: bool } **/
-			 	total_attendees: [model.data.attendees.length],	// READONLY
-
-			 		// cerf.data.tags
-			 		service_tags: [model.data.tags.service],
-			 		leadership_tags: [model.data.tags.leadership],
-			 		fellowship_tags: [model.data.tags.fellowship],
-			 		miscellaneous_tags: [model.data.tags.miscellaneous],
-			 	
-			 	drivers: this.builder.array( [] ),
-			 		/** push group { name, mileageTo, mileageFrom } **/
-			 	total_drivers: [model.data.drivers.length],
-				total_mileageTo: [model.data.total_mileageTo],
-				total_mileageFrom: [model.data.total_mileageFrom],
-				total_mileage: [model.data.total_mileage],
-
-				funds_raised: [model.data.funds_raised],
-				funds_spent: [model.data.funds_spent],
-				funds_profit: [model.data.funds_profit],
-				funds_usage: [model.data.funds_usage],
-
-				commentary: this.builder.group({
-					summary: [model.data.commentary.summary],
-					strengths: [model.data.commentary.strengths],
-					weaknesses: [model.data.commentary.weaknesses],
-					advice: [model.data.commentary.advice]
-				}),
-
-				// comments: this.builder.array( [] ),
-				// history: this.builder.group( [] ),
-
-				status: [model.data.status] // READONLY
+	private cookData(model: Object): FormGroup
+	{
+		console.log("cooking");
+		console.log(model);
+		let formGroup: { [id: string]: AbstractControl; } = {};
+		Object.keys(model).forEach(key => {
+			formGroup[key] = 	model[key] instanceof Date ? this.builder.control(model[key]) : // making formgroups out of single Dates doesn't make sense
+								model[key] instanceof Array ? this.builder.array(this.helperCookArray(model[key])) :
+								(model[key] instanceof Object ? this.cookData(model[key]) : this.builder.control(model[key]));
+			// Note, Arrays are objects but objects are not arrays
 		});
+		return this.builder.group(formGroup);
+	}
 
-		model.data.attendees.forEach( (v, index) => (form.controls['attendees'] as FormArray).push(this.builder.group({
-			 										name: [v.name], service: [v.service], leadership: [v.leadership], fellowship: [v.fellowship], unpaid: [v.unpaid]})));
-		return form;
+	private  helperCookArray(arr: any[]): any[] {
+		arr.forEach((element, index, array) => array[index] = this.cookData(element));	// Dangerously infinite loop
+		return arr;
+	}
+
+	private setValidators(form: FormGroup, validators: {control: string, validator: ValidatorFn | ValidatorFn[]}[]) {
+		validators.forEach((element, index, array) => {
+			form.get(element.control).setValidators(element.validator);
+			/* Check that this method will add new validators to exist validators in case when passed validators will be in array.
+			In other case it will override previous validators. Here is the source:
+				function coerceToValidator(validator: ValidatorFn | ValidatorFn[]): ValidatorFn {
+					return Array.isArray(validator) ? composeValidators(validator) : validator;
+				}
+			*/
+		})
 	}
 
 	public getCerfFromForm() {
 		let rawCerf = this.myForm.getRawValue();
+		console.log(rawCerf);
+		Object.assign(this.cerf, rawCerf);
+		console.log(this.cerf);
+		return this.cerf;
 
 		// Object Destructuring https://stackoverflow.com/questions/17781472/how-to-get-a-subset-of-a-javascript-objects-properties
 		/*let rawData = ( ({cerf_author, chair_id, chair_name, event_contact, event_number,location, total_attendees, total_drivers,
@@ -301,62 +291,6 @@ export class CerfComponent {
 		// rawData['tags'] = ( ({service_tags, leadership_tags, fellowship_tags, miscellaneous_tags}) => ( {service_tags, leadership_tags, fellowship_tags, miscellaneous_tags}) ) (rawCerf);
 		// rawData['drivers'] = rawCerf['drivers'];
 		// rawData['commentary'] = rawCerf['commentary'];
-
-
-		let cookedCerf: Cerf = {
-			_id: rawCerf._id,
-			event_name: rawCerf.event_name,
-			date: rawCerf.date,
-			data: {
-				cerf_author: rawCerf.cerf_author,	// not shown
-				chair_id: rawCerf.chair_id,		// not shown
-				chair_name: rawCerf.chair_name,
-				event_contact: rawCerf.event_contact,
-				event_number: rawCerf.event_number,
-				time: {
-					start: rawCerf.time_start,	// dupe cerf.date
-					end: rawCerf.time_end
-				},
-				location: rawCerf.location,
-				hours_per_attendee: {
-					service: rawCerf.service,
-					leadership: rawCerf.leadership,
-					fellowship: rawCerf.fellowship
-				},
-				attendees: rawCerf.attendees,
-				total_attendees: rawCerf.total_attendees,	// not editable
-				tags: {
-					service: rawCerf.service,
-					leadership: rawCerf.leadership,
-					fellowship: rawCerf.fellowship,
-					miscellaneous: rawCerf.miscellaneous,
-				},
-				drivers: rawCerf.drivers,
-				total_drivers: rawCerf.total_drivers,	// not editable
-				total_mileageTo: rawCerf.total_mileageTo,	// not shown
-				total_mileageFrom: rawCerf.total_mileageFrom,	// not shown
-				total_mileage: rawCerf.total_mileage,	// not editable
-
-				funds_raised: rawCerf.funds_raised,
-				funds_spent: rawCerf.funds_spent,
-				funds_profit: rawCerf.funds_profit,	// not editable
-				funds_usage: rawCerf.funds_usage,
-
-				commentary: {
-					summary: rawCerf.summary,
-					strengths: rawCerf.strengths,
-					weaknesses: rawCerf.weaknesses,
-					advice: rawCerf.advice
-				},
-
-
-				status: rawCerf.status	// Enums. not editable
-			}
-		}
-		return cookedCerf;
-		/*
-		a
-		*/
 	}
 
 	goBack() {

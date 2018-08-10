@@ -1,20 +1,144 @@
-<a mat-icon-button style="display: inline-block;" (click)="goBack()">
-	<mat-icon>arrow_back</mat-icon>
-</a>
-<p style="display: inline-block;">Mrf ID: {{ mrf._id }} | Month: {{ mrf.month }} </p>
+<div id="mrf-header">
+	<div id="mrf-actions">
+		<a mat-icon-button (click)="goBack()">
+			<mat-icon>arrow_back</mat-icon>
+		</a>
+		<p>Mrf ID: none, removing IDs | Month: {{ mrf.month }} </p>
+	</div>
 
-<form #mrfForm="ngForm">
-	<mat-form-field>
-		<input matInput placeholder="MRF Author" value="Secretary"/>
-	</mat-form-field>
+	<nav id="mrf-tabs">
+		<ul>
+			<li [class.mat-elevation-z4]="currentTab=='main'">
+				<button mat-icon-button style="color: green" (click)="currentTab='main'">
+					<mat-icon matTooltip="Main">description</mat-icon>
+				</button>
+			</li>
+			<li [class.mat-elevation-z4]="currentTab=='meetings'">
+				<button mat-icon-button (click)="currentTab='meetings'">
+					<mat-icon matTooltip="Meetings">person_outline</mat-icon>
+				</button>
+			</li>
+			<li [class.mat-elevation-z4]="currentTab=='feedback'">
+				<button mat-icon-button style="color: blue" (click)="currentTab='feedback'">
+					<mat-icon matTooltip="Feedback">comment</mat-icon>
+				</button>
+			</li>
+		</ul>
+	</nav>
 
-	<mat-form-field>
+</div>
+
+
+<mat-divider></mat-divider>
+
+<form [formGroup]="mrfForm">
+
+	<div id="main" *ngIf="currentTab=='main'">
+		<h4 class="title">Main</h4>
+		<mat-form-field>
+			<mat-label>Club ID</mat-label>
+			<input matInput formControlName="club_id" readonly>
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Year</mat-label>
+			<input matInput formControlName="year" readonly>
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Month</mat-label>
+			<input matInput formControlName="month" readonly>
+		</mat-form-field>
+
+		<br/>
+
+		<ng-container formGroupName="updates">
+			<mat-checkbox formControlName="duesPaid">Dues Paid?</mat-checkbox>
+			<mat-checkbox formControlName="newDuesPaid">New Dues Paid?</mat-checkbox>
+		</ng-container>
+
+		<h6 class="subtitle">Goals</h6>
+		<div *ngFor="let goal of mrfForm.controls.goals.controls; let i=index">
+			<p>Goal {{i}}</p>
+			<mat-form-field>
+				<textarea matInput [formControlName]="i"></textarea>
+			</mat-form-field>
+		</div>
+	</div>
+
+	<div id="meetings" *ngIf="currentTab=='meetings'">
+		<h4 class="title">Club Meetings</h4>
+		<ng-container formArrayName="meetings">
+			<div *ngFor="let meeting of mrfForm.controls.meetings.controls; let i=index" [formGroupName]="i">
+				<h6 class="subtitle">Meeting {{i}}</h6>
+				<mat-form-field>
+					<mat-label>Members</mat-label>
+					<input matInput formControlName="members">
+				</mat-form-field>
+				<mat-form-field>
+					<mat-label>Non Club Members</mat-label>
+					<input matInput formControlName="nonHomeMembers">
+				</mat-form-field>
+				<mat-form-field>
+					<mat-label>Kiwanians</mat-label>
+					<input matInput formControlName="kiwanis">
+				</mat-form-field>
+				<mat-form-field>
+					<mat-label>Guests</mat-label>
+					<input matInput formControlName="guests">
+				</mat-form-field>
+				<div formGroupName="advisorAttendance">
+					<mat-form-field>
+						<mat-label>Faculty</mat-label>
+						<input matInput formControlName="faculty">
+					</mat-form-field>
+					<mat-form-field>
+						<mat-label>Kiwanis Advisor</mat-label>
+						<input matInput formControlName="kiwanis">
+					</mat-form-field>
+				</div>
+			</div>
+		</ng-container>
+	</div>
+
+	<div id="feedback" *ngIf="currentTab=='feedback'" formGroupName="feedback">
+		<h4 class="title">Feedback</h4>
+		<ng-container formGroupName="ltg">
+			<h6 class="subtitle">LTG</h6>
+			<mat-form-field>
+				<textarea matInput formControlName="message"></textarea>
+			</mat-form-field>
+			<p>Contacted</p>
+			<div formGroupName="contacted">
+				<mat-form-field>
+					<textarea matInput formControlName="visit"></textarea>
+				</mat-form-field>
+				<mat-form-field>
+					<textarea matInput formControlName="phone"></textarea>
+				</mat-form-field>
+				<mat-form-field>
+					<textarea matInput formControlName="email"></textarea>
+				</mat-form-field>
+				<mat-form-field>
+					<textarea matInput formControlName="newsletter"></textarea>
+				</mat-form-field>
+				<mat-form-field>
+					<textarea matInput formControlName="other"></textarea>
+				</mat-form-field>
+			</div>
+		</ng-container>
+
+		<h6 class="subtitle">DBoard</h6>
+		<mat-form-field>
+			<textarea matInput formControlName="dboard"></textarea>
+		</mat-form-field>
+	</div>
+	
+	<!-- <mat-form-field>
 		<input matInput placeholder="Total Service Hours" value="241"/>
 		<button matSuffix mat-icon-button matTooltip="Update hours from CERFs"><mat-icon>update</mat-icon></button>
-	</mat-form-field>
+	</mat-form-field> -->
 
 	<br/>
-	<app-cerflist [cerfList]="mrf.data?.events" [mrfId]="mrf._id"></app-cerflist>
+	<!-- <app-cerflist [cerfList]="mrf.data?.events" [mrfId]="mrf._id"></app-cerflist> -->
 
 
 </form>

@@ -41,7 +41,8 @@ export class AuthService {
     //               }
     //               return res.success;
     //             }));
-    
+    if(user != "user" || password != "pass")
+      return of(false);
     localStorage.setItem(tokenName, "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC93cC5kcmFmdHNpdGUudGsiLCJpYXQiOjE1MzM1ODczOTgsIm5iZiI6MTUzMzU4NzM5OCwiZXhwIjoxNTMzNjczNzk4LCJkYXRhIjp7InVzZXIiOnsiaWQiOiIyIn19fQ.KEnvHM_JKCFP-0ZIsWAG7zEPF3Kr7HXGnqJqUu8lZxA");
     // Make sure the token is a valid token by trying to run a helper function on it first;
     this.decodeUser(localStorage.getItem(tokenName));

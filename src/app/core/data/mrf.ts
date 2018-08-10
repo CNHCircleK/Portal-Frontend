@@ -1,6 +1,6 @@
 import { Cerf } from './cerf';
 
-export interface Mrf {
+export interface Mrf2 {
 	_id: number,
 	year: number,
 	month: number,
@@ -14,97 +14,51 @@ export interface MrfData {
 	events: Cerf[];
 }
 
-export interface Mrf2 {
+export interface Mrf {
 	club_id: string,
 	year: number,
 	month: number,
-	status: 0,
-	submissionTime: null,
+	status: number,
+	submissionTime: Date,
 	updates: {
-		duesPaid: null,
-		newDuesPaid: null
+		duesPaid: boolean,
+		newDuesPaid: boolean
 	},
 	goals: string[],
-	meetings: [
-		{
-			members: null,
-			nonHomeMembers: null,
-			kiwanis: null,
-			guests: null,
-			advisorAttendance:{
-				faculty: null,
-				kiwanis: null
-			}
-		},
-
-		{
-			members: null,
-			nonHomeMembers: null,
-			kiwanis: null,
-			guests: null,
-			advisorAttendance:{
-				faculty: null,
-				kiwanis: null
-			}
-		},
-
-		{
-			members: null,
-			nonHomeMembers: null,
-			kiwanis: null,
-			guests: null,
-			advisorAttendance:{
-				faculty: null,
-				kiwanis: null
-			}
-		},
-
-		{
-			members: null,
-			nonHomeMembers: null,
-			kiwanis: null,
-			guests: null,
-			advisorAttended:{
-				faculty: null,
-				kiwanis: null
-			}
-		},
-
-		{
-			members: null,
-			nonHomeMembers: null,
-			kiwanis: null,
-			guests: null,
-			advisorAttendance:{
-				faculty: null,
-				kiwanis: null
-			}
+	meetings: {
+		members: number,
+		nonHomeMembers: number,
+		kiwanis: number,
+		guests: number,
+		advisorAttendance:{
+			faculty: number,
+			kiwanis: number
 		}
-	],
+	}[],
 
 	dcm:{
-		date: null,
-		presidentAttended: null,
-		members: null,
-		nextDcmDate: null
+		date: Date,
+		presidentAttended: boolean,
+		members: number,
+		nextDcmDate: Date
 	},
 
 	feedback:{
 		ltg:{
-			message: null,
+			message: string,
 			contacted:{
-				visit: null,
-				phone: null,
-				email: null,
-				newsletter: null,
-				other: null
+				visit: string,
+				phone: string,
+				email: string,
+				newsletter: string,
+				other: string
 			}
 		},
-		dboard: null
+		dboard: string
 	},
 
 	kfamReport:{
-		completed: null
+		completed: boolean
 	}
 }
 
