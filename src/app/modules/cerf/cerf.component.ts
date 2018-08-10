@@ -17,34 +17,24 @@ import { Member } from '@core/authentication/member';
 
 import { Observable, zip } from 'rxjs';
 
-// @Directive({
-// 	selector: 'input'
-// })
-// export class MemberInput {
-// 	constructor(public renderer: Renderer2, public elementRef: ElementRef) {}
-
-// 	ngOnInit() {
-// 		this.renderer.selectRootElement('#');
-// 	}
-// }
-
-
 @Component({
 	selector: 'app-cerf',
 	templateUrl: './cerf.component.html',
-	styleUrls: ['./cerf.component.css'],
+	styleUrls: ['./cerf.component.css', './_cerf.component.scss'],
 })
 
 export class CerfComponent {
-	@Input() mrfView: boolean = false;
+	
+	editable: boolean = true;
 
 	tabs: string[] = ["main", "attendance", "fundraising", "drivers", "commentary"];
 	currentTab: string;
+
 	members: MatTableDataSource<string>;
-	attendanceColumns: string[] = ['members', 'service', 'leadership', 'fellowship', 'unpaid'];
+	attendanceColumns: string[] = ['members'];//, 'service', 'leadership', 'fellowship', 'unpaid'];
 
 	myForm: FormGroup;
-	comment: string = "HEY";
+	// comment: string = "HEY";
 
 	constructor(private route: ActivatedRoute, private dataService: DataService,
 		private auth: AuthService, private _location: Location, public dialog: MatDialog,
@@ -52,7 +42,6 @@ export class CerfComponent {
 		// this.route.data.subscribe(response => this.cerf = response.cerf);
 		this.cerf = this.route.snapshot.data['cerf'];
 		this.myForm = this.createCerf(this.cerf);
-		console.log(this.myForm);
 
 		this.currentTab = "main";
 	}
@@ -70,17 +59,13 @@ export class CerfComponent {
 		});
 
 		// this.members = new MatTableDataSource(this.cerf.data.attendees);
+
 		let membersControl = this.attendees;	// invoke getter
 		this.members = new MatTableDataSource(new Array(membersControl.length).map((v, index) => membersControl.at(index).value as string))
 		
 	}
 	ngAfterViewInit() {
 		this.members.sort = this.sort;
-	}
-
-	saveCerf() {
-		// this.cerf.data.attendees = this.members.data;
-		this.dataService.updateCerf(this.getCerfFromForm());
 	}
 
 	trackByIndex(index: number, obj: any): any {
@@ -93,7 +78,7 @@ export class CerfComponent {
 		// this.members.data = this.cerf.data.attendees;
 
 		const attendees = this.attendees;
-		attendees.controls.push(this.builder.group({name: [""], service: [""], leadership: [""], fellowship: [""], unpaid: [""]}));
+		attendees.controls.push(this.builder.control(""));
 
 		this.members.data = new Array(attendees.length).map((v, index) => attendees.at(index).value as string);
 		this.myForm.markAsTouched();
@@ -105,6 +90,11 @@ export class CerfComponent {
 
 		this.members.data = new Array(attendees.length).map((v, index) => attendees.at(index).value as string);
 		this.myForm.markAsTouched();
+	}
+
+	saveCerf() {
+		// this.cerf.data.attendees = this.members.data;
+		this.dataService.updateCerf(this.getCerfFromForm()).subscribe(res => { console.log(res)} );
 	}
 
 	deleteCerf() {
@@ -128,12 +118,12 @@ export class CerfComponent {
 	}
 
 	approveCerf() {
-		this.cerf.data.status = 0;
+		this.cerf.status = 0;
 	}
 
 
 	get attendees() {
-		return (this.myForm.controls.data.get('attendees') as FormArray);
+		return (this.myForm.controls['attendees'] as FormArray);
 	}
 
 	private createCerf(model: Cerf): FormGroup {
@@ -149,98 +139,98 @@ export class CerfComponent {
 	private fillDefaults(model: Cerf): void
 	{
 		// Set default values of a Partial<Cerf>
-		if(!model.data) {
-			model.data = {
-				cerf_author: "",
-				chair_id: "",
-				chair_name: "",
-				event_contact: "",
-				event_number: "",
-				time: {
-					start: new Date('2018-01-01T00:00:00'),
-					end: new Date('2018-01-01T00:00:00')
-				},
-				location: "",
-				hours_per_attendee: {
-					service: 0,
-					leadership: 0,
-					fellowship: 0
-				},
-				attendees: [],
-				total_attendees: 0,
-				tags: {
-					service: "",
-					leadership: "",
-					fellowship: "",
-					miscellaneous: "",
-				},
+		// if(!model.data) {
+		// 	model.data = {
+		// 		cerf_author: "",
+		// 		chair_id: "",
+		// 		chair_name: "",
+		// 		event_contact: "",
+		// 		event_number: "",
+		// 		time: {
+		// 			start: new Date('2018-01-01T00:00:00'),
+		// 			end: new Date('2018-01-01T00:00:00')
+		// 		},
+		// 		location: "",
+		// 		hours_per_attendee: {
+		// 			service: 0,
+		// 			leadership: 0,
+		// 			fellowship: 0
+		// 		},
+		// 		attendees: [],
+		// 		total_attendees: 0,
+		// 		tags: {
+		// 			service: "",
+		// 			leadership: "",
+		// 			fellowship: "",
+		// 			miscellaneous: "",
+		// 		},
 				
-				drivers: [],
-				total_drivers: 0,
-				total_mileageTo: 0,
-				total_mileageFrom: 0,
-				total_mileage: 0,
+		// 		drivers: [],
+		// 		total_drivers: 0,
+		// 		total_mileageTo: 0,
+		// 		total_mileageFrom: 0,
+		// 		total_mileage: 0,
 
-				funds_raised: 0,
-				funds_spent: 0,
-				funds_profit: 0,
-				funds_usage: "",
+		// 		funds_raised: 0,
+		// 		funds_spent: 0,
+		// 		funds_profit: 0,
+		// 		funds_usage: "",
 
-				commentary: {
-					summary: "",
-					strengths: "",
-					weaknesses: "",
-					advice: ""
-				},
+		// 		commentary: {
+		// 			summary: "",
+		// 			strengths: "",
+		// 			weaknesses: "",
+		// 			advice: ""
+		// 		},
 
-				comments: [],
+		// 		comments: [],
 
-				history: [],
+		// 		history: [],
 
-				status: 1
-			}
-		} else {
-			if(!model.data.cerf_author)
-				model.data.cerf_author = "";
-			if(!model.data.hours_per_attendee) {
-				model.data.hours_per_attendee = {
-					service: 0,
-					leadership: 0,
-					fellowship: 0
-				}
-			}
-			if(!model.data.attendees)
-				model.data.attendees = [];
-			if(!model.data.tags) {
-				model.data.tags = {
-					service: "",
-					leadership: "",
-					fellowship: "",
-					miscellaneous: ""
-				}
-			}
-			if(!model.data.drivers)
-				model.data.drivers = []
-			if(!model.data.commentary){
-				model.data.commentary = {
-					summary: "",
-					strengths: "",
-					weaknesses:  "",
-					advice: ""
-				}
-				if(!model.data.comments)
-					model.data.comments = [];
-				if(!model.data.history)
-					model.data.history = [];
-			}
+		// 		status: 1
+		// 	}
+		// } else {
+		// 	if(!model.data.cerf_author)
+		// 		model.data.cerf_author = "";
+		// 	if(!model.data.hours_per_attendee) {
+		// 		model.data.hours_per_attendee = {
+		// 			service: 0,
+		// 			leadership: 0,
+		// 			fellowship: 0
+		// 		}
+		// 	}
+		// 	if(!model.data.attendees)
+		// 		model.data.attendees = [];
+		// 	if(!model.data.tags) {
+		// 		model.data.tags = {
+		// 			service: "",
+		// 			leadership: "",
+		// 			fellowship: "",
+		// 			miscellaneous: ""
+		// 		}
+		// 	}
+		// 	if(!model.data.drivers)
+		// 		model.data.drivers = []
+		// 	if(!model.data.commentary){
+		// 		model.data.commentary = {
+		// 			summary: "",
+		// 			strengths: "",
+		// 			weaknesses:  "",
+		// 			advice: ""
+		// 		}
+		// 		if(!model.data.comments)
+		// 			model.data.comments = [];
+		// 		if(!model.data.history)
+		// 			model.data.history = [];
+		// 	}
 
-		}
+		// }
 	}
 
 	private cookData(model: Object): FormGroup
 	{
-		console.log("cooking");
-		console.log(model);
+		if(model instanceof FormGroup)	// Some protection against infinite loops
+			return model;
 		let formGroup: { [id: string]: AbstractControl; } = {};
 		Object.keys(model).forEach(key => {
 			formGroup[key] = 	model[key] instanceof Date ? this.builder.control(model[key]) : // making formgroups out of single Dates doesn't make sense
@@ -270,6 +260,11 @@ export class CerfComponent {
 
 	public getCerfFromForm() {
 		let rawCerf = this.myForm.getRawValue();
+		// Destructure the form in case 
+		// Object.keys(rawCerf).forEach(key => {
+		// 	if(rawCerf instanceof AbstractControl)
+		// 		rawCerf[key] = rawCerf[key].getRawValue();
+		// });
 		console.log(rawCerf);
 		Object.assign(this.cerf, rawCerf);
 		console.log(this.cerf);

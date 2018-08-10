@@ -1,16 +1,3 @@
-/* Stolen from CerfNav */
-/*div.flex {
-	display: flex;
-	flex-flow: row wrap;
-	padding: 20px;
-}*/
-/*app-cerfcard {
-	margin: 20px;
-	position: relative;
-	z-index: 1;
-}*/
-
-/* Stolen from Cerf.css */
 #mrf-header {
 	display: flex;
 	flex-flow: row nowrap;

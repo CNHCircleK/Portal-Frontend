@@ -21,6 +21,7 @@ import { AppRoutingModule } from '@app/modules/app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
+import { OverlayModule } from '@angular/cdk/overlay';
 import { MatDatepickerModule, MatMomentDateModule } from '@coachcare/datepicker';
 
 
@@ -35,6 +36,7 @@ import { MatDatepickerModule, MatMomentDateModule } from '@coachcare/datepicker'
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    OverlayModule,
     MatDatepickerModule,
     MatMomentDateModule
   ],
@@ -52,6 +54,7 @@ import { MatDatepickerModule, MatMomentDateModule } from '@coachcare/datepicker'
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    OverlayModule,
     MatDatepickerModule,
     MatMomentDateModule
   ]

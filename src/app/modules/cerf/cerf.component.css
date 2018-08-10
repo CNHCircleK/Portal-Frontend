@@ -7,6 +7,8 @@
 	padding-bottom: 15px;
 }
 
+/* Alignment */
+
 #cerf-header {
 	display: flex;
 	flex-flow: row nowrap;
@@ -44,24 +46,8 @@
 #memberTable {
 	margin: 5% 0;
 }
-#memberTable .mat-header-row {
-	background-color: #dddddd;
-}
 
 #commentary {
 	display: flex;
 	flex-direction: column;
 }
-
-/*#cerf-info {
-	display: inline-block;
-	vertical-align: middle;
-}*/
-
-/*div {	 Distinguish input fields from header by pushing it to the right 
-	margin-left: 20px;
-}*/
-
-/*fieldset {
-	border: 0;
-}*/

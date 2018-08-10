@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { defaultIfEmpty, map, tap, filter, catchError, first, last } from 'rxjs/operators';
+import { defaultIfEmpty, concatMap, map, tap, filter, catchError, first, last } from 'rxjs/operators';
+import { zip } from 'rxjs';
 import { forkJoin } from 'rxjs';
 import { LocalStorage } from '@ngx-pwa/local-storage';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -10,23 +11,44 @@ import { MrfData, Mrf } from './mrf';
 // import { CoreModule } from '@core/core.module';   CIRCULAR DEPENDENCY
 import { AuthService } from '@core/authentication/auth.service';
 import { Member } from '@core/authentication/member';
-import { HttpConfig } from '@env/api_config.js';
+import HttpConfig from '@env/api_config';
 
 @Injectable( { providedIn: 'root' } )
 export class DataService {
 
-  user: Member;
-  cerfs: Cerf[]; nextCerfId: number;
-  mrfs: Mrf[];
-  // mockData: Mrf[] = [
-  // {"_id": 1,"year": 2018,"month": 7,"status": 0,"submission_time": "2018-03-01T07:00:00Z","club_id":1},
-  // {"_id": 2,"year": 2018,"month": 2,"status": 0,"submission_time": "2018-04-01T07:00:00Z","club_id":1},
-  // {"_id": 3,"year": 2018,"month": 3,"status": 0,"submission_time": "2018-05-01T07:00:00Z","club_id":1},
-  // {"_id": 4,"year": 2018,"month": 4,"status": 0,"submission_time": "2018-06-01T07:00:00Z","club_id":1},
-  // {"_id": 5,"year": 2018,"month": 5,"status": 0,"submission_time": "2018-07-01T07:00:00Z","club_id":1},
-  // {"_id": 6,"year": 2018,"month": 6,"status": 0,"submission_time": null,"club_id":1}
-  // ];
-  mockData: Mrf[] = [
+  /** REST API
+    GET (auth)
+        /admin/divisions                - list divisions
+        /divisions/divisionId/clubs     - list clubs in that division
+    //    /divisions/divisionId/          - to list information about the division. There isnt much about it yet
+    //    /clubs/clubId/                  - to list information about the club
+        /clubs/clubId/members           - list members in that club
+        /members/memberId/              - to get general info about that member
+    //    /clubs/clubId/events            - to get recent events under a clubId
+    POST (no auth)
+        /signin                         - to sign in
+    POST (auth)
+        /signup                         - to signup
+        /members/memberId/registration  - to get the registration code
+        /clubs/clubId/members/new       - create new member (with POST request, "firstName" and "lastName" as fields)
+        /events/new                     - for event creation
+        /events/eventId/edit            - to edit
+        **/
+
+  /** IDs
+  Divisions
+    Golden Gate - 5b6d1fbfdf9a7b34033f945c
+
+  Clubs
+    Berkeley - 5b6d2054f176363426fe5b93
+  
+    **/
+
+    user: Member;
+    cerfs: Cerf[]; nextCerfId: number;
+    mrfs: Mrf[];
+
+    mockData: Mrf[] = [
     {
       club_id: "1", year: 2018, month: 7, status: 0, submissionTime: new Date('2018-01-01T00:00:00'), updates: { duesPaid: true, newDuesPaid: false }, goals: [],
       meetings: [{ members: 5, nonHomeMembers: 0, kiwanis: 0, guests: 0, advisorAttendance:{ faculty: 0, kiwanis: 0 } }],
@@ -49,73 +71,93 @@ export class DataService {
       kfamReport:{ completed: false }
     }
 
-  ];
+    ];
 
-  constructor(protected localStorage: LocalStorage, private auth: AuthService, private http: HttpClient) {
-    this.auth.getUser().subscribe(user => {
-      if(user)
-        this.user = user;
-      else
-        this.user = {id:-1, name:"undefined", club_id:-1,division_id:-1,access: {club:0,division:0,district:0}};
-    });
-  }
+    constructor(protected localStorage: LocalStorage, private auth: AuthService, private http: HttpClient) {
+      this.auth.getUser().subscribe(user => {
+        if(user)
+          this.user = user;
+        else
+          this.user = {_id:"1", name:"undefined", club_id:"1",division_id:"1",access: {club:0,division:0,district:0}};
+      });
+    }
 
-  resetData()
-  {
+    resetData()
+    {
     this.localStorage.clear().subscribe(()=>{});  // removes token also
   }
 
 	// CREATE
+  // blankCerf = (): Cerf => ({  // a factory
+  //   "_id":"new","event_name":"New Event","date":new Date(),"data": { cerf_author: "",
+  //   chair_id: "", chair_name: "", event_contact: "", event_number: "",
+  //   time: {start: new Date(), end: new Date() },
+  //   location: "",
+  //   hours_per_attendee: {service: 0, leadership: 0, fellowship: 0 },
+  //   attendees: [],
+  //   total_attendees: 0,
+  //   tags: {service: "", leadership: "", fellowship: "", miscellaneous: "", },
+  //   drivers: [],
+  //   total_drivers: 0,
+  //   total_mileageTo: 0,
+  //   total_mileageFrom: 0,
+  //   total_mileage: 0,
+  //   funds_raised: 0,
+  //   funds_spent: 0,
+  //   funds_profit: 0,
+  //   funds_usage: "",
+  //   commentary: {summary: "", strengths: "", weaknesses: "", advice: ""},
+  //   comments: [],
+  //   history: [],
+  //   status: 1
+  // }});
   blankCerf = (): Cerf => ({  // a factory
-        "_id":this.nextCerfId,"event_name":"New Event","date":new Date('2018-01-01T00:00:00'),"data": { cerf_author: "",
-        chair_id: "", chair_name: "", event_contact: "", event_number: "",
-        time: {start: new Date('2018-01-01T00:00:00'), end: new Date('2018-01-01T00:00:00') },
-        location: "",
-        hours_per_attendee: {service: 0, leadership: 0, fellowship: 0 },
-        attendees: [],
-        total_attendees: 0,
-        tags: {service: "", leadership: "", fellowship: "", miscellaneous: "", },
-        drivers: [],
-        total_drivers: 0,
-        total_mileageTo: 0,
-        total_mileageFrom: 0,
-        total_mileage: 0,
-        funds_raised: 0,
-        funds_spent: 0,
-        funds_profit: 0,
-        funds_usage: "",
-        commentary: {summary: "", strengths: "", weaknesses: "", advice: ""},
-        comments: [],
-        history: [],
-        status: 1
-  }});
+    "_id":"new","name":"New Event",chair_id:this.user._id,club_id:this.user.club_id,division_id:this.user.division_id,
+    time: {start: new Date(), end: new Date() },
+    attendees: [],
+    hoursPerAttendee: {service: 0, leadership: 0, fellowship: 0 },
+    overrideHours: [],
+    tags: [],
+    fundraised: {
+      ptp: 0,
+      fa: 0,
+      kfh: 0
+    },
+    status: 0
+  });
 
-  newCerf(): Cerf {
-    /*
-    return this.http.get( HttpConfig.baseUrl + HttpsConfig.generateCerf );  // an observable
-    */
-    let blankCerf =  this.blankCerf();
-    this.cerfs.push(blankCerf);
-    this.nextCerfId++;
-    return blankCerf;
+  newCerf(): Observable<Cerf> {
+    return of(this.blankCerf());
+    // let newDate = new Date();
+    // let endDate = new Date(); endDate.setDate(endDate.getDate() + 1);
+    // let data = {
+    //   name: "New",
+    //   start: newDate,
+    //   end: endDate.toISOString()
+    // }
+    // return this.http.post<Cerf>(HttpConfig.baseUrl + "/events/new", data).pipe(tap(res => { console.log(res); this.cerfs.push(res)}));
   }
 
 	// READ/GET
 	getCerfList(refresh?: boolean): Observable<Cerf[]> {
     if(!Array.isArray(this.cerfs) || refresh)
     {
-      // we haven't loaded or want to force refresh
-      return this.localStorage.getItem('cerfList').pipe(filter(data => data !== null), defaultIfEmpty( <Cerf[]>[] ),
-        tap(cerfs => { this.cerfs = cerfs;
-          if(this.cerfs.length==0) this.nextCerfId=1;
-          else this.nextCerfId = this.cerfs[this.cerfs.length-1]._id + 1}),
-        tap(cerfs => console.log("List from storage ", cerfs)));
+      this.cerfs = [];
+      let cerfRequests: Observable<Cerf>[] = [];
+      return this.http.get(HttpConfig.baseUrl + "/clubs/" + this.user.club_id + "/mrfs/2018/08/events")
+        .pipe(concatMap( (res: {"success": boolean, "auth": boolean, "result": {"_id": string, "status": number, "name": string}[]}) => {
+                          for(let event of res.result)
+                            cerfRequests.push(this.http.get<Cerf>(HttpConfig.baseUrl + "/events/" + event._id).pipe(tap(data => { console.log(data); this.cerfs.push(data)})));
+                          return forkJoin(cerfRequests);
+                        }
+                      )
+             )
     }
     return of(this.cerfs);
   }
 
-  getCerfById(id: number, refresh?: boolean): Observable<Cerf> {
-    if(!this.cerfs) {    // tried to refresh the page or something
+  getCerfById(id: string, refresh?: boolean): Observable<Cerf> {
+    if(this.cerfs===undefined) {    // tried to refresh the page or something
       console.error("Cerfs have not been loaded");
       return of(null);
     }
@@ -123,47 +165,49 @@ export class DataService {
     if(!existing){
       console.error("Cerf with id " + id + " does not exist");
       return of(null);
-    }
-    if(!refresh && existing.data)  // The cerf is loaded into the data
-    {
-      // we have it saved locally and don't want to refresh.
-      return of(existing);
     } else {
-      // Request cerf with id from server and save it locally to the service, and return the observable
-      // ** We should also update the cerf list just in case?
-      return this.localStorage.getItem<Cerf>('cerfs' + id).pipe(tap(response => existing = response), tap(res => console.log("Got Cerf " + id)));
+      return this.http.get<Cerf>(HttpConfig.baseUrl + '/events/' + id).pipe(tap(res => console.log(res)));
     } 
   }
 
 	// UPDATE
-	updateCerf(data: Cerf) {
-      let index = this.cerfs.findIndex(cerf => cerf._id == data._id); // can probably store index in the CERF cerfs for easy access
-      if(index == -1) {
-        console.error("Cerf with id " + data._id + " does not exist");
-        return of(null);
-      }
-      this.cerfs[index] = data;
-      this.localStorage.setItem('cerfList', this.cerfs).subscribe(()=>{});
-      this.localStorage.setItem('cerfs' + data._id, data).subscribe(()=>{});
-      
+	updateCerf(data: Cerf): Observable<boolean> {
+    if(data._id == "new")
+      return this.createNewCerf(data);
+    let index = this.cerfs.findIndex(cerf => cerf._id == data._id); // can probably store index in the CERF cerfs for easy access
+    if(index == -1) {
+      console.error("Cerf with id " + data._id + " does not exist");
+      return of(false);
+    } else {
+      return this.http.post<any>(HttpConfig.baseUrl + "/events/" + data._id + "/edit", JSON.stringify(data)).pipe(tap(res=>console.log(res)),map( res => res.success));
     }
-    submitCerf(id: number) {
-      let index = this.cerfs.findIndex(cerf => cerf._id == id);
-      if(index == -1) {
-        console.error("Cerf with id " + id + " does not exist");
-        return;
-      }
-      // this.addCerfToMrf(this.cerfs[index], 1); // POST request
+  }
+
+  createNewCerf(data: Cerf): Observable<boolean> {
+    const preData = data;
+    preData['start'] = data.time.start;
+    preData['end'] = data.time.end;
+
+    console.log(JSON.stringify(preData))
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+    return this.http.post<any>(HttpConfig.baseUrl + "/events/new", JSON.stringify(preData), {headers: headers}).pipe(tap(res=>console.log(res)),map(res => res.success)/*, tap(res => {
+      data._id = res._id;
+      this.cerfs.push(data);
+    })*/);
+  }
+
+  submitCerf(id: string) {
+    let index = this.cerfs.findIndex(cerf => cerf._id == id);
+    if(index == -1) {
+      console.error("Cerf with id " + id + " does not exist");
+      return;
     }
+  }
 
   	// DELETE
-  	deleteCerf(id: number) {
+  	deleteCerf(id: string) {
   		let ind = this.cerfs.findIndex(cerf => cerf._id == id);
   		this.cerfs.splice(ind, 1);
-      this.localStorage.removeItem('cerfs' + id).subscribe(()=>{});
-      this.localStorage.setItem('cerfList', this.cerfs).subscribe(()=>{});
-
-    	// this.removeCerfAll(id);	// Propagate changes to MRFs. This will be done through MongoDB eventually
     }
 
 
@@ -178,12 +222,7 @@ export class DataService {
   	getMrfList(refresh?: boolean): Observable<Mrf[]> {
   		if(!Array.isArray(this.mrfs) || refresh)
       {
-        // we haven't loaded it or want to force refresh
-        // return this.localStorage.getItem('mrfs').pipe(filter(data => data !== null), defaultIfEmpty( this.mockData ),
-        //   tap(mrfs => this.mrfs = mrfs),
-        //   tap(mrfs => console.log("MRFs from storage ", mrfs)));
-        this.mrfs = this.mockData;
-        return of(this.mockData);
+
       }
       return of(this.mrfs);
     }
@@ -201,7 +240,7 @@ export class DataService {
         //   ]
         //   )));
       }
-    return of(this.mrfs);
+      return of(this.mrfs);
       // return of(this.mrfs).pipe(map( (data: Mrf[]) => data.concat(
       //     [
       //     {"_id": 11,"year": 2018,"month": 7,"status": 0,"submission_time": "2018-03-01T07:00:00Z","club_id":2},
@@ -210,7 +249,7 @@ export class DataService {
       //     ]
       //     )));;
     }
-    getMrfById(id: number): Observable<Mrf> {
+    getMrfById(id: string): Observable<Mrf> {
       // if(!this.mrfs) {
       //   console.error("Mrfs have not been loaded");
       //   return of(null);
@@ -231,7 +270,7 @@ export class DataService {
    //    } // else request the data from the server
 
    //  }
-  	// removeCerfAll(id: number) {	// Remove CERF from every MRF
+  	// removeCerfAll(id: string) {	// Remove CERF from every MRF
    //    if(!this.mrfs)
    //    {
    //      this.getCerfList().subscribe(mrfs => {
@@ -262,7 +301,7 @@ export class DataService {
    //      // else request the data from the server
    //    }
    //  }
-    saveToClient() {
+   saveToClient() {
     	this.localStorage.setItem('mrfs', this.mrfs).subscribe(() => {});  // Only called when mrfnav component is loaded, for testing purposes
     }
 

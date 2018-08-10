@@ -15,7 +15,7 @@ import { Observable, zip } from 'rxjs';
 @Component({
 	selector: 'app-my-cerfs',
 	templateUrl: './my-cerfs.component.html',
-	styleUrls: ['./my-cerfs.component.css'],
+	styleUrls: ['./my-cerfs.component.css', './_my-cerfs.component.scss'],
 })
 
 export class MyCerfsComponent {
@@ -34,9 +34,11 @@ export class MyCerfsComponent {
 	}
 
 	newCerf() {
-		let cerf: Cerf = this.dataService.newCerf();
+		this.dataService.newCerf().subscribe(res => {
+			this.router.navigate(['/cerf', res._id]);
+		});
 		//if(this.mrfView)
 			//this.dataService.addCerfToMrf(cerf, this.mrfView);
-		this.router.navigate(['/cerf', cerf._id]);
+		
 	}
 }

@@ -1,5 +1,5 @@
-export interface Cerf {
-	 _id: number,
+export interface Cerf2 {
+	 _id: string,
 	 event_name: string,
 	 date: Date,
 	 data?: CerfData
@@ -77,4 +77,30 @@ export interface CerfData {
 	history?: { changedAt?: Date, changedBy?: string, field?: string, value?: any }[],
 
 	status: number	// Enums. not editable
+}
+
+export interface Cerf {
+	_id: string,
+	name: string,
+	chair_id: string,
+	club_id: string,
+	division_id: string,
+	time: {
+		start: Date,
+		end: Date
+	}
+	attendees: string[],
+	hoursPerAttendee: {
+		service: number,
+		leadership: number,
+		fellowship: number
+	}
+	overrideHours: number[]
+	fundraised: {
+		ptp: number,
+		fa: number,
+		kfh: number
+	}
+	tags: string[],
+	status: number
 }

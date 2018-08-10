@@ -3,11 +3,11 @@
 <form #loginForm="ngForm">
 	<mat-form-field>
 		<mat-label>Username</mat-label>
-		<input matInput name="Username">
+		<input matInput name="Username" [(ngModel)]="username">
 	</mat-form-field>
 	<mat-form-field>
 		<mat-label>Password</mat-label>
-		<input matInput name="Password">
+		<input matInput name="Password" [(ngModel)]="password">
 	</mat-form-field>
 
 		<a class="button" mat-stroked-button (click)="login()">

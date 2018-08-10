@@ -7,7 +7,7 @@ import { Member } from '@core/authentication/member';
 @Component({
 	selector: 'app-sidenav',
 	templateUrl: './sidenav.component.html',
-	styleUrls: ['./sidenav.component.css', './sidenav.component.scss']
+	styleUrls: ['./sidenav.component.css', './_sidenav.component.scss']
 })
 
 export class SidenavComponent {

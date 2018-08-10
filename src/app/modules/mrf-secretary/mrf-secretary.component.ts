@@ -6,7 +6,7 @@ import { DataService } from '@core/data/data.service';
 @Component({
 	selector: 'app-mrf-secretary',
 	templateUrl: './mrf-secretary.component.html',
-	styleUrls: ['./mrf-secretary.component.css'],
+	styleUrls: ['./mrf-secretary.component.css', './_mrf-secretary.component.scss'],
 })
 
 export class MrfSecretaryComponent {

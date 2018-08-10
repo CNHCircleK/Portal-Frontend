@@ -7,7 +7,7 @@ import { LocalStorage } from '@ngx-pwa/local-storage';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 import { Member } from './member';
-import { HttpConfig } from '@env/api_config.js';
+import HttpConfig from '@env/api_config';
 
 export const tokenName = 'access_token';
 
@@ -27,26 +27,26 @@ export class AuthService {
 
   public login(user: string, password: string): Observable<boolean>  // Success or not in logging in
   {
-    // return this.http.post<any>( HttpConfig.baseUrl + HttpConfig.signin, {'name': user, 'password': password}).pipe(
-    //             map(res => {
-    //               if(res.success) {
-    //                 localStorage.setItem(tokenName, res.result);
-    //                 console.log(res.result);
-    //                 // Do more stuff with the response
-    //                 this.decodeUser(res.result);
-    //                 this.http.get( HttpConfig.baseUrl + '/clubs/5b498a5b200a8f6afa46c1d0/members').subscribe(res => {
-    //                   console.log(res);
-    //                 })
-    //                 this.loggedIn = true;
-    //               }
-    //               return res.success;
-    //             }));
-    if(user != "user" || password != "pass")
-      return of(false);
-    localStorage.setItem(tokenName, "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC93cC5kcmFmdHNpdGUudGsiLCJpYXQiOjE1MzM1ODczOTgsIm5iZiI6MTUzMzU4NzM5OCwiZXhwIjoxNTMzNjczNzk4LCJkYXRhIjp7InVzZXIiOnsiaWQiOiIyIn19fQ.KEnvHM_JKCFP-0ZIsWAG7zEPF3Kr7HXGnqJqUu8lZxA");
-    // Make sure the token is a valid token by trying to run a helper function on it first;
-    this.decodeUser(localStorage.getItem(tokenName));
-    return of(true);
+    return this.http.post<any>( HttpConfig.baseUrl + "/signin", {'name': user, 'password': password}).pipe(
+                map(res => {
+                  if(res.success) {
+                    localStorage.setItem(tokenName, res.result);
+                    console.log(res.result);
+                    // Do more stuff with the response
+                    this.decodeUser(res.result);
+                    // this.http.get( HttpConfig.baseUrl + '/clubs/5b498a5b200a8f6afa46c1d0/members').subscribe(res => {
+                    //   console.log(res);
+                    // })
+                    this.loggedIn = true;
+                  }
+                  return res.success;
+                }));
+    // if(user != "user" || password != "pass")
+    //   return of(false);
+    // localStorage.setItem(tokenName, "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC93cC5kcmFmdHNpdGUudGsiLCJpYXQiOjE1MzM1ODczOTgsIm5iZiI6MTUzMzU4NzM5OCwiZXhwIjoxNTMzNjczNzk4LCJkYXRhIjp7InVzZXIiOnsiaWQiOiIyIn19fQ.KEnvHM_JKCFP-0ZIsWAG7zEPF3Kr7HXGnqJqUu8lZxA");
+    // // Make sure the token is a valid token by trying to run a helper function on it first;
+    // this.decodeUser(localStorage.getItem(tokenName));
+    // return of(true);
   }
 
   public logout(): void {
@@ -59,24 +59,25 @@ export class AuthService {
     // if(this.helper.isTokenExpired(token))  The whole app breaks since we're using a static token LOL
       // return false;
     let data;
-    // try {
-    //   this.helper.decodeToken(token);
-    // } catch (error) {
-    //   this.logout();
-    //   console.log(error);
-    //   throw error;
-    // }
-    // this.user = data.user;    The token doesn't model the user yet
-    this.user.next({id: 1,
-                name: "Chris",
-                club_id: 5,
-                division_id: 6,
-                access: {
-                  club: 1,
-                  division: 0,
-                  district: 0
-                }
-              });
+    try {
+      data = this.helper.decodeToken(token);
+    } catch (error) {
+      this.logout();
+      console.log(error);
+      throw error;
+    }
+    this.user.next(data);   // The token doesn't model the user yet
+    console.log(data);
+    // this.user.next({id: 1,
+    //             name: "Chris",
+    //             club_id: 5,
+    //             division_id: 6,
+    //             access: {
+    //               club: 1,
+    //               division: 0,
+    //               district: 0
+    //             }
+    //           });
     return true;
   }
 
@@ -86,7 +87,7 @@ export class AuthService {
   }
 
   public getUser(refresh?: boolean): Observable<Member> {
-    return this.user.asObservable();
+      return this.user.asObservable();
   }
 
   public getAccess() {

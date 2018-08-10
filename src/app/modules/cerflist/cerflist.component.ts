@@ -10,7 +10,7 @@ import { Cerf } from '@core/data/cerf';
 @Component({
 	selector: 'app-cerflist',
 	templateUrl: './cerflist.component.html',
-	styleUrls: ['./cerflist.component.css', './cerflist_theme.scss'],
+	styleUrls: ['./cerflist.component.css', './_cerflist.component.scss'],
 })
 
 export class CerfListComponent {

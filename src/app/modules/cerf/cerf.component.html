@@ -10,7 +10,7 @@
 			<mat-icon>delete_outline</mat-icon>
 		</a>
 
-		<button *ngIf="cerf.data.status==1 && mrfView" mat-raised-button (click)="approveCerf()">
+		<button *ngIf="cerf.status==1" mat-raised-button (click)="approveCerf()">	<!-- CHANGED data.status to just status, removed mrfView -->
 			Approve
 		</button>
 
@@ -34,7 +34,7 @@
 				<button mat-icon-button style="color: green" (click)="currentTab='fundraising'">
 					<mat-icon matTooltip="Fundraising">attach_money</mat-icon>
 				</button>
-			</li>
+			</li><!-- 
 			<li [class.mat-elevation-z4]="currentTab=='drivers'">
 				<button mat-icon-button style="color: red" (click)="currentTab='drivers'">
 					<mat-icon matTooltip="Drivers">drive_eta</mat-icon>
@@ -44,7 +44,7 @@
 				<button mat-icon-button style="color: blue" (click)="currentTab='commentary'">
 					<mat-icon matTooltip="Commentary">comment</mat-icon>
 				</button>
-			</li>
+			</li> -->
 		</ul>
 	</nav>
 
@@ -66,43 +66,16 @@
 
 		<mat-form-field>
 			<mat-label>Event Name</mat-label>
-			<input matInput formControlName="event_name">
-			<button mat-icon-button matSuffix *ngIf="comment" matTooltip="{{comment}}">
+			<input matInput formControlName="name">
+			<!-- <button mat-icon-button matSuffix *ngIf="comment" matTooltip="{{comment}}">
 				<mat-icon>chat_bubble</mat-icon>
-			</button>
+			</button> -->
 		</mat-form-field>
-
-		<mat-form-field>
-			<mat-label>Date</mat-label>
-			<input matInput formControlName="date">
-		</mat-form-field>
-
 		<br/>
-
-		<ng-container formGroupName="data">
-			<mat-form-field>
-				<mat-label>CERF Author</mat-label>
-				<input matInput formControlName="cerf_author">
-			</mat-form-field>
 
 			<mat-form-field>
 				<mat-label>Chair ID</mat-label>
 				<input matInput formControlName="chair_id">
-			</mat-form-field>
-
-			<mat-form-field>
-				<mat-label>Chair Name</mat-label>
-				<input matInput formControlName="chair_name">
-			</mat-form-field>
-
-			<mat-form-field>
-				<mat-label>Event Contact</mat-label>
-				<input matInput formControlName="event_contact">
-			</mat-form-field>
-
-			<mat-form-field>
-				<mat-label>Contact Number</mat-label>
-				<input matInput formControlName="event_number">
 			</mat-form-field>
 
 			<br/>
@@ -119,43 +92,22 @@
 				</mat-form-field>
 			</ng-container>
 
-			<mat-form-field>
-				<mat-label>Location</mat-label>
-				<input matInput formControlName="location">
-			</mat-form-field>
-
 			<br/>
 
 			<ng-container formGroupName="tags">
-				<mat-form-field>
-					<mat-label>Service Tags</mat-label>
-					<input matInput formControlName="service">
-				</mat-form-field>
-				<mat-form-field>
-					<mat-label>Leadership Tags</mat-label>
-					<input matInput formControlName="leadership">
-				</mat-form-field>
-				<mat-form-field>
-					<mat-label>Fellowship Tags</mat-label>
-					<input matInput formControlName="fellowship">
-				</mat-form-field>
-				<mat-form-field>
-					<mat-label>Miscellaneous Tags</mat-label>
-					<input matInput formControlName="miscellaneous">
+				<mat-form-field *ngFor="let tag of tags; let i=index">
+					<mat-label>Tags</mat-label>
+					<input matInput [formControlName]="i">
 				</mat-form-field>
 			</ng-container>
 
-		</ng-container>
-
 	</div>
-	
-	<ng-container formGroupName="data">	<!-- data is split up partially into main and the rest of the tabs -->
 
 		<div id="attendance" *ngIf="currentTab=='attendance'">
 
 			<h4 class="title">Attendance</h4>
 
-			<ng-container formGroupName="hours_per_attendee">
+			<ng-container formGroupName="hoursPerAttendee">
 				<mat-form-field>
 					<mat-label>Service Hours</mat-label>
 					<input matInput formControlName="service">
@@ -177,45 +129,11 @@
 
 					<ng-container matColumnDef="members">
 						<mat-header-cell *matHeaderCellDef> Members </mat-header-cell>
-						<mat-cell *matCellDef="let member; let i=index" [formGroupName]="i">
+						<mat-cell *matCellDef="let member; let i=index" >
 							<button mat-icon-button (click)="removeMember(i)"> <mat-icon>cancel</mat-icon> </button>
 							<mat-form-field>
-								<input matInput formControlName="name" (change)="myForm.markAsTouched()"/>
+								<input matInput [formControlName]="i" (change)="myForm.markAsTouched()"/>
 							</mat-form-field>
-						</mat-cell>
-					</ng-container>
-
-					<ng-container matColumnDef="service">
-						<mat-header-cell *matHeaderCellDef> Service Override Hours </mat-header-cell>
-						<mat-cell *matCellDef="let service; let i=index" [formGroupName]="i">
-							<mat-form-field>
-								<input matInput formControlName="service" (change)="myForm.markAsTouched()"/>
-							</mat-form-field>
-						</mat-cell>
-					</ng-container>
-
-					<ng-container matColumnDef="leadership">
-						<mat-header-cell *matHeaderCellDef> Leadership Override Hours </mat-header-cell>
-						<mat-cell *matCellDef="let leadership; let i=index" [formGroupName]="i">
-							<mat-form-field>
-								<input matInput formControlName="leadership" (change)="myForm.markAsTouched()"/>
-							</mat-form-field>
-						</mat-cell>
-					</ng-container>
-
-					<ng-container matColumnDef="fellowship">
-						<mat-header-cell *matHeaderCellDef> Fellowship Override Hours </mat-header-cell>
-						<mat-cell *matCellDef="let fellowship; let i=index" [formGroupName]="i">
-							<mat-form-field>
-								<input matInput formControlName="fellowship" (change)="myForm.markAsTouched()"/>
-							</mat-form-field>
-						</mat-cell>
-					</ng-container>
-
-					<ng-container matColumnDef="unpaid">
-						<mat-header-cell *matHeaderCellDef> Not Paid? </mat-header-cell>
-						<mat-cell *matCellDef="let unpaid; let i=index" [formGroupName]="i">
-							<mat-checkbox formControlName="unpaid" (change)="myForm.markAsTouched()"></mat-checkbox>
 						</mat-cell>
 					</ng-container>
 
@@ -226,172 +144,25 @@
 				</mat-table>
 				<button mat-raised-button (click)="addMember()">Add Member</button>
 			</div>
-
-			<mat-form-field>
-				<mat-label>Total Attendees</mat-label>
-				<input matInput formControlName="total_attendees">
-			</mat-form-field>
-
 		</div>
 
-		<div id="fundraising" *ngIf="currentTab=='fundraising'">
+		<div id="fundraising" *ngIf="currentTab=='fundraising'" formGroupName="fundraised">
 
 			<h4 class="title">Fundraising</h4>
 
 			<mat-form-field>
-				<mat-label>Raised</mat-label>
-				<input matInput formControlName="funds_raised">
+				<mat-label>PTP</mat-label>
+				<input matInput formControlName="ptp">
 			</mat-form-field>
 			<mat-form-field>
-				<mat-label>Spent</mat-label>
-				<input matInput formControlName="funds_spent">
+				<mat-label>FA</mat-label>
+				<input matInput formControlName="fa">
 			</mat-form-field>
 			<mat-form-field>
-				<mat-label>Profit</mat-label>	<!-- readonly -->
-				<input matInput formControlName="funds_profit">
-			</mat-form-field>
-			<mat-form-field>
-				<mat-label>Usage</mat-label>
-				<input matInput formControlName="funds_usage">
+				<mat-label>KFH</mat-label>	<!-- readonly -->
+				<input matInput formControlName="kfh">
 			</mat-form-field>
 
 		</div>
-
-		<div id="drivers" *ngIf="currentTab=='drivers'">
-
-			<h4 class="title">Drivers</h4>
-			<!-- ngFor attendees -->
-
-			<mat-form-field>
-				<mat-label>Total Drivers</mat-label>
-				<input matInput formControlName="total_drivers">
-			</mat-form-field>
-			<mat-form-field>
-				<mat-label>Total Mileage To</mat-label>
-				<input matInput formControlName="total_mileageTo">
-			</mat-form-field>
-			<mat-form-field>
-				<mat-label>Total Mileage From</mat-label>
-				<input matInput formControlName="total_mileageFrom">
-			</mat-form-field>
-			<mat-form-field>
-				<mat-label>Total Mileage</mat-label>
-				<input matInput formControlName="total_mileage">
-			</mat-form-field>
-
-		</div>
-
-		<div id="commentary" *ngIf="currentTab=='commentary'" formGroupName="commentary">
-
-			<h4 class="title">Commentary</h4>
-			<mat-form-field>
-				<mat-label>Summary</mat-label>
-				<textarea matInput formControlName="summary"></textarea>
-			</mat-form-field>
-			<mat-form-field>
-				<mat-label>Strengths</mat-label>
-				<textarea matInput formControlName="strengths"></textarea>
-			</mat-form-field>
-			<mat-form-field>
-				<mat-label>Weaknesses</mat-label>
-				<textarea matInput formControlName="weaknesses"></textarea>
-			</mat-form-field>
-			<mat-form-field>
-				<mat-label>Advice</mat-label>
-				<textarea matInput formControlName="advice"></textarea>
-			</mat-form-field>
-
-		</div>
-	</ng-container>
 
 </form>
-
-<!-- <form #cerfForm="ngForm">
-	<fieldset [disabled]="read">
-	<h3 class="mat-headline">CERF Info</h3>
-	<div>
-		<mat-form-field>
-			<input matInput placeholder="Event Chair" name="author" [(ngModel)]="cerf.data.chair_id" readonly/>
-		</mat-form-field>
-		<mat-form-field>
-			<input matInput placeholder="Event Name" name="eventName" [(ngModel)]="cerf.name"/>
-		</mat-form-field>
-		<mat-form-field>
-			<input matInput placeholder="Location" name="location" [(ngModel)]="cerf.data.location"/>
-		</mat-form-field>
-	</div>
-
-	<h3 class="mat-headline">Hours Info</h3>
-	<div>
-		<mat-form-field>
-			<input matInput placeholder="Time Start" [matDatepicker]="start" name="start" [(ngModel)]="cerf.data.time.start"/>
-			<mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
-			<mat-datepicker type="datetime" #start></mat-datepicker>
-		</mat-form-field>
-		<mat-form-field>
-			<input matInput placeholder="Time End" [matDatepicker]="end" name="end" [(ngModel)]="cerf.data.time.end"/>
-			<mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
-			<mat-datepicker type="datetime" #end></mat-datepicker>
-		</mat-form-field>
-	</div>
-	<div>
-		<mat-form-field>
-			<input matInput placeholder="Service Hours" name="serviceHours" [(ngModel)]="cerf.data.hours_per_attendee.service"/>
-		</mat-form-field>
-		<mat-form-field>
-			<input matInput placeholder="Leadership Hours" name="leadershipHours" [(ngModel)]="cerf.data.hours_per_attendee.leadership"/>
-		</mat-form-field>
-		<mat-form-field>
-			<input matInput placeholder="Fellowship Hours" name="fellowshipHours" [(ngModel)]="cerf.data.hours_per_attendee.fellowship"/>
-		</mat-form-field>
-	</div>
-
-	
-	<h3 class="mat-headline">Event Info</h3>
-	<div>
-		<mat-form-field>
-			<mat-select placeholder="Type">
-				<mat-option value="CO">Community Service</mat-option>
-				<mat-option value="FR">Fundraising</mat-option>
-				<mat-option value="LD">Leadership</mat-option>
-				<mat-option value="FL">Fellowship</mat-option>
-			</mat-select>
-		</mat-form-field>
-	</div>
-
-	<div>
-		<mat-form-field>
-			<input matInput placeholder="Amount Fundraised" name="money" [(ngModel)]="cerf.data.fundraised"/>
-		</mat-form-field>
-	</div>
-
-	<h3 class="mat-headline">Members Attended</h3>
-	<div>
-		<mat-table [dataSource]="members" matSort>
-
-			 Month Column
-		    <ng-container matColumnDef="members">
-		      <mat-header-cell *matHeaderCellDef> Members </mat-header-cell>
-		      <mat-cell *matCellDef="let member">
-		      	<mat-form-field>
-		      		<input matInput value="{{member}}"/>
-		      	</mat-form-field>
-		      </mat-cell>
-		    </ng-container>
-
-		     Header columns
-		    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-		    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-		</mat-table>
-
-		<a mat-raised-button [disabled]="read" (click)="addMember()">Add Member</a>
-	</div>
-
-
-	<div>
-		<button mat-raised-button [disabled]="read" (click)="saveCerf()">save</button>
-		<button mat-raised-button [disabled]="read" (click)="submitCerf()">submit</button>
-	</div>
-
-	</fieldset>
-</form> -->

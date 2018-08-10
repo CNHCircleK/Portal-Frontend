@@ -15,7 +15,8 @@ import { SidenavComponent,
     ConfirmDialogComponent } from '@app/modules/';
 
 import { HttpClientModule } from '@angular/common/http';
-import { JwtModule } from '@auth0/angular-jwt';
+import HttpConfig from '@env/api_config';
+import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 export function tokenGetter() {
   return localStorage.getItem('access_token');
 }
@@ -44,7 +45,7 @@ export function tokenGetter() {
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        whitelistedDomains: ['192.168.1.22:3000'],
+        whitelistedDomains: [HttpConfig.schemelessUrl],
         blacklistedRoutes: []
       }
     })

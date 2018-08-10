@@ -24,6 +24,7 @@
             ],
             "styles": [
               "node_modules/@coachcare/datepicker/prebuilt-themes/indigo-pink.css",
+              "src/themes/main_theme.scss",
               "src/styles.css"
             ],
             "stylePreprocessorOptions": {

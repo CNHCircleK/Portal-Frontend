@@ -6,7 +6,7 @@ import { DataService } from '@core/data/data.service';
 @Component({
 	selector: 'app-mrf-division',
 	templateUrl: './mrf-division.component.html',
-	styleUrls: ['./mrf-division.component.css'],
+	styleUrls: ['./mrf-division.component.css', './_mrf-division.component.scss'],
 })
 
 export class MrfDivisionComponent {

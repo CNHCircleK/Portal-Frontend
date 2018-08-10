@@ -9,7 +9,7 @@ import { Location } from '@angular/common';
 @Component({
 	selector: 'app-mrf',
 	templateUrl: './mrf.component.html',
-	styleUrls: ['./mrf.component.css']
+	styleUrls: ['./mrf.component.css', './_mrf.component.scss']
 })
 
 export class MrfComponent {

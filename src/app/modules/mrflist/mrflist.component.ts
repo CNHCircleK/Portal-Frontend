@@ -8,7 +8,7 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 @Component({
 	selector: 'app-mrflist',
 	templateUrl: './mrflist.component.html',
-	styleUrls: ['./mrflist.component.css'],
+	styleUrls: ['./mrflist.component.css', './_mrflist.component.scss'],
 })
 
 export class MrfListComponent {

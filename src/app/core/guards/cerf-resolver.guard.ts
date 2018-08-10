@@ -21,6 +21,8 @@ export class CerfResolver implements Resolve<Cerf> {
 	constructor(private dataService: DataService, private auth: AuthService, private router: Router) { }
 
 	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Cerf> {
+		if(route.params.id=='new')
+			return this.dataService.newCerf();
 		return this.dataService.getCerfById(route.params.id).pipe(map(
 			cerf => {
 				if(!cerf){

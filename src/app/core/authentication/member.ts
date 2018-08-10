@@ -1,8 +1,8 @@
 export interface Member {
-  id: number,
+  _id: string,
   name: string,
-  club_id: number,
-  division_id: number,
+  club_id: string,
+  division_id: string,
   access?: {
     club: number,
     division: number,
