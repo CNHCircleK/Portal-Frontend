@@ -19,7 +19,7 @@ export class AuthGuard implements CanActivate {
 		{
 			// router.navigate(['/login']);
 			// window.alert("You must be logged in");
-			if(state.url != '/login') {
+			if(state.url != '/login' && state.url != '/signup') {
 				this.router.navigate(['/login']);
 				return false;
 			}

@@ -145,7 +145,7 @@ export class DataService {
       this.cerfs = [];
       let cerfRequests: Observable<Cerf>[] = [];
       return this.http.get(HttpConfig.baseUrl + "/clubs/" + this.user.club_id + "/mrfs/2018/08/events")
-        .pipe(concatMap( (res: {"success": boolean, "auth": boolean, "result": {"_id": string, "status": number, "name": string}[]}) => {
+        .pipe(tap(res=>console.log(res)),concatMap( (res: {"success": boolean, "auth": boolean, "result": {"_id": string, "status": number, "name": string}[]}) => {
                           for(let event of res.result)
                             cerfRequests.push(this.http.get<Cerf>(HttpConfig.baseUrl + "/events/" + event._id).pipe(tap(data => { console.log(data); this.cerfs.push(data)})));
                           return forkJoin(cerfRequests);
@@ -189,8 +189,7 @@ export class DataService {
     preData['end'] = data.time.end;
 
     console.log(JSON.stringify(preData))
-    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
-    return this.http.post<any>(HttpConfig.baseUrl + "/events/new", JSON.stringify(preData), {headers: headers}).pipe(tap(res=>console.log(res)),map(res => res.success)/*, tap(res => {
+    return this.http.post<any>(HttpConfig.baseUrl + "/events/new", JSON.stringify(preData)).pipe(tap(res=>console.log(res)),map(res => res.success)/*, tap(res => {
       data._id = res._id;
       this.cerfs.push(data);
     })*/);
@@ -226,29 +225,6 @@ export class DataService {
       }
       return of(this.mrfs);
     }
-    getDivisionMrfs(refresh?: boolean): Observable<Mrf[]> {
-      if(!Array.isArray(this.mrfs) || refresh)
-      {
-        // we haven't loaded it or want to force refresh
-
-        return this.localStorage.getItem<Mrf[]>('mrfs'); 
-        // return this.localStorage.getItem<Mrf[]>('mrfs').pipe(map( (data: Mrf[]) => data.concat(
-        //   [
-        //   {"_id": 11,"year": 2018,"month": 7,"status": 0,"submission_time": "2018-03-01T07:00:00Z","club_id":2},
-        //   {"_id": 12,"year": 2018,"month": 6,"status": 0,"submission_time": "2018-04-01T07:00:00Z","club_id":2},
-        //   {"_id": 13,"year": 2018,"month": 5,"status": 0,"submission_time": "2018-05-01T07:00:00Z","club_id":3},
-        //   ]
-        //   )));
-      }
-      return of(this.mrfs);
-      // return of(this.mrfs).pipe(map( (data: Mrf[]) => data.concat(
-      //     [
-      //     {"_id": 11,"year": 2018,"month": 7,"status": 0,"submission_time": "2018-03-01T07:00:00Z","club_id":2},
-      //     {"_id": 12,"year": 2018,"month": 6,"status": 0,"submission_time": "2018-04-01T07:00:00Z","club_id":2},
-      //     {"_id": 13,"year": 2018,"month": 5,"status": 0,"submission_time": "2018-05-01T07:00:00Z","club_id":3},
-      //     ]
-      //     )));;
-    }
     getMrfById(id: string): Observable<Mrf> {
       // if(!this.mrfs) {
       //   console.error("Mrfs have not been loaded");
@@ -257,65 +233,4 @@ export class DataService {
       // return of(this.mrfs.find(mrf => mrf._id == id));
       return of(this.mockData[id]);
     }
-
-  	// UPDATE
-  	// addCerfToMrf(cerf: Cerf, mrfId: number) {
-  	// 	let ind = this.mrfs.findIndex(mrf => mrf._id == mrfId);
-  	// 	if(ind != -1 && this.mrfs[ind].data) {
-   //      let existing = this.mrfs[ind].data.events.find(event => event._id == cerf._id);
-  	// 		if(existing)	// If it's not part of that MRF already
-   //        existing = cerf;
-   //      else
-   //        this.mrfs[ind].data.events.push(cerf);
-   //    } // else request the data from the server
-
-   //  }
-  	// removeCerfAll(id: string) {	// Remove CERF from every MRF
-   //    if(!this.mrfs)
-   //    {
-   //      this.getCerfList().subscribe(mrfs => {
-   //        this.removeCerfAll(id);  // wow recursion
-   //      });
-   //      return;
-   //    }
-  	// 	this.mrfs.forEach(mrf => {
-  	// 		let ind = mrf.data.events.findIndex(event => event._id == id)
-  	// 		if(ind != -1 && this.mrfs[ind].data)
-  	// 			mrf.data.events.splice(ind, 1);
-   //      // else request the data from the server
-   //    });
-  	// }
-  	// removeCerf(cerfId: number, mrfId: number) {
-   //    if(!this.mrfs)
-   //    {
-   //      this.getCerfList().subscribe(mrfs => {
-   //        this.removeCerf(cerfId, mrfId);  // wow recursion
-   //      });
-   //      return;
-   //    }
-  	// 	let mrf: Mrf = this.mrfs.find(mrf => mrf._id == mrfId);
-  	// 	if(mrf) {
-  	// 		let ind = mrf.data.events.findIndex(event => event._id == cerfId)
-  	// 		if(ind != -1 && this.mrfs[ind].data)
-  	// 			mrf.data.events.splice(ind, 1);
-   //      // else request the data from the server
-   //    }
-   //  }
-   saveToClient() {
-    	this.localStorage.setItem('mrfs', this.mrfs).subscribe(() => {});  // Only called when mrfnav component is loaded, for testing purposes
-    }
-
-
-
-
-    // getCerfsFromMrf(mrfId: number): Cerf[] {
-    //   let mrf: Mrf = this.mrfs.find(mrf => mrf._id == mrfId);
-    //   let cerfs: Cerf[] = [];
-    //   if(mrf) {
-    //     mrf.data.events.forEach(event => {
-    //       this.getCerfById(event._id).subscribe(cerf => cerfs.push(cerf) );
-    //     });
-    //   }
-    //   return cerfs;
-    // }
   }

@@ -19,7 +19,7 @@ export class MrfDivisionResolver implements Resolve<Mrf[]> {
 	constructor(private dataService: DataService, private router: Router) { }
 
 	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Mrf[]> {
-		return this.dataService.getDivisionMrfs();	// get division mrfs
+		return this.dataService.getMrfList();	// get division mrfs
 	}
 }
 @Injectable( { providedIn: 'root' })

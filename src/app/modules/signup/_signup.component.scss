@@ -1,0 +1,9 @@
+.mat-raised-button:hover{
+	background-color: #1a237e;
+	color: #ffffff;
+}
+
+:host ::ng-deep .input-alert {
+	border-color: red;
+	background-color: #ffe5e5;
+}

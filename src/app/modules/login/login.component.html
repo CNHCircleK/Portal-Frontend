@@ -1,22 +1,49 @@
-<h1> Log In </h1>
+<h1>Log In </h1>
 
 <form #loginForm="ngForm">
-	<mat-form-field>
+	<div>
+		<mat-form-field>
 		<mat-label>Username</mat-label>
-		<input matInput name="Username" [(ngModel)]="username">
-	</mat-form-field>
-	<mat-form-field>
+		<input
+			required
+			matInput
+			ngModel
+			#Username= "ngModel"
+			name= "Username"
+			ng-model-options="{ getterSetter: true }"
+			placeholder= "Username">
+		</mat-form-field>
+		<div *ngIf="Username.touched && Username.invalid" class="input-alert">
+			<i class="material-icons alert-image">warning</i>
+			Username is required
+		</div>
+	</div>
+
+	<div>
+		<mat-form-field>
 		<mat-label>Password</mat-label>
-		<input matInput name="Password" [(ngModel)]="password">
-	</mat-form-field>
+		<input
+			required
+			matInput
+			ngModel
+			#Password= "ngModel"
+			name= "Password"
+			placeholder= "Password"
+			ng-model-options="{ getterSetter: true }"
+			type= "password">
+		</mat-form-field>
+		<div *ngIf="Password.touched && Password.invalid" class="input-alert">
+			<i class="material-icons alert-image">warning</i>
+			Password is required
+		</div>
+	</div>
 
-		<a class="button" mat-stroked-button (click)="login()">
-		Log In <i class="material-icons">done</i></a>
-
-	<a routerLink="/signup"><button class="button" mat-stroked-button>
-
-		Sign Up <i class="material-icons">add</i></button>
-
-	</a>
-
+	<div>
+		<button class="marginRight-10px" mat-raised-button (click)="login( Username.value , Password.value )">
+			Log In <i class="material-icons">done</i>
+		</button>
+		<a routerLink="/signup" mat-raised-button>
+			Sign Up <i class="material-icons">add</i>
+		</a>
+	</div>
 </form>

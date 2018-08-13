@@ -1,8 +1,21 @@
-a {
+a{
 	color: inherit;
 	text-decoration: none;
 }
 
-.button {
-	margin: 0 5px;
+
+
+:host ::ng-deep .marginRight-10px{
+	margin-right: 10px;
+}
+
+
+:host ::ng-deep .input-alert{
+	border-left: solid 5px;
+	padding-left: 5px;
+	margin-bottom: 10px;
+}
+
+:host ::ng-deep .alert-image{
+	vertical-align: text-bottom;
 }

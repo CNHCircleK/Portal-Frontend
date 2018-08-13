@@ -14,6 +14,7 @@ import { SidenavComponent,
 		ProfileComponent,
     ConfirmDialogComponent } from '@app/modules/';
 
+import { httpInterceptorProviders } from '@core/http-interceptors';
 import { HttpClientModule } from '@angular/common/http';
 import HttpConfig from '@env/api_config';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
@@ -50,7 +51,7 @@ export function tokenGetter() {
       }
     })
   ],
-  providers: [],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent],
   entryComponents: [ConfirmDialogComponent]
 })

@@ -1,89 +1,80 @@
 <h1> Sign Up </h1>
-<form>
+<form #signupform="ngForm">
+	<!-- WORKAROUND BUTTON MAKES THE ENTER BUTTON SUBMIT -->
+	<button type="submit" class="invisible-button" [routerLink]="['/login']"></button>
 
-	<p><mat-form-field>
-		<mat-label>Sign Up Code</mat-label>
-		<input matInput name="signupcode" required>
-	</mat-form-field>
-	<mat-form-field>
-		<mat-label>First Name</mat-label>
-		<input type="text" matInput name="firstname" required>
-	</mat-form-field>
-	<mat-form-field>
-		<mat-label>Last Name</mat-label>
-		<input type="text" matInput name="lastname" required>
-	</mat-form-field></p>
+	<div>
+		<mat-form-field>
+		<mat-label>SignUpCode</mat-label>
+		<input
+			required
+			matInput
+			ngModel
+			#SignUpCode= "ngModel"
+			name ="SignUpCode"
+			placeholder= "SignUpCode">
+		</mat-form-field>
+		<button class="marginLeft-10px" mat-raised-button>Verify</button>
+		<div *ngIf="SignUpCode.touched && SignUpCode.invalid" class="input-alert">
+			<i class="material-icons alert-image">warning</i>
+			SignUpCode is required
+		</div>
+	</div>
 
-	<p><mat-form-field>
-		<mat-label>Phone Number</mat-label>
-		<input type="phone" matInput name="phonenumber">
-	</mat-form-field>
-	<mat-form-field>
-		<mat-label>Email Address</mat-label>
-		<input type="email" matInput name="email" required>
-	</mat-form-field></p>
-
-	<p><mat-form-field>
+	<div>
+		<mat-form-field>
 		<mat-label>Username</mat-label>
-		<input type="text" matInput name="username" required="">
-	</mat-form-field>
-	<mat-form-field>
+		<input
+			required
+			matInput
+			ngModel
+			#Username= "ngModel"
+			name= "Username"
+			placeholder= "Username">
+		</mat-form-field>
+		<div *ngIf="Username.touched && Username.invalid" class="input-alert">
+			<i class="material-icons alert-image">warning</i>
+			Username is required
+		</div>
+	</div>
+
+	<div>
+		<mat-form-field>
 		<mat-label>Password</mat-label>
-		<input type="password" matInput name="password" required>
-	</mat-form-field>
-	<mat-form-field>
+		<input
+			required
+			matInput
+			ngModel
+			#Password= "ngModel"
+			name= "Password"
+			placeholder= "Password"
+			type= "password">
+		</mat-form-field>
+		<div *ngIf="Password.touched && Password.invalid" class="input-alert">
+			<i class="material-icons alert-image">warning</i>
+			Password is required
+		</div>
+	</div>
+
+	<div>
+		<mat-form-field>
 		<mat-label>Confirm Password</mat-label>
-		<input type="password" matInput name="confirmedpassword" required>
-	</mat-form-field></p>
-	<button class="button" mat-stroked-button>
+		<input
+			required
+			matInput
+			ngModel
+			#ConfirmPassword= "ngModel"
+			name= "ConfirmPassword"
+			placeholder= "ConfirmPassword"
+			type= "password">
+		</mat-form-field> 
+		<div *ngIf="ConfirmPassword.touched && ConfirmPassword.invalid" class="input-alert">
+			<i class="material-icons alert-image">warning</i>
+			Confirmed Password is required
+		</div>
+	</div>
+
+	<button mat-raised-button type="submit" [routerLink]="['/login']">
 		Submit <i class="material-icons">done</i>
 	</button>
 </form>
-<!-- <h1> Sign Up </h1>
-<form>
-	<div layout="column">
-	<div flex><mat-form-field>
-		<mat-label>Sign Up Code</mat-label>
-		<input matInput name="signupcode" required>
-	</mat-form-field></div>
-
-	<div flex><mat-form-field>
-		<mat-label>First Name</mat-label>
-		<input type="text" matInput name="firstname" required>
-	</mat-form-field></div>
-
-	<div flex><mat-form-field>
-		<mat-label>Last Name</mat-label>
-		<input type="text" matInput name="lastname" required>
-	</mat-form-field></div>
-
-	<div flex><mat-form-field>
-		<mat-label>Phone Number</mat-label>
-		<input type="phone" matInput name="phonenumber">
-	</mat-form-field></div>
-
-	<div flex><<mat-form-field>
-		<mat-label>Email Address</mat-label>
-		<input type="email" matInput name="email" required>
-	</mat-form-field></div>
-
-	<div flex><mat-form-field>
-		<mat-label>Username</mat-label>
-		<input type="text" matInput name="username" required="">
-	</mat-form-field></div>
-
-	<div flex><mat-form-field>
-		<mat-label>Password</mat-label>
-		<input type="password" matInput name="password" required>
-	</mat-form-field></div>
-
-	<div flex><mat-form-field>
-		<mat-label>Confirm Password</mat-label>
-		<input type="password" matInput name="confirmedpassword" required>
-	</mat-form-field></div>
-
-	<div flex><button class="button" mat-stroked-button>
-		Submit <i class="material-icons">done</i>
-	</button></div>
-	</div>
-</form> -->

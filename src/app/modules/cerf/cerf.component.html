@@ -83,12 +83,16 @@
 			<ng-container formGroupName="time">
 				<mat-form-field>
 					<mat-label>Start Time</mat-label>
-					<input matInput formControlName="start">
+					<input matInput [matDatepicker]="start" formControlName="start">
+					<mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
+					<mat-datepicker type="datetime" #start></mat-datepicker>
 				</mat-form-field>
 
 				<mat-form-field>
 					<mat-label>End Time</mat-label>
-					<input matInput formControlName="end">
+					<input matInput [matDatepicker]="end" formControlName="end">
+					<mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
+					<mat-datepicker type="datetime" #end></mat-datepicker>
 				</mat-form-field>
 			</ng-container>
 

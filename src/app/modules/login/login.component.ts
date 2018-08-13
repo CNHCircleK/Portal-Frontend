@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css', './_login.component.scss']
+  styleUrls: ['./login.component.css']
 })
 
 export class LoginComponent implements OnInit {
@@ -15,22 +15,12 @@ export class LoginComponent implements OnInit {
   user;
   refresh: boolean;
 
-  username: string;
-  password: string;
-
-
   ngOnInit() {
-  	this.auth.getUser().subscribe(user => this.user = user);
+    this.auth.getUser().subscribe(user => this.user = user);
   }
 
-  login()
+  login(Username, Password)
   {
-    if(this.username && this.password)
-    	this.auth.login(this.username, this.password).subscribe(res=> {
-                                              if(res)
-                                                 this.router.navigate([''])}, error=> {console.error(error); window.alert("uh oh")}, ()=> {});
-    else
-      window.alert("Enter something");
+    this.auth.login(Username, Password).subscribe(res=> { this.router.navigate(['']) }, error=>console.error(error), ()=> {});
   }
-
 }

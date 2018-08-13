@@ -1,7 +1,21 @@
-.button:hover{
 
-	background-color: #1a237e;
 
-	color: #ffffff;
+:host ::ng-deep .input-alert{
+	border-left: solid 5px;
+	padding-left: 5px;
+	margin-bottom: 10px;
+}
 
+:host ::ng-deep .marginLeft-10px{
+	margin-left: 10px;
+}
+
+:host ::ng-deep .alert-image{
+	vertical-align: text-bottom;
+}
+
+:host ::ng-deep .invisible-button{
+	background: transparent;
+	border: none !important;
+	font-size: 0;
 }

@@ -83,7 +83,7 @@ export class AuthService {
 
   public isLoggedIn(): boolean {
     let token = localStorage.getItem(tokenName);
-    return  token != null; //&& !this.helper.isTokenExpired(token);
+    return token != null && !this.helper.isTokenExpired(token);
   }
 
   public getUser(refresh?: boolean): Observable<Member> {
