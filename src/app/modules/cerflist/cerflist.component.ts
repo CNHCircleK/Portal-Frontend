@@ -1,7 +1,7 @@
 import { Component, ViewChild, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource, MatSortable } from '@angular/material';
 
 import { Observable } from 'rxjs';
 import { DataService } from '@core/data/data.service';
@@ -14,13 +14,13 @@ import { Cerf } from '@core/data/cerf';
 })
 
 export class CerfListComponent {
-	displayedColumns = ["event_name", "search"];	// Add "status" to display notification of status
+	displayedColumns = ["event_name", "time.start", "search"];	// Add "status" to display notification of status
 	list: MatTableDataSource<Cerf>;
 
 	@ViewChild(MatPaginator) paginator: MatPaginator;
   	@ViewChild(MatSort) sort: MatSort;
 
-  	@Input() mrfId: number;	// Change some logic if viewing through an MRF
+  	@Input() pendingCerfs: boolean;	// Change some logic if viewing through an MRF
   	@Input() cerfList: Cerf[];
   	@Input() pagination: boolean;
 
@@ -29,8 +29,11 @@ export class CerfListComponent {
 	}
 
 	ngOnInit() {
-		if(this.cerfList)
+		if(this.pendingCerfs)
+			this.displayedColumns.splice(2, 0, "status");
+		if(this.cerfList) {
 			this.list = new MatTableDataSource(this.cerfList);
+		}
 		this.pagination = this.cerfList.length > 10 || this.pagination;	// even if not specified, automatically attach pagination when there's enough elements
 	}
 

@@ -86,7 +86,7 @@ $my-app-primary: mat-palette($mat-teal, 700, 100, 800);
 $my-app-accent:  mat-palette($mat-teal, 700, 100, 800);
 
 $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
-@include angular-material-theme($my-app-theme);
+/*@include angular-material-theme($my-app-theme);*/
 
 // Dark theme
 $dark-primary: mat-palette($mat-blue-grey);
@@ -95,9 +95,9 @@ $dark-warn:    mat-palette($mat-deep-orange);
 
 $dark-theme:   mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
 
-.dark-theme {
+/*.dark-theme {
   @include angular-material-theme($dark-theme);
-}
+}*/
 
 // Light theme
 $light-primary: mat-palette($mat-grey, 200, 500, 300);
@@ -106,6 +106,6 @@ $light-warn: mat-palette($mat-deep-orange, 200);
 
 $light-theme: mat-light-theme($light-primary, $light-accent, $light-warn);
 
-.light-theme {
+/*.light-theme {
   @include angular-material-theme($light-theme)
-}
+}*/

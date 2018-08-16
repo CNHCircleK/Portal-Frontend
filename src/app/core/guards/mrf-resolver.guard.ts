@@ -36,7 +36,7 @@ export class MrfResolver implements Resolve<Mrf> {
 	constructor(private dataService: DataService, private router: Router) { }
 
 	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Mrf> {
-		return this.dataService.getMrfById(route.params.id).pipe(map(mrf => {
+		return this.dataService.getMrfByDate(route.params.month, route.params.year).pipe(map(mrf => {
 				if(!mrf){
 					this.router.navigate(['/mrfs']);
 					return null;

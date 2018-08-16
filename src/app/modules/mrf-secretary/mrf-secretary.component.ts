@@ -12,14 +12,8 @@ import { DataService } from '@core/data/data.service';
 export class MrfSecretaryComponent {
 	resolvedData: Mrf[];
 	resolve;
-	list = [];
-
-	currentTab: string;	// TODO: change for a state + function to switch between months
 
 	constructor(private dataService: DataService, private router: ActivatedRoute) {
 		this.resolvedData = this.router.snapshot.data['secretaryMrfs'];
-
-		this.currentTab = "august";
-
 	}
 }

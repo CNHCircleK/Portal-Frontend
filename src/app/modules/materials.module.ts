@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 
 import { MatFormFieldModule, MatIconModule, MatCardModule, MatGridListModule, MatInputModule,
 			MatButtonModule, MatTooltipModule, MatSelectModule, MatTableModule,
-			MatSortModule, MatPaginatorModule, MatDividerModule, MatDialogModule, MatCheckboxModule } from '@angular/material';
+			MatSortModule, MatPaginatorModule, MatDividerModule, MatDialogModule, MatCheckboxModule,
+			MatProgressSpinnerModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
@@ -21,6 +22,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 		MatDividerModule,
 		MatDialogModule,
 		MatCheckboxModule,
+		MatProgressSpinnerModule,
 		BrowserAnimationsModule
 	],
 	exports: [
@@ -38,6 +40,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 		MatDividerModule,
 		MatDialogModule,
 		MatCheckboxModule,
+		MatProgressSpinnerModule,
 		BrowserAnimationsModule
 	]
 })

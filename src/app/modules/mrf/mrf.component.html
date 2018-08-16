@@ -13,6 +13,11 @@
 					<mat-icon matTooltip="Main">description</mat-icon>
 				</button>
 			</li>
+			<li [class.mat-elevation-z4]="currentTab=='events'">
+				<button mat-icon-button (click)="currentTab='events'">
+					<mat-icon matTooltip="Events">event</mat-icon>
+				</button>
+			</li>
 			<li [class.mat-elevation-z4]="currentTab=='meetings'">
 				<button mat-icon-button (click)="currentTab='meetings'">
 					<mat-icon matTooltip="Meetings">person_outline</mat-icon>
@@ -55,13 +60,18 @@
 			<mat-checkbox formControlName="newDuesPaid">New Dues Paid?</mat-checkbox>
 		</ng-container>
 
-		<h6 class="subtitle">Goals</h6>
+		<!-- <h6 class="subtitle">Goals</h6>
 		<div *ngFor="let goal of mrfForm.controls.goals.controls; let i=index">
 			<p>Goal {{i}}</p>
 			<mat-form-field>
 				<textarea matInput [formControlName]="i"></textarea>
 			</mat-form-field>
-		</div>
+		</div> -->
+	</div>
+
+	<div id="events" *ngIf="currentTab=='events'">
+		<h4 class="title">Events</h4>
+		<app-cerflist [cerfList]="cerfList" [pendingCerfs]="true"></app-cerflist>
 	</div>
 
 	<div id="meetings" *ngIf="currentTab=='meetings'">
@@ -70,22 +80,26 @@
 			<div *ngFor="let meeting of mrfForm.controls.meetings.controls; let i=index" [formGroupName]="i">
 				<h6 class="subtitle">Meeting {{i}}</h6>
 				<mat-form-field>
+					<mat-label>Date</mat-label>
+					<input matInput formControlName="date">
+				</mat-form-field>
+				<mat-form-field>
 					<mat-label>Members</mat-label>
-					<input matInput formControlName="members">
+					<input matInput formControlName="numMembers">
 				</mat-form-field>
 				<mat-form-field>
 					<mat-label>Non Club Members</mat-label>
-					<input matInput formControlName="nonHomeMembers">
+					<input matInput formControlName="numNonHomeMembers">
 				</mat-form-field>
 				<mat-form-field>
 					<mat-label>Kiwanians</mat-label>
-					<input matInput formControlName="kiwanis">
+					<input matInput formControlName="numKiwanis">
 				</mat-form-field>
 				<mat-form-field>
 					<mat-label>Guests</mat-label>
-					<input matInput formControlName="guests">
+					<input matInput formControlName="numGuests">
 				</mat-form-field>
-				<div formGroupName="advisorAttendance">
+				<div formGroupName="advisorAttended">
 					<mat-form-field>
 						<mat-label>Faculty</mat-label>
 						<input matInput formControlName="faculty">
@@ -99,7 +113,7 @@
 		</ng-container>
 	</div>
 
-	<div id="feedback" *ngIf="currentTab=='feedback'" formGroupName="feedback">
+	<div id="feedback" *ngIf="currentTab=='feedback'" formGroupName="communications">
 		<h4 class="title">Feedback</h4>
 		<ng-container formGroupName="ltg">
 			<h6 class="subtitle">LTG</h6>

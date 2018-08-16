@@ -35,17 +35,17 @@
     </ng-container> -->
 
     <!-- Club ID Column -->
-    <ng-container matColumnDef="club_id">
+    <!-- <ng-container matColumnDef="club_id">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Club ID </mat-header-cell>
       <mat-cell *matCellDef="let row">{{row.club_id}}</mat-cell>
-    </ng-container>
+    </ng-container> -->
 
 
     <!-- Action Column -->
     <ng-container matColumnDef="action">
       <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
       <mat-cell *matCellDef="let row; let i=index">
-      	<a mat-icon-button [routerLink]="['/mrf', i]"><mat-icon>open_in_new</mat-icon></a>
+      	<a mat-icon-button [routerLink]="['/mrf', row.year, row.month]"><mat-icon>open_in_new</mat-icon></a>
       	<button mat-icon-button><mat-icon>delete_outline</mat-icon></button>
       </mat-cell>
     </ng-container>

@@ -5,6 +5,7 @@ import { zip } from 'rxjs';
 import { forkJoin } from 'rxjs';
 import { LocalStorage } from '@ngx-pwa/local-storage';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import * as moment from 'moment';
 
 import { CerfData, Cerf } from './cerf';
 import { MrfData, Mrf } from './mrf';
@@ -12,6 +13,12 @@ import { MrfData, Mrf } from './mrf';
 import { AuthService } from '@core/authentication/auth.service';
 import { Member } from '@core/authentication/member';
 import HttpConfig from '@env/api_config';
+
+type response = {
+  success: boolean,
+  auth: boolean,
+  result: any    
+}
 
 @Injectable( { providedIn: 'root' } )
 export class DataService {
@@ -46,32 +53,35 @@ export class DataService {
 
     user: Member;
     cerfs: Cerf[]; nextCerfId: number;
-    mrfs: Mrf[];
+    clubCerfs: Cerf[];
+    cerfsLoaded: boolean = false;
+    clubCerfsLoaded: boolean = false;
+    mrfs: Mrf[] = [];
 
-    mockData: Mrf[] = [
-    {
-      club_id: "1", year: 2018, month: 7, status: 0, submissionTime: new Date('2018-01-01T00:00:00'), updates: { duesPaid: true, newDuesPaid: false }, goals: [],
-      meetings: [{ members: 5, nonHomeMembers: 0, kiwanis: 0, guests: 0, advisorAttendance:{ faculty: 0, kiwanis: 0 } }],
-      dcm:{ date: new Date('2018-01-01T00:00:00'), presidentAttended: false, members: 0, nextDcmDate: new Date('2018-01-01T00:00:00') },
-      feedback:{ ltg:{ message: "", contacted:{ visit: "", phone: "", email: "", newsletter: "", other: "" } }, dboard: "" },
-      kfamReport:{ completed: false }
-    },
-    {
-      club_id: "1", year: 2018, month: 6, status: 1, submissionTime: new Date('2018-01-01T00:00:00'), updates: { duesPaid: true, newDuesPaid: false }, goals: [],
-      meetings: [{ members: 5, nonHomeMembers: 0, kiwanis: 0, guests: 0, advisorAttendance:{ faculty: 0, kiwanis: 0 } }],
-      dcm:{ date: new Date('2018-01-01T00:00:00'), presidentAttended: false, members: 0, nextDcmDate: new Date('2018-01-01T00:00:00') },
-      feedback:{ ltg:{ message: "", contacted:{ visit: "", phone: "", email: "", newsletter: "", other: "" } }, dboard: "" },
-      kfamReport:{ completed: false }
-    },
-    {
-      club_id: "1", year: 2018, month: 5, status: 1, submissionTime: new Date('2018-01-01T00:00:00'), updates: { duesPaid: true, newDuesPaid: false }, goals: [],
-      meetings: [{ members: 5, nonHomeMembers: 0, kiwanis: 0, guests: 0, advisorAttendance:{ faculty: 0, kiwanis: 0 } }],
-      dcm:{ date: new Date('2018-01-01T00:00:00'), presidentAttended: false, members: 0, nextDcmDate: new Date('2018-01-01T00:00:00') },
-      feedback:{ ltg:{ message: "", contacted:{ visit: "", phone: "", email: "", newsletter: "", other: "" } }, dboard: "" },
-      kfamReport:{ completed: false }
-    }
+    // mockData: Mrf[] = [
+    // {
+    //   club_id: "1", year: 2018, month: 7, status: 0, submissionTime: new Date('2018-01-01T00:00:00'), updates: { duesPaid: true, newDuesPaid: false }, goals: [],
+    //   events: [{_id:"5b6d34784db4fd1cb035a138", name: "new", time:{start: new Date(), end: new Date()}, status: 0}], meetings: [{ members: 5, nonHomeMembers: 0, kiwanis: 0, guests: 0, advisorAttendance:{ faculty: 0, kiwanis: 0 } }],
+    //   dcm:{ date: new Date('2018-01-01T00:00:00'), presidentAttended: false, members: 0, nextDcmDate: new Date('2018-01-01T00:00:00') },
+    //   feedback:{ ltg:{ message: "", contacted:{ visit: "", phone: "", email: "", newsletter: "", other: "" } }, dboard: "" },
+    //   kfamReport:{ completed: false }
+    // },
+    // {
+    //   club_id: "1", year: 2018, month: 6, status: 1, submissionTime: new Date('2018-01-01T00:00:00'), updates: { duesPaid: true, newDuesPaid: false }, goals: [],
+    //   events: [], meetings: [{ members: 5, nonHomeMembers: 0, kiwanis: 0, guests: 0, advisorAttendance:{ faculty: 0, kiwanis: 0 } }],
+    //   dcm:{ date: new Date('2018-01-01T00:00:00'), presidentAttended: false, members: 0, nextDcmDate: new Date('2018-01-01T00:00:00') },
+    //   feedback:{ ltg:{ message: "", contacted:{ visit: "", phone: "", email: "", newsletter: "", other: "" } }, dboard: "" },
+    //   kfamReport:{ completed: false }
+    // },
+    // {
+    //   club_id: "1", year: 2018, month: 5, status: 1, submissionTime: new Date('2018-01-01T00:00:00'), updates: { duesPaid: true, newDuesPaid: false }, goals: [],
+    //   events: [], meetings: [{ members: 5, nonHomeMembers: 0, kiwanis: 0, guests: 0, advisorAttendance:{ faculty: 0, kiwanis: 0 } }],
+    //   dcm:{ date: new Date('2018-01-01T00:00:00'), presidentAttended: false, members: 0, nextDcmDate: new Date('2018-01-01T00:00:00') },
+    //   feedback:{ ltg:{ message: "", contacted:{ visit: "", phone: "", email: "", newsletter: "", other: "" } }, dboard: "" },
+    //   kfamReport:{ completed: false }
+    // }
 
-    ];
+    // ];
 
     constructor(protected localStorage: LocalStorage, private auth: AuthService, private http: HttpClient) {
       this.auth.getUser().subscribe(user => {
@@ -87,32 +97,8 @@ export class DataService {
     this.localStorage.clear().subscribe(()=>{});  // removes token also
   }
 
-	// CREATE
-  // blankCerf = (): Cerf => ({  // a factory
-  //   "_id":"new","event_name":"New Event","date":new Date(),"data": { cerf_author: "",
-  //   chair_id: "", chair_name: "", event_contact: "", event_number: "",
-  //   time: {start: new Date(), end: new Date() },
-  //   location: "",
-  //   hours_per_attendee: {service: 0, leadership: 0, fellowship: 0 },
-  //   attendees: [],
-  //   total_attendees: 0,
-  //   tags: {service: "", leadership: "", fellowship: "", miscellaneous: "", },
-  //   drivers: [],
-  //   total_drivers: 0,
-  //   total_mileageTo: 0,
-  //   total_mileageFrom: 0,
-  //   total_mileage: 0,
-  //   funds_raised: 0,
-  //   funds_spent: 0,
-  //   funds_profit: 0,
-  //   funds_usage: "",
-  //   commentary: {summary: "", strengths: "", weaknesses: "", advice: ""},
-  //   comments: [],
-  //   history: [],
-  //   status: 1
-  // }});
   blankCerf = (): Cerf => ({  // a factory
-    "_id":"new","name":"New Event",chair_id:this.user._id,club_id:this.user.club_id,division_id:this.user.division_id,
+    "_id":"new","name":"New Event",chair_id:this.user._id,author_id:this.user._id,club_id:this.user.club_id,division_id:this.user.division_id,
     time: {start: new Date(), end: new Date() },
     attendees: [],
     hoursPerAttendee: {service: 0, leadership: 0, fellowship: 0 },
@@ -126,8 +112,10 @@ export class DataService {
     status: 0
   });
 
-  newCerf(): Observable<Cerf> {
-    return of(this.blankCerf());
+
+
+  newCerf(): Cerf {
+    return this.blankCerf();
     // let newDate = new Date();
     // let endDate = new Date(); endDate.setDate(endDate.getDate() + 1);
     // let data = {
@@ -135,102 +123,170 @@ export class DataService {
     //   start: newDate,
     //   end: endDate.toISOString()
     // }
-    // return this.http.post<Cerf>(HttpConfig.baseUrl + "/events/new", data).pipe(tap(res => { console.log(res); this.cerfs.push(res)}));
+    // return this.http.post<Cerf>(HttpConfig.baseUrl + "/events/new", data).pipe(tap((res: response) => { console.log(res); this.cerfs.push(res)}));
   }
 
 	// READ/GET
-	getCerfList(refresh?: boolean): Observable<Cerf[]> {
-    if(!Array.isArray(this.cerfs) || refresh)
+	getMyCerfList(refresh?: boolean): Observable<Cerf[]> {
+    if(!this.cerfsLoaded || refresh)
     {
-      this.cerfs = [];
-      let cerfRequests: Observable<Cerf>[] = [];
-      return this.http.get(HttpConfig.baseUrl + "/clubs/" + this.user.club_id + "/mrfs/2018/08/events")
-        .pipe(tap(res=>console.log(res)),concatMap( (res: {"success": boolean, "auth": boolean, "result": {"_id": string, "status": number, "name": string}[]}) => {
-                          for(let event of res.result)
-                            cerfRequests.push(this.http.get<Cerf>(HttpConfig.baseUrl + "/events/" + event._id).pipe(tap(data => { console.log(data); this.cerfs.push(data)})));
-                          return forkJoin(cerfRequests);
-                        }
-                      )
-             )
+      this.cerfsLoaded = true;
+      return this.http.get<Cerf[]>(HttpConfig.baseUrl + '/members/' + this.user._id + '/events').pipe(
+        map( (res: {success: boolean, auth: boolean, result: Cerf[]}) => {
+          if(res.success) {
+            return res.result;
+          }
+          return [];
+        }),
+        tap(res => {
+          this.cerfs = res;
+        }));
+      // let cerfRequests: Observable<Cerf>[] = [];
+      // return this.http.get(HttpConfig.baseUrl + "/clubs/" + this.user.club_id + "/mrfs/2018/08/events")
+      //   .pipe(tap(res=>console.log(res)),concatMap( (res: {"success": boolean, "auth": boolean, "result": {"_id": string, "status": number, "name": string}[]}) => {
+      //                     for(let event of res.result)
+      //                       cerfRequests.push(this.http.get<Cerf>(HttpConfig.baseUrl + "/events/" + event._id).pipe(tap(data => { console.log(data); this.cerfs.push(data)})));
+      //                     return forkJoin(cerfRequests);
+      //                   }
+      //                 )
+      //        )
     }
     return of(this.cerfs);
   }
 
+  getMrfPendingCerfs(month: number, year: number, refresh?: boolean): Observable<Cerf[]> {
+    return this.http.get<Cerf[]>(HttpConfig.baseUrl + '/clubs/' + this.user.club_id + '/events/status/1').pipe(
+      map( (res: response) => res.success ? (res.result as Cerf[]).filter(cerf => moment(cerf.time.start).month()==month-1 && moment(cerf.time.start).year()==year) : []));
+  }
+
+  // getClubCerfList(refresh?: boolean): Observable<Cerf[]> {
+  //   if(!this.clubCerfsLoaded || refresh)
+  //   {
+  //     this.clubCerfsLoaded = true;
+  //     return this.http.get<Cerf[]>(HttpConfig.baseUrl + '/clubs/' + this.user.club_id + '/events').pipe(
+  //       tap((res: {result: Cerf[]}) => {
+  //         this.clubCerfs = res.result;
+  //       }));
+  //   }
+  //   return of(this.clubCerfs);
+  // }
+
   getCerfById(id: string, refresh?: boolean): Observable<Cerf> {
-    if(this.cerfs===undefined) {    // tried to refresh the page or something
-      console.error("Cerfs have not been loaded");
-      return of(null);
-    }
-    let existing = this.cerfs.find(cerf => cerf._id==id);
-    if(!existing){
-      console.error("Cerf with id " + id + " does not exist");
-      return of(null);
+    // if(!Array.isArray(this.cerfs)) { // refreshed or direct route access
+    //   return this.getCerfList(true).pipe(map((res: response) => {
+    //     if(res.success)
+    //     {
+    //       return this.getCerfById(id, true);
+    //     }
+    //   }));
+    // }
+    if(!this.isCerfLoaded(id) || refresh){
+      return this.http.get<Cerf>(HttpConfig.baseUrl + '/events/' + id).pipe(tap(res => {
+        if(this.cerfs)
+          this.updateOrInsertCerfLocal(res);
+      }));
     } else {
-      return this.http.get<Cerf>(HttpConfig.baseUrl + '/events/' + id).pipe(tap(res => console.log(res)));
-    } 
+      return of(this.cerfs[this.findIndexOfCerf(id)]);
+    }
   }
 
 	// UPDATE
+  updateOrInsertCerfLocal(data: Cerf): void {
+    if(!this.cerfs)
+      return;
+    const index = this.findIndexOfCerf(data._id);
+    if(index==-1) {
+      this.cerfs.push(data);
+      return;
+    }
+
+    this.cerfs[index] = data;
+  }
 	updateCerf(data: Cerf): Observable<boolean> {
     if(data._id == "new")
       return this.createNewCerf(data);
-    let index = this.cerfs.findIndex(cerf => cerf._id == data._id); // can probably store index in the CERF cerfs for easy access
+    let index = this.findIndexOfCerf(data._id);
     if(index == -1) {
       console.error("Cerf with id " + data._id + " does not exist");
       return of(false);
     } else {
-      return this.http.post<any>(HttpConfig.baseUrl + "/events/" + data._id + "/edit", JSON.stringify(data)).pipe(tap(res=>console.log(res)),map( res => res.success));
+      return this.http.patch(HttpConfig.baseUrl + "/events/" + data._id, data).pipe(tap(res=>{console.log(data); console.log(res);}),map((res: response) => res.success));
     }
   }
 
   createNewCerf(data: Cerf): Observable<boolean> {
-    const preData = data;
-    preData['start'] = data.time.start;
-    preData['end'] = data.time.end;
-
-    console.log(JSON.stringify(preData))
-    return this.http.post<any>(HttpConfig.baseUrl + "/events/new", JSON.stringify(preData)).pipe(tap(res=>console.log(res)),map(res => res.success)/*, tap(res => {
-      data._id = res._id;
-      this.cerfs.push(data);
-    })*/);
+    return this.http.post<any>(HttpConfig.baseUrl + "/events/new", data).pipe(tap((res: response) => {
+      if(res.result){
+        console.log(res.result);
+        this.updateOrInsertCerfLocal({...data, _id: res.result});
+        console.log({...data, _id: res.result})
+      }
+    }), map((res: response) => res.success));
   }
 
-  submitCerf(id: string) {
-    let index = this.cerfs.findIndex(cerf => cerf._id == id);
-    if(index == -1) {
-      console.error("Cerf with id " + id + " does not exist");
-      return;
-    }
+  updateCerfToPending(id: string, doSubmit: boolean) {
+    return this.http.patch(HttpConfig.baseUrl + "/events/" + id + "/submit", {submit: doSubmit}).pipe(
+      tap( (res: {success: boolean}) => {if(res.success) this.cerfs.find(cerf => cerf._id == id).status = doSubmit ? 1 : 0; }));
+  }
+  updateCerfToConfirm(id: string, doConfirm: boolean) {
+    return this.http.patch(HttpConfig.baseUrl + "/events/" + id + "/confirm", {submit: doConfirm}).pipe(
+      tap( (res: {success: boolean}) => {if(res.success) this.cerfs.find(cerf => cerf._id == id).status = doConfirm ? 2 : 1; }));
   }
 
-  	// DELETE
-  	deleteCerf(id: string) {
-  		let ind = this.cerfs.findIndex(cerf => cerf._id == id);
-  		this.cerfs.splice(ind, 1);
-    }
+	// DELETE
+	deleteCerf(id: string) {
+		let ind = this.cerfs.findIndex(cerf => cerf._id == id);
+		this.cerfs.splice(ind, 1);
+  }
 
+  private findIndexOfCerf(id: string): number {
+    if(!this.cerfs) return -1;
+    return this.cerfs.map(cerf => cerf._id).indexOf(id);
+  }
 
-
-
-
+  private isCerfLoaded(id: string): boolean {
+    if(this.findIndexOfCerf(id) == -1) return false;
+    return this.cerfs.find(cerf => cerf._id==id).chair_id != null;  // weak condition for checking if it's loaded...
+  }
 
 
     /* MRF handling */
 
   	// READ
   	getMrfList(refresh?: boolean): Observable<Mrf[]> {
-  		if(!Array.isArray(this.mrfs) || refresh)
-      {
-
+  		// if(!Array.isArray(this.mrfs) || refresh)
+    //   {
+    //     this.mrfs = this.mockData;
+    //     return of(this.mrfs);
+    //   }
+    //   return of(this.mrfs);
+      const current = moment();
+      const oldest = moment().month() > 5 ? moment().set('month', 5) : moment().subtract(1, 'year').set('month', 5);
+      let list = [];
+      while ((current > oldest || current.format('M') === oldest.format('M')) && list.length < 13) {
+        list.push({ month: current.format('M'), year: current.format('YYYY') });
+        current.subtract(1, 'month');
       }
-      return of(this.mrfs);
+
+      return of(list);
     }
-    getMrfById(id: string): Observable<Mrf> {
-      // if(!this.mrfs) {
-      //   console.error("Mrfs have not been loaded");
-      //   return of(null);
-      // }
-      // return of(this.mrfs.find(mrf => mrf._id == id));
-      return of(this.mockData[id]);
+    getMrfByDate(month: number, year: number, refresh?: boolean): Observable<Mrf> {
+      // if(!this.isMrfLoaded())
+      return this.http.get(HttpConfig.baseUrl + '/clubs/' + this.user.club_id + '/mrfs/' + year + "/" + month).pipe(
+        map( (res: response) => res.success ? res.result : null),
+        tap (res => {
+          if(!this.mrfs.find(mrf => mrf.month == res.month))
+            this.mrfs.push(res);
+        }));
     }
+
+    private findIndexOfMrf(id: string): number {
+    if(!this.mrfs) return -1;
+    return this.mrfs.map(mrf => mrf._id).indexOf(id);
+  }
+
+  private isMrfLoaded(id: string): boolean {
+    if(this.findIndexOfCerf(id) == -1) return false;
+    return this.mrfs.find(mrf => mrf._id==id).goals != null;  // weak condition for checking if it's loaded...
+  }
   }

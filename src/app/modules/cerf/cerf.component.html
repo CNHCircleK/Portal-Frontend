@@ -10,12 +10,18 @@
 			<mat-icon>delete_outline</mat-icon>
 		</a>
 
-		<button *ngIf="cerf.status==1" mat-raised-button (click)="approveCerf()">	<!-- CHANGED data.status to just status, removed mrfView -->
+		<!-- <button *ngIf="cerf.status==1" mat-raised-button (click)="approveCerf()">	CHANGED data.status to just status, removed mrfView
 			Approve
-		</button>
+		</button> -->
 
 		<button mat-raised-button [disabled]="!myForm.touched" (click)="saveCerf()">Save</button>
-		<button mat-raised-button [disabled]="!myForm.valid">Submit</button>
+		<button mat-raised-button *ngIf="cerf.status==0" [disabled]="!myForm.valid || pendingAction" (click)="submitCerf()">Submit</button>
+		<span *ngIf="cerf.status>=1 && user.access.club <= 1" matTooltip="Already approved" [matTooltipDisabled]="cerf.status != 2">
+			<button mat-raised-button  [disabled]="pendingAction || cerf.status==2" (click)="unsubmitCerf()">Unsubmit</button>
+		</span>
+		<button mat-raised-button *ngIf="cerf.status==1 && user.access.club == 2" [disabled]="pendingAction" (click)="approveCerf()">Approve</button>
+		<button mat-raised-button *ngIf="cerf.status==2 && user.access.club == 2" [disabled]="pendingAction" (click)="unapproveCerf()">Unapprove</button>
+		<mat-spinner *ngIf="pendingAction" diameter="36"></mat-spinner>
 	</div>
 
 	<nav id="cerf-tabs">
@@ -59,17 +65,18 @@
 	
 	<div id="main" *ngIf="currentTab=='main'">
 		<h4 class="title">Main</h4>
-		<mat-form-field>
+		<!-- <mat-form-field>
 			<mat-label>ID</mat-label>
-			<input matInput formControlName="_id">
-		</mat-form-field>
+			<input matInput formControlName="_id" readonly>
+		</mat-form-field> -->
 
 		<mat-form-field>
 			<mat-label>Event Name</mat-label>
-			<input matInput formControlName="name">
+			<input matInput formControlName="name" required>
 			<!-- <button mat-icon-button matSuffix *ngIf="comment" matTooltip="{{comment}}">
 				<mat-icon>chat_bubble</mat-icon>
 			</button> -->
+			<mat-error>Required</mat-error>
 		</mat-form-field>
 		<br/>
 
@@ -86,6 +93,7 @@
 					<input matInput [matDatepicker]="start" formControlName="start">
 					<mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
 					<mat-datepicker type="datetime" #start></mat-datepicker>
+					<mat-error>Invalid Time format</mat-error>
 				</mat-form-field>
 
 				<mat-form-field>
@@ -93,6 +101,7 @@
 					<input matInput [matDatepicker]="end" formControlName="end">
 					<mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
 					<mat-datepicker type="datetime" #end></mat-datepicker>
+					<mat-error>Invalid Time format</mat-error>
 				</mat-form-field>
 			</ng-container>
 

@@ -18,7 +18,9 @@ export class AuthService {
   private loggedIn: boolean = localStorage.getItem(tokenName) != null;
   public navFromMrf: boolean;
 
-  constructor(private http: HttpClient, private storage: LocalStorage, private helper: JwtHelperService) {
+  private helper: JwtHelperService;
+  constructor(private http: HttpClient, private storage: LocalStorage) {
+    this.helper = new JwtHelperService();
     if(this.isLoggedIn()) {  // persist login
       if(!this.decodeUser(localStorage.getItem(tokenName)))
         this.logout();  // logout if token is expired
@@ -83,7 +85,10 @@ export class AuthService {
 
   public isLoggedIn(): boolean {
     let token = localStorage.getItem(tokenName);
-    return token != null && !this.helper.isTokenExpired(token);
+    if (token != null && !this.helper.isTokenExpired(token))
+      return true;
+    localStorage.removeItem(tokenName);  // really feel like an is() function shouldn't be handling this
+    return false;
   }
 
   public getUser(refresh?: boolean): Observable<Member> {
@@ -109,6 +114,17 @@ export class AuthService {
     tempUser.access.district = district;
     this.storage.setItem('auth', tempUser).subscribe(()=>{});
     this.user.next(tempUser);
+  }
+
+
+  public signup(code: string, email: string, user: string, pass: string): Observable<string> {
+    let data = {
+      registration: code,
+      email: email,
+      username: user,
+      password: pass
+    }
+    return this.http.post<any>( HttpConfig.baseUrl + "/signup", data).pipe(map(res => res.token));
   }
 
 /*

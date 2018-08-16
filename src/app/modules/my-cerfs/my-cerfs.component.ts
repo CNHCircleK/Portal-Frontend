@@ -34,9 +34,7 @@ export class MyCerfsComponent {
 	}
 
 	newCerf() {
-		this.dataService.newCerf().subscribe(res => {
-			this.router.navigate(['/cerf', res._id]);
-		});
+		this.router.navigate(['/cerf', 'new']);	// Router resolver handles generating the blank template
 		//if(this.mrfView)
 			//this.dataService.addCerfToMrf(cerf, this.mrfView);
 		

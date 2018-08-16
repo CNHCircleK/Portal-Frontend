@@ -10,27 +10,30 @@ export interface Mrf2 {
 	data?: MrfData
 }
 
-export interface MrfData {
-	events: Cerf[];
-}
-
-export interface Mrf {
+export interface Mrf extends MrfData {
+	_id: string,
 	club_id: string,
+	division_id: string,
 	year: number,
 	month: number,
 	status: number,
 	submissionTime: Date,
+}
+
+export interface MrfData {
 	updates: {
 		duesPaid: boolean,
 		newDuesPaid: boolean
 	},
+	events: Cerf[],
 	goals: string[],
 	meetings: {
-		members: number,
-		nonHomeMembers: number,
-		kiwanis: number,
-		guests: number,
-		advisorAttendance:{
+		date: Date,
+		numMembers: number,
+		numNonHomeMembers: number,
+		numKiwanis: number,
+		numGuests: number,
+		advisorAttended:{
 			faculty: number,
 			kiwanis: number
 		}
@@ -43,7 +46,7 @@ export interface Mrf {
 		nextDcmDate: Date
 	},
 
-	feedback:{
+	communications:{
 		ltg:{
 			message: string,
 			contacted:{

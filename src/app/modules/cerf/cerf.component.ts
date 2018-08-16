@@ -26,6 +26,9 @@ import { Observable, zip } from 'rxjs';
 export class CerfComponent {
 	
 	editable: boolean = true;
+	pendingAction: boolean = false;
+
+	@Input() mrf: boolean = false;
 
 	tabs: string[] = ["main", "attendance", "fundraising", "drivers", "commentary"];
 	currentTab: string;
@@ -47,7 +50,7 @@ export class CerfComponent {
 	}
 
 	//id: number;
-	user: Member; read: boolean = true;
+	user: Member;
 	cerf: Cerf;
 	
 	@ViewChild(MatSort) sort;
@@ -55,16 +58,21 @@ export class CerfComponent {
 	ngOnInit() {
 		this.auth.getUser().subscribe(user => {
 			this.user = user;
-			this.read = user.access.club < 2 && this.auth.navFromMrf;
 		});
 
 		// this.members = new MatTableDataSource(this.cerf.data.attendees);
 
 		let membersControl = this.attendees;	// invoke getter
-		this.members = new MatTableDataSource(new Array(membersControl.length).map((v, index) => membersControl.at(index).value as string))
+		this.members = new MatTableDataSource(new Array(membersControl.length).map((v, index) => membersControl.at(index).value as string));
 		
+		if((this.cerf.status >= 1 && this.user.access.club <= 1) || (this.cerf.status == 2) ||
+			(this.user._id != this.cerf.author_id && this.user.access.club != 2))
+			this.editable = false;
 	}
 	ngAfterViewInit() {
+		if(!this.editable) {
+			this.myForm.disable();
+		}
 		this.members.sort = this.sort;
 	}
 
@@ -94,7 +102,7 @@ export class CerfComponent {
 
 	saveCerf() {
 		// this.cerf.data.attendees = this.members.data;
-		this.dataService.updateCerf(this.getCerfFromForm()).subscribe(res => { console.log(res)} );
+		this.dataService.updateCerf(this.getCerfFromForm()).subscribe(res => {this.myForm.markAsPristine();});
 	}
 
 	deleteCerf() {
@@ -113,14 +121,68 @@ export class CerfComponent {
 	}
 
 	submitCerf() {
-		this.dataService.submitCerf(this.cerf._id);
+		this.pendingAction = true;
+		this.myForm.disable();
+		this.dataService.updateCerfToPending(this.cerf._id, true).subscribe(res => {
+			this.cerf.status = 1;
+			this.pendingAction = false;
+		},
+		error => {
+			console.log(error);
+			window.alert("Failed Submitting!");
+			this.pendingAction = false;
+			this.myForm.enable();
+		},
+		() => {});
+	}
 
+	unsubmitCerf() {
+		this.pendingAction = true;
+		this.myForm.disable();
+		this.dataService.updateCerfToPending(this.cerf._id, false).subscribe(res => {
+			this.cerf.status = 0;
+			this.myForm.enable();
+			this.pendingAction = false;
+		},
+		error => {
+			console.log(error);
+			window.alert("Failed Unsubmitting!");
+			this.pendingAction = false;
+		},
+		() => {});
 	}
 
 	approveCerf() {
-		this.cerf.status = 0;
+		this.pendingAction = true;
+		this.myForm.disable();
+		this.dataService.updateCerfToConfirm(this.cerf._id, true).subscribe(res => {
+			this.cerf.status = 2;
+			this.pendingAction = false;
+		},
+		error => {
+			console.log(error);
+			window.alert("Failed Approving!");
+			this.pendingAction = false;
+			this.myForm.enable();
+		},
+		() => {});
 	}
 
+	unapproveCerf() {
+		this.pendingAction = true;
+		this.myForm.disable();
+		this.dataService.updateCerfToConfirm(this.cerf._id, false).subscribe(res => {
+			this.cerf.status = 1;
+			this.myForm.enable();
+			this.pendingAction = false;
+		},
+		error => {
+			console.log(error);
+			window.alert("Failed Unapproving!");
+			this.pendingAction = false;
+		},
+		() => {});
+	}
 
 	get attendees() {
 		return (this.myForm.controls['attendees'] as FormArray);
@@ -132,6 +194,7 @@ export class CerfComponent {
 		this.fillDefaults(model);
 		const form = this.cookData(model);
 		this.setValidators(form, [
+			{ control: 'name', validator: Validators.required }
 			]);
 		return form;
 	}

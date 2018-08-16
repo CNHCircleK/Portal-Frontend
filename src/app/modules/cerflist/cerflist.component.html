@@ -6,7 +6,7 @@
   </mat-form-field>
 </div> -->
 
-<mat-table [(dataSource)]="list" matSort>
+<mat-table [(dataSource)]="list" matSort matSortActive="status" matSortDirection="desc">
 
 	<!-- CERF name Column -->
   <ng-container matColumnDef="event_name">
@@ -21,10 +21,10 @@
     </ng-container> -->
 
     <!-- Name Column -->
-    <!-- <ng-container matColumnDef="time.start">
+    <ng-container matColumnDef="time.start">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Time </mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.time.start}}</mat-cell>
-    </ng-container> -->
+      <mat-cell *matCellDef="let row">{{row.time.start | date:'mediumDate'}}</mat-cell>
+    </ng-container>
 
 
     <!-- Action Column -->
@@ -38,7 +38,7 @@
 
     <!-- Status Column (MRF View Only) -->
     <ng-container matColumnDef="status">
-      <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
       <mat-cell *matCellDef="let row">
       	<mat-icon *ngIf="row.status==1">notifications</mat-icon>
       	<mat-icon *ngIf="row.status==0">notifications_none</mat-icon>

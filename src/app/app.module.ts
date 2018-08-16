@@ -17,10 +17,10 @@ import { SidenavComponent,
 import { httpInterceptorProviders } from '@core/http-interceptors';
 import { HttpClientModule } from '@angular/common/http';
 import HttpConfig from '@env/api_config';
-import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
-export function tokenGetter() {
-  return localStorage.getItem('access_token');
-}
+// import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+// export function tokenGetter() {
+//   return localStorage.getItem('access_token');
+// }
 
 @NgModule({
   declarations: [
@@ -42,14 +42,14 @@ export function tokenGetter() {
   imports: [
     BrowserModule,
     CoreModule,
-    HttpClientModule,
-    JwtModule.forRoot({
-      config: {
-        tokenGetter: tokenGetter,
-        whitelistedDomains: [HttpConfig.schemelessUrl],
-        blacklistedRoutes: []
-      }
-    })
+    HttpClientModule
+    // JwtModule.forRoot({
+    //   config: {
+    //     tokenGetter: tokenGetter,
+    //     whitelistedDomains: [HttpConfig.schemelessUrl],
+    //     blacklistedRoutes: []
+    //   }
+    // })
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent],

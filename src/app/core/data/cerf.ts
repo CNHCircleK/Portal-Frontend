@@ -5,7 +5,7 @@ export interface Cerf2 {
 	 data?: CerfData
 }
 
-export interface CerfData {
+export interface CerfData2 {
 	cerf_author?: string,	// not shown
 	chair_id: string,		// not shown
 	chair_name?: string,
@@ -79,16 +79,21 @@ export interface CerfData {
 	status: number	// Enums. not editable
 }
 
-export interface Cerf {
-	_id: string,
+export interface Cerf extends Partial<CerfData> {
+	readonly _id: string,
 	name: string,
-	chair_id: string,
-	club_id: string,
-	division_id: string,
+	status: number,
 	time: {
 		start: Date,
 		end: Date
 	}
+}
+
+export interface CerfData {
+	readonly chair_id: string,
+	readonly author_id: string,
+	readonly club_id: string,
+	readonly division_id: string,
 	attendees: string[],
 	hoursPerAttendee: {
 		service: number,
@@ -101,6 +106,5 @@ export interface Cerf {
 		fa: number,
 		kfh: number
 	}
-	tags: string[],
-	status: number
+	tags: string[]
 }

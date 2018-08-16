@@ -16,14 +16,15 @@ export class MrfComponent {
 
 	//id: number;
 	mrf: Mrf;
-	cerfs: Cerf[] = [];
+	cerfList: Cerf[];
 	mrfForm: FormGroup;
 	currentTab: string;
 
 	constructor(private route: ActivatedRoute, private dataService: DataService,
 		private _location: Location, private builder: FormBuilder) {
 		this.mrf = this.route.snapshot.data['mrf'];
-		this.mrfForm = this.cookData(this.mrf);
+		this.dataService.getMrfPendingCerfs(this.mrf.month, this.mrf.year).subscribe(res => this.cerfList = this.mrf.events.concat(res));
+		this.mrfForm = this.createMrf(this.mrf);
 		console.log(this.mrfForm);
 		this.currentTab = "main";
 	}
@@ -36,11 +37,12 @@ export class MrfComponent {
 	}
 
 
-	private createCerf(model: Mrf): FormGroup {
+	private createMrf(model: Mrf): FormGroup {
 		/* Fill in CERF with null values so we can at least create a form */
-		/* We're assuming a Cerf IS passed in (i.e. has all the non-optional properties at least */
+		/* We're assuming a Cerf IS passed in (i.e. has all the non-optional properties at least) */
 		this.fillDefaults(model);
-		const form = this.cookData(model);
+		let copyModel = JSON.parse(JSON.stringify(model));	// Cooking the data passes by reference, so nested arrays in objects are altered
+		const form = this.cookData(copyModel);
 		this.setValidators(form, [
 			]);
 		return form;
@@ -83,8 +85,8 @@ export class MrfComponent {
 	public getMrfFromForm() {
 		let rawMrf = this.mrfForm.getRawValue();
 		console.log(rawMrf);
-		Object.assign(this.mrf, rawMrf);
-		console.log(this.mrf);
+		// Object.assign(this.mrf, rawMrf);
+		// console.log(this.mrf);
 		return this.mrf;
 	}
 
