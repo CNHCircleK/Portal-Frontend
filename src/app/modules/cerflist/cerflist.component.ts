@@ -21,11 +21,28 @@ export class CerfListComponent {
   	@ViewChild(MatSort) sort: MatSort;
 
   	@Input() pendingCerfs: boolean;	// Change some logic if viewing through an MRF
-  	@Input() cerfList: Cerf[];
   	@Input() pagination: boolean;
+	@Input() cerfList: Cerf[];
+		/*
+			"_id": "5b74e046245fad079ec5ced4",
+            "name": "New Even",
+            "time": {
+                "start": "2018-08-16T02:22:57.000Z",
+                "end": "2018-08-16T02:22:57.000Z"
+            },
+            "tags": [],
+            "totals": {
+                "service": 0,
+                "leadership": 0,
+                "fellowship": 0,
+                "members": 0
+            }
+		*/
+
 
 	constructor(private dataService: DataService, private router: Router) {
 		// this.getCerfs();
+		
 	}
 
 	ngOnInit() {

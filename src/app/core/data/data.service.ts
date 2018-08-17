@@ -57,6 +57,7 @@ export class DataService {
     cerfsLoaded: boolean = false;
     clubCerfsLoaded: boolean = false;
     mrfs: Mrf[] = [];
+    members: Member[];
 
     // mockData: Mrf[] = [
     // {
@@ -84,12 +85,7 @@ export class DataService {
     // ];
 
     constructor(protected localStorage: LocalStorage, private auth: AuthService, private http: HttpClient) {
-      this.auth.getUser().subscribe(user => {
-        if(user)
-          this.user = user;
-        else
-          this.user = {_id:"1", name:"undefined", club_id:"1",division_id:"1",access: {club:0,division:0,district:0}};
-      });
+      this.auth.getUser().subscribe(user => this.user=user);
     }
 
     resetData()
@@ -112,7 +108,13 @@ export class DataService {
     status: 0
   });
 
-
+  logoutData() {
+    this.cerfs = null;
+    this.clubCerfs = null;
+    this.cerfsLoaded = false; this.clubCerfsLoaded = false;
+    this.mrfs = [];
+    this.auth.getUser().subscribe(user => this.user=user);
+  }
 
   newCerf(): Cerf {
     return this.blankCerf();
@@ -191,7 +193,7 @@ export class DataService {
   }
 
 	// UPDATE
-  updateOrInsertCerfLocal(data: Cerf): void {
+  private updateOrInsertCerfLocal(data: Cerf): void {
     if(!this.cerfs)
       return;
     const index = this.findIndexOfCerf(data._id);
@@ -202,7 +204,7 @@ export class DataService {
 
     this.cerfs[index] = data;
   }
-	updateCerf(data: Cerf): Observable<boolean> {
+  updateCerf(data: Cerf): Observable<boolean> {
     if(data._id == "new")
       return this.createNewCerf(data);
     let index = this.findIndexOfCerf(data._id);
@@ -210,33 +212,38 @@ export class DataService {
       console.error("Cerf with id " + data._id + " does not exist");
       return of(false);
     } else {
-      return this.http.patch(HttpConfig.baseUrl + "/events/" + data._id, data).pipe(tap(res=>{console.log(data); console.log(res);}),map((res: response) => res.success));
+      return this.http.patch(HttpConfig.baseUrl + "/events/" + data._id, data).pipe(map((res: response) => res.success));
     }
   }
 
   createNewCerf(data: Cerf): Observable<boolean> {
     return this.http.post<any>(HttpConfig.baseUrl + "/events/new", data).pipe(tap((res: response) => {
       if(res.result){
-        console.log(res.result);
         this.updateOrInsertCerfLocal({...data, _id: res.result});
-        console.log({...data, _id: res.result})
       }
     }), map((res: response) => res.success));
   }
 
   updateCerfToPending(id: string, doSubmit: boolean) {
     return this.http.patch(HttpConfig.baseUrl + "/events/" + id + "/submit", {submit: doSubmit}).pipe(
-      tap( (res: {success: boolean}) => {if(res.success) this.cerfs.find(cerf => cerf._id == id).status = doSubmit ? 1 : 0; }));
+      map( (res: response) => res.success),
+      tap( res => {if(res && this.isCerfLoaded(id)) this.cerfs[this.findIndexOfCerf(id)].status = doSubmit ? 1 : 0; }));
   }
   updateCerfToConfirm(id: string, doConfirm: boolean) {
-    return this.http.patch(HttpConfig.baseUrl + "/events/" + id + "/confirm", {submit: doConfirm}).pipe(
-      tap( (res: {success: boolean}) => {if(res.success) this.cerfs.find(cerf => cerf._id == id).status = doConfirm ? 2 : 1; }));
+    return this.http.patch(HttpConfig.baseUrl + "/events/" + id + "/confirm", {confirm: doConfirm}).pipe(
+      tap( res => {if(res && this.isCerfLoaded(id)) this.cerfs[this.findIndexOfCerf(id)].status = doConfirm ? 2 : 1; }));
   }
 
 	// DELETE
 	deleteCerf(id: string) {
-		let ind = this.cerfs.findIndex(cerf => cerf._id == id);
-		this.cerfs.splice(ind, 1);
+		if(!this.isCerfLoaded(id))
+      return;
+    return this.http.delete(HttpConfig.baseUrl + "/events/" + id).pipe(
+      map( (res: response) => res.success ),
+      tap( res => {
+        if(res)
+          this.cerfs.splice(this.findIndexOfCerf(id), 1);
+      }));
   }
 
   private findIndexOfCerf(id: string): number {
@@ -250,43 +257,87 @@ export class DataService {
   }
 
 
-    /* MRF handling */
+  /* MRF handling */
 
-  	// READ
-  	getMrfList(refresh?: boolean): Observable<Mrf[]> {
+	// READ
+	getMrfList(refresh?: boolean): Observable<Mrf[]> {
   		// if(!Array.isArray(this.mrfs) || refresh)
     //   {
     //     this.mrfs = this.mockData;
     //     return of(this.mrfs);
     //   }
     //   return of(this.mrfs);
-      const current = moment();
-      const oldest = moment().month() > 5 ? moment().set('month', 5) : moment().subtract(1, 'year').set('month', 5);
-      let list = [];
-      while ((current > oldest || current.format('M') === oldest.format('M')) && list.length < 13) {
-        list.push({ month: current.format('M'), year: current.format('YYYY') });
-        current.subtract(1, 'month');
-      }
-
-      return of(list);
+    const current = moment();
+    const oldest = moment().month() > 5 ? moment().set('month', 5) : moment().subtract(1, 'year').set('month', 5);
+    let list = [];
+    while ((current > oldest || current.format('M') === oldest.format('M')) && list.length < 13) {
+      list.push({ month: current.format('M'), year: current.format('YYYY') });
+      current.subtract(1, 'month');
     }
-    getMrfByDate(month: number, year: number, refresh?: boolean): Observable<Mrf> {
-      // if(!this.isMrfLoaded())
+
+    return of(list);
+  }
+  getMrfByDate(year: number, month: number, refresh?: boolean): Observable<Mrf> {
+    if(!this.isMrfLoaded(year, month)) {
       return this.http.get(HttpConfig.baseUrl + '/clubs/' + this.user.club_id + '/mrfs/' + year + "/" + month).pipe(
         map( (res: response) => res.success ? res.result : null),
-        tap (res => {
-          if(!this.mrfs.find(mrf => mrf.month == res.month))
-            this.mrfs.push(res);
-        }));
+        tap (res => this.updateOrInsertMrfLocal(res)));
+    }
+    return of(this.mrfs[this.findIndexOfMrf(year, month)]);
+  }
+
+  private updateOrInsertMrfLocal(data: Mrf): void {
+    if(!this.mrfs)
+      return;
+    const index = this.findIndexOfMrf(data.year, data.month);
+    if(index==-1) {
+      this.mrfs.push(data);
+      return;
     }
 
-    private findIndexOfMrf(id: string): number {
-    if(!this.mrfs) return -1;
-    return this.mrfs.map(mrf => mrf._id).indexOf(id);
+    this.mrfs[index] = data;
   }
 
-  private isMrfLoaded(id: string): boolean {
-    if(this.findIndexOfCerf(id) == -1) return false;
-    return this.mrfs.find(mrf => mrf._id==id).goals != null;  // weak condition for checking if it's loaded...
+  private findIndexOfMrf(year: number, month: number): number {
+    if(!this.mrfs) return -1;
+    return this.mrfs.map(mrf => mrf.year.toString() + mrf.month).indexOf(year.toString() + month);
   }
+
+  private isMrfLoaded(year: number, month: number): boolean {
+    if(this.findIndexOfMrf(year, month) == -1) return false;
+    return this.mrfs.find(mrf => mrf.year==year && mrf.month==month).goals != null;  // weak condition for checking if it's loaded...
   }
+
+  routeThroughMrf: boolean = false;
+  set routeMrf(throughMrf: boolean) {
+    this.routeThroughMrf = throughMrf;
+  }
+  get isRouteMrf() {
+    return this.routeThroughMrf;
+  }
+
+
+
+  getMembers(refresh?: boolean) {
+    if(!Array.isArray(this.members) || refresh) {
+      return this.http.get(HttpConfig.baseUrl + "/clubs/" + this.user.club_id + "/members").pipe(
+        map( (res: response) => {
+          if(res.success) {
+            this.members = res.result.map(member => ({...member, name: member.name.first + ' ' + member.name.last}));
+          }
+          return this.members;
+        })
+      );
+    }
+    return of(this.members);
+  }
+
+  addMember(first: string, last: string, refresh?: boolean) {
+    return this.http.post(HttpConfig.baseUrl + '/clubs/' + this.user.club_id + "/members/new", {'firstName': first, 'lastName': last}).pipe(
+      map( (res: response) => res.success));
+  }
+
+
+
+
+}

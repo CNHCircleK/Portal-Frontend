@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot, NavigationEnd } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { map, take, filter, pairwise } from 'rxjs/operators';
+import { map, take, filter, pairwise, tap } from 'rxjs/operators';
 
 import { Mrf } from '@core/data/mrf';
 import { DataService } from '@core/data/data.service';
@@ -36,12 +36,13 @@ export class MrfResolver implements Resolve<Mrf> {
 	constructor(private dataService: DataService, private router: Router) { }
 
 	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Mrf> {
-		return this.dataService.getMrfByDate(route.params.month, route.params.year).pipe(map(mrf => {
+		return this.dataService.getMrfByDate(route.params.year, route.params.month).pipe(map(mrf => {
 				if(!mrf){
 					this.router.navigate(['/mrfs']);
 					return null;
 				}
 				return mrf;
-		}));
+		}),
+		tap(res => this.dataService.routeMrf = true));
 	}
 }

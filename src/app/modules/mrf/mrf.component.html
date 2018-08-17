@@ -23,6 +23,11 @@
 					<mat-icon matTooltip="Meetings">person_outline</mat-icon>
 				</button>
 			</li>
+			<li [class.mat-elevation-z4]="currentTab=='dcms'">
+				<button mat-icon-button (click)="currentTab='dcms'">
+					<mat-icon matTooltip="Dcm">map</mat-icon>
+				</button>
+			</li>
 			<li [class.mat-elevation-z4]="currentTab=='feedback'">
 				<button mat-icon-button style="color: blue" (click)="currentTab='feedback'">
 					<mat-icon matTooltip="Feedback">comment</mat-icon>
@@ -60,13 +65,15 @@
 			<mat-checkbox formControlName="newDuesPaid">New Dues Paid?</mat-checkbox>
 		</ng-container>
 
-		<!-- <h6 class="subtitle">Goals</h6>
-		<div *ngFor="let goal of mrfForm.controls.goals.controls; let i=index">
-			<p>Goal {{i}}</p>
-			<mat-form-field>
-				<textarea matInput [formControlName]="i"></textarea>
-			</mat-form-field>
-		</div> -->
+		<h6 class="subtitle">Goals</h6>
+		<ng-container formArrayName="goals">
+			<div *ngFor="let goal of mrfForm.controls.goals.controls; let i=index">
+				<p>Goal {{i}}</p>
+				<mat-form-field>
+					<textarea matInput [formControlName]="i"></textarea>
+				</mat-form-field>
+			</div>
+		</ng-container>
 	</div>
 
 	<div id="events" *ngIf="currentTab=='events'">
@@ -81,7 +88,10 @@
 				<h6 class="subtitle">Meeting {{i}}</h6>
 				<mat-form-field>
 					<mat-label>Date</mat-label>
-					<input matInput formControlName="date">
+					<input matInput [matDatepicker]="meeting" formControlName="date">	<!-- scoping -->
+					<mat-datepicker type="datetime" #meeting></mat-datepicker>
+					<mat-datepicker-toggle matSuffix [for]="meeting"></mat-datepicker-toggle>
+					<mat-error>Invalid Date Format</mat-error>
 				</mat-form-field>
 				<mat-form-field>
 					<mat-label>Members</mat-label>
@@ -110,6 +120,34 @@
 					</mat-form-field>
 				</div>
 			</div>
+		</ng-container>
+	</div>
+
+	<div id="dcms" *ngIf="currentTab=='dcms'">
+		<h4 class="title">Club Meetings</h4>
+		<ng-container formGroupName="dcm">
+			<h6 class="subtitle">Meeting {{i}}</h6>
+			<mat-form-field>
+				<mat-label>Date</mat-label>
+				<input matInput [matDatepicker]="dcmDate" formControlName="date">	<!-- scoping -->
+				<mat-datepicker type="datetime" #dcmDate></mat-datepicker>
+				<mat-datepicker-toggle matSuffix [for]="dcmDate"></mat-datepicker-toggle>
+				<mat-error>Invalid Date Format</mat-error>
+			</mat-form-field>
+			<br/>
+			<mat-checkbox formControlName="presidentAttended">President Attended?</mat-checkbox>
+			<br/>
+			<mat-form-field>
+				<mat-label>Members Attended</mat-label>
+				<input matInput type="number" formControlName="numMembers">
+			</mat-form-field>
+			<mat-form-field>
+				<mat-label>Next DCM Date</mat-label>
+				<input matInput [matDatepicker]="dcmDateNext" formControlName="nextDate">	<!-- scoping -->
+				<mat-datepicker type="datetime" #dcmDateNext></mat-datepicker>
+				<mat-datepicker-toggle matSuffix [for]="dcmDateNext"></mat-datepicker-toggle>
+				<mat-error>Invalid Date Format</mat-error>
+			</mat-form-field>
 		</ng-container>
 	</div>
 

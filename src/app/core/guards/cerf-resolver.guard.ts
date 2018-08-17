@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot, RoutesRecognized } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { map, take, filter, pairwise, catchError } from 'rxjs/operators';
+import { map, take, filter, pairwise, catchError, tap } from 'rxjs/operators';
 
 import { Cerf } from '@core/data/cerf';
 import { DataService } from '@core/data/data.service';
@@ -15,7 +15,8 @@ export class MyCerfsResolver implements Resolve<Cerf[]> {
 		return this.dataService.getMyCerfList().pipe(catchError(err => {
 			console.log("Error retrieving data");
 			return of([]);
-		}));
+		}),
+		tap(res => this.dataService.routeMrf = false));
 	}
 }
 
@@ -34,5 +35,14 @@ export class CerfResolver implements Resolve<Cerf> {
 				}
 				return cerf;
 		}));
+	}
+}
+
+@Injectable( { providedIn: 'root' })
+export class CerfNavResolver implements Resolve<boolean> {
+	constructor(private dataService: DataService, private auth: AuthService, private router: Router) { }
+
+	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+		return this.dataService.isRouteMrf;
 	}
 }

@@ -6,21 +6,21 @@
 
 		<p>Cerf ID: {{ cerf._id }}</p>
 
-		<a mat-icon-button (click)="deleteCerf()">
+		<button mat-icon-button (click)="deleteCerf()" [disabled]="pendingAction || cerf.status>=1" matTooltip="Already submitted" [matTooltipDisabled]="cerf.status == 0">
 			<mat-icon>delete_outline</mat-icon>
-		</a>
+		</button>
 
 		<!-- <button *ngIf="cerf.status==1" mat-raised-button (click)="approveCerf()">	CHANGED data.status to just status, removed mrfView
 			Approve
 		</button> -->
 
-		<button mat-raised-button [disabled]="!myForm.touched" (click)="saveCerf()">Save</button>
-		<button mat-raised-button *ngIf="cerf.status==0" [disabled]="!myForm.valid || pendingAction" (click)="submitCerf()">Submit</button>
-		<span *ngIf="cerf.status>=1 && user.access.club <= 1" matTooltip="Already approved" [matTooltipDisabled]="cerf.status != 2">
+		<button mat-raised-button [disabled]="!myForm.touched || !myForm.valid || pendingAction" (click)="saveCerf()">Save</button>
+		<button mat-raised-button *ngIf="cerf._id=='new' || cerf.status==0" [disabled]="!myForm.valid || pendingAction" (click)="submitCerf()">Submit</button>
+		<span *ngIf="cerf.status>=1 && cerf.author_id == user._id" matTooltip="Already approved" [matTooltipDisabled]="cerf.status != 2">
 			<button mat-raised-button  [disabled]="pendingAction || cerf.status==2" (click)="unsubmitCerf()">Unsubmit</button>
 		</span>
-		<button mat-raised-button *ngIf="cerf.status==1 && user.access.club == 2" [disabled]="pendingAction" (click)="approveCerf()">Approve</button>
-		<button mat-raised-button *ngIf="cerf.status==2 && user.access.club == 2" [disabled]="pendingAction" (click)="unapproveCerf()">Unapprove</button>
+		<button mat-raised-button *ngIf="cerf.status==1 && user.access.club==2" [disabled]="pendingAction" (click)="approveCerf()">Approve</button>
+		<button mat-raised-button *ngIf="cerf.status==2 && user.access.club==2" [disabled]="pendingAction" (click)="unapproveCerf()">Unapprove</button>
 		<mat-spinner *ngIf="pendingAction" diameter="36"></mat-spinner>
 	</div>
 

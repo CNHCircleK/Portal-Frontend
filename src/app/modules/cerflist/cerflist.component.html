@@ -40,8 +40,9 @@
     <ng-container matColumnDef="status">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
       <mat-cell *matCellDef="let row">
-      	<mat-icon *ngIf="row.status==1">notifications</mat-icon>
-      	<mat-icon *ngIf="row.status==0">notifications_none</mat-icon>
+        <mat-icon *ngIf="!row.status">check</mat-icon>  <!-- Only confirmed events (status==2, but not contained in data) and pending (statuss=1) exist -->
+      	<mat-icon *ngIf="row.status==1">cloud_download</mat-icon>
+      	<!-- <mat-icon *ngIf="row.status==0">notifications_none</mat-icon> -->
       </mat-cell>
     </ng-container>
 

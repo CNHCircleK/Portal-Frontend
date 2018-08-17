@@ -19,7 +19,7 @@ export class MrfListComponent {
 	@ViewChild(MatSort) sort;
 
 	@Input() mrfList: Mrf[];
-	@Input() display: string[];
+	// @Input() display: string[];
 
 	constructor(private dataService: DataService, private router: Router) {
 		
@@ -28,12 +28,10 @@ export class MrfListComponent {
 	ngOnInit() {
 		this.list = new MatTableDataSource(this.mrfList);
 		this.displayedColumns = ['month', 'year', 'action']
-		if(this.display) this.displayedColumns = this.displayedColumns.concat(this.display);
+		// if(this.display) this.displayedColumns = this.displayedColumns.concat(this.display);
 	}
 
 	ngAfterViewInit() {
-		
-		
 		this.list.paginator = this.paginator;
 		this.list.sort = this.sort;
 	}

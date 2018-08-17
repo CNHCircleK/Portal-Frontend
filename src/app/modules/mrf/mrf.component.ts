@@ -66,7 +66,12 @@ export class MrfComponent {
 	}
 
 	private  helperCookArray(arr: any[]): any[] {
-		arr.forEach((element, index, array) => array[index] = this.cookData(element));	// Dangerously infinite loop
+		arr.forEach((element, index, array) => { 
+			if(element instanceof Object)
+				array[index] = this.cookData(element);
+			else
+				array[index] = this.builder.control(element);
+		});	// Dangerously infinite loop
 		return arr;
 	}
 

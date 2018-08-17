@@ -19,6 +19,7 @@ export class SidenavComponent {
 			// {icon: 'library_books', text: 'Past MRFs'},
 			{division: "Metro", text: 'Division MRFs', route: '/divmrfs'},
 			{icon: 'library_books', text: 'District MRFs', route: '/distmrfs'},
+			{icon: 'people', text: 'Members', route: '/members'}
 		];
 	userSubject: Observable<Member>;
 	authLinks = [];
@@ -39,19 +40,20 @@ export class SidenavComponent {
 			if(user)
 			{
 				let access = user.access;
-				this.authLinks.push(this.links[0]);
-				this.authLinks.push(this.links[1]);
+				this.authLinks.push(this.links[0]); // Profile
+				this.authLinks.push(this.links[1]); // CERFs
 				if(access.club > 0)
 				{
-					this.authLinks.push(this.links[2]);
+					this.authLinks.push(this.links[2]); // MRF
+					this.authLinks.push(this.links[5]);	// Members
 				}
 				if(access.division == 1)
 				{
-					this.authLinks.push(this.links[3]);
+					this.authLinks.push(this.links[3]); // Division MRFs
 				}
 				if(access.district == 1)
 				{
-					this.authLinks.push(this.links[4]);
+					this.authLinks.push(this.links[4]); // District MRFs
 				}
 			}
 		});

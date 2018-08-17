@@ -13,6 +13,8 @@ export * from './mrf-secretary/mrf-secretary.component';
 export * from './mrf-division/mrf-division.component';
 export * from './mrf-district/mrf-district.component';
 
+export * from './members/members.component';
+
 export * from './profile/profile.component'; // make homepage instead
 export * from './confirm-dialog/confirm-dialog.component';
 

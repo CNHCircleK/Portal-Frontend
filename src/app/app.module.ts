@@ -11,6 +11,7 @@ import { SidenavComponent,
 		CerfComponent, CerfListComponent, 
 		MrfComponent, MrfListComponent,
     MyCerfsComponent, MrfSecretaryComponent, MrfDivisionComponent, MrfDistrictComponent,
+    MembersComponent, DialogNewMember,
 		ProfileComponent,
     ConfirmDialogComponent } from '@app/modules/';
 
@@ -36,6 +37,8 @@ import HttpConfig from '@env/api_config';
     MrfSecretaryComponent,
     MrfDivisionComponent,
     MrfDistrictComponent,
+    MembersComponent,
+    DialogNewMember,
     ProfileComponent,
     ConfirmDialogComponent
   ],
@@ -53,7 +56,7 @@ import HttpConfig from '@env/api_config';
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent],
-  entryComponents: [ConfirmDialogComponent]
+  entryComponents: [ConfirmDialogComponent, DialogNewMember]
 })
 export class AppModule {
 }

@@ -8,6 +8,7 @@ import { SidenavComponent,
 		MrfComponent, MrfListComponent,
     MyCerfsComponent,
 		ProfileComponent,
+    MembersComponent,
     ConfirmDialogComponent } from '@app/modules/';
 
 /* Our services */
