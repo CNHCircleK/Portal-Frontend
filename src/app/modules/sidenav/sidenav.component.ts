@@ -49,11 +49,11 @@ export class SidenavComponent {
 				}
 				if(access.division == 1)
 				{
-					this.authLinks.push(this.links[3]); // Division MRFs
+					// this.authLinks.push(this.links[3]); // Division MRFs
 				}
 				if(access.district == 1)
 				{
-					this.authLinks.push(this.links[4]); // District MRFs
+					// this.authLinks.push(this.links[4]); // District MRFs
 				}
 			}
 		});

@@ -1,24 +1,30 @@
-<nav *ngIf="userSubject | async" class="menu" [class.active]="isExpanded" #sidenav
-		(mouseover)="isExpanded = true" (mouseout)="isExpanded = false">
-	<ul>
-		<li>
-			<img src="https://cdn.frontify.com/api/screen/thumbnail/XpAQmPIeugwk-YlQmqh5IG1cjaOlgmHMP6yU-0U2RikNGjJdPLw7tzaKc0J94K2y55GA44JvKPsBo6SwSiNLhg/798">
-			<span style="padding-left: 30px;">Insert word art</span>
-		</li>
-		<li *ngFor="let link of authLinks">
-			<a [routerLink]="link.route">
-				<mat-icon *ngIf="link.icon">{{ link.icon }}</mat-icon>
-				<img *ngIf="link.division" src="/assets/Emblem_Divisional_{{link.division}}-miny.png">
-				<!-- <img *ngIf="link.division" src='https://cdn.frontify.com/api/screen/thumbnail/XpAQmPIeugwk-YlQmqh5IG1cjaOlgmHMP6yU-0U2RikNGjJdPLw7tzaKc0J94K2y55GA44JvKPsBo6SwSiNLhg/798'> -->
-				<span>{{ link.text }}</span>
-			</a>
-		</li>
+<mat-sidenav-container class="menu-container">
+	<mat-sidenav #sidenav mode="over"  class="menu" [class.active]="isExpanded" (mouseover)="isExpanded = true" (mouseout)="isExpanded = false">
+		<mat-nav-list>
+			<mat-list-item>
+				<img matListAvatar src="https://cdn.frontify.com/api/screen/thumbnail/XpAQmPIeugwk-YlQmqh5IG1cjaOlgmHMP6yU-0U2RikNGjJdPLw7tzaKc0J94K2y55GA44JvKPsBo6SwSiNLhg/798">
+			</mat-list-item>
 
-		<li style="margin-top: auto">
-			<a [routerLink]="['/']">
-				<mat-icon>settings</mat-icon>
-				<span>Settings</span>
+			<a mat-list-item *ngFor="let link of authLinks" [routerLink]="link.route" (click)="sidenav.close()">
+				<span>{{ link.text }}</span>
+				<mat-icon matListIcon *ngIf="link.icon">{{ link.icon }}</mat-icon>
 			</a>
-		</li>
-	</ul>
-</nav>
+			<a mat-list-item [routerLink]="['/']">
+				<span>Settings</span>
+				<mat-icon matListIcon>settings</mat-icon>
+			</a>
+		</mat-nav-list>
+	</mat-sidenav>
+	<mat-sidenav-content>
+		<mat-toolbar color="primary">
+			<button mat-icon-button (click)="sidenav.toggle()">
+				<mat-icon>menu</mat-icon>
+			</button>
+			<!-- <h2 class="title">MRF Portal</h2> -->
+		</mat-toolbar>
+		<div id="content">
+			<router-outlet></router-outlet>
+		</div>
+		<img id="masthead" src="https://cdn.frontify.com/api/screen/thumbnail/FHd1PlvaEqeBliTpoW9zibX7hYY6Z3QdmxeeT6H5JnKZn5PsGCyJNLzD414j3q-bIcezE3zs6-E3SrtjKk5H4w/2398">
+	</mat-sidenav-content>
+</mat-sidenav-container>

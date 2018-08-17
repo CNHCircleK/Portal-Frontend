@@ -44,6 +44,7 @@ export class CerfComponent {
 		// this.route.data.subscribe(response => this.cerf = response.cerf);
 		this.cerf = this.route.snapshot.data['cerf'];
 		this.fromMrf = this.route.snapshot.data['mrfNav'];
+		console.log("Coming from MRF ", this.fromMrf);
 		this.myForm = this.createCerf(this.cerf);
 
 		this.currentTab = "main";

@@ -13,7 +13,23 @@
     <mat-icon matSuffix>search</mat-icon>
 	</mat-form-field>
 </div>
-
+<div id="cerf-list-header">
+  <p>Club Cerfs</p>
+  <nav id="month-tabs">
+    <ul>
+      <li [class.mat-elevation-z4]="currentTab=='secretary'">
+        <button mat-button (click)="currentTab='secretary'">Show Club</button>
+      </li>
+      <li [class.mat-elevation-z4]="currentTab=='division'">
+        <button mat-button (click)="currentTab='division'">Show Division</button>
+      </li>
+      <li [class.mat-elevation-z4]="currentTab=='district'">
+        <button mat-button (click)="currentTab='district'">Show All</button>
+      </li>
+    </ul>
+  </nav>
+</div>
+<mat-paginator [pageSizeOptions]="[10, 25, 50]"></mat-paginator>
 <mat-table [dataSource]="list" matSort>
 
 	<!-- Month Column -->
@@ -63,5 +79,3 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>
-
-<mat-paginator [pageSizeOptions]="[10, 25, 50]"></mat-paginator>

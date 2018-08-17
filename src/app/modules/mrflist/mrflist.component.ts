@@ -12,6 +12,9 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 })
 
 export class MrfListComponent {
+
+	currentTab: string;
+
 	displayedColumns;
 	list: MatTableDataSource<Mrf>;
 
@@ -22,7 +25,7 @@ export class MrfListComponent {
 	// @Input() display: string[];
 
 	constructor(private dataService: DataService, private router: Router) {
-		
+		this.currentTab = 'secretary';
 	}
 
 	ngOnInit() {

@@ -183,8 +183,15 @@ export class DataService {
     //   }));
     // }
     if(!this.isCerfLoaded(id) || refresh){
-      return this.http.get<Cerf>(HttpConfig.baseUrl + '/events/' + id).pipe(tap(res => {
-        if(this.cerfs)
+      return this.http.get<any>(HttpConfig.baseUrl + '/events/' + id).pipe(
+        map( res => { 
+          if(typeof(res.success) != "undefined" && res.success===false)
+            return null;
+          else
+            return res;
+        }),
+        tap(res => {
+        if(this.cerfs && res)
           this.updateOrInsertCerfLocal(res);
       }));
     } else {

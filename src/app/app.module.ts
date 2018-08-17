@@ -15,6 +15,8 @@ import { SidenavComponent,
 		ProfileComponent,
     ConfirmDialogComponent } from '@app/modules/';
 
+import { RouteReuseStrategy } from '@angular/router';
+import { CustomReuseStrategy } from '@core/guards/reuse-strategy';
 import { httpInterceptorProviders } from '@core/http-interceptors';
 import { HttpClientModule } from '@angular/common/http';
 import HttpConfig from '@env/api_config';
@@ -54,7 +56,7 @@ import HttpConfig from '@env/api_config';
     //   }
     // })
   ],
-  providers: [httpInterceptorProviders],
+  providers: [httpInterceptorProviders, {provide: RouteReuseStrategy, useClass: CustomReuseStrategy}],
   bootstrap: [AppComponent],
   entryComponents: [ConfirmDialogComponent, DialogNewMember]
 })
