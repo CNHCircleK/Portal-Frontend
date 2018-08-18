@@ -25,7 +25,6 @@ import { Observable, zip } from 'rxjs';
 
 export class CerfComponent {
 	
-	editable: boolean = true;
 	pendingAction: boolean = false;
 	fromMrf: boolean = false;
 
@@ -56,6 +55,11 @@ export class CerfComponent {
 	
 	@ViewChild(MatSort) sort;
 
+	private get editable() {
+		return (this.cerf.status == 0 && this.cerf.author_id == this.user._id) ||
+				(this.cerf.status <= 1 && this.user.access.club == 2);
+	}
+
 	ngOnInit() {
 		this.auth.getUser().subscribe(user => {
 			this.user = user;
@@ -65,29 +69,24 @@ export class CerfComponent {
 
 		let membersControl = this.attendees;	// invoke getter
 		this.members = new MatTableDataSource(new Array(membersControl.length).map((v, index) => membersControl.at(index).value as string));
-		
-		/*
-			Readonly criteria
-				Submitted and not secretary
-				Approved (no one can edit)
-				Not submitted and not the user's event (only the user should be able to access it anyways)
-				*/
-		if((this.cerf.status >= 1 && this.user.access.club <= 1) || (this.cerf.status == 2) ||
-			(this.user._id != this.cerf.author_id && this.user.access.club != 2))
-				this.myForm.disable();
-		}
-		ngAfterViewInit() {
-			// if(!this.editable) {
-			// 	this.myForm.disable();
-			// }
-			this.members.sort = this.sort;
-		}
 
-		trackByIndex(index: number, obj: any): any {
-			return index;
+		if(!this.editable) {
+			this.myForm.disable();
 		}
+	}
 
-		addMember() {
+	ngAfterViewInit() {
+		// if(!this.editable) {
+		// 	this.myForm.disable();
+		// }
+		this.members.sort = this.sort;
+	}
+
+	trackByIndex(index: number, obj: any): any {
+		return index;
+	}
+
+	addMember() {
 		// this.cerf.data.attendees = this.members.data;
 		// this.cerf.data.attendees.push("Member " + this.cerf.data.attendees.length);
 		// this.members.data = this.cerf.data.attendees;
@@ -139,12 +138,17 @@ export class CerfComponent {
 			if(res)
 				this.cerf.status = 1;
 			this.pendingAction = false;
+			if(this.editable) {
+				this.myForm.enable();
+			}
 		},
 		error => {
 			console.log(error);
 			window.alert("Failed Submitting!");
 			this.pendingAction = false;
-			this.myForm.enable();
+			if(this.editable) {
+				this.myForm.enable();
+			}
 		},
 		() => {});
 	}
@@ -155,8 +159,10 @@ export class CerfComponent {
 		this.dataService.updateCerfToPending(this.cerf._id, false).subscribe(res => {
 			if(res)
 				this.cerf.status = 0;
-			this.myForm.enable();
 			this.pendingAction = false;
+			if(this.editable) {
+				this.myForm.enable();
+			}
 		},
 		error => {
 			console.log(error);
@@ -173,6 +179,9 @@ export class CerfComponent {
 			if(res)
 				this.cerf.status = 2;
 			this.pendingAction = false;
+			if(this.editable) {
+				this.myForm.enable();
+			}
 		},
 		error => {
 			console.log(error);
@@ -189,8 +198,10 @@ export class CerfComponent {
 		this.dataService.updateCerfToConfirm(this.cerf._id, false).subscribe(res => {
 			if(res)
 				this.cerf.status = 1;
-			this.myForm.enable();
 			this.pendingAction = false;
+			if(this.editable) {
+				this.myForm.enable();
+			}
 		},
 		error => {
 			console.log(error);

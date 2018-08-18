@@ -1,9 +1,8 @@
-<mat-sidenav-container class="menu-container">
-	<mat-sidenav #sidenav mode="over"  class="menu" [class.active]="isExpanded" (mouseover)="isExpanded = true" (mouseout)="isExpanded = false">
+<mat-sidenav-container class="menu-container" fullscreen>
+	<mat-sidenav #sidenav mode="over" class="menu">
+		<a mat-button style="height: 0; position: absolute;"></a> <!-- First anchor of list was getting highlighted. Absorb the unwanted behavior -->
 		<mat-nav-list>
-			<mat-list-item>
-				<img matListAvatar src="https://cdn.frontify.com/api/screen/thumbnail/XpAQmPIeugwk-YlQmqh5IG1cjaOlgmHMP6yU-0U2RikNGjJdPLw7tzaKc0J94K2y55GA44JvKPsBo6SwSiNLhg/798">
-			</mat-list-item>
+			<!-- <img matListAvatar src="https://cdn.frontify.com/api/screen/thumbnail/XpAQmPIeugwk-YlQmqh5IG1cjaOlgmHMP6yU-0U2RikNGjJdPLw7tzaKc0J94K2y55GA44JvKPsBo6SwSiNLhg/798"> -->
 
 			<a mat-list-item *ngFor="let link of authLinks" [routerLink]="link.route" (click)="sidenav.close()">
 				<span>{{ link.text }}</span>
@@ -15,16 +14,37 @@
 			</a>
 		</mat-nav-list>
 	</mat-sidenav>
-	<mat-sidenav-content>
-		<mat-toolbar color="primary">
-			<button mat-icon-button (click)="sidenav.toggle()">
-				<mat-icon>menu</mat-icon>
-			</button>
-			<!-- <h2 class="title">MRF Portal</h2> -->
-		</mat-toolbar>
-		<div id="content">
-			<router-outlet></router-outlet>
+	<mat-sidenav-content [class.light-theme]="isLightTheme" [class.dark-theme]="!isLightTheme" class="mat-app-background">
+		<div class="sidenav-content">
+
+			<mat-toolbar color="primary">
+				<button mat-icon-button [disableRipple]="false" [disabled]="!(userSubject | async)" (click)="sidenav.toggle()">
+					<mat-icon>menu</mat-icon>
+				</button>
+				<!-- <h2 class="title">MRF Portal</h2> -->
+				<button mat-mini-fab [disableRipple]="true" (click)="toggleTheme()"></button>
+			</mat-toolbar>
+
+
+			<div id="content">
+				<router-outlet></router-outlet>
+			</div>
+
+
+			<footer class="footer">
+				<img *ngIf="isLightTheme" id="masthead"
+				srcset="/assets/Black_Masthead.png 2398w,
+				/assets/Black_Masthead_1567x80.png 1567w"
+				sizes="(max-width: 600px) 2500px,
+				1500px" 
+				src="/assets/Black_Masthead.png">
+				<img *ngIf="!isLightTheme" id="masthead"
+				srcset="/assets/White_Masthead.png 2398w,
+				/assets/White_Masthead_1567x80.png 1567w"
+				sizes="(max-width: 600px) 2500px,
+				1500px" 
+				src="/assets/White_Masthead.png">
+			</footer>
 		</div>
-		<img id="masthead" src="https://cdn.frontify.com/api/screen/thumbnail/FHd1PlvaEqeBliTpoW9zibX7hYY6Z3QdmxeeT6H5JnKZn5PsGCyJNLzD414j3q-bIcezE3zs6-E3SrtjKk5H4w/2398">
 	</mat-sidenav-content>
 </mat-sidenav-container>

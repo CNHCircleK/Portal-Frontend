@@ -24,7 +24,12 @@
 		<mat-spinner *ngIf="pendingAction" diameter="36"></mat-spinner>
 	</div>
 
-	<nav id="cerf-tabs">
+</div>
+
+
+
+<mat-divider></mat-divider>
+<nav id="cerf-tabs">
 		<ul>
 			<li [class.mat-elevation-z4]="currentTab=='main'">
 				<button mat-icon-button style="color: green" (click)="currentTab='main'">
@@ -54,12 +59,7 @@
 		</ul>
 	</nav>
 
-</div>
-
-
-
-<mat-divider></mat-divider>
-<br/>
+<!-- <br/> -->
 
 <form [formGroup]="myForm">
 	
@@ -137,6 +137,7 @@
 				</mat-form-field>
 			</ng-container>
 			<!-- ngFor attendees -->
+			<button mat-raised-button (click)="addMember()">Add Member</button>
 			<div id="memberTable">
 				<mat-table [dataSource]="members" formArrayName="attendees">
 
@@ -152,10 +153,7 @@
 
 					<mat-header-row *matHeaderRowDef="attendanceColumns"></mat-header-row>
 					<mat-row *matRowDef="let row; columns: attendanceColumns;"></mat-row>
-
-
 				</mat-table>
-				<button mat-raised-button (click)="addMember()">Add Member</button>
 			</div>
 		</div>
 

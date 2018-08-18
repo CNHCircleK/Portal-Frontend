@@ -5,41 +5,40 @@
 		</a>
 		<p>Mrf ID: none, removing IDs | Month: {{ mrf.month }} </p>
 	</div>
-
-	<nav id="mrf-tabs">
-		<ul>
-			<li [class.mat-elevation-z4]="currentTab=='main'">
-				<button mat-icon-button style="color: green" (click)="currentTab='main'">
-					<mat-icon matTooltip="Main">description</mat-icon>
-				</button>
-			</li>
-			<li [class.mat-elevation-z4]="currentTab=='events'">
-				<button mat-icon-button (click)="currentTab='events'">
-					<mat-icon matTooltip="Events">event</mat-icon>
-				</button>
-			</li>
-			<li [class.mat-elevation-z4]="currentTab=='meetings'">
-				<button mat-icon-button (click)="currentTab='meetings'">
-					<mat-icon matTooltip="Meetings">person_outline</mat-icon>
-				</button>
-			</li>
-			<li [class.mat-elevation-z4]="currentTab=='dcms'">
-				<button mat-icon-button (click)="currentTab='dcms'">
-					<mat-icon matTooltip="Dcm">map</mat-icon>
-				</button>
-			</li>
-			<li [class.mat-elevation-z4]="currentTab=='feedback'">
-				<button mat-icon-button style="color: blue" (click)="currentTab='feedback'">
-					<mat-icon matTooltip="Feedback">comment</mat-icon>
-				</button>
-			</li>
-		</ul>
-	</nav>
-
 </div>
 
 
 <mat-divider></mat-divider>
+<nav id="mrf-tabs">
+	<ul>
+		<li [class.mat-elevation-z4]="currentTab=='main'">
+			<button mat-icon-button style="color: green" (click)="currentTab='main'">
+				<mat-icon matTooltip="Main">description</mat-icon>
+			</button>
+		</li>
+		<li [class.mat-elevation-z4]="currentTab=='events'">
+			<button mat-icon-button (click)="currentTab='events'">
+				<mat-icon matTooltip="Events">event</mat-icon>
+			</button>
+		</li>
+		<li [class.mat-elevation-z4]="currentTab=='meetings'">
+			<button mat-icon-button (click)="currentTab='meetings'">
+				<mat-icon matTooltip="Meetings">person_outline</mat-icon>
+			</button>
+		</li>
+		<li [class.mat-elevation-z4]="currentTab=='dcms'">
+			<button mat-icon-button (click)="currentTab='dcms'">
+				<mat-icon matTooltip="Dcm">map</mat-icon>
+			</button>
+		</li>
+		<li [class.mat-elevation-z4]="currentTab=='feedback'">
+			<button mat-icon-button style="color: blue" (click)="currentTab='feedback'">
+				<mat-icon matTooltip="Feedback">comment</mat-icon>
+			</button>
+		</li>
+	</ul>
+</nav>
+
 
 <form [formGroup]="mrfForm">
 
@@ -124,7 +123,7 @@
 	</div>
 
 	<div id="dcms" *ngIf="currentTab=='dcms'">
-		<h4 class="title">Club Meetings</h4>
+		<h4 class="title">DCM</h4>
 		<ng-container formGroupName="dcm">
 			<h6 class="subtitle">Meeting {{i}}</h6>
 			<mat-form-field>

@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core'
 // import {FormControl} from '@angular/forms'
+import { OverlayContainer } from '@angular/cdk/overlay';
 import { Observable } from 'rxjs';
 import { AuthService } from '@core/authentication/auth.service';
 import { Member } from '@core/authentication/member';
@@ -11,27 +12,42 @@ import { Member } from '@core/authentication/member';
 })
 
 export class SidenavComponent {
-	isExpanded=false;
+	isLightTheme: boolean = true;
+	// isExpanded=false;
 	links = [
-			{icon: 'person', text: 'Profile', route: '/', color: '#F2E18B'},
-			{icon: 'assessment', text:'CERFs', route: '/cerfs', color: '#C7D6EE'},
-			{icon: 'table_cell', text:'MRFs', route: '/mrfs', color: '#9EA374'},
-			// {icon: 'library_books', text: 'Past MRFs'},
-			{division: "Metro", text: 'Division MRFs', route: '/divmrfs'},
-			{icon: 'library_books', text: 'District MRFs', route: '/distmrfs'},
-			{icon: 'people', text: 'Members', route: '/members'}
-		];
+	{icon: 'person', text: 'Profile', route: '/', color: '#F2E18B'},
+	{icon: 'assessment', text:'CERFs', route: '/cerfs', color: '#C7D6EE'},
+	{icon: 'table_cell', text:'MRFs', route: '/mrfs', color: '#9EA374'},
+	// {icon: 'library_books', text: 'Past MRFs'},
+	{division: "Metro", text: 'Division MRFs', route: '/divmrfs'},
+	{icon: 'library_books', text: 'District MRFs', route: '/distmrfs'},
+	{icon: 'people', text: 'Members', route: '/members'}
+	];
 	userSubject: Observable<Member>;
 	authLinks = [];
 
 	// @Input() level: number = 1;
 
-	constructor(private auth: AuthService) {
+	constructor(private auth: AuthService, private overlay: OverlayContainer) {
 		this.userSubject = this.auth.getUser();
-	 }
+		this.overlay.getContainerElement().classList.add('light-theme');
+	}
 
 	ngOnInit() {
 		this.refreshView();
+	}
+
+	toggleTheme() {
+		this.isLightTheme = !this.isLightTheme;
+		if (this.overlay.getContainerElement().classList.contains("light-theme")) {
+			this.overlay.getContainerElement().classList.remove("light-theme");
+			this.overlay.getContainerElement().classList.add("dark-theme");
+		} else if (this.overlay.getContainerElement().classList.contains("dark-theme")) {
+			this.overlay.getContainerElement().classList.remove("dark-theme");
+			this.overlay.getContainerElement().classList.add("light-theme");
+		} else {
+			this.overlay.getContainerElement().classList.add("light-theme");
+		}
 	}
 
 	refreshView() {

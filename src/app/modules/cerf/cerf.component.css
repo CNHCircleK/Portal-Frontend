@@ -3,10 +3,6 @@
 	padding-right: 5px;
 }
 
-.mat-table {
-	padding-bottom: 15px;
-}
-
 /* Alignment */
 
 #cerf-header {
@@ -40,7 +36,7 @@
 }
 
 .mat-elevation-z4 {	/* Using this as an 'active tab' selector, though we can add a bit more code to separate the two */
-	border-radius: 8px 8px 0 0;
+	border-radius: 0 0 4px 4px;
 }
 
 #memberTable {
