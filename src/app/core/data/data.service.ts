@@ -191,7 +191,7 @@ export class DataService {
             return res;
         }),
         tap(res => {
-        if(this.cerfs && res)
+        if(res)
           this.updateOrInsertCerfLocal(res);
       }));
     } else {
@@ -201,8 +201,9 @@ export class DataService {
 
 	// UPDATE
   private updateOrInsertCerfLocal(data: Cerf): void {
-    if(!this.cerfs)
-      return;
+    if(!this.cerfs) {
+      this.cerfs = [data];
+    }
     const index = this.findIndexOfCerf(data._id);
     if(index==-1) {
       this.cerfs.push(data);
@@ -216,6 +217,7 @@ export class DataService {
       return this.createNewCerf(data);
     let index = this.findIndexOfCerf(data._id);
     if(index == -1) {
+      console.log(this.cerfs);
       console.error("Cerf with id " + data._id + " does not exist");
       return of(false);
     } else {

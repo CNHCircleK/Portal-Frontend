@@ -14,7 +14,7 @@ import { Cerf } from '@core/data/cerf';
 })
 
 export class CerfListComponent {
-	displayedColumns = ["event_name", "time.start", "search"];	// Add "status" to display notification of status
+	displayedColumns = ["event_name", "time.start", "color", "labels", "search"];	// Add "status" to display notification of status
 	list: MatTableDataSource<Cerf>;
 
 	@ViewChild(MatPaginator) paginator: MatPaginator;

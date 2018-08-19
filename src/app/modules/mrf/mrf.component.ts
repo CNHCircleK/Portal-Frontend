@@ -55,6 +55,8 @@ export class MrfComponent {
 
 	private cookData(model: Object): FormGroup
 	{
+		if(model instanceof FormGroup)
+			return model;
 		let formGroup: { [id: string]: AbstractControl; } = {};
 		Object.keys(model).forEach(key => {
 			formGroup[key] = 	model[key] instanceof Date ? this.builder.control(model[key]) : // making formgroups out of single Dates doesn't make sense

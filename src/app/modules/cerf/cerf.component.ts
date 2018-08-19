@@ -36,6 +36,7 @@ export class CerfComponent {
 
 	myForm: FormGroup;
 	// comment: string = "HEY";
+	color: string;
 
 	constructor(private route: ActivatedRoute, private dataService: DataService,
 		private auth: AuthService, private _location: Location, public dialog: MatDialog,
@@ -46,6 +47,7 @@ export class CerfComponent {
 		console.log("Coming from MRF ", this.fromMrf);
 		this.myForm = this.createCerf(this.cerf);
 
+		this.color = this.myForm.get("color").value;
 		this.currentTab = "main";
 	}
 
@@ -57,7 +59,7 @@ export class CerfComponent {
 
 	private get editable() {
 		return (this.cerf.status == 0 && this.cerf.author_id == this.user._id) ||
-				(this.cerf.status <= 1 && this.user.access.club == 2);
+		(this.cerf.status <= 1 && this.user.access.club == 2);
 	}
 
 	ngOnInit() {
@@ -86,6 +88,29 @@ export class CerfComponent {
 		return index;
 	}
 
+	setColor(color: string) {
+		if(this.color==color) {
+			this.color = '';
+		} else {
+			this.color = color;
+		}
+		this.myForm.patchValue({color: this.color});
+		this.myForm.markAsTouched();
+		// console.log(this.myForm);
+	}
+
+	addLabel() {
+		const labels = this.myForm.controls['labels'] as FormArray;
+		labels.controls.push(this.builder.control(""));
+		this.myForm.markAsTouched();
+	}
+
+	removeLabel(i: number) {
+		const labels = this.myForm.controls['labels'] as FormArray;
+		labels.removeAt(i);
+		this.myForm.markAsTouched();
+	}
+
 	addMember() {
 		// this.cerf.data.attendees = this.members.data;
 		// this.cerf.data.attendees.push("Member " + this.cerf.data.attendees.length);
@@ -104,6 +129,10 @@ export class CerfComponent {
 
 		this.members.data = new Array(attendees.length).map((v, index) => attendees.at(index).value as string);
 		this.myForm.markAsTouched();
+	}
+
+	get attendees() {
+		return (this.myForm.controls['attendees'] as FormArray);
 	}
 
 	saveCerf() {
@@ -211,24 +240,26 @@ export class CerfComponent {
 		() => {});
 	}
 
-	get attendees() {
-		return (this.myForm.controls['attendees'] as FormArray);
-	}
-
 	private createCerf(model: Cerf): FormGroup {
 		/* Fill in CERF with null values so we can at least create a form */
 		/* We're assuming a Cerf IS passed in (i.e. has all the non-optional properties at least */
 		this.fillDefaults(model);
-		const form = this.cookData(model);
+		let copyModel = JSON.parse(JSON.stringify(model));	// Cooking the data passes by reference, so nested arrays in objects are altered
+		const form = this.cookData(copyModel);
 		this.setValidators(form, [
 			{ control: 'name', validator: Validators.required },
 			{ control: 'hoursPerAttendee.service', validator: Validators.pattern('^[0-9]*$')}
 			]);
+		console.log(form);
 		return form;
 	}
 
 	private fillDefaults(model: Cerf): void
 	{
+		if(!model.labels)
+			model.labels = [];
+		if(!model.color)
+			model.color = "#000000";
 		// Set default values of a Partial<Cerf>
 		// if(!model.data) {
 		// 	model.data = {
@@ -333,7 +364,12 @@ export class CerfComponent {
 	}
 
 	private  helperCookArray(arr: any[]): any[] {
-		arr.forEach((element, index, array) => array[index] = this.cookData(element));	// Dangerously infinite loop
+		arr.forEach((element, index, array) => {
+			if(element instanceof Object)
+				array[index] = this.cookData(element);
+			else
+				array[index] = this.builder.control(element);
+		});	// Dangerously infinite loop
 		return arr;
 	}
 

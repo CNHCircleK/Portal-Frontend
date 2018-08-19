@@ -46,6 +46,20 @@
       </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="color">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Color</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <mat-icon *ngIf="row.color" [style.color]="row.color">color_lens</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="labels">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Labels</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <p *ngIf="row.labels" class="body-1">{{ row.labels }}</p>
+      </mat-cell>
+    </ng-container>
+
     <!-- Search Bar -->
     <ng-container matColumnDef="search">
       <mat-header-cell *matHeaderCellDef>

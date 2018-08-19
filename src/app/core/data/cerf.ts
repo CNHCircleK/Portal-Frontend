@@ -106,5 +106,7 @@ export interface CerfData {
 		fa: number,
 		kfh: number
 	}
-	tags: string[]
+	tags: string[],
+	labels: string[],
+	color: string
 }

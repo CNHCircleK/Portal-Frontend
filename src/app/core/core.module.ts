@@ -24,6 +24,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { MatDatepickerModule, MatMomentDateModule } from '@coachcare/datepicker';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 
 
@@ -39,7 +40,8 @@ import { MatDatepickerModule, MatMomentDateModule } from '@coachcare/datepicker'
     ReactiveFormsModule,
     OverlayModule,
     MatDatepickerModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    ColorPickerModule
   ],
   declarations: [
 	 
@@ -57,7 +59,8 @@ import { MatDatepickerModule, MatMomentDateModule } from '@coachcare/datepicker'
     ReactiveFormsModule,
     OverlayModule,
     MatDatepickerModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    ColorPickerModule
   ]
 })
 export class CoreModule {

@@ -6,6 +6,11 @@
 
 		<p>Cerf ID: {{ cerf._id }}</p>
 
+		<button mat-mini-fab [class.activeColor]="color=='blue'" style="background-color: blue" (click)="setColor('blue')"></button>
+		<button mat-mini-fab [class.activeColor]="color=='red'" style="background-color: red" (click)="setColor('red')"></button>
+		<button mat-mini-fab [class.activeColor]="color=='orange'" style="background-color: orange" (click)="setColor('orange')"></button>
+		<button mat-mini-fab [class.activeColor]="color=='green'" style="background-color: green" (click)="setColor('green')"></button>
+
 		<button mat-icon-button (click)="deleteCerf()" [disabled]="pendingAction || cerf.status>=1" matTooltip="Already submitted" [matTooltipDisabled]="cerf.status == 0">
 			<mat-icon>delete_outline</mat-icon>
 		</button>
@@ -15,7 +20,7 @@
 		</button> -->
 
 		<button mat-raised-button [disabled]="!myForm.touched || !myForm.valid || pendingAction" (click)="saveCerf()">Save</button>
-		<button mat-raised-button *ngIf="cerf._id=='new' || cerf.status==0" [disabled]="!myForm.valid || pendingAction" (click)="submitCerf()">Submit</button>
+		<button mat-raised-button *ngIf="cerf._id=='new' || cerf.status==0" [disabled]="!myForm.pristine || !myForm.valid || pendingAction" (click)="submitCerf()">Submit</button>
 		<span *ngIf="cerf.status>=1 && cerf.author_id == user._id" matTooltip="Already approved" [matTooltipDisabled]="cerf.status != 2">
 			<button mat-raised-button  [disabled]="pendingAction || cerf.status==2" (click)="unsubmitCerf()">Unsubmit</button>
 		</span>
@@ -30,21 +35,21 @@
 
 <mat-divider></mat-divider>
 <nav id="cerf-tabs">
-		<ul>
-			<li [class.mat-elevation-z4]="currentTab=='main'">
-				<button mat-icon-button style="color: green" (click)="currentTab='main'">
-					<mat-icon matTooltip="Main">description</mat-icon>
-				</button>
-			</li>
-			<li [class.mat-elevation-z4]="currentTab=='attendance'">
-				<button mat-icon-button (click)="currentTab='attendance'">
-					<mat-icon matTooltip="Attendance">person_outline</mat-icon>
-				</button>
-			</li>
-			<li [class.mat-elevation-z4]="currentTab=='fundraising'">
-				<button mat-icon-button style="color: green" (click)="currentTab='fundraising'">
-					<mat-icon matTooltip="Fundraising">attach_money</mat-icon>
-				</button>
+	<ul>
+		<li [class.mat-elevation-z4]="currentTab=='main'">
+			<button mat-icon-button style="color: green" (click)="currentTab='main'">
+				<mat-icon matTooltip="Main">description</mat-icon>
+			</button>
+		</li>
+		<li [class.mat-elevation-z4]="currentTab=='attendance'">
+			<button mat-icon-button (click)="currentTab='attendance'">
+				<mat-icon matTooltip="Attendance">person_outline</mat-icon>
+			</button>
+		</li>
+		<li [class.mat-elevation-z4]="currentTab=='fundraising'">
+			<button mat-icon-button style="color: green" (click)="currentTab='fundraising'">
+				<mat-icon matTooltip="Fundraising">attach_money</mat-icon>
+			</button>
 			</li><!-- 
 			<li [class.mat-elevation-z4]="currentTab=='drivers'">
 				<button mat-icon-button style="color: red" (click)="currentTab='drivers'">
@@ -59,12 +64,12 @@
 		</ul>
 	</nav>
 
-<!-- <br/> -->
+	<!-- <br/> -->
 
-<form [formGroup]="myForm">
-	
-	<div id="main" *ngIf="currentTab=='main'">
-		<h4 class="title">Main</h4>
+	<form [formGroup]="myForm">
+
+		<div id="main" *ngIf="currentTab=='main'">
+			<h4 class="title">Main</h4>
 		<!-- <mat-form-field>
 			<mat-label>ID</mat-label>
 			<input matInput formControlName="_id" readonly>
@@ -80,100 +85,118 @@
 		</mat-form-field>
 		<br/>
 
+		<mat-form-field>
+			<mat-label>Chair ID</mat-label>
+			<input matInput formControlName="chair_id">
+		</mat-form-field>
+
+		<br/>
+
+		<ng-container formGroupName="time">
 			<mat-form-field>
-				<mat-label>Chair ID</mat-label>
-				<input matInput formControlName="chair_id">
+				<mat-label>Start Time</mat-label>
+				<input matInput [matDatepicker]="start" formControlName="start">
+				<mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
+				<mat-datepicker type="datetime" #start></mat-datepicker>
+				<mat-error>Invalid Time format</mat-error>
 			</mat-form-field>
 
-			<br/>
+			<mat-form-field>
+				<mat-label>End Time</mat-label>
+				<input matInput [matDatepicker]="end" formControlName="end">
+				<mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
+				<mat-datepicker type="datetime" #end></mat-datepicker>
+				<mat-error>Invalid Time format</mat-error>
+			</mat-form-field>
+		</ng-container>
 
-			<ng-container formGroupName="time">
+		<br/>
+
+		<ng-container formGroupName="tags">
+			<mat-form-field *ngFor="let tag of tags; let i=index">
+				<mat-label>Tags</mat-label>
+				<input matInput [formControlName]="i">
+			</mat-form-field>
+		</ng-container>
+
+
+		<p class="body-1">Labels</p>
+		<button mat-raised-button (click)="addLabel()">Add Label</button>
+		<div id="labels" formArrayName="labels">
+			<ng-container *ngFor="let label of myForm.controls.labels.controls; let i=index">
+				<button mat-icon-button (click)="removeLabel(i)"> <mat-icon>cancel</mat-icon> </button>
 				<mat-form-field>
-					<mat-label>Start Time</mat-label>
-					<input matInput [matDatepicker]="start" formControlName="start">
-					<mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
-					<mat-datepicker type="datetime" #start></mat-datepicker>
-					<mat-error>Invalid Time format</mat-error>
-				</mat-form-field>
-
-				<mat-form-field>
-					<mat-label>End Time</mat-label>
-					<input matInput [matDatepicker]="end" formControlName="end">
-					<mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
-					<mat-datepicker type="datetime" #end></mat-datepicker>
-					<mat-error>Invalid Time format</mat-error>
-				</mat-form-field>
-			</ng-container>
-
-			<br/>
-
-			<ng-container formGroupName="tags">
-				<mat-form-field *ngFor="let tag of tags; let i=index">
-					<mat-label>Tags</mat-label>
 					<input matInput [formControlName]="i">
 				</mat-form-field>
 			</ng-container>
+		</div>
+
+
+		<mat-form-field floatLabel="never">
+			<mat-label>Color Label</mat-label>
+			<input matInput [value]="color" [style.color]="color" [(colorPicker)]="color" [cpOKButton]="true" [cpOKButtonClass]="'mat-button'" [cpSaveClickOutside]="false">
+		</mat-form-field>
 
 	</div>
 
-		<div id="attendance" *ngIf="currentTab=='attendance'">
+	<div id="attendance" *ngIf="currentTab=='attendance'">
 
-			<h4 class="title">Attendance</h4>
+		<h4 class="title">Attendance</h4>
 
-			<ng-container formGroupName="hoursPerAttendee">
-				<mat-form-field>
-					<mat-label>Service Hours</mat-label>
-					<input matInput formControlName="service">
-				</mat-form-field>
+		<ng-container formGroupName="hoursPerAttendee">
+			<mat-form-field>
+				<mat-label>Service Hours</mat-label>
+				<input matInput formControlName="service">
+			</mat-form-field>
 
-				<mat-form-field>
-					<mat-label>Leadership Hours</mat-label>
-					<input matInput formControlName="leadership">
-				</mat-form-field>
+			<mat-form-field>
+				<mat-label>Leadership Hours</mat-label>
+				<input matInput formControlName="leadership">
+			</mat-form-field>
 
-				<mat-form-field>
-					<mat-label>Fellowship Hours</mat-label>
-					<input matInput formControlName="fellowship">
-				</mat-form-field>
-			</ng-container>
-			<!-- ngFor attendees -->
-			<button mat-raised-button (click)="addMember()">Add Member</button>
-			<div id="memberTable">
-				<mat-table [dataSource]="members" formArrayName="attendees">
+			<mat-form-field>
+				<mat-label>Fellowship Hours</mat-label>
+				<input matInput formControlName="fellowship">
+			</mat-form-field>
+		</ng-container>
+		<!-- ngFor attendees -->
+		<button mat-raised-button (click)="addMember()">Add Member</button>
+		<div id="memberTable">
+			<mat-table [dataSource]="members" formArrayName="attendees">
 
-					<ng-container matColumnDef="members">
-						<mat-header-cell *matHeaderCellDef> Members </mat-header-cell>
-						<mat-cell *matCellDef="let member; let i=index" >
-							<button mat-icon-button (click)="removeMember(i)"> <mat-icon>cancel</mat-icon> </button>
-							<mat-form-field>
-								<input matInput [formControlName]="i" (change)="myForm.markAsTouched()"/>
-							</mat-form-field>
-						</mat-cell>
-					</ng-container>
+				<ng-container matColumnDef="members">
+					<mat-header-cell *matHeaderCellDef> Members </mat-header-cell>
+					<mat-cell *matCellDef="let member; let i=index" >
+						<button mat-icon-button (click)="removeMember(i)"> <mat-icon>cancel</mat-icon> </button>
+						<mat-form-field>
+							<input matInput [formControlName]="i" (change)="myForm.markAsTouched()"/>
+						</mat-form-field>
+					</mat-cell>
+				</ng-container>
 
-					<mat-header-row *matHeaderRowDef="attendanceColumns"></mat-header-row>
-					<mat-row *matRowDef="let row; columns: attendanceColumns;"></mat-row>
-				</mat-table>
-			</div>
+				<mat-header-row *matHeaderRowDef="attendanceColumns"></mat-header-row>
+				<mat-row *matRowDef="let row; columns: attendanceColumns;"></mat-row>
+			</mat-table>
 		</div>
+	</div>
 
-		<div id="fundraising" *ngIf="currentTab=='fundraising'" formGroupName="fundraised">
+	<div id="fundraising" *ngIf="currentTab=='fundraising'" formGroupName="fundraised">
 
-			<h4 class="title">Fundraising</h4>
+		<h4 class="title">Fundraising</h4>
 
-			<mat-form-field>
-				<mat-label>PTP</mat-label>
-				<input matInput formControlName="ptp">
-			</mat-form-field>
-			<mat-form-field>
-				<mat-label>FA</mat-label>
-				<input matInput formControlName="fa">
-			</mat-form-field>
-			<mat-form-field>
-				<mat-label>KFH</mat-label>	<!-- readonly -->
-				<input matInput formControlName="kfh">
-			</mat-form-field>
+		<mat-form-field>
+			<mat-label>PTP</mat-label>
+			<input matInput formControlName="ptp">
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>FA</mat-label>
+			<input matInput formControlName="fa">
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>KFH</mat-label>	<!-- readonly -->
+			<input matInput formControlName="kfh">
+		</mat-form-field>
 
-		</div>
+	</div>
 
 </form>

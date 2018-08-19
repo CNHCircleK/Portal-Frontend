@@ -49,6 +49,10 @@
 }
 
 
+.activeColor {
+	border: solid 2px white;
+}
+
 /* Validation/feedback */
 /*input.ng-valid[required], .ng-valid.required  {
   border-left: 5px solid #42A948;
