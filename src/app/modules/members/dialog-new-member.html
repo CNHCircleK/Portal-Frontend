@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>New Member</h2>
+<mat-dialog-content>
+	<mat-form-field>
+		<mat-label>First Name</mat-label>
+		<input matInput [(ngModel)]="first">
+	</mat-form-field>
+	<mat-form-field>
+		<mat-label>Last Name</mat-label>
+		<input matInput [(ngModel)]="last">
+	</mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+	<button mat-button mat-dialog-close>Cancel</button>
+	<button mat-button [mat-dialog-close]="{firstName: first, lastName: last}">Submit</button>
+</mat-dialog-actions>

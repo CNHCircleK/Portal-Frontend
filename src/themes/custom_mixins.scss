@@ -1,0 +1,15 @@
+@import './main_theme.scss';
+@import 'app/modules/cerflist/_cerflist.component.scss';
+@import 'app/modules/mrflist/_mrflist.component.scss';
+
+// Reference: https://stackoverflow.com/questions/45089178/how-to-get-primary-or-accent-color-of-currently-applied-theme-in-angular-materia
+
+.light-theme {
+	@include cerf-table-theme($light-theme);
+	@include mrf-table-theme($light-theme);
+}
+
+.dark-theme {
+	@include cerf-table-theme($dark-theme);
+	@include mrf-table-theme($dark-theme);
+}
