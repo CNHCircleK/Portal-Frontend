@@ -6,13 +6,22 @@ import { AppComponent } from './app.component';
 import { CoreModule } from '@core/core.module';
 
 
-import { SidenavComponent,
-    LoginComponent, SignupComponent,
-		CerfComponent, CerfListComponent, 
-		MrfComponent, MrfListComponent,
-    MyCerfsComponent, MrfSecretaryComponent, MrfDivisionComponent, MrfDistrictComponent,
-    MembersComponent, DialogNewMember,
-		ProfileComponent,
+import {
+    SidenavComponent,
+    LoginComponent,
+    SignupComponent,
+	CerfComponent,
+    CerfListComponent, 
+	MrfComponent,
+    MrfListComponent,
+    MyCerfsComponent,
+    MrfSecretaryComponent,
+    MrfDivisionComponent,
+    MrfDistrictComponent,
+    MembersComponent,
+    DialogNewMember,
+	ProfileComponent,
+    FAQsComponent,
     ConfirmDialogComponent } from '@app/modules/';
 
 import { RouteReuseStrategy } from '@angular/router';
@@ -42,6 +51,7 @@ import HttpConfig from '@env/api_config';
     MembersComponent,
     DialogNewMember,
     ProfileComponent,
+    FAQsComponent,
     ConfirmDialogComponent
   ],
   imports: [

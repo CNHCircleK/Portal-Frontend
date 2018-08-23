@@ -2,10 +2,19 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Resolve, CanActivate } from '@angular/router';
 
-import { CerfComponent, MyCerfsComponent,
-		MrfComponent, MrfSecretaryComponent, MrfDivisionComponent, MrfDistrictComponent,
-		MembersComponent,
-		ProfileComponent, LoginComponent, SignupComponent } from '@app/modules/';
+import {
+	CerfComponent,
+	MyCerfsComponent,
+	MrfComponent,
+	MrfSecretaryComponent,
+	MrfDivisionComponent,
+	MrfDistrictComponent,
+	MembersComponent,
+	ProfileComponent,
+	LoginComponent,
+	FAQsComponent,
+	SignupComponent } from '@app/modules/';
+
 import { MembersResolver } from '@core/guards/members-resolver.guard';
 import { MyCerfsResolver, CerfResolver, CerfNavResolver } from '@core/guards/cerf-resolver.guard';
 import { MrfResolver, MrfSecretaryResolver, MrfDivisionResolver, MrfDistrictResolver } from '@core/guards/mrf-resolver.guard';
@@ -20,7 +29,8 @@ const routes: Routes = [
 	{ path: 'distmrfs', component: MrfDistrictComponent, resolve: { districtMrfs: MrfDistrictResolver }, canActivate: [AuthGuard] },
 	{ path: 'members', component: MembersComponent, resolve: { members: MembersResolver}, canActivate: [AuthGuard]},
 	{ path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
-	{ path: 'signup', component: SignupComponent, canActivate: [AuthGuard] },
+	{ path: 'signup', component: SignupComponent },
+	{ path: 'faqs', component: FAQsComponent },
 	{ path: '', component: ProfileComponent, canActivate: [AuthGuard] } // DEFAULT ROUTE
 ]
 

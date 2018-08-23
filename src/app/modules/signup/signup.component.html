@@ -1,6 +1,6 @@
 <h1> Sign Up </h1>
 
-<form #validateCode="ngForm" *ngIf="!getDatabaseValidated()">
+<form #validateCode="ngForm" *ngIf="!getDatabaseValidity()">
 	<div>
 		<mat-form-field>
 		<mat-label>SignUpCode</mat-label>
@@ -24,7 +24,7 @@
 	</div>
 </form>
 
-<form #validateDatabase="ngForm" *ngIf="getCodeValidity() && !getDatabaseValidated()">
+<form #Validityatabase="ngForm" *ngIf="getCodeValidity() && !getDatabaseValidity()">
 	<p> Is this information correct? </p>
 	<div>
 		Name:
@@ -107,11 +107,11 @@
 		</span>
 	</div>
 
-	<a href="https://google.com" class="marginRight">Is this not you?</a>
-	<button mat-raised-button (click)="setDatabaseValidated()">Next</button>
+	<a [routerLink]="['/faqs']" class="marginRight">Is this not you?</a>
+	<button mat-raised-button (click)="setDatabaseValidity()">Next</button>
 </form>
 
-<form #signupForm="ngForm" *ngIf="getDatabaseValidated()">
+<form #signupForm="ngForm" *ngIf="getDatabaseValidity()">
 <div>
 		<mat-form-field>
 		<mat-label>Username</mat-label>
@@ -183,7 +183,7 @@
 		</div>
 	</div>	
 
-	<a mat-raised-button (click)="setDatabaseValidated()" class="marginRight">Back</a>
+	<a mat-raised-button (click)="setDatabaseValidity()" class="marginRight">Back</a>
 	<button mat-raised-button type="submit" [routerLink]="['/login']">
 		Submit <i class="material-icons">done</i>
 	</button>

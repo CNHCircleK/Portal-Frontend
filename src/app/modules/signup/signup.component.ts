@@ -9,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 export class SignupComponent implements OnInit {
 
   codeValidity: boolean = false;
-  databaseValidated: boolean = false;
+  databaseValidity: boolean = false;
 
   ngOnInit() { }
 
@@ -22,16 +22,16 @@ export class SignupComponent implements OnInit {
   	return this.codeValidity;
   }
 
-  setDatabaseValidated() {
-    this.databaseValidated = !this.databaseValidated;
-    console.log(this.databaseValidated);
+  setDatabaseValidity() {
+    this.databaseValidity = !this.databaseValidity;
+    console.log(this.databaseValidity);
   }
-  // Sets databaseValidated to true if user clicks next after the validation form is shown
-  // Sets databaseValidated to false if users return to the validation form
+  // Sets databaseValidity to true if user clicks next after the validation form is shown
+  // Sets databaseValidity to false if users return to the validation form
   // *If extending the sign up form to more pages consider replacing this system
 
-  getDatabaseValidated() {
-    return this.databaseValidated;
+  getDatabaseValidity() {
+    return this.databaseValidity;
   }
 
   checkCode(SignUpCode){
