@@ -1,8 +1,6 @@
 <h1> Sign Up </h1>
-<form #signupform="ngForm">
-	<!-- WORKAROUND BUTTON MAKES THE ENTER BUTTON SUBMIT -->
-	<button type="submit" class="invisible-button" [routerLink]="['/login']"></button>
 
+<form #validateCode="ngForm" *ngIf="!getDatabaseValidated()">
 	<div>
 		<mat-form-field>
 		<mat-label>SignUpCode</mat-label>
@@ -11,17 +9,110 @@
 			matInput
 			ngModel
 			#SignUpCode= "ngModel"
-			name ="SignUpCode"
-			placeholder= "SignUpCode">
+			name= "SignUpCode"
+			placeholder= "Sign Up Code">
 		</mat-form-field>
-		<button class="marginLeft-10px" mat-raised-button>Verify</button>
+		<button
+			class= "marginLeft"
+			mat-raised-button
+			(click)="checkCode( SignUpCode.value )">
+		Verify</button>
 		<div *ngIf="SignUpCode.touched && SignUpCode.invalid" class="input-alert">
 			<i class="material-icons alert-image">warning</i>
-			SignUpCode is required
+			Sign Up Code is required
 		</div>
+	</div>
+</form>
+
+<form #validateDatabase="ngForm" *ngIf="getCodeValidity() && !getDatabaseValidated()">
+	<p> Is this information correct? </p>
+	<div>
+		Name:
+		<span class="greyOut marginRight">
+			<mat-form-field>
+			<mat-label>Name</mat-label>
+			<input
+				matInput
+				ngModel
+				#Name= "ngModel"
+				name= "Name"
+				placeholder="Name"
+				readonly>
+			</mat-form-field>
+		</span>
+		<span>
+			<mat-form-field>
+			<mat-label>Name</mat-label>
+			<input
+				matInput
+				ngModel
+				#Name= "ngModel"
+				name= "Name"
+				placeholder="Name">
+			</mat-form-field>
+		</span>
 	</div>
 
 	<div>
+		School:
+		<span class="greyOut marginRight">
+			<mat-form-field>
+			<mat-label>School</mat-label>
+			<input
+				matInput
+				ngModel
+				#School= "ngModel"
+				name= "School"
+				placeholder="School"
+				readonly>
+			</mat-form-field>
+		</span>
+		<span>
+			<mat-form-field>
+			<mat-label>School</mat-label>
+			<input
+				matInput
+				ngModel
+				#School= "ngModel"
+				name= "School"
+				placeholder="School">
+			</mat-form-field>
+		</span>
+	</div>
+
+	<div>
+		Division:
+		<span class="greyOut marginRight">
+			<mat-form-field>
+			<mat-label>Division</mat-label>
+			<input
+				matInput
+				ngModel
+				#Division= "ngModel"
+				name= "Division"
+				placeholder="Division"
+				readonly>
+			</mat-form-field>
+		</span>
+		<span>
+			<mat-form-field>
+			<mat-label>Division</mat-label>
+			<input
+				matInput
+				ngModel
+				#Division= "ngModel"
+				name= "Division"
+				placeholder="Division">
+			</mat-form-field>
+		</span>
+	</div>
+
+	<a href="https://google.com" class="marginRight">Is this not you?</a>
+	<button mat-raised-button (click)="setDatabaseValidated()">Next</button>
+</form>
+
+<form #signupForm="ngForm" *ngIf="getDatabaseValidated()">
+<div>
 		<mat-form-field>
 		<mat-label>Username</mat-label>
 		<input
@@ -65,7 +156,7 @@
 			ngModel
 			#ConfirmPassword= "ngModel"
 			name= "ConfirmPassword"
-			placeholder= "ConfirmPassword"
+			placeholder= "Confirm Password"
 			type= "password">
 		</mat-form-field> 
 		<div *ngIf="ConfirmPassword.touched && ConfirmPassword.invalid" class="input-alert">
@@ -74,6 +165,25 @@
 		</div>
 	</div>
 
+	<div>
+		<mat-form-field>
+		<mat-label>Confirm Password</mat-label>
+		<input
+			required
+			matInput
+			ngModel
+			#Email= "ngModel"
+			name= "Email"
+			placeholder= "Email"
+			type= "email">
+		</mat-form-field> 
+		<div *ngIf="Email.touched && Email.invalid" class="input-alert">
+			<i class="material-icons alert-image">warning</i>
+			Email is required
+		</div>
+	</div>	
+
+	<a mat-raised-button (click)="setDatabaseValidated()" class="marginRight">Back</a>
 	<button mat-raised-button type="submit" [routerLink]="['/login']">
 		Submit <i class="material-icons">done</i>
 	</button>
