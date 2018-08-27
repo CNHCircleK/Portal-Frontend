@@ -32,7 +32,8 @@ const routes: Routes = [
 	{ path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
 	{ path: 'signup', component: SignupComponent },
 	{ path: 'faqs', component: FAQsComponent },
-	{ path: '', component: ProfileComponent, canActivate: [AuthGuard] } // DEFAULT ROUTE
+	{ path: '', component: ProfileComponent, canActivate: [AuthGuard] },
+	{ path: '**', redirectTo: ''} // DEFAULT ROUTE
 ]
 
 @NgModule({

@@ -1,31 +1,50 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<!-- <div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<mat-sidenav-container class="menu-container" fullscreen [class.light-theme]="isLightTheme" [class.dark-theme]="!isLightTheme" class="mat-app-background">
+  <mat-sidenav #sidenav mode="over" class="menu">
+    <a mat-button style="height: 0; position: absolute;"></a> <!-- First anchor of list was getting highlighted. Absorb the unwanted behavior -->
+    <mat-nav-list>
+      <!-- <img matListAvatar src="https://cdn.frontify.com/api/screen/thumbnail/XpAQmPIeugwk-YlQmqh5IG1cjaOlgmHMP6yU-0U2RikNGjJdPLw7tzaKc0J94K2y55GA44JvKPsBo6SwSiNLhg/798"> -->
 
- -->
+      <a mat-list-item *ngFor="let link of authLinks" [routerLink]="link.route" (click)="sidenav.close()">
+        <span>{{ link.text }}</span>
+        <mat-icon matListIcon *ngIf="link.icon">{{ link.icon }}</mat-icon>
+      </a>
+      <a mat-list-item [routerLink]="['/']">
+        <span>Settings</span>
+        <mat-icon matListIcon>settings</mat-icon>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content >
+    <div class="sidenav-content">
 
-<!-- <div [class.light-theme]="isThemeLight" class="mat-app-background"> -->
-  <app-sidenav></app-sidenav>
-<!-- 
-  <div class="content">
-    <router-outlet></router-outlet>
-    Display routed components here (default HomeComponent)
-  </div> -->
+      <mat-toolbar color="primary">
+        <button mat-icon-button [disableRipple]="false" [disabled]="!(userSubject | async)" (click)="sidenav.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <!-- <h2 class="title">MRF Portal</h2> -->
+        <button mat-mini-fab [disableRipple]="true" (click)="toggleTheme()"></button>
+      </mat-toolbar>
 
-<!-- </div> -->
+
+      <div id="content">
+        <router-outlet></router-outlet>
+      </div>
+
+
+      <footer class="footer">
+        <img *ngIf="isLightTheme" id="masthead"
+        srcset="/assets/Black_Masthead.png 2398w,
+        /assets/Black_Masthead_1567x80.png 1567w"
+        sizes="(max-width: 600px) 2500px,
+        1500px" 
+        src="/assets/Black_Masthead.png">
+        <img *ngIf="!isLightTheme" id="masthead"
+        srcset="/assets/White_Masthead.png 2398w,
+        /assets/White_Masthead_1567x80.png 1567w"
+        sizes="(max-width: 600px) 2500px,
+        1500px" 
+        src="/assets/White_Masthead.png">
+      </footer>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
