@@ -1,4 +1,4 @@
-<mat-sidenav-container class="menu-container" fullscreen>
+<mat-sidenav-container class="menu-container" fullscreen [class.light-theme]="isLightTheme" [class.dark-theme]="!isLightTheme" class="mat-app-background">
 	<mat-sidenav #sidenav mode="over" class="menu">
 		<a mat-button style="height: 0; position: absolute;"></a> <!-- First anchor of list was getting highlighted. Absorb the unwanted behavior -->
 		<mat-nav-list>
@@ -14,7 +14,7 @@
 			</a>
 		</mat-nav-list>
 	</mat-sidenav>
-	<mat-sidenav-content [class.light-theme]="isLightTheme" [class.dark-theme]="!isLightTheme" class="mat-app-background">
+	<mat-sidenav-content >
 		<div class="sidenav-content">
 
 			<mat-toolbar color="primary">

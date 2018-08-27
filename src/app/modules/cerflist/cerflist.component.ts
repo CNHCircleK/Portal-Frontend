@@ -18,11 +18,11 @@ export class CerfListComponent {
 	list: MatTableDataSource<Cerf>;
 
 	@ViewChild(MatPaginator) paginator: MatPaginator;
-  	@ViewChild(MatSort) sort: MatSort;
+	@ViewChild(MatSort) sort: MatSort;
 
   	@Input() pendingCerfs: boolean;	// Change some logic if viewing through an MRF
   	@Input() pagination: boolean;
-	@Input() cerfList: Cerf[];
+  	@Input() cerfList: Cerf[];
 		/*
 			"_id": "5b74e046245fad079ec5ced4",
             "name": "New Even",
@@ -37,10 +37,10 @@ export class CerfListComponent {
                 "fellowship": 0,
                 "members": 0
             }
-		*/
+            */
 
 
-	constructor(private dataService: DataService, private router: Router) {
+            constructor(private dataService: DataService, private router: Router) {
 		// this.getCerfs();
 		
 	}
@@ -50,8 +50,8 @@ export class CerfListComponent {
 			this.displayedColumns.splice(2, 0, "status");
 		if(this.cerfList) {
 			this.list = new MatTableDataSource(this.cerfList);
+			this.pagination = this.cerfList.length > 10 || this.pagination;	// even if not specified, automatically attach pagination when there's enough elements
 		}
-		this.pagination = this.cerfList.length > 10 || this.pagination;	// even if not specified, automatically attach pagination when there's enough elements
 	}
 
 	ngAfterViewInit() {

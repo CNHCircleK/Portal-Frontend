@@ -10,6 +10,7 @@ Modules used:
 	@ngx-pwa/local-storage (Angular IndexedDB implementation for client-side storage)
 	@auth0/angular-jwt (Token interceptor)
 	@coachcare/datepicker
+	ngx-color-picker
 
 
 Folder structure (src/app)

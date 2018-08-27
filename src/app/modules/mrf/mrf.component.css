@@ -35,3 +35,10 @@
 .mat-elevation-z4 {	/* Using this as an 'active tab' selector, though we can add a bit more code to separate the two */
 	border-radius: 0 0 4px 4px;
 }
+
+
+
+
+.mat-form-field {
+	padding: 0 5px;
+}

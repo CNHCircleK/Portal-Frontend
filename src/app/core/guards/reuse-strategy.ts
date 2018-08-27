@@ -13,7 +13,7 @@ interface RouteStorageObject {
     handle: DetachedRouteHandle;
 }
 
-export class CustomReuseStrategy implements RouteReuseStrategy {
+export class MrfReuseStrategy implements RouteReuseStrategy {
 	/** 
      * Object which will store RouteStorageObjects indexed by keys, which are paths (route.routeConfig.path)
      */
@@ -59,8 +59,13 @@ export class CustomReuseStrategy implements RouteReuseStrategy {
     	return false;
     }
 
+    updateEvents() {
+
+    }
+
     retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle {
     	if(!route.routeConfig || !this.storedRoutes[route.routeConfig.path]) return null;
+        console.log(this.storedRoutes[route.routeConfig.path]);
     	return this.storedRoutes[route.routeConfig.path].handle;
     }
 

@@ -23,10 +23,13 @@ export class MrfComponent {
 	constructor(private route: ActivatedRoute, private dataService: DataService,
 		private _location: Location, private builder: FormBuilder) {
 		this.mrf = this.route.snapshot.data['mrf'];
+
+		this.mrfForm = this.dataService.getMrfFormState;
+		if(!this.mrfForm)
+			this.mrfForm = this.createMrf(this.mrf);
+
 		this.dataService.getMrfPendingCerfs(this.mrf.month, this.mrf.year).subscribe(res => this.cerfList = this.mrf.events.concat(res));
-		this.mrfForm = this.createMrf(this.mrf);
-		console.log(this.mrfForm);
-		this.currentTab = "main";
+		this.currentTab = this.dataService.getMrfTabState;
 	}
 
 	ngOnInit() {
@@ -34,6 +37,8 @@ export class MrfComponent {
 		// 	this.cerfs=this.mrf.data.events;
 		// let id = this.route.snapshot.params.id;
 		// this.dataService.getMrfById(id).subscribe(mrf => this.mrf = mrf);
+
+		// console.log("init"); // Lifecycles not executed on route reuse
 	}
 
 
@@ -59,7 +64,7 @@ export class MrfComponent {
 			return model;
 		let formGroup: { [id: string]: AbstractControl; } = {};
 		Object.keys(model).forEach(key => {
-			formGroup[key] = 	model[key] instanceof Date ? this.builder.control(model[key]) : // making formgroups out of single Dates doesn't make sense
+			formGroup[key] = model[key] instanceof Date ? this.builder.control(model[key]) : // making formgroups out of single Dates doesn't make sense
 			model[key] instanceof Array ? this.builder.array(this.helperCookArray(model[key])) :
 			(model[key] instanceof Object ? this.cookData(model[key]) : this.builder.control(model[key]));
 			// Note, Arrays are objects but objects are not arrays
@@ -67,7 +72,7 @@ export class MrfComponent {
 		return this.builder.group(formGroup);
 	}
 
-	private  helperCookArray(arr: any[]): any[] {
+	private helperCookArray(arr: any[]): any[] {
 		arr.forEach((element, index, array) => { 
 			if(element instanceof Object)
 				array[index] = this.cookData(element);

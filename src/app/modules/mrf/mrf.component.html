@@ -77,7 +77,8 @@
 
 	<div id="events" *ngIf="currentTab=='events'">
 		<h4 class="title">Events</h4>
-		<app-cerflist [cerfList]="cerfList" [pendingCerfs]="true"></app-cerflist>
+		<app-cerflist *ngIf='cerfList; else loadingCerf' [cerfList]="cerfList" [pendingCerfs]="true"></app-cerflist>
+		<ng-template #loadingCerf> <mat-spinner></mat-spinner> </ng-template>
 	</div>
 
 	<div id="meetings" *ngIf="currentTab=='meetings'">
@@ -88,7 +89,7 @@
 				<mat-form-field>
 					<mat-label>Date</mat-label>
 					<input matInput [matDatepicker]="meeting" formControlName="date">	<!-- scoping -->
-					<mat-datepicker type="datetime" #meeting></mat-datepicker>
+					<mat-datepicker type="datetime" #meeting disabled="false"></mat-datepicker>
 					<mat-datepicker-toggle matSuffix [for]="meeting"></mat-datepicker-toggle>
 					<mat-error>Invalid Date Format</mat-error>
 				</mat-form-field>

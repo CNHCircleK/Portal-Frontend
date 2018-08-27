@@ -36,6 +36,7 @@ export class CerfComponent {
 
 	myForm: FormGroup;
 	// comment: string = "HEY";
+	buttonColors: string[] = ['blue', 'red', 'orange', 'green'];
 	color: string;
 
 	constructor(private route: ActivatedRoute, private dataService: DataService,

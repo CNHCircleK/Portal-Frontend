@@ -13,6 +13,7 @@ import { MrfData, Mrf } from './mrf';
 import { AuthService } from '@core/authentication/auth.service';
 import { Member } from '@core/authentication/member';
 import HttpConfig from '@env/api_config';
+import { MrfReuseStrategy } from '@core/guards/reuse-strategy';
 
 type response = {
   success: boolean,
@@ -57,6 +58,9 @@ export class DataService {
     cerfsLoaded: boolean = false;
     clubCerfsLoaded: boolean = false;
     mrfs: Mrf[] = [];
+    mrfState: Mrf;
+    mrfFormState;
+    mrfTabState: string;
     members: Member[];
 
     // mockData: Mrf[] = [
@@ -191,9 +195,9 @@ export class DataService {
             return res;
         }),
         tap(res => {
-        if(res)
-          this.updateOrInsertCerfLocal(res);
-      }));
+          if(res)
+            this.updateOrInsertCerfLocal(res);
+        }));
     } else {
       return of(this.cerfs[this.findIndexOfCerf(id)]);
     }
@@ -236,7 +240,11 @@ export class DataService {
   updateCerfToPending(id: string, doSubmit: boolean) {
     return this.http.patch(HttpConfig.baseUrl + "/events/" + id + "/submit", {submit: doSubmit}).pipe(
       map( (res: response) => res.success),
-      tap( res => {if(res && this.isCerfLoaded(id)) this.cerfs[this.findIndexOfCerf(id)].status = doSubmit ? 1 : 0; }));
+      tap( res => {
+        if(res && this.isCerfLoaded(id))
+          this.cerfs[this.findIndexOfCerf(id)].status = doSubmit ? 1 : 0; 
+        
+      }));
   }
   updateCerfToConfirm(id: string, doConfirm: boolean) {
     return this.http.patch(HttpConfig.baseUrl + "/events/" + id + "/confirm", {confirm: doConfirm}).pipe(
@@ -287,6 +295,10 @@ export class DataService {
     return of(list);
   }
   getMrfByDate(year: number, month: number, refresh?: boolean): Observable<Mrf> {
+    if(this.mrfState && this.mrfState.month == month && this.mrfState.year == year)
+    {
+      return of(this.mrfState);
+    }
     if(!this.isMrfLoaded(year, month)) {
       return this.http.get(HttpConfig.baseUrl + '/clubs/' + this.user.club_id + '/mrfs/' + year + "/" + month).pipe(
         map( (res: response) => res.success ? res.result : null),
@@ -325,6 +337,33 @@ export class DataService {
     return this.routeThroughMrf;
   }
 
+  setMrfState(component) {
+    this.mrfState = component.mrfForm.getRawValue();
+    this.mrfFormState = component.mrfForm;
+    this.mrfTabState = component.currentTab;
+  }
+
+  deleteMrfState() {
+    this.mrfState = undefined;
+    this.mrfFormState = undefined;
+    this.mrfTabState = undefined;
+  }
+
+  loadMrfState() {
+
+  }
+
+  get getMrfTabState() {
+    if(this.mrfTabState) {
+      return this.mrfTabState;
+    }
+    return "main";
+  }
+
+  get getMrfFormState() {
+    if(this.mrfFormState)
+      return this.mrfFormState;
+  }
 
 
   getMembers(refresh?: boolean) {
@@ -336,7 +375,7 @@ export class DataService {
           }
           return this.members;
         })
-      );
+        );
     }
     return of(this.members);
   }

@@ -6,10 +6,11 @@
 
 		<p>Cerf ID: {{ cerf._id }}</p>
 
-		<button mat-mini-fab [class.activeColor]="color=='blue'" style="background-color: blue" (click)="setColor('blue')"></button>
+		<button *ngFor="let buttonColor of buttonColors" [disabled]="pendingAction || cerf.status==2" mat-mini-fab [class.activeColor]="color==buttonColor" [style.background-color]="buttonColor" (click)="setColor(buttonColor)"></button>
+<!-- 		<button mat-mini-fab [class.activeColor]="color=='blue'" style="background-color: blue" (click)="setColor('blue')"></button>
 		<button mat-mini-fab [class.activeColor]="color=='red'" style="background-color: red" (click)="setColor('red')"></button>
 		<button mat-mini-fab [class.activeColor]="color=='orange'" style="background-color: orange" (click)="setColor('orange')"></button>
-		<button mat-mini-fab [class.activeColor]="color=='green'" style="background-color: green" (click)="setColor('green')"></button>
+		<button mat-mini-fab [class.activeColor]="color=='green'" style="background-color: green" (click)="setColor('green')"></button> -->
 
 		<button mat-icon-button (click)="deleteCerf()" [disabled]="pendingAction || cerf.status>=1" matTooltip="Already submitted" [matTooltipDisabled]="cerf.status == 0">
 			<mat-icon>delete_outline</mat-icon>
@@ -121,12 +122,12 @@
 
 
 		<p class="body-1">Labels</p>
-		<button mat-raised-button (click)="addLabel()">Add Label</button>
+		<button mat-raised-button [disabled]="myForm.disabled" (click)="addLabel()">Add Label</button>
 		<div id="labels" formArrayName="labels">
 			<ng-container *ngFor="let label of myForm.controls.labels.controls; let i=index">
 				<button mat-icon-button (click)="removeLabel(i)"> <mat-icon>cancel</mat-icon> </button>
 				<mat-form-field>
-					<input matInput [formControlName]="i">
+					<input matInput [disabled]="myForm.disabled" [formControlName]="i">
 				</mat-form-field>
 			</ng-container>
 		</div>
@@ -160,7 +161,7 @@
 			</mat-form-field>
 		</ng-container>
 		<!-- ngFor attendees -->
-		<button mat-raised-button (click)="addMember()">Add Member</button>
+		<button mat-raised-button [disabled]="myForm.disabled" (click)="addMember()">Add Member</button>
 		<div id="memberTable">
 			<mat-table [dataSource]="members" formArrayName="attendees">
 
