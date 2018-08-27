@@ -48,7 +48,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 		MatListModule,
 		MatToolbarModule,
 		BrowserAnimationsModule
-	]
+	],
 })
 
 export class MaterialsModule { }

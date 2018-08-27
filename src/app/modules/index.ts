@@ -2,6 +2,8 @@ export * from './sidenav/sidenav.component';
 
 export * from './login/login.component';
 export * from './signup/signup.component';
+export * from './faqs/faqs.component';
+
 
 export * from './cerf/cerf.component';
 export * from './mrf/mrf.component';
