@@ -1,8 +1,7 @@
-export * from './sidenav/sidenav.component';
-
 export * from './login/login.component';
 export * from './signup/signup.component';
 export * from './faqs/faqs.component';
+export * from './settings/settings.component';
 
 
 export * from './cerf/cerf.component';
@@ -16,6 +15,7 @@ export * from './mrf-division/mrf-division.component';
 export * from './mrf-district/mrf-district.component';
 
 export * from './members/members.component';
+export * from './clubs/clubs.component';
 
 export * from './profile/profile.component'; // make homepage instead
 export * from './confirm-dialog/confirm-dialog.component';

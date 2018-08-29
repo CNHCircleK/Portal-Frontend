@@ -39,6 +39,34 @@ export class CerfComponent {
 	buttonColors: string[] = ['blue', 'red', 'orange', 'green'];
 	color: string;
 
+	tagOptions: string[] = ['CO', 'CA', 'CS', 'DSI', 'ISI', 'AD', 'SD', 'MD', 'FR', /* ? */ 'CK', 'KF', 'IN', 'WB', 'DV', 'DE', 'INT', 'HE'];
+	tagNames: string[] = ['Community Service', 'Campus Service', 'Continuing Service', 'District Service Initiative',
+							'International Service Initiative', 'Administrative', 'Social Event', 'Membership Development', 'Fundraiser',
+							'Circle K', 'Kiwanis Family', 'Interclub', 'Webinar', 'Divisional', 'District', 'International', 'Club Hosted'];
+	tagDescriptions: string[] = [
+	"An event where your club members are serving for the community without pay",
+	"Any event where your club is doing community service on your school's campus",
+	"An event that has been completed with the same organization repeatedly at least once a month for a two-month duration",
+	"Any event that contributes to the current District Service Initiative",
+	"Any event that contributes to the current International Service Initiative",
+	"Any event related to the operation of the club should be tagged as AD. Examples of administrative events include but are not limited to\
+		 attending meetings (e.g. general meetings, board meetings, committee meetings, Kiwanis meetings), and workshops",
+	"Any event in which club members are socially interacting with one another should be tagged as SE. A social event promotes the moral of\
+		members so it is usually tagged as MD; however, remember that although all SE events are MD-tagged, not all MD events are SE-tagged (e.g. workshops)",
+	"An event that promotes membership recruitment and development",
+	"A home club-hosted event that raises money for a charity or for administrative funds",
+	"An event in which at least two members from your Circle K club and at least two members from another Circle K club are present",
+	"An event in which at least two members from your Circle K club and at least two members from another non-Circle K Kiwanis Family club are present",
+	"An event in which there must be a certain amount of members from your Circle K club and the same amount of members from another\
+		Circle K/Kiwanis Family club present, depending on your Circle K club's number of dues paid members. Clubs with less than or equal to\
+		20 members need a minimum of two members present; clubs with 21-30 members need a minimum of three memberrs present; and clubs with greater\
+		than or equal to 31 members need a minimum of four members present",
+	"An online webinar usualy hosted by the District Board for the District. This tag applies to both District and International webinars",
+	"An event hosted by and for the Division, which is usually hosted by the respective Lieutenant Governor (and Divisional Board)",
+	"An event hosted by and for the District",
+	"An event hosted by Circle K International",
+	"Any event hosted through your Circle K club"];
+
 	constructor(private route: ActivatedRoute, private dataService: DataService,
 		private auth: AuthService, private _location: Location, public dialog: MatDialog,
 		private builder: FormBuilder) {
@@ -50,6 +78,7 @@ export class CerfComponent {
 
 		this.color = this.myForm.get("color").value;
 		this.currentTab = "main";
+		console.log(this.myForm);
 	}
 
 	//id: number;
@@ -96,20 +125,34 @@ export class CerfComponent {
 			this.color = color;
 		}
 		this.myForm.patchValue({color: this.color});
-		this.myForm.markAsTouched();
+		this.myForm.get('color').markAsDirty();
 		// console.log(this.myForm);
 	}
 
 	addLabel() {
 		const labels = this.myForm.controls['labels'] as FormArray;
 		labels.controls.push(this.builder.control(""));
-		this.myForm.markAsTouched();
+		this.myForm.get('labels').markAsDirty();
 	}
 
 	removeLabel(i: number) {
 		const labels = this.myForm.controls['labels'] as FormArray;
 		labels.removeAt(i);
-		this.myForm.markAsTouched();
+		this.myForm.get('labels').markAsDirty();
+	}
+
+	addRemoveTag(tag: string, isChecked: boolean)
+	{
+		const tagArray = this.myForm.controls.tags as FormArray;
+		let index = tagArray.controls.findIndex(item => item.value == tag);
+
+		if(isChecked && index == -1)
+		{
+			tagArray.push(new FormControl(tag));
+		} else if(index > 0) {
+			tagArray.removeAt(index);
+		}
+		this.myForm.get('tags').markAsDirty();
 	}
 
 	addMember() {
@@ -121,7 +164,7 @@ export class CerfComponent {
 		attendees.controls.push(this.builder.control(""));
 
 		this.members.data = new Array(attendees.length).map((v, index) => attendees.at(index).value as string);
-		this.myForm.markAsTouched();
+		this.myForm.get('attendees').markAsDirty();
 	}
 
 	removeMember(i: number) {
@@ -129,7 +172,7 @@ export class CerfComponent {
 		attendees.removeAt(i);
 
 		this.members.data = new Array(attendees.length).map((v, index) => attendees.at(index).value as string);
-		this.myForm.markAsTouched();
+		this.myForm.get('attendees').markAsDirty();
 	}
 
 	get attendees() {
@@ -260,7 +303,7 @@ export class CerfComponent {
 		if(!model.labels)
 			model.labels = [];
 		if(!model.color)
-			model.color = "#000000";
+			model.color = "";
 		// Set default values of a Partial<Cerf>
 		// if(!model.data) {
 		// 	model.data = {

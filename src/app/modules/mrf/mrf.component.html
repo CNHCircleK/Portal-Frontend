@@ -3,7 +3,7 @@
 		<a mat-icon-button (click)="goBack()">
 			<mat-icon>arrow_back</mat-icon>
 		</a>
-		<p>Mrf ID: none, removing IDs | Month: {{ mrf.month }} </p>
+		<h3>Mrf ID: none, removing IDs | Month: {{ mrf.month }} </h3>
 	</div>
 </div>
 
@@ -43,7 +43,7 @@
 <form [formGroup]="mrfForm">
 
 	<div id="main" *ngIf="currentTab=='main'">
-		<h4 class="title">Main</h4>
+		<h4>Main</h4>
 		<mat-form-field>
 			<mat-label>Club ID</mat-label>
 			<input matInput formControlName="club_id" readonly>
@@ -64,7 +64,7 @@
 			<mat-checkbox formControlName="newDuesPaid">New Dues Paid?</mat-checkbox>
 		</ng-container>
 
-		<h6 class="subtitle">Goals</h6>
+		<h6>Goals</h6>
 		<ng-container formArrayName="goals">
 			<div *ngFor="let goal of mrfForm.controls.goals.controls; let i=index">
 				<p>Goal {{i}}</p>
@@ -76,16 +76,16 @@
 	</div>
 
 	<div id="events" *ngIf="currentTab=='events'">
-		<h4 class="title">Events</h4>
+		<h4>Events</h4>
 		<app-cerflist *ngIf='cerfList; else loadingCerf' [cerfList]="cerfList" [pendingCerfs]="true"></app-cerflist>
 		<ng-template #loadingCerf> <mat-spinner></mat-spinner> </ng-template>
 	</div>
 
 	<div id="meetings" *ngIf="currentTab=='meetings'">
-		<h4 class="title">Club Meetings</h4>
+		<h4>Club Meetings</h4>
 		<ng-container formArrayName="meetings">
 			<div *ngFor="let meeting of mrfForm.controls.meetings.controls; let i=index" [formGroupName]="i">
-				<h6 class="subtitle">Meeting {{i}}</h6>
+				<h6>Meeting {{i}}</h6>
 				<mat-form-field>
 					<mat-label>Date</mat-label>
 					<input matInput [matDatepicker]="meeting" formControlName="date">	<!-- scoping -->
@@ -124,7 +124,7 @@
 	</div>
 
 	<div id="dcms" *ngIf="currentTab=='dcms'">
-		<h4 class="title">DCM</h4>
+		<h4>DCM</h4>
 		<ng-container formGroupName="dcm">
 			<h6 class="subtitle">Meeting {{i}}</h6>
 			<mat-form-field>
@@ -152,7 +152,7 @@
 	</div>
 
 	<div id="feedback" *ngIf="currentTab=='feedback'" formGroupName="communications">
-		<h4 class="title">Feedback</h4>
+		<h4>Feedback</h4>
 		<ng-container formGroupName="ltg">
 			<h6 class="subtitle">LTG</h6>
 			<mat-form-field>

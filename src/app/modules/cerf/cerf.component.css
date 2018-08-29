@@ -15,6 +15,9 @@
 	flex-flow: row nowrap;
 	align-items: center;
 }
+#cerf-actions p {
+	margin: 0;
+}
 #cerf-actions button {
 	margin: 0 5px;
 }
@@ -23,6 +26,7 @@
 	display: flex;
 	right: 0;
 	flex-flow: row nowrap;
+	margin-bottom: 16px;
 }
 #cerf-tabs ul {
 	display: flex;	/* Change vertical nav to horizontal nav*/
@@ -51,6 +55,24 @@
 
 .activeColor {
 	border: solid 2px white;
+}
+
+/*#tags .mat-checkbox {
+	margin: 0 20px 0 0;
+}*/
+#tags {
+	display: grid;
+	grid-auto-flow: row;
+}
+@media screen and (min-width: 500px) and (max-width: 768px) {
+	#tags {
+		grid-template-columns: 250px 250px;
+	}
+}
+@media screen and (min-width: 769px) {
+	#tags {
+		grid-template-columns: 250px 250px 250px;
+	}
 }
 
 /* Validation/feedback */

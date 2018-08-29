@@ -7,7 +7,6 @@ import { CoreModule } from '@core/core.module';
 
 
 import {
-    SidenavComponent,
     LoginComponent,
     SignupComponent,
 	CerfComponent,
@@ -20,8 +19,11 @@ import {
     MrfDistrictComponent,
     MembersComponent,
     DialogNewMember,
+    ClubsComponent,
+    DialogNewClub,
 	ProfileComponent,
     FAQsComponent,
+    SettingsComponent,
     ConfirmDialogComponent } from '@app/modules/';
 
 import { RouteReuseStrategy } from '@angular/router';
@@ -37,7 +39,6 @@ import HttpConfig from '@env/api_config';
 @NgModule({
   declarations: [
     AppComponent,
-    SidenavComponent,
     LoginComponent,
     SignupComponent,
     CerfComponent,
@@ -50,8 +51,11 @@ import HttpConfig from '@env/api_config';
     MrfDistrictComponent,
     MembersComponent,
     DialogNewMember,
+    ClubsComponent,
+    DialogNewClub,
     ProfileComponent,
     FAQsComponent,
+    SettingsComponent,
     ConfirmDialogComponent
   ],
   imports: [
@@ -68,7 +72,7 @@ import HttpConfig from '@env/api_config';
   ],
   providers: [httpInterceptorProviders],//, {provide: RouteReuseStrategy, useClass: MrfReuseStrategy}],
   bootstrap: [AppComponent],
-  entryComponents: [ConfirmDialogComponent, DialogNewMember]
+  entryComponents: [ConfirmDialogComponent, DialogNewMember, DialogNewClub]
 })
 export class AppModule {
 }

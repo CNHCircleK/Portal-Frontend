@@ -56,7 +56,7 @@
     <ng-container matColumnDef="labels">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Labels</mat-header-cell>
       <mat-cell *matCellDef="let row">
-        <p *ngIf="row.labels" class="body-1">{{ row.labels }}</p>
+        <ng-container *ngIf="row.labels">{{ row.labels }}</ng-container>
       </mat-cell>
     </ng-container>
 

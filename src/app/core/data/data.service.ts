@@ -62,6 +62,7 @@ export class DataService {
     mrfFormState;
     mrfTabState: string;
     members: Member[];
+    clubs: string[];
 
     // mockData: Mrf[] = [
     // {
@@ -380,12 +381,26 @@ export class DataService {
     return of(this.members);
   }
 
-  addMember(first: string, last: string, refresh?: boolean) {
+  addMember(first: string, last: string) {
     return this.http.post(HttpConfig.baseUrl + '/clubs/' + this.user.club_id + "/members/new", {'firstName': first, 'lastName': last}).pipe(
       map( (res: response) => res.success));
   }
 
+  getClubs(refresh?: boolean): Observable<string[]> {
+    if(!Array.isArray(this.clubs) || refresh) {
+      return this.http.get(HttpConfig.baseUrl + "/divisions/" + this.user.division_id + "/clubs").pipe(
+        map( (res: response) => {
+          if(res.success)
+            this.clubs = res.result;
+          return this.clubs;
+        }))
+    }
+    return of(this.clubs);
+  }
 
-
+  newClub(name: string) {
+    return this.http.post(HttpConfig.baseUrl + '/divisions/' + this.user.division_id + '/clubs', {name: name}).pipe(
+      map( (res: response) => res.success));
+  }
 
 }

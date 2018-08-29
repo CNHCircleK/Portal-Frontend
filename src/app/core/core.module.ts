@@ -3,8 +3,7 @@ import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 /* Our components */
-import { SidenavComponent,
-		CerfComponent, CerfListComponent, 
+import { CerfComponent, CerfListComponent, 
 		MrfComponent, MrfListComponent,
     MyCerfsComponent,
 		ProfileComponent,

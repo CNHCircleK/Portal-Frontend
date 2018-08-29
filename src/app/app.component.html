@@ -1,6 +1,5 @@
-<mat-sidenav-container class="menu-container" fullscreen [class.light-theme]="isLightTheme" [class.dark-theme]="!isLightTheme" class="mat-app-background">
-  <mat-sidenav #sidenav mode="over" class="menu">
-    <a mat-button style="height: 0; position: absolute;"></a> <!-- First anchor of list was getting highlighted. Absorb the unwanted behavior -->
+<mat-sidenav-container class="menu-container" fullscreen [class.light-theme]="isLightTheme" [class.dark-theme]="!isLightTheme" class="mat-app-background mat-typography">
+  <mat-sidenav #sidenav mode="over" class="menu" [autoFocus]="false">
     <mat-nav-list>
       <!-- <img matListAvatar src="https://cdn.frontify.com/api/screen/thumbnail/XpAQmPIeugwk-YlQmqh5IG1cjaOlgmHMP6yU-0U2RikNGjJdPLw7tzaKc0J94K2y55GA44JvKPsBo6SwSiNLhg/798"> -->
 
@@ -8,7 +7,8 @@
         <span>{{ link.text }}</span>
         <mat-icon matListIcon *ngIf="link.icon">{{ link.icon }}</mat-icon>
       </a>
-      <a mat-list-item [routerLink]="['/']">
+
+      <a id="settings" mat-list-item [routerLink]="['/settings']" (click)="sidenav.close()">
         <span>Settings</span>
         <mat-icon matListIcon>settings</mat-icon>
       </a>
@@ -18,7 +18,7 @@
     <div class="sidenav-content">
 
       <mat-toolbar color="primary">
-        <button mat-icon-button [disableRipple]="false" [disabled]="!(userSubject | async)" (click)="sidenav.toggle()">
+        <button mat-icon-button [disableRipple]="true" [disabled]="!(userSubject | async)" (click)="sidenav.open()">
           <mat-icon>menu</mat-icon>
         </button>
         <!-- <h2 class="title">MRF Portal</h2> -->

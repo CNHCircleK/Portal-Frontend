@@ -20,7 +20,7 @@
 			Approve
 		</button> -->
 
-		<button mat-raised-button [disabled]="!myForm.touched || !myForm.valid || pendingAction" (click)="saveCerf()">Save</button>
+		<button mat-raised-button [disabled]="!myForm.dirty || !myForm.valid || pendingAction" (click)="saveCerf()">Save</button>
 		<button mat-raised-button *ngIf="cerf._id=='new' || cerf.status==0" [disabled]="!myForm.pristine || !myForm.valid || pendingAction" (click)="submitCerf()">Submit</button>
 		<span *ngIf="cerf.status>=1 && cerf.author_id == user._id" matTooltip="Already approved" [matTooltipDisabled]="cerf.status != 2">
 			<button mat-raised-button  [disabled]="pendingAction || cerf.status==2" (click)="unsubmitCerf()">Unsubmit</button>
@@ -70,7 +70,7 @@
 	<form [formGroup]="myForm">
 
 		<div id="main" *ngIf="currentTab=='main'">
-			<h4 class="title">Main</h4>
+			<h4>Main</h4>
 		<!-- <mat-form-field>
 			<mat-label>ID</mat-label>
 			<input matInput formControlName="_id" readonly>
@@ -121,7 +121,7 @@
 		</ng-container>
 
 
-		<p class="body-1">Labels</p>
+		<p>Labels</p>
 		<button mat-raised-button [disabled]="myForm.disabled" (click)="addLabel()">Add Label</button>
 		<div id="labels" formArrayName="labels">
 			<ng-container *ngFor="let label of myForm.controls.labels.controls; let i=index">
@@ -132,17 +132,16 @@
 			</ng-container>
 		</div>
 
-
-		<mat-form-field floatLabel="never">
-			<mat-label>Color Label</mat-label>
-			<input matInput [value]="color" [style.color]="color" [(colorPicker)]="color" [cpOKButton]="true" [cpOKButtonClass]="'mat-button'" [cpSaveClickOutside]="false">
-		</mat-form-field>
+		<p>Tags</p>
+		<div id="tags">
+			<mat-checkbox *ngFor="let tag of tagOptions; let i=index" [checked]="cerf.tags.includes(tag)" [disabled]="myForm.disabled" (change)="addRemoveTag(tag, $event.checked)" [matTooltip]="tagDescriptions[i]">{{ tagNames[i] }}</mat-checkbox>
+		</div>
 
 	</div>
 
 	<div id="attendance" *ngIf="currentTab=='attendance'">
 
-		<h4 class="title">Attendance</h4>
+		<h4>Attendance</h4>
 
 		<ng-container formGroupName="hoursPerAttendee">
 			<mat-form-field>
@@ -183,7 +182,7 @@
 
 	<div id="fundraising" *ngIf="currentTab=='fundraising'" formGroupName="fundraised">
 
-		<h4 class="title">Fundraising</h4>
+		<h4>Fundraising</h4>
 
 		<mat-form-field>
 			<mat-label>PTP</mat-label>

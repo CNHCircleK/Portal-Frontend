@@ -28,7 +28,7 @@ export class MembersComponent {
 		this.members = this.route.snapshot.data['members'];
 		console.log(this.members);
 
-		this.auth.getUser().subscribe(user => this.club = user.division_id);
+		this.auth.getUser().subscribe(user => this.club = user.club_id);
 	}
 
 	ngOnInit() {

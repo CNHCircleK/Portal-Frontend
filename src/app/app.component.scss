@@ -51,9 +51,17 @@
     padding-left: 10px;
 }
 
+#settings {
+    margin-top: auto;
+}
+
 /*mat-sidenav-content { 
     display: flex;
 }*/
+
+.mat-toolbar {
+    margin-bottom: 2%;    /* Push main content down to give the toolbar some space */
+}
 
 #content {
     /*width: 100%;*/
