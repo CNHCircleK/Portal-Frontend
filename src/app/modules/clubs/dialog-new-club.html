@@ -1,0 +1,12 @@
+<h2>New Club</h2>
+<mat-dialog-content>
+	<mat-form-field>
+		<mat-label>Division Name</mat-label>
+		<input matInput [(ngModel)]="divName">
+	</mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+	<button mat-button mat-dialog-close>Cancel</button>
+	<button mat-button [mat-dialog-close]="{name: divName}">Submit</button>
+</mat-dialog-actions>

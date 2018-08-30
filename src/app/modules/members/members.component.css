@@ -4,3 +4,7 @@
 #header button {
 	margin-left: 16px;
 }
+
+.selecting mat-row {
+	cursor: pointer;
+}

@@ -6,10 +6,12 @@
     <mat-icon matSuffix>search</mat-icon>
   </mat-form-field>
   <button mat-raised-button (click)="newMember()">Add Member</button>
+  <button mat-raised-button (click)="memberRegistrationMode=true">Generate Registration Code for Member</button>
+  <mat-spinner *ngIf="gettingCode"></mat-spinner>
 </div>
 
 <mat-paginator [pageSizeOptions]="[10, 25, 50]"></mat-paginator>
-<mat-table [dataSource]="list" matSort>
+<mat-table [dataSource]="list" matSort [class.selecting]="memberRegistrationMode">
 
   <!-- Name Column -->
   <ng-container matColumnDef="name">
@@ -29,9 +31,15 @@
     <mat-cell *matCellDef="let row">{{row.access | json}}</mat-cell>
   </ng-container>
 
+  <!-- Registration Code Column -->
+  <ng-container matColumnDef="code">
+    <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
+    <mat-cell *matCellDef="let row"><ng-container *ngIf="row.code">{{row.code}}</ng-container></mat-cell>
+  </ng-container>
+
   <!-- Header columns -->
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="getMemberCode(row)"></mat-row>
 </mat-table>
 
 

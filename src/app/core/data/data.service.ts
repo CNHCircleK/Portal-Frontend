@@ -386,6 +386,14 @@ export class DataService {
       map( (res: response) => res.success));
   }
 
+  getMemberCode(id: string) {
+    return this.http.get(HttpConfig.baseUrl + '/members/' + id + '/registration').pipe(
+      tap( (res: response) => {
+        if(res.success)
+          this.members[this.members.findIndex(member => member._id == id)]['code'] = res.result;
+    }));
+  }
+
   getClubs(refresh?: boolean): Observable<string[]> {
     if(!Array.isArray(this.clubs) || refresh) {
       return this.http.get(HttpConfig.baseUrl + "/divisions/" + this.user.division_id + "/clubs").pipe(

@@ -1,0 +1,36 @@
+<h1>Clubs in {{ division }}</h1>
+<button mat-raised-button (click)="newClub()">Add Club</button>
+
+<mat-paginator [pageSizeOptions]="[10, 25, 50]"></mat-paginator>
+<mat-table [(dataSource)]="list" matSort>
+
+	<!-- Club Name column -->
+  <ng-container matColumnDef="club_name">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Club</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.name}}</mat-cell>
+  </ng-container>
+
+  <!-- Club ID column -->
+  <ng-container matColumnDef="id">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row._id}}</mat-cell>
+  </ng-container>
+
+<!-- Search Bar -->
+<ng-container matColumnDef="search">
+  <mat-header-cell *matHeaderCellDef>
+
+    <mat-form-field class="search-bar"style="margin-bottom: -1.25em" [floatLabel]="'never'">
+      <input matInput (keyup)="applyFilter($event.target.value)">
+      <mat-placeholder>Search</mat-placeholder>
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+  </mat-header-cell>
+  <mat-cell *matCellDef="let row"></mat-cell>
+</ng-container>
+
+<!-- Header columns -->
+<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>

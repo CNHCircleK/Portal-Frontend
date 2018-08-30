@@ -7,6 +7,7 @@ import { Member } from '@core/authentication/member';
 
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
 	selector: 'app-members',
@@ -22,9 +23,13 @@ export class MembersComponent {
 	@ViewChild(MatPaginator) paginator;
 	@ViewChild(MatSort) sort;
 	list: MatTableDataSource<Member>;
-	displayedColumns: string[] = ["name", "access"];
+	displayedColumns: string[] = ["name", "access", "code"];
 
-	constructor(private dataService: DataService, private auth: AuthService, private route: ActivatedRoute, private dialog: MatDialog) {
+	memberRegistrationMode: boolean = false;
+	gettingCode: boolean = false;
+
+	constructor(private dataService: DataService, private auth: AuthService, private route: ActivatedRoute, private dialog: MatDialog,
+		private snackBar: MatSnackBar) {
 		this.members = this.route.snapshot.data['members'];
 		console.log(this.members);
 
@@ -65,6 +70,26 @@ export class MembersComponent {
 			}
 		});
 	}
+
+	getMemberCode(row) {
+		if(!this.memberRegistrationMode)
+			return;
+		this.gettingCode = true;
+		this.memberRegistrationMode = false;
+		this.dataService.getMemberCode(row._id).subscribe( (res:any) => {
+			console.log(res);
+			if(res.success) {
+				this.members[this.members.findIndex(member => member._id == row._id)]['code']=res.result;
+				this.list.data = this.members;
+			} else if(res.error) {
+				this.snackBar.open(res.error, 'close', {duration: 2000});
+			} else {
+				this.snackBar.open('Failed getting code!', 'close', {duration: 2000});
+			}
+			this.gettingCode = false;
+		});
+	}
+
 }
 
 
