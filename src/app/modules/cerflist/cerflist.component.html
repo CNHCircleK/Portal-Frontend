@@ -6,10 +6,10 @@
   </mat-form-field>
 </div> -->
 <mat-paginator *ngIf="pagination" [pageSizeOptions]="[10, 25, 50]"></mat-paginator>
-<mat-table [(dataSource)]="list" matSort matSortActive="status" matSortDirection="desc">
+<mat-table [(dataSource)]="list" matSort >
 
 	<!-- CERF name Column -->
-  <ng-container matColumnDef="event_name">
+  <ng-container matColumnDef="name">
     <mat-header-cell *matHeaderCellDef mat-sort-header> Event Name </mat-header-cell>
     <mat-cell *matCellDef="let row">{{row.name}}</mat-cell>
   </ng-container>

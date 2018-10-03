@@ -11,6 +11,8 @@ import { MatSort, MatTableDataSource } from '@angular/material';
 
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ConfirmDialogComponent } from '@app/modules/confirm-dialog/confirm-dialog.component';
+import { InfoDialog } from '@app/modules/info-dialog/info-dialog';
+import { TagsDialog } from './tags-dialog.component';
 
 import { AuthService } from '@core/authentication/auth.service';
 import { Member } from '@core/authentication/member';
@@ -32,12 +34,13 @@ export class CerfComponent {
 	currentTab: string;
 
 	members: MatTableDataSource<string>;
-	attendanceColumns: string[] = ['members'];//, 'service', 'leadership', 'fellowship', 'unpaid'];
+	attendanceColumns: string[] = ['members', 'override'];//, 'service', 'leadership', 'fellowship', 'unpaid'];
 
 	myForm: FormGroup;
 	// comment: string = "HEY";
-	buttonColors: string[] = ['blue', 'red', 'orange', 'green'];
-	color: string;
+	categoryButtons: string[] = ["service", "leadership", "fellowship", "dogs"];
+	categoriesActive: string[] = [];
+	addingCategory: boolean = false;
 
 	tagOptions: string[] = ['CO', 'CA', 'CS', 'DSI', 'ISI', 'AD', 'SD', 'MD', 'FR', /* ? */ 'CK', 'KF', 'IN', 'WB', 'DV', 'DE', 'INT', 'HE'];
 	tagNames: string[] = ['Community Service', 'Campus Service', 'Continuing Service', 'District Service Initiative',
@@ -76,7 +79,6 @@ export class CerfComponent {
 		console.log("Coming from MRF ", this.fromMrf);
 		this.myForm = this.createCerf(this.cerf);
 
-		this.color = this.myForm.get("color").value;
 		this.currentTab = "main";
 		console.log(this.myForm);
 	}
@@ -102,6 +104,8 @@ export class CerfComponent {
 		let membersControl = this.attendees;	// invoke getter
 		this.members = new MatTableDataSource(new Array(membersControl.length).map((v, index) => membersControl.at(index).value as string));
 
+		this.categoriesActive = this.labels.value;
+
 		if(!this.editable) {
 			this.myForm.disable();
 		}
@@ -118,27 +122,78 @@ export class CerfComponent {
 		return index;
 	}
 
-	setColor(color: string) {
-		if(this.color==color) {
-			this.color = '';
-		} else {
-			this.color = color;
-		}
-		this.myForm.patchValue({color: this.color});
-		this.myForm.get('color').markAsDirty();
-		// console.log(this.myForm);
+	// setColor(color: string) {
+	// 	if(this.color==color) {
+	// 		this.color = '';
+	// 	} else {
+	// 		this.color = color;
+	// 	}
+	// 	this.myForm.patchValue({color: this.color});
+	// 	this.myForm.get('color').markAsDirty();
+	// 	// console.log(this.myForm);
+	// }
+
+	openTagHelp() {
+		const dialogRef = this.dialog.open(TagsDialog);
+		// let descriptions = "";
+		// for(let i = 0; i < this.tagDescriptions.length; i++) {
+		// 	descriptions += "<p><strong>" + this.tagNames[i] + "</strong>: " + this.tagDescriptions[i] + "</p>";
+		// }
+		// dialogRef.componentInstance.title = "Tag Descriptions";
+		// dialogRef.componentInstance.htmlContent = "<div>" + descriptions + "</div>";
 	}
 
-	addLabel() {
-		const labels = this.myForm.controls['labels'] as FormArray;
-		labels.controls.push(this.builder.control(""));
+	isLabelActive(label: string): boolean {
+		return this.categoriesActive.includes(label);
+	}
+
+	toggleLabel(label: string) {
+
+		if(this.isLabelActive(label)) {
+			this.categoriesActive.splice(this.categoriesActive.indexOf(label), 1);
+			this.labels.removeAt(this.labels.value.indexOf(this.categoryButtons.indexOf(label)));
+		}
+		else {
+			this.categoriesActive.push(label);
+			this.labels.controls.push(this.builder.control(label));
+		}
+		// const labels = this.myForm.controls['labels'] as FormArray;
+		// labels.controls.push(this.builder.control(""));
+		console.log(this.myForm.get('labels'));
 		this.myForm.get('labels').markAsDirty();
+	}
+
+	newLabel(label: string) {
+
+		if(!this.categoryButtons.includes(label)) {
+			this.categoryButtons.push(label);
+			this.categoriesActive.push(label);
+			this.labels.controls.push(this.builder.control(label));
+		}
+		// const labels = this.myForm.controls['labels'] as FormArray;
+		// labels.controls.push(this.builder.control(""));
+		// this.myForm.patch({labels: this.categoriesActive});
+		console.log(this.myForm.get('labels'));
+		this.myForm.get('labels').markAsDirty();
+		this.addingCategory = false;
 	}
 
 	removeLabel(i: number) {
-		const labels = this.myForm.controls['labels'] as FormArray;
-		labels.removeAt(i);
+
+		if(this.categoriesActive.indexOf(this.categoryButtons[i]) > 0) {
+			this.categoriesActive.splice(this.categoriesActive.indexOf(this.categoryButtons[i]), 1);
+			this.labels.removeAt(this.labels.value.indexOf(this.categoryButtons[i]));
+		}
+		this.categoryButtons.splice(i, 1);
+
+		// const labels = this.myForm.controls['labels'] as FormArray;
+		// labels.removeAt(i);
+		console.log(this.myForm.get('labels'));
 		this.myForm.get('labels').markAsDirty();
+	}
+
+	get labels() {
+		return (this.myForm.controls['labels'] as FormArray);
 	}
 
 	addRemoveTag(tag: string, isChecked: boolean)

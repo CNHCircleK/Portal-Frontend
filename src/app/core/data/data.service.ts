@@ -407,7 +407,8 @@ export class DataService {
   }
 
   newClub(name: string) {
-    return this.http.post(HttpConfig.baseUrl + '/divisions/' + this.user.division_id + '/clubs', {name: name}).pipe(
+    console.log(name);
+    return this.http.post(HttpConfig.baseUrl + '/divisions/' + this.user.division_id + '/clubs', {'name': name}).pipe(
       map( (res: response) => res.success));
   }
 

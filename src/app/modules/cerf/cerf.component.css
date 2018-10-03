@@ -75,6 +75,31 @@
 	}
 }
 
+#labels {
+	display: flex;
+	flex-flow: row wrap;
+}
+
+#labels > div {
+	position: relative;
+	margin: 5px 10px;
+}
+
+.categoryButton.activeCategory {
+	background-color: #00a5d9;
+	color: white;
+}
+
+.deleteCategory {
+	visibility: hidden;
+	position: absolute;
+	top: -25px;
+	right: -25px;
+}
+.categoryButton:hover ~ .deleteCategory, .deleteCategory:hover {
+	visibility: visible;
+}
+
 /* Validation/feedback */
 /*input.ng-valid[required], .ng-valid.required  {
   border-left: 5px solid #42A948;

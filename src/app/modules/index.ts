@@ -19,6 +19,8 @@ export * from './clubs/clubs.component';
 
 export * from './profile/profile.component'; // make homepage instead
 export * from './confirm-dialog/confirm-dialog.component';
+export * from './info-dialog/info-dialog';
+export * from './cerf/tags-dialog.component';
 
 export { MaterialsModule } from './materials.module';
 // export { AppRoutingModule } from './app-routing.module'; // Circular dependency

@@ -6,7 +6,7 @@
 
 		<p>Cerf ID: {{ cerf._id }}</p>
 
-		<button *ngFor="let buttonColor of buttonColors" [disabled]="pendingAction || cerf.status==2" mat-mini-fab [class.activeColor]="color==buttonColor" [style.background-color]="buttonColor" (click)="setColor(buttonColor)"></button>
+		<!-- <button *ngFor="let buttonColor of buttonColors" [disabled]="pendingAction || cerf.status==2" mat-mini-fab [class.activeColor]="color==buttonColor" [style.background-color]="buttonColor" (click)="setColor(buttonColor)"></button> -->
 <!-- 		<button mat-mini-fab [class.activeColor]="color=='blue'" style="background-color: blue" (click)="setColor('blue')"></button>
 		<button mat-mini-fab [class.activeColor]="color=='red'" style="background-color: red" (click)="setColor('red')"></button>
 		<button mat-mini-fab [class.activeColor]="color=='orange'" style="background-color: orange" (click)="setColor('orange')"></button>
@@ -51,26 +51,31 @@
 			<button mat-icon-button style="color: green" (click)="currentTab='fundraising'">
 				<mat-icon matTooltip="Fundraising">attach_money</mat-icon>
 			</button>
-			</li><!-- 
-			<li [class.mat-elevation-z4]="currentTab=='drivers'">
-				<button mat-icon-button style="color: red" (click)="currentTab='drivers'">
-					<mat-icon matTooltip="Drivers">drive_eta</mat-icon>
-				</button>
-			</li>
-			<li [class.mat-elevation-z4]="currentTab=='commentary'">
-				<button mat-icon-button style="color: blue" (click)="currentTab='commentary'">
-					<mat-icon matTooltip="Commentary">comment</mat-icon>
-				</button>
-			</li> -->
+		</li>
+		<li [class.mat-elevation-z4]="currentTab=='drivers'">
+			<button mat-icon-button style="color: red" (click)="currentTab='drivers'">
+				<mat-icon matTooltip="Drivers">drive_eta</mat-icon>
+			</button>
+		</li>
+		<li [class.mat-elevation-z4]="currentTab=='commentary'">
+			<button mat-icon-button style="color: blue" (click)="currentTab='commentary'">
+				<mat-icon matTooltip="Commentary">comment</mat-icon>
+			</button>
+		</li>
+		<li [class.mat-elevation-z4]="currentTab=='categories'">
+			<button mat-icon-button (click)="currentTab='categories'">
+				<mat-icon matTooltip="Categories">search</mat-icon>
+			</button>
+		</li>
 		</ul>
 	</nav>
 
 	<!-- <br/> -->
 
-	<form [formGroup]="myForm">
+<form [formGroup]="myForm">
 
-		<div id="main" *ngIf="currentTab=='main'">
-			<h4>Main</h4>
+	<div id="main" *ngIf="currentTab=='main'">
+		<h3>Main</h3>
 		<!-- <mat-form-field>
 			<mat-label>ID</mat-label>
 			<input matInput formControlName="_id" readonly>
@@ -84,11 +89,37 @@
 			</button> -->
 			<mat-error>Required</mat-error>
 		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Event Chair</mat-label>
+			<input matInput formControlName="chair_id" readonly>
+			<!-- <button mat-icon-button matSuffix *ngIf="comment" matTooltip="{{comment}}">
+				<mat-icon>chat_bubble</mat-icon>
+			</button> -->
+			<mat-error>Required</mat-error>
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Person Filling out CERF</mat-label>
+			<input matInput formControlName="chair_id" readonly>
+			<!-- <button mat-icon-button matSuffix *ngIf="comment" matTooltip="{{comment}}">
+				<mat-icon>chat_bubble</mat-icon>
+			</button> -->
+			<mat-error>Required</mat-error>
+		</mat-form-field>
 		<br/>
 
 		<mat-form-field>
-			<mat-label>Chair ID</mat-label>
-			<input matInput formControlName="chair_id">
+			<mat-label>Location</mat-label>
+			<input matInput>
+			<!-- <button mat-icon-button matSuffix *ngIf="comment" matTooltip="{{comment}}">
+				<mat-icon>chat_bubble</mat-icon>
+			</button> -->
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Contact Information</mat-label>
+			<input matInput>
+			<!-- <button mat-icon-button matSuffix *ngIf="comment" matTooltip="{{comment}}">
+				<mat-icon>chat_bubble</mat-icon>
+			</button> -->
 		</mat-form-field>
 
 		<br/>
@@ -121,7 +152,7 @@
 		</ng-container>
 
 
-		<p>Labels</p>
+		<!-- <p>Labels</p>
 		<button mat-raised-button [disabled]="myForm.disabled" (click)="addLabel()">Add Label</button>
 		<div id="labels" formArrayName="labels">
 			<ng-container *ngFor="let label of myForm.controls.labels.controls; let i=index">
@@ -130,18 +161,18 @@
 					<input matInput [disabled]="myForm.disabled" [formControlName]="i">
 				</mat-form-field>
 			</ng-container>
-		</div>
+		</div> -->
 
-		<p>Tags</p>
+		<p>Tags <mat-icon style="cursor: pointer;" [inline]="true" (click)="openTagHelp()">help</mat-icon></p>
 		<div id="tags">
-			<mat-checkbox *ngFor="let tag of tagOptions; let i=index" [checked]="cerf.tags.includes(tag)" [disabled]="myForm.disabled" (change)="addRemoveTag(tag, $event.checked)" [matTooltip]="tagDescriptions[i]">{{ tagNames[i] }}</mat-checkbox>
+			<mat-checkbox *ngFor="let tag of tagOptions; let i=index" [checked]="cerf.tags.includes(tag)" [disabled]="myForm.disabled" (change)="addRemoveTag(tag, $event.checked)">{{ tagNames[i] }}</mat-checkbox>
 		</div>
 
 	</div>
 
 	<div id="attendance" *ngIf="currentTab=='attendance'">
 
-		<h4>Attendance</h4>
+		<h3>Attendance</h3>
 
 		<ng-container formGroupName="hoursPerAttendee">
 			<mat-form-field>
@@ -160,6 +191,7 @@
 			</mat-form-field>
 		</ng-container>
 		<!-- ngFor attendees -->
+		<br/>
 		<button mat-raised-button [disabled]="myForm.disabled" (click)="addMember()">Add Member</button>
 		<div id="memberTable">
 			<mat-table [dataSource]="members" formArrayName="attendees">
@@ -174,6 +206,13 @@
 					</mat-cell>
 				</ng-container>
 
+				<ng-container matColumnDef="override">
+					<mat-header-cell *matHeaderCellDef> </mat-header-cell>
+					<mat-cell *matCellDef="let member; let i=index" >
+						<button mat-raised-button>Override Hours</button>
+					</mat-cell>
+				</ng-container>
+
 				<mat-header-row *matHeaderRowDef="attendanceColumns"></mat-header-row>
 				<mat-row *matRowDef="let row; columns: attendanceColumns;"></mat-row>
 			</mat-table>
@@ -182,7 +221,7 @@
 
 	<div id="fundraising" *ngIf="currentTab=='fundraising'" formGroupName="fundraised">
 
-		<h4>Fundraising</h4>
+		<h3>Fundraising</h3>
 
 		<mat-form-field>
 			<mat-label>PTP</mat-label>
@@ -196,6 +235,56 @@
 			<mat-label>KFH</mat-label>	<!-- readonly -->
 			<input matInput formControlName="kfh">
 		</mat-form-field>
+
+	</div>
+
+	<div id="drivers" *ngIf="currentTab=='drivers'" ><!-- formGroupName="drivers" -->
+
+		<h3>Drivers</h3>
+
+		<!-- <mat-form-field>
+			<mat-label>KFH</mat-label>	readonly
+			<input matInput formControlName="kfh">
+		</mat-form-field> -->
+
+	</div>
+
+	<div id="commentary" *ngIf="currentTab=='commentary'" ><!-- formGroupName="commentary" -->
+
+		<h3>Commentary</h3>
+
+		<!-- <mat-form-field>
+			<mat-label>KFH</mat-label>	readonly
+			<input matInput formControlName="kfh">
+		</mat-form-field> -->
+
+	</div>
+
+	<div id="categories" *ngIf="currentTab=='categories'" ><!-- formArrayName="categories" -->
+
+		<h3>Categories</h3>
+		<p>(for your own cataloging)</p>
+
+		<div id="labels" formArrayName="labels">
+			<!-- <ng-container *ngFor="let label of myForm.controls.labels.controls; let i=index"> -->
+			<div *ngFor="let category of categoryButtons; let i=index">
+				<button mat-button class="categoryButton" (click)="toggleLabel(category)" [ngClass]="{'mat-elevation-z4': !isLabelActive(category), 'activeCategory': isLabelActive(category)}">{{category}}</button>
+				<button mat-icon-button class="deleteCategory" (click)="removeLabel(i)"> <mat-icon>cancel</mat-icon> </button>
+			</div>
+		</div>
+		<button mat-button *ngIf="!addingCategory" [disabled]="myForm.disabled" (click)="addingCategory=true">+ Add Category</button>
+		<form *ngIf="addingCategory">
+			<mat-form-field *ngIf="addingCategory" (keyup.enter)="newLabel(newCategory.value)">
+				<input matInput #newCategory>
+				<mat-icon matSuffix (click)="newLabel(newCategory.value)">arrow_forward</mat-icon>
+				<mat-icon matSuffix (click)="addingCategory=false">cancel</mat-icon>
+			</mat-form-field>
+		</form>
+
+		<!-- <mat-form-field>
+			<mat-label>KFH</mat-label>	readonly
+			<input matInput formControlName="kfh">
+		</mat-form-field> -->
 
 	</div>
 

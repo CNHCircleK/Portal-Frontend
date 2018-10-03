@@ -24,7 +24,9 @@ import {
 	ProfileComponent,
     FAQsComponent,
     SettingsComponent,
-    ConfirmDialogComponent } from '@app/modules/';
+    ConfirmDialogComponent,
+    InfoDialog,
+    TagsDialog } from '@app/modules/';
 
 import { RouteReuseStrategy } from '@angular/router';
 import { MrfReuseStrategy } from '@core/guards/reuse-strategy';
@@ -56,7 +58,9 @@ import HttpConfig from '@env/api_config';
     ProfileComponent,
     FAQsComponent,
     SettingsComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    InfoDialog,
+    TagsDialog
   ],
   imports: [
     BrowserModule,
@@ -72,7 +76,7 @@ import HttpConfig from '@env/api_config';
   ],
   providers: [httpInterceptorProviders],//, {provide: RouteReuseStrategy, useClass: MrfReuseStrategy}],
   bootstrap: [AppComponent],
-  entryComponents: [ConfirmDialogComponent, DialogNewMember, DialogNewClub]
+  entryComponents: [ConfirmDialogComponent, InfoDialog, TagsDialog, DialogNewMember, DialogNewClub]
 })
 export class AppModule {
 }

@@ -60,7 +60,6 @@ export class ClubsComponent {
 
 		dialogRef.afterClosed().subscribe(result => {
 			if(result) {
-				console.log(result);
 				this.dataService.newClub(result.name).subscribe(res => this.updateList());
 			}
 		});
