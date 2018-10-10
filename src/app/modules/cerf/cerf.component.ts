@@ -19,6 +19,9 @@ import { Member } from '@core/authentication/member';
 
 import { Observable, zip } from 'rxjs';
 
+type Attendee = {name: string, service: number, leadership: number, fellowship: number};
+
+
 @Component({
 	selector: 'app-cerf',
 	templateUrl: './cerf.component.html',
@@ -33,8 +36,8 @@ export class CerfComponent {
 	tabs: string[] = ["main", "attendance", "fundraising", "drivers", "commentary"];
 	currentTab: string;
 
-	members: MatTableDataSource<string>;
-	attendanceColumns: string[] = ['members', 'override'];//, 'service', 'leadership', 'fellowship', 'unpaid'];
+	members: MatTableDataSource<Attendee>;
+	attendanceColumns: string[] = ['members', 'service', 'leadership', 'fellowship'];// 'unpaid'];
 
 	myForm: FormGroup;
 	// comment: string = "HEY";
@@ -102,7 +105,14 @@ export class CerfComponent {
 		// this.members = new MatTableDataSource(this.cerf.data.attendees);
 
 		let membersControl = this.attendees;	// invoke getter
-		this.members = new MatTableDataSource(new Array(membersControl.length).map((v, index) => membersControl.at(index).value as string));
+		// this.members = new MatTableDataSource(new Array(membersControl.length).map((v, index) => membersControl.at(index).value as string));
+		for(let control of membersControl.controls) {
+			if(typeof control.value === 'string' || control.value instanceof String)
+			{
+				control = this.builder.group({name: control.value, service: [''], leadership: [''], fellowship: ['']});
+			}
+		}
+		this.members = new MatTableDataSource(membersControl.getRawValue());
 
 		this.categoriesActive = this.labels.value;
 
@@ -216,9 +226,12 @@ export class CerfComponent {
 		// this.members.data = this.cerf.data.attendees;
 
 		const attendees = this.attendees;
-		attendees.controls.push(this.builder.control(""));
-
-		this.members.data = new Array(attendees.length).map((v, index) => attendees.at(index).value as string);
+		const hours = this.myForm.get('hoursPerAttendee').value;
+		attendees.controls.push(this.builder.group({name: [''], service: [hours.service || 0], leadership: [hours.leadership || 0], fellowship: [hours.fellowship || 0]}));
+		// attendees.controls.push(this.builder.control(""));
+		// this.members.data = new Array(attendees.length).map((v, index) => attendees.at(index).value as string);
+		console.log(attendees.getRawValue());
+		this.members = new MatTableDataSource(attendees.getRawValue());
 		this.myForm.get('attendees').markAsDirty();
 	}
 
@@ -226,8 +239,20 @@ export class CerfComponent {
 		const attendees = this.attendees;	// invoke the getter
 		attendees.removeAt(i);
 
-		this.members.data = new Array(attendees.length).map((v, index) => attendees.at(index).value as string);
+
+		// this.members.data = new Array(attendees.length).map((v, index) => attendees.at(index).value as string);
+		this.members = new MatTableDataSource(attendees.getRawValue());
 		this.myForm.get('attendees').markAsDirty();
+	}
+
+	// Only update hours. Safer to update everything though
+	syncMemberList() {
+		const attendees = this.attendees;
+		const hours = this.members.data;
+
+		// for(let i=0; i < attendees.length; i++) {
+		// 	attendees.at(i).patchValue({override_hours: hours[i].})
+		// }
 	}
 
 	get attendees() {

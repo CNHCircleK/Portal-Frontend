@@ -23,6 +23,7 @@ export class MrfListComponent {
 
 	@Input() mrfList: Mrf[];
 	// @Input() display: string[];
+	months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 	constructor(private dataService: DataService, private router: Router) {
 		this.currentTab = 'secretary';

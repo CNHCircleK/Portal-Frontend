@@ -21,7 +21,7 @@ export class AppComponent {
 	// {icon: 'library_books', text: 'Past MRFs'},
 	{division: "Metro", text: 'Division MRFs', route: '/divmrfs'},
 	{icon: 'library_books', text: 'District MRFs', route: '/distmrfs'},
-	{icon: 'people', text: 'Members', route: '/members'},
+	{icon: 'people', text: 'Administration', route: '/club'},
 	{icon: 'home', text: 'Clubs', route: '/clubs'}
 	];
 	userSubject: Observable<Member>;
@@ -62,7 +62,7 @@ export class AppComponent {
 				if(access.club > 0)
 				{
 					this.authLinks.push(this.links[2]); // MRF
-					this.authLinks.push(this.links[5]);	// Members
+					this.authLinks.push(this.links[5]);	// Administration
 				}
 				if(access.division == 1)
 				{

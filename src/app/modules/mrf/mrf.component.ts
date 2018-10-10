@@ -42,6 +42,22 @@ export class MrfComponent {
 	}
 
 
+	deleteMeeting(i: number) {
+		const meetings = this.mrfForm.controls['meetings'] as FormArray;
+		meetings.removeAt(i);
+		this.mrfForm.get('meetings').markAsDirty();
+	}
+
+	addMeeting() {
+		const meetings = this.mrfForm.controls['meetings'] as FormArray;
+		meetings.controls.push(this.builder.group({
+			advisorAttended: this.builder.group({faculty: [""], kiwanis: [""]}), date: [""], numGuests: [""],
+			numKiwanis: [""], numMembers: [""], numNonHomeMembers: [""]}
+		));
+		console.log(meetings);
+		this.mrfForm.get('meetings').markAsDirty();
+	}
+
 	private createMrf(model: Mrf): FormGroup {
 		/* Fill in CERF with null values so we can at least create a form */
 		/* We're assuming a Cerf IS passed in (i.e. has all the non-optional properties at least) */

@@ -85,7 +85,7 @@
 		<h3>Club Meetings</h3>
 		<ng-container formArrayName="meetings">
 			<div *ngFor="let meeting of mrfForm.controls.meetings.controls; let i=index" [formGroupName]="i">
-				<h4>Meeting {{i}}</h4>
+				<h4>Meeting {{i}} <a mat-icon-button (click)="deleteMeeting(i)"><mat-icon>remove</mat-icon></a></h4>
 				<mat-form-field>
 					<mat-label>Date</mat-label>
 					<input matInput [matDatepicker]="meeting" formControlName="date">	<!-- scoping -->
@@ -94,33 +94,40 @@
 					<mat-error>Invalid Date Format</mat-error>
 				</mat-form-field>
 				<mat-form-field>
-					<mat-label>Members</mat-label>
+					<mat-label># of Members</mat-label>
 					<input matInput formControlName="numMembers">
 				</mat-form-field>
-				<mat-form-field>
+				<!-- <mat-form-field>
 					<mat-label>Non Club Members</mat-label>
 					<input matInput formControlName="numNonHomeMembers">
-				</mat-form-field>
+				</mat-form-field> -->
 				<mat-form-field>
-					<mat-label>Kiwanians</mat-label>
+					<mat-label># of Kiwanians</mat-label>
 					<input matInput formControlName="numKiwanis">
 				</mat-form-field>
 				<mat-form-field>
-					<mat-label>Guests</mat-label>
+					<mat-label># of Guests</mat-label>
 					<input matInput formControlName="numGuests">
 				</mat-form-field>
 				<div formGroupName="advisorAttended">
 					<mat-form-field>
-						<mat-label>Faculty</mat-label>
-						<input matInput formControlName="faculty">
+					  <mat-select placeholder="Faculty Attended?" formControlName="faculty" required>
+					    <mat-option value="yes">Yes</mat-option>
+					    <mat-option value="no">No</mat-option>
+					  </mat-select>
+					  <mat-error>Please choose an option</mat-error>
 					</mat-form-field>
 					<mat-form-field>
-						<mat-label>Kiwanis Advisor</mat-label>
-						<input matInput formControlName="kiwanis">
+					  <mat-select placeholder="Kiwanis Advisor Attended?" formControlName="kiwanis" required>
+					    <mat-option value="yes">Yes</mat-option>
+					    <mat-option value="no">No</mat-option>
+					  </mat-select>
+					  <mat-error>Please choose an option</mat-error>
 					</mat-form-field>
 				</div>
 			</div>
 		</ng-container>
+		<a mat-icon-button (click)="addMeeting()"><mat-icon>add</mat-icon></a>
 	</div>
 
 	<div id="dcms" *ngIf="currentTab=='dcms'">
@@ -154,33 +161,39 @@
 	<div id="feedback" *ngIf="currentTab=='feedback'" formGroupName="communications">
 		<h3>Feedback</h3>
 		<ng-container formGroupName="ltg">
-			<h4 class="subtitle">LTG</h4>
-			<mat-form-field>
-				<textarea matInput formControlName="message"></textarea>
+			<!-- <h4 class="subtitle">LTG</h4> -->
+			<mat-form-field class="full-width">
+				<mat-label>LTG</mat-label>
+				<textarea matInput formControlName="message" matTextareaAutosize></textarea>
 			</mat-form-field>
 			<p>Contacted</p>
 			<div formGroupName="contacted">
-				<mat-form-field>
-					<textarea matInput formControlName="visit"></textarea>
+				<mat-form-field class="full-width">
+					<mat-label>Visit</mat-label>
+					<textarea matInput formControlName="visit" matTextareaAutosize></textarea>
 				</mat-form-field>
-				<mat-form-field>
-					<textarea matInput formControlName="phone"></textarea>
+				<mat-form-field class="full-width">
+					<mat-label>Phone</mat-label>
+					<textarea matInput formControlName="phone" matTextareaAutosize></textarea>
 				</mat-form-field>
-				<mat-form-field>
-					<textarea matInput formControlName="email"></textarea>
+				<mat-form-field class="full-width">
+					<mat-label>Email</mat-label>
+					<textarea matInput formControlName="email" matTextareaAutosize></textarea>
 				</mat-form-field>
-				<mat-form-field>
-					<textarea matInput formControlName="newsletter"></textarea>
+				<mat-form-field class="full-width">
+					<mat-label>Newsletter</mat-label>
+					<textarea matInput formControlName="newsletter" matTextareaAutosize></textarea>
 				</mat-form-field>
-				<mat-form-field>
-					<textarea matInput formControlName="other"></textarea>
+				<mat-form-field class="full-width">
+					<mat-label>Other</mat-label>
+					<textarea matInput formControlName="other" matTextareaAutosize></textarea>
 				</mat-form-field>
 			</div>
 		</ng-container>
 
 		<h4 class="subtitle">DBoard</h4>
-		<mat-form-field>
-			<textarea matInput formControlName="dboard"></textarea>
+		<mat-form-field class="full-width">
+			<textarea matInput formControlName="dboard" matTextareaAutosize></textarea>
 		</mat-form-field>
 	</div>
 	

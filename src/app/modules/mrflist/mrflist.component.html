@@ -3,6 +3,8 @@
 		<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
     <mat-icon matSuffix>search</mat-icon>
 	</mat-form-field>
+
+  <!-- <button mat-button [routerLink]="['/club']">Administrator Information</button> -->
 </div>
 
 
@@ -15,9 +17,9 @@
       <li [class.mat-elevation-z4]="currentTab=='division'">
         <button mat-button (click)="currentTab='division'">Show Division</button>
       </li>
-      <li [class.mat-elevation-z4]="currentTab=='district'">
+      <!-- <li [class.mat-elevation-z4]="currentTab=='district'">
         <button mat-button (click)="currentTab='district'">Show All</button>
-      </li>
+      </li> -->
     </ul>
   </nav>
 </div>
@@ -27,7 +29,7 @@
 	<!-- Month Column -->
     <ng-container matColumnDef="month">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Month </mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.month}}</mat-cell>
+      <mat-cell *matCellDef="let row">{{months[row.month-1]}}</mat-cell>
     </ng-container>
 
     <!-- Year Column -->

@@ -31,7 +31,7 @@ const routes: Routes = [
 	{ path: 'mrf/:year/:month', component: MrfComponent, resolve: { mrf: MrfResolver }, canActivate: [AuthGuard], canDeactivate: [MrfDeactivateGuard] },
 	{ path: 'divmrfs', component: MrfDivisionComponent, resolve: { divisionMrfs: MrfDivisionResolver }, canActivate: [AuthGuard] },
 	{ path: 'distmrfs', component: MrfDistrictComponent, resolve: { districtMrfs: MrfDistrictResolver }, canActivate: [AuthGuard] },
-	{ path: 'members', component: MembersComponent, resolve: { members: MembersResolver}, canActivate: [AuthGuard]},
+	{ path: 'club', component: MembersComponent, resolve: { members: MembersResolver}, canActivate: [AuthGuard]},
 	{ path: 'clubs', component: ClubsComponent, resolve: { clubs: ClubsResolver }, canActivate: [AuthGuard]},
 	{ path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
 	{ path: 'signup', component: SignupComponent },
