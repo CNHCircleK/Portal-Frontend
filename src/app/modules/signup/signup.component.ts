@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-// import { RouterModule } from '@angular/router'; // may or may not be necessary
+import { AuthService } from '@core/authentication/auth.service';
+import { DataService } from '@core/data/data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -7,6 +9,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./signup.component.css', './_signup.component.scss']
 })
 export class SignupComponent implements OnInit {
+
+  constructor(
+    private auth: AuthService,
+    private dataService: DataService,
+    private router: Router) {}
 
   codeValidity: boolean = false;
   databaseValidity: boolean = false;
@@ -24,7 +31,6 @@ export class SignupComponent implements OnInit {
 
   setDatabaseValidity() {
     this.databaseValidity = !this.databaseValidity;
-    console.log(this.databaseValidity);
   }
   // Sets databaseValidity to true if user clicks next after the validation form is shown
   // Sets databaseValidity to false if users return to the validation form
@@ -35,8 +41,12 @@ export class SignupComponent implements OnInit {
   }
 
   checkCode(SignUpCode){
-  	if(SignUpCode == "a"){ this.setCodeValidity(true); }
+  	if(SignUpCode == "code"){ this.setCodeValidity(true); }
   	else{ this.setCodeValidity(false); }
+  }
+
+  signup( code, email, user, pass ){
+    this.auth.signup(code, email, user, pass).subscribe(res=> { this.router.navigate(['']) }, error=>console.error(error), ()=> {});
   }
 
 }

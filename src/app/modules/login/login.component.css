@@ -1,4 +1,4 @@
-a{
+.a{
 	text-decoration: none;
 }
 
@@ -16,4 +16,20 @@ a{
 
 :host ::ng-deep .alert-image{
 	vertical-align: text-bottom;
+}
+
+.center{
+	text-align: center;
+	margin-top: 5%;
+/*	border-color: black;
+	border-style: solid;*/
+}
+
+.logo{
+	max-width: 10%;
+	max-height: 10%;
+}
+
+.marginBottom-5px{
+	margin-bottom: 5px;
 }

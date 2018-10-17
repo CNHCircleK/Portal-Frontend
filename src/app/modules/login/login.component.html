@@ -1,49 +1,47 @@
+<div class="center">
+	
+<h1>Online MRF Portal</h1>
+<img src="assets/cnhlogo.png" class="logo"> 
 <h1>Log In</h1>
+<form #loginForm= "ngForm">
 
-<form #loginForm="ngForm">
-	<div>
-		<mat-form-field>
-		<mat-label>Username</mat-label>
-		<input
-			required
-			matInput
-			ngModel
-			#Username= "ngModel"
-			name= "Username"
-			ng-model-options="{ getterSetter: true }"
-			placeholder= "Username">
-		</mat-form-field>
-		<div *ngIf="Username.touched && Username.invalid" class="input-alert">
-			<i class="material-icons alert-image">warning</i>
-			Username is required
-		</div>
+<div>
+	<mat-form-field> <mat-label>Username</mat-label>
+		<input required matInput ngModel
+		#Username= "ngModel" name= "Username" placeholder= "Username"/>
+	</mat-form-field>
+
+	<div *ngIf= "Username.touched && Username.invalid" class= "input-alert">
+		<i class= "material-icons alert-image">warning</i>
+		Username is required
 	</div>
+</div>
+<!-- Username field w/ warning -->
 
-	<div>
-		<mat-form-field>
-		<mat-label>Password</mat-label>
-		<input
-			required
-			matInput
-			ngModel
-			#Password= "ngModel"
-			name= "Password"
-			placeholder= "Password"
-			ng-model-options="{ getterSetter: true }"
-			type= "password">
-		</mat-form-field>
-		<div *ngIf="Password.touched && Password.invalid" class="input-alert">
-			<i class="material-icons alert-image">warning</i>
+<div>
+	<mat-form-field> <mat-label>Password</mat-label>
+		<input required matInput ngModel #Password= "ngModel" name= "Password" placeholder= "Password" type= "password"/>
+	</mat-form-field>
+
+		<div *ngIf= "Password.touched && Password.invalid" class= "input-alert">
+			<i class= "material-icons alert-image">warning</i>
 			Password is required
 		</div>
-	</div>
+</div>
+<!-- Password field w/ warning -->
 
-	<div>
-		<button class="marginRight-10px" mat-raised-button (click)="login( Username.value , Password.value )">
-			Log In <i class="material-icons">done</i>
-		</button>
-		<a routerLink="/signup" mat-raised-button>
-			Sign Up <i class="material-icons">add</i>
-		</a>
-	</div>
+<div class="marginBottom-5px"> <a href=""> Forgot your password? </a> </div>
+
+<div>
+	<button class= "marginRight-10px" mat-raised-button (click)= "login( Username.value , Password.value )">
+		Log In <i class="material-icons">done</i>
+	</button>
+
+	<a routerLink= "/signup" mat-raised-button class="a">
+		Sign Up <i class= "material-icons">add</i>
+	</a>
+</div>
+<!-- Log In and Sign Up Buttons -->
+
 </form>
+</div>

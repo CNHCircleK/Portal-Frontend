@@ -1,145 +1,83 @@
 <h1> Sign Up </h1>
 
-<form #validateCode="ngForm" *ngIf="!getDatabaseValidity()">
-	<div>
-		<mat-form-field>
-		<mat-label>SignUpCode</mat-label>
-		<input
-			required
-			matInput
-			ngModel
-			#SignUpCode= "ngModel"
-			name= "SignUpCode"
-			placeholder= "Sign Up Code">
-		</mat-form-field>
-		<button
-			class= "marginLeft"
-			mat-raised-button
-			(click)="checkCode( SignUpCode.value )">
-		Verify</button>
-		<div *ngIf="SignUpCode.touched && SignUpCode.invalid" class="input-alert">
-			<i class="material-icons alert-image">warning</i>
-			Sign Up Code is required
-		</div>
-	</div>
-</form>
+<form #validateCode="ngForm">
 
-<form #Validityatabase="ngForm" *ngIf="getCodeValidity() && !getDatabaseValidity()">
-	<p> Is this information correct? </p>
-	<div>
-		Name:
-		<span class="greyOut marginRight">
-			<mat-form-field>
-			<mat-label>Name</mat-label>
-			<input
-				matInput
-				ngModel
-				#Name= "ngModel"
-				name= "Name"
-				placeholder="Name"
-				readonly>
-			</mat-form-field>
-		</span>
-		<span>
-			<mat-form-field>
-			<mat-label>Name</mat-label>
-			<input
-				matInput
-				ngModel
-				#Name= "ngModel"
-				name= "Name"
-				placeholder="Name">
-			</mat-form-field>
-		</span>
-	</div>
-
-	<div>
-		School:
-		<span class="greyOut marginRight">
-			<mat-form-field>
-			<mat-label>School</mat-label>
-			<input
-				matInput
-				ngModel
-				#School= "ngModel"
-				name= "School"
-				placeholder="School"
-				readonly>
-			</mat-form-field>
-		</span>
-		<span>
-			<mat-form-field>
-			<mat-label>School</mat-label>
-			<input
-				matInput
-				ngModel
-				#School= "ngModel"
-				name= "School"
-				placeholder="School">
-			</mat-form-field>
-		</span>
-	</div>
-
-	<div>
-		Division:
-		<span class="greyOut marginRight">
-			<mat-form-field>
-			<mat-label>Division</mat-label>
-			<input
-				matInput
-				ngModel
-				#Division= "ngModel"
-				name= "Division"
-				placeholder="Division"
-				readonly>
-			</mat-form-field>
-		</span>
-		<span>
-			<mat-form-field>
-			<mat-label>Division</mat-label>
-			<input
-				matInput
-				ngModel
-				#Division= "ngModel"
-				name= "Division"
-				placeholder="Division">
-			</mat-form-field>
-		</span>
-	</div>
-
-	<a [routerLink]="['/faqs']" class="marginRight">Is this not you?</a>
-	<button mat-raised-button (click)="setDatabaseValidity()">Next</button>
-</form>
-
-<form #signupForm="ngForm" *ngIf="getDatabaseValidity()">
 <div>
-		<mat-form-field>
-		<mat-label>Username</mat-label>
-		<input
-			required
-			matInput
-			ngModel
-			#Username= "ngModel"
-			name= "Username"
-			placeholder= "Username">
-		</mat-form-field>
-		<div *ngIf="Username.touched && Username.invalid" class="input-alert">
-			<i class="material-icons alert-image">warning</i>
-			Username is required
-		</div>
+	<mat-form-field> <mat-label>SignUpCode</mat-label>
+		<input required	matInput ngModel
+		#SignUpCode= "ngModel" name= "SignUpCode" placeholder= "Sign Up Code">
+	</mat-form-field>
+
+	<button mat-raised-button class= "marginLeft" (click)="checkCode( SignUpCode.value )"> Verify </button>
+	<div *ngIf="SignUpCode.touched && SignUpCode.invalid" class="input-alert">
+		<i class="material-icons alert-image"> warning </i> Sign Up Code is required
 	</div>
+</div>
+<!-- Sign Up Code w/ Warning -->
+
+<div *ngIf="getCodeValidity() && !getDatabaseValidity()">
+
+<p> Is this information correct? </p>
+<div> Name:
+	<span class="greyOut marginRight"> <mat-form-field> <mat-label>Name</mat-label>
+			<input matInput ngModel readonly
+			#Name= "ngModel" name= "Name" placeholder="Name">
+	</mat-form-field> </span>
+
+	<span> <mat-form-field> <mat-label>Name</mat-label>
+			<input matInput	ngModel
+			#Name= "ngModel" name= "Name" placeholder="Name">
+	</mat-form-field> </span>
+</div>
+<!-- Optional Name field -->
+
+<div> School:
+	<span class="greyOut marginRight"> <mat-form-field> <mat-label>School</mat-label>
+		<input matInput ngModel readonly
+		#School= "ngModel" name= "School" placeholder="School">
+	</mat-form-field> </span>
+
+	<span>
+		<mat-form-field> <mat-label>School</mat-label>
+			<input matInput	ngModel 
+			#School= "ngModel" name= "School" placeholder="School">
+		</mat-form-field>
+	</span>
+</div>
+<!-- Optional School Field -->
+
+<div> Division:
+	<span class="greyOut marginRight"> <mat-form-field> <mat-label>Division</mat-label>
+		<input matInput	ngModel readonly 
+		#Division= "ngModel" name= "Division" placeholder="Division">
+	</mat-form-field> </span>
+
+	<span> <mat-form-field>	<mat-label>Division</mat-label>
+		<input matInput	ngModel
+		#Division= "ngModel" name= "Division" placeholder="Division">
+	</mat-form-field> </span>
+</div>
+<!-- Optional Division Field -->
+
+<a [routerLink]="['/faqs']" class="marginRight">Is this not you?</a>
+<button mat-raised-button (click)="setDatabaseValidity()">Next</button>
+</div>
+
+<div *ngIf="getDatabaseValidity()">
+<div> <mat-form-field> <mat-label>Username</mat-label>
+	<input required matInput ngModel
+	#Username= "ngModel" name= "Username" placeholder= "Username">
+</mat-form-field>
+
+<div *ngIf="Username.touched && Username.invalid" class="input-alert">
+<i class="material-icons alert-image">warning</i> Username is required
+</div>
+</div>
 
 	<div>
-		<mat-form-field>
-		<mat-label>Password</mat-label>
-		<input
-			required
-			matInput
-			ngModel
-			#Password= "ngModel"
-			name= "Password"
-			placeholder= "Password"
-			type= "password">
+		<mat-form-field> <mat-label>Password</mat-label>
+		<input required	matInput ngModel
+		#Password= "ngModel" name= "Password" placeholder= "Password" type= "password">
 		</mat-form-field>
 		<div *ngIf="Password.touched && Password.invalid" class="input-alert">
 			<i class="material-icons alert-image">warning</i>
@@ -148,16 +86,9 @@
 	</div>
 
 	<div>
-		<mat-form-field>
-		<mat-label>Confirm Password</mat-label>
-		<input
-			required
-			matInput
-			ngModel
-			#ConfirmPassword= "ngModel"
-			name= "ConfirmPassword"
-			placeholder= "Confirm Password"
-			type= "password">
+		<mat-form-field> <mat-label>Confirm Password</mat-label>
+		<input required	matInput ngModel
+		#ConfirmPassword= "ngModel"	name= "ConfirmPassword"	placeholder= "Confirm Password"	type= "password">
 		</mat-form-field> 
 		<div *ngIf="ConfirmPassword.touched && ConfirmPassword.invalid" class="input-alert">
 			<i class="material-icons alert-image">warning</i>
@@ -166,16 +97,9 @@
 	</div>
 
 	<div>
-		<mat-form-field>
-		<mat-label>Confirm Password</mat-label>
-		<input
-			required
-			matInput
-			ngModel
-			#Email= "ngModel"
-			name= "Email"
-			placeholder= "Email"
-			type= "email">
+		<mat-form-field> <mat-label>Confirm Password</mat-label>
+		<input required	matInput ngModel
+		#Email= "ngModel" name= "Email"	placeholder= "Email" type= "email">
 		</mat-form-field> 
 		<div *ngIf="Email.touched && Email.invalid" class="input-alert">
 			<i class="material-icons alert-image">warning</i>
@@ -184,7 +108,9 @@
 	</div>	
 
 	<a mat-raised-button (click)="setDatabaseValidity()" class="marginRight">Back</a>
-	<button mat-raised-button type="submit" [routerLink]="['/login']">
-		Submit <i class="material-icons">done</i>
+	<button mat-raised-button type="submit" 
+	(click)="signup(SignUpCode.value, Email.value, Username.value, Password.value)">
+	Submit <i class="material-icons">done</i>
 	</button>
+</div>
 </form>
