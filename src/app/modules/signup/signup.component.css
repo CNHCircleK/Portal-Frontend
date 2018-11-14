@@ -1,32 +1,19 @@
-:host ::ng-deep .input-alert{
-	border-left: solid 5px;
-	padding-left: 5px;
-	padding-bottom: 5px;
-	margin-bottom: 10px;
+.body{
+	text-align: center; 
 }
 
-:host ::ng-deep .greyOut{
-	background-color: #D3D3D3;
+.linkDeco{
+	text-decoration: none;
 }
 
-:host ::ng-deep .marginRight{
+.linkDeco:hover{
+	text-decoration: underline;
+}
+
+.marginRight{
 		margin-right: 10px;
 }
 
-:host ::ng-deep .marginLeft{
+.marginLeft{
 		margin-left: 10px;
-}
-
-:host ::ng-deep .alert-image{
-	vertical-align: text-bottom;
-}
-
-:host ::ng-deep .invisible-button{
-	background: transparent;
-	border: none !important;
-	font-size: 0;
-}
-
-a{
-	text-decoration: none;
 }

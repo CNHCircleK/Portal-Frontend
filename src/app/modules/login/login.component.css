@@ -1,28 +1,6 @@
-.a{
-	text-decoration: none;
-}
-
-:host ::ng-deep .marginRight-10px{
-	margin-right: 10px;
-}
-
-
-:host ::ng-deep .input-alert{
-	border-left: solid 5px;
-	padding-left: 5px;
-	padding-bottom: 5px;
-	margin-bottom: 10px;
-}
-
-:host ::ng-deep .alert-image{
-	vertical-align: text-bottom;
-}
-
-.center{
+.body{
 	text-align: center;
 	margin-top: 5%;
-/*	border-color: black;
-	border-style: solid;*/
 }
 
 .logo{
@@ -30,6 +8,18 @@
 	max-height: 10%;
 }
 
-.marginBottom-5px{
+.linkDeco{
+	text-decoration: none;
+}
+
+.linkDeco:hover{
+	text-decoration: underline;
+}
+.marginRight{
+	margin-right: 10px;
+}
+
+
+.marginBottom{
 	margin-bottom: 5px;
 }

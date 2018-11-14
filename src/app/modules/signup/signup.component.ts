@@ -18,6 +18,13 @@ export class SignupComponent implements OnInit {
   codeValidity: boolean = false;
   databaseValidity: boolean = false;
 
+
+  firstName: string;
+  lastName: string;
+  school: string;
+  division: string;
+
+
   ngOnInit() { }
 
   setCodeValidity(x) {
@@ -29,8 +36,13 @@ export class SignupComponent implements OnInit {
   	return this.codeValidity;
   }
 
-  setDatabaseValidity() {
+  setDatabaseValidity(firstName, lastName, school, division) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.school = school;
+    this.division = division;
     this.databaseValidity = !this.databaseValidity;
+
   }
   // Sets databaseValidity to true if user clicks next after the validation form is shown
   // Sets databaseValidity to false if users return to the validation form
@@ -48,5 +60,10 @@ export class SignupComponent implements OnInit {
   signup( code, email, user, pass ){
     this.auth.signup(code, email, user, pass).subscribe(res=> { this.router.navigate(['']) }, error=>console.error(error), ()=> {});
   }
+
+  // signup( code, email, user, pass ){
+  //   this.auth.signup(code, email, user, pass).subscribe(res=> { this.router.navigate(['']) }, error=>console.error(error), ()=> {});
+  // }
+  // TODO: update this to reflect any user corrections to database
 
 }
