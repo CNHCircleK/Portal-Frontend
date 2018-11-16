@@ -1,3 +1,26 @@
-button {
+/*button {
 	margin-bottom: 16px;
+}*/
+button {
+	font-family: "Century Gothic";
+}
+h1, h3 {
+	color: #144c83;
+	font-family: "Century Gothic";
+}
+h2 {
+	font-size: 48px;
+	margin-left: 24px;
+	margin-bottom: 32px;
+}
+
+.action {
+	display: flex;
+	justify-content: space-between;
+}
+.action button {
+	border-radius: 10px;
+	color: white;
+	background-color: #003366;
+	margin-right: 32px;
 }

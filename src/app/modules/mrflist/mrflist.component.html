@@ -1,11 +1,11 @@
-<div>
+<!-- <div>
 	<mat-form-field>
 		<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
     <mat-icon matSuffix>search</mat-icon>
 	</mat-form-field>
-
+ -->
   <!-- <button mat-button [routerLink]="['/club']">Administrator Information</button> -->
-</div>
+<!-- </div> -->
 
 
 <div id="cerf-list-header">
@@ -23,7 +23,6 @@
     </ul>
   </nav>
 </div>
-<mat-paginator [pageSizeOptions]="[10, 25, 50]"></mat-paginator>
 <mat-table [dataSource]="list" matSort>
 
 	<!-- Month Column -->
@@ -73,3 +72,4 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>
+<mat-paginator [pageSizeOptions]="[10, 25, 50]"></mat-paginator>

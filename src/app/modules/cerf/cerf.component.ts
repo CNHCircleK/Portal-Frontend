@@ -35,9 +35,14 @@ export class CerfComponent {
 
 	tabs: string[] = ["main", "attendance", "fundraising", "drivers", "commentary"];
 	currentTab: string;
+	openedPanels: number[] = [0, 0, 0, 0, 0, 0];
 
 	members: MatTableDataSource<Attendee>;
 	attendanceColumns: string[] = ['members', 'service', 'leadership', 'fellowship'];// 'unpaid'];
+	memberName: string;
+	memberService: number;
+	memberLeadership: number;
+	memberFellowship: number;
 
 	myForm: FormGroup;
 	// comment: string = "HEY";
@@ -226,10 +231,10 @@ export class CerfComponent {
 		// this.members.data = this.cerf.data.attendees;
 
 		const attendees = this.attendees;
-		const hours = this.myForm.get('hoursPerAttendee').value;
-		attendees.controls.push(this.builder.group({name: [''], service: [hours.service || 0], leadership: [hours.leadership || 0], fellowship: [hours.fellowship || 0]}));
-		// attendees.controls.push(this.builder.control(""));
-		// this.members.data = new Array(attendees.length).map((v, index) => attendees.at(index).value as string);
+		// const hours = this.myForm.get('hoursPerAttendee').value;
+		// attendees.controls.push(this.builder.group({name: [''], service: [hours.service || 0], leadership: [hours.leadership || 0], fellowship: [hours.fellowship || 0]}));
+		attendees.controls.push(this.builder.group({name: [this.memberName], service: [this.memberService || 0], leadership: [this.memberLeadership || 0],
+			fellowship: [this.memberFellowship || 0]}));
 		console.log(attendees.getRawValue());
 		this.members = new MatTableDataSource(attendees.getRawValue());
 		this.myForm.get('attendees').markAsDirty();

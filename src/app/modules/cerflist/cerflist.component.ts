@@ -14,7 +14,7 @@ import { Cerf } from '@core/data/cerf';
 })
 
 export class CerfListComponent {
-	displayedColumns = ["name", "time.start", "color", "labels", "search"];	// Add "status" to display notification of status
+	displayedColumns = ["name", "time.start", "labels"];	// Add "status" to display notification of status
 	list: MatTableDataSource<Cerf>;
 
 	@ViewChild(MatPaginator) paginator: MatPaginator;
@@ -57,7 +57,15 @@ export class CerfListComponent {
 	ngAfterViewInit() {
 		if(this.list) {
 			this.list.sort = this.sort;
-			this.list.sortingDataAccessor = (data, header) => data[header]; // https://github.com/angular/material2/issues/9966
+			this.list.sortingDataAccessor = (data, header) => {
+				switch (header) {
+					case "time.start":
+						return new Date(data.time.start);
+					
+					default:
+						return data[header]; // https://github.com/angular/material2/issues/9966
+				}
+			}
 			if(this.pagination)
 				this.list.paginator = this.paginator;
 		}

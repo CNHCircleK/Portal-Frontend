@@ -1,15 +1,17 @@
 <div id="mrf-header">
+	<p class="mat-body-1">MRF Month: {{ mrf.month }} </p>
 	<div id="mrf-actions">
-		<a mat-icon-button (click)="goBack()">
+<!-- 		<a mat-icon-button (click)="goBack()">
 			<mat-icon>arrow_back</mat-icon>
-		</a>
-		<p>Mrf ID: none, removing IDs | Month: {{ mrf.month }} </p>
+		</a> -->
+		<mat-spinner *ngIf="false" diameter="36"></mat-spinner>
+		<button mat-icon-button [disabled]="!mrfForm.dirty || !mrfForm.valid" (click)="saveMrf()"><mat-icon>save</mat-icon></button>
 	</div>
 </div>
 
 
 <mat-divider></mat-divider>
-<nav id="mrf-tabs">
+<!-- <nav id="mrf-tabs">
 	<ul>
 		<li [class.mat-elevation-z4]="currentTab=='main'">
 			<button mat-icon-button style="color: green" (click)="currentTab='main'">
@@ -37,22 +39,21 @@
 			</button>
 		</li>
 	</ul>
-</nav>
+</nav> -->
 
 
 <form [formGroup]="mrfForm">
-
-	<div id="main" *ngIf="currentTab=='main'">
-		<h3>Main</h3>
-		<mat-form-field>
+	<div id="main">
+		<h3>General Information</h3>
+		<mat-form-field appearance="outline">
 			<mat-label>Club ID</mat-label>
 			<input matInput formControlName="club_id" readonly>
 		</mat-form-field>
-		<mat-form-field>
+		<mat-form-field appearance="outline">
 			<mat-label>Year</mat-label>
 			<input matInput formControlName="year" readonly>
 		</mat-form-field>
-		<mat-form-field>
+		<mat-form-field appearance="outline">
 			<mat-label>Month</mat-label>
 			<input matInput formControlName="month" readonly>
 		</mat-form-field>
@@ -66,138 +67,213 @@
 
 		<h4>Goals</h4>
 		<ng-container formArrayName="goals">
-			<div *ngFor="let goal of mrfForm.controls.goals.controls; let i=index">
+			<div *ngFor="let goal of mrfForm['controls'].goals['controls']; let i=index">
 				<p>Goal {{i}}</p>
-				<mat-form-field>
+				<mat-form-field appearance="outline">
 					<textarea matInput [formControlName]="i"></textarea>
 				</mat-form-field>
 			</div>
 		</ng-container>
 	</div>
 
-	<div id="events" *ngIf="currentTab=='events'">
-		<h3>Events</h3>
-		<app-cerflist *ngIf='cerfList; else loadingCerf' [cerfList]="cerfList" [pendingCerfs]="true"></app-cerflist>
-		<ng-template #loadingCerf> <mat-spinner></mat-spinner> </ng-template>
-	</div>
 
-	<div id="meetings" *ngIf="currentTab=='meetings'">
-		<h3>Club Meetings</h3>
-		<ng-container formArrayName="meetings">
-			<div *ngFor="let meeting of mrfForm.controls.meetings.controls; let i=index" [formGroupName]="i">
-				<h4>Meeting {{i}} <a mat-icon-button (click)="deleteMeeting(i)"><mat-icon>remove</mat-icon></a></h4>
-				<mat-form-field>
+
+	<mat-accordion displayMode="flat" [multi]="true">
+
+
+	  <mat-expansion-panel [class.mat-elevation-z0]="true" [hideToggle]="true"
+	  						(opened)="openedPanels[0] = 1"
+	                       (closed)="openedPanels[0] = 0">
+	    <mat-expansion-panel-header>
+	      <mat-panel-title>
+	        <mat-icon class="expansion-icon" [inline]="true">{{ openedPanels[0] ? "expand_less" : "expand_more" }}</mat-icon>
+	        <h3 class="mat-subheading-1">Event Reports</h3>
+	      </mat-panel-title>
+	      <mat-panel-description>
+	      </mat-panel-description>
+	    </mat-expansion-panel-header>
+
+	    <div id="events">
+			<app-cerflist *ngIf='cerfList; else loadingCerf' [cerfList]="cerfList" [pendingCerfs]="true"></app-cerflist>
+			<ng-template #loadingCerf> <mat-spinner></mat-spinner> </ng-template>
+		</div>
+
+
+	  </mat-expansion-panel>
+
+
+	  <mat-expansion-panel [class.mat-elevation-z0]="true" [hideToggle]="true"
+	  						(opened)="openedPanels[1] = 1"
+	                       (closed)="openedPanels[1] = 0">
+	    <mat-expansion-panel-header>
+	      <mat-panel-title>
+	        <mat-icon class="expansion-icon" [inline]="true">{{ openedPanels[1] ? "expand_less" : "expand_more" }}</mat-icon>
+	        <h3 class="mat-subheading-1">Meetings</h3>
+	      </mat-panel-title>
+	      <mat-panel-description>
+	      </mat-panel-description>
+	    </mat-expansion-panel-header>
+
+		<div id="meetings">
+			<ng-container formArrayName="meetings">
+				<div *ngFor="let meeting of mrfForm['controls'].meetings['controls']; let i=index" [formGroupName]="i">
+					<h4>Meeting {{i}} <a mat-icon-button (click)="deleteMeeting(i)"><mat-icon>remove</mat-icon></a></h4>
+					<mat-form-field appearance="outline">
+						<mat-label>Date</mat-label>
+						<input matInput [matDatepicker]="meeting" formControlName="date">	<!-- scoping -->
+						<mat-datepicker type="datetime" #meeting disabled="false"></mat-datepicker>
+						<mat-datepicker-toggle matSuffix [for]="meeting"></mat-datepicker-toggle>
+						<mat-error>Invalid Date Format</mat-error>
+					</mat-form-field>
+					<mat-form-field appearance="outline">
+						<mat-label># of Members</mat-label>
+						<input matInput formControlName="numMembers">
+					</mat-form-field>
+					<!-- <mat-form-field appearance="outline">
+						<mat-label>Non Club Members</mat-label>
+						<input matInput formControlName="numNonHomeMembers">
+					</mat-form-field> -->
+					<mat-form-field appearance="outline">
+						<mat-label># of Kiwanians</mat-label>
+						<input matInput formControlName="numKiwanis">
+					</mat-form-field>
+					<mat-form-field appearance="outline">
+						<mat-label># of Guests</mat-label>
+						<input matInput formControlName="numGuests">
+					</mat-form-field>
+					<div formGroupName="advisorAttended">
+						<mat-form-field appearance="outline">
+						  <mat-select placeholder="Faculty Attended?" formControlName="faculty" required>
+						    <mat-option value="yes">Yes</mat-option>
+						    <mat-option value="no">No</mat-option>
+						  </mat-select>
+						  <mat-error>Please choose an option</mat-error>
+						</mat-form-field>
+						<mat-form-field appearance="outline">
+						  <mat-select placeholder="Kiwanis Advisor Attended?" formControlName="kiwanis" required>
+						    <mat-option value="yes">Yes</mat-option>
+						    <mat-option value="no">No</mat-option>
+						  </mat-select>
+						  <mat-error>Please choose an option</mat-error>
+						</mat-form-field>
+					</div>
+				</div>
+			</ng-container>
+			<a mat-icon-button (click)="addMeeting()"><mat-icon>add</mat-icon></a>
+		</div>
+
+
+	  </mat-expansion-panel>
+
+
+
+	  <mat-expansion-panel [class.mat-elevation-z0]="true" [hideToggle]="true"
+	  						(opened)="openedPanels[2] = 1"
+	                       (closed)="openedPanels[2] = 0">
+	    <mat-expansion-panel-header>
+	      <mat-panel-title>
+	        <mat-icon class="expansion-icon" [inline]="true">{{ openedPanels[2] ? "expand_less" : "expand_more" }}</mat-icon>
+	        <h3 class="mat-subheading-1">DCM</h3>
+	      </mat-panel-title>
+	      <mat-panel-description>
+	      </mat-panel-description>
+	    </mat-expansion-panel-header>
+
+	    <div id="dcms">
+			<ng-container formGroupName="dcm">
+				<mat-form-field appearance="outline">
 					<mat-label>Date</mat-label>
-					<input matInput [matDatepicker]="meeting" formControlName="date">	<!-- scoping -->
-					<mat-datepicker type="datetime" #meeting disabled="false"></mat-datepicker>
-					<mat-datepicker-toggle matSuffix [for]="meeting"></mat-datepicker-toggle>
+					<input matInput [matDatepicker]="dcmDate" formControlName="date">	<!-- scoping -->
+					<mat-datepicker type="datetime" #dcmDate></mat-datepicker>
+					<mat-datepicker-toggle matSuffix [for]="dcmDate"></mat-datepicker-toggle>
 					<mat-error>Invalid Date Format</mat-error>
 				</mat-form-field>
-				<mat-form-field>
-					<mat-label># of Members</mat-label>
-					<input matInput formControlName="numMembers">
+				<br/>
+				<mat-checkbox formControlName="presidentAttended">President Attended?</mat-checkbox>
+				<br/>
+				<mat-form-field appearance="outline">
+					<mat-label>Members Attended</mat-label>
+					<input matInput type="number" formControlName="numMembers">
 				</mat-form-field>
-				<!-- <mat-form-field>
-					<mat-label>Non Club Members</mat-label>
-					<input matInput formControlName="numNonHomeMembers">
-				</mat-form-field> -->
-				<mat-form-field>
-					<mat-label># of Kiwanians</mat-label>
-					<input matInput formControlName="numKiwanis">
+				<mat-form-field appearance="outline">
+					<mat-label>Next DCM Date</mat-label>
+					<input matInput [matDatepicker]="dcmDateNext" formControlName="nextDate">	<!-- scoping -->
+					<mat-datepicker type="datetime" #dcmDateNext></mat-datepicker>
+					<mat-datepicker-toggle matSuffix [for]="dcmDateNext"></mat-datepicker-toggle>
+					<mat-error>Invalid Date Format</mat-error>
 				</mat-form-field>
-				<mat-form-field>
-					<mat-label># of Guests</mat-label>
-					<input matInput formControlName="numGuests">
+			</ng-container>
+		</div>
+
+
+	  </mat-expansion-panel>
+
+
+
+
+	  <mat-expansion-panel [class.mat-elevation-z0]="true" [hideToggle]="true"
+	  						(opened)="openedPanels[3] = 1"
+	                       (closed)="openedPanels[3] = 0">
+	    <mat-expansion-panel-header>
+	      <mat-panel-title>
+	        <mat-icon class="expansion-icon" [inline]="true">{{ openedPanels[3] ? "expand_less" : "expand_more" }}</mat-icon>
+	        <h3 class="mat-subheading-1">Feedback</h3>
+	      </mat-panel-title>
+	      <mat-panel-description>
+	      </mat-panel-description>
+	    </mat-expansion-panel-header>
+
+		<div id="feedback" formGroupName="communications">
+			<ng-container formGroupName="ltg">
+				<!-- <h4 class="subtitle">LTG</h4> -->
+				<mat-form-field appearance="outline" class="full-width">
+					<mat-label>LTG</mat-label>
+					<textarea matInput formControlName="message" matTextareaAutosize></textarea>
 				</mat-form-field>
-				<div formGroupName="advisorAttended">
-					<mat-form-field>
-					  <mat-select placeholder="Faculty Attended?" formControlName="faculty" required>
-					    <mat-option value="yes">Yes</mat-option>
-					    <mat-option value="no">No</mat-option>
-					  </mat-select>
-					  <mat-error>Please choose an option</mat-error>
+				<p>Contacted</p>
+				<div formGroupName="contacted">
+					<mat-form-field appearance="outline" class="full-width">
+						<mat-label>Visit</mat-label>
+						<textarea matInput formControlName="visit" matTextareaAutosize></textarea>
 					</mat-form-field>
-					<mat-form-field>
-					  <mat-select placeholder="Kiwanis Advisor Attended?" formControlName="kiwanis" required>
-					    <mat-option value="yes">Yes</mat-option>
-					    <mat-option value="no">No</mat-option>
-					  </mat-select>
-					  <mat-error>Please choose an option</mat-error>
+					<mat-form-field appearance="outline" class="full-width">
+						<mat-label>Phone</mat-label>
+						<textarea matInput formControlName="phone" matTextareaAutosize></textarea>
+					</mat-form-field>
+					<mat-form-field appearance="outline" class="full-width">
+						<mat-label>Email</mat-label>
+						<textarea matInput formControlName="email" matTextareaAutosize></textarea>
+					</mat-form-field>
+					<mat-form-field appearance="outline" class="full-width">
+						<mat-label>Newsletter</mat-label>
+						<textarea matInput formControlName="newsletter" matTextareaAutosize></textarea>
+					</mat-form-field>
+					<mat-form-field appearance="outline" class="full-width">
+						<mat-label>Other</mat-label>
+						<textarea matInput formControlName="other" matTextareaAutosize></textarea>
 					</mat-form-field>
 				</div>
-			</div>
-		</ng-container>
-		<a mat-icon-button (click)="addMeeting()"><mat-icon>add</mat-icon></a>
-	</div>
+			</ng-container>
 
-	<div id="dcms" *ngIf="currentTab=='dcms'">
-		<h3>DCM</h3>
-		<ng-container formGroupName="dcm">
-			<h4 class="subtitle">Meeting {{i}}</h4>
-			<mat-form-field>
-				<mat-label>Date</mat-label>
-				<input matInput [matDatepicker]="dcmDate" formControlName="date">	<!-- scoping -->
-				<mat-datepicker type="datetime" #dcmDate></mat-datepicker>
-				<mat-datepicker-toggle matSuffix [for]="dcmDate"></mat-datepicker-toggle>
-				<mat-error>Invalid Date Format</mat-error>
+			<h4 class="subtitle">DBoard</h4>
+			<mat-form-field appearance="outline" class="full-width">
+				<textarea matInput formControlName="dboard" matTextareaAutosize></textarea>
 			</mat-form-field>
-			<br/>
-			<mat-checkbox formControlName="presidentAttended">President Attended?</mat-checkbox>
-			<br/>
-			<mat-form-field>
-				<mat-label>Members Attended</mat-label>
-				<input matInput type="number" formControlName="numMembers">
-			</mat-form-field>
-			<mat-form-field>
-				<mat-label>Next DCM Date</mat-label>
-				<input matInput [matDatepicker]="dcmDateNext" formControlName="nextDate">	<!-- scoping -->
-				<mat-datepicker type="datetime" #dcmDateNext></mat-datepicker>
-				<mat-datepicker-toggle matSuffix [for]="dcmDateNext"></mat-datepicker-toggle>
-				<mat-error>Invalid Date Format</mat-error>
-			</mat-form-field>
-		</ng-container>
-	</div>
+		</div>
 
-	<div id="feedback" *ngIf="currentTab=='feedback'" formGroupName="communications">
-		<h3>Feedback</h3>
-		<ng-container formGroupName="ltg">
-			<!-- <h4 class="subtitle">LTG</h4> -->
-			<mat-form-field class="full-width">
-				<mat-label>LTG</mat-label>
-				<textarea matInput formControlName="message" matTextareaAutosize></textarea>
-			</mat-form-field>
-			<p>Contacted</p>
-			<div formGroupName="contacted">
-				<mat-form-field class="full-width">
-					<mat-label>Visit</mat-label>
-					<textarea matInput formControlName="visit" matTextareaAutosize></textarea>
-				</mat-form-field>
-				<mat-form-field class="full-width">
-					<mat-label>Phone</mat-label>
-					<textarea matInput formControlName="phone" matTextareaAutosize></textarea>
-				</mat-form-field>
-				<mat-form-field class="full-width">
-					<mat-label>Email</mat-label>
-					<textarea matInput formControlName="email" matTextareaAutosize></textarea>
-				</mat-form-field>
-				<mat-form-field class="full-width">
-					<mat-label>Newsletter</mat-label>
-					<textarea matInput formControlName="newsletter" matTextareaAutosize></textarea>
-				</mat-form-field>
-				<mat-form-field class="full-width">
-					<mat-label>Other</mat-label>
-					<textarea matInput formControlName="other" matTextareaAutosize></textarea>
-				</mat-form-field>
-			</div>
-		</ng-container>
 
-		<h4 class="subtitle">DBoard</h4>
-		<mat-form-field class="full-width">
-			<textarea matInput formControlName="dboard" matTextareaAutosize></textarea>
-		</mat-form-field>
-	</div>
+	  </mat-expansion-panel>
+
+	</mat-accordion>
+
+
 	
-	<!-- <mat-form-field>
+
+	
+
+
+	
+	<!-- <mat-form-field appearance="outline">
 		<input matInput placeholder="Total Service Hours" value="241"/>
 		<button matSuffix mat-icon-button matTooltip="Update hours from CERFs"><mat-icon>update</mat-icon></button>
 	</mat-form-field> -->

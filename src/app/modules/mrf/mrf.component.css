@@ -16,6 +16,11 @@
 	margin: 0 5px;
 }
 
+.mat-form-field {
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
 #mrf-tabs {
 	display: flex;
 	right: 0;
@@ -50,4 +55,26 @@
 
 .full-width {	/* text area */
 	width: 100%;
+}
+
+
+h1, h3 {
+	color: #144c83;
+	font-family: "Century Gothic";
+	font-weight: bold;
+	margin-bottom: 0;
+}
+h1 {
+	font-size: 64px;
+	margin-bottom: 32px;
+}
+.mat-expansion-panel-header-title {
+	display: inline-flex;
+	align-items: center;
+}
+.expansion-icon {
+	margin-right: 5px;
+}
+#main {
+	margin-left: 36px;
 }

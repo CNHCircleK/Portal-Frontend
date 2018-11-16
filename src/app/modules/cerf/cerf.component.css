@@ -1,19 +1,51 @@
+p, input {
+	font-family: "Century Gothic";
+}
+h1, h3 {
+	color: #144c83;
+	font-family: "Century Gothic";
+	font-weight: bold;
+	margin-bottom: 0;
+}
+h1 {
+	font-size: 64px;
+	margin-bottom: 32px;
+}
+
 .mat-form-field {
 	padding-left: 5px;
 	padding-right: 5px;
 }
+#memberTable .mat-form-field {
+	border: none;
+}
 
 /* Alignment */
+#main {
+	margin-left: 36px;
+}
+.mat-expansion-panel-header-title {
+	display: inline-flex;
+	align-items: center;
+}
+.expansion-icon {
+	margin-right: 5px;
+}
 
 #cerf-header {
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: space-between;	/* Throw the nav to the right */
+	margin-left: 36px;
 }
 #cerf-actions {
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: center;
+	color: #6c6d6e;
+}
+#cerf-actions mat-icon {
+	margin: 0 10px;
 }
 #cerf-actions p {
 	margin: 0;
@@ -44,8 +76,18 @@
 }
 
 #memberTable {
-	margin: 5% 0;
+	max-width: 80%;
 }
+.addMember {
+	display: flex;
+	max-width: 80%;
+}
+
+.addMember .mat-form-field {
+	max-width: 33%;
+	flex: 1;
+}
+/* TODO: Responsive for mobile */
 
 #commentary {
 	display: flex;
@@ -66,12 +108,12 @@
 }
 @media screen and (min-width: 500px) and (max-width: 768px) {
 	#tags {
-		grid-template-columns: 250px 250px;
+		grid-template-columns: 300px 300px;
 	}
 }
 @media screen and (min-width: 769px) {
 	#tags {
-		grid-template-columns: 250px 250px 250px;
+		grid-template-columns: 300px 300px 300px;
 	}
 }
 
@@ -84,6 +126,7 @@
 	position: relative;
 	margin: 5px 10px;
 }
+
 
 .categoryButton.activeCategory {
 	background-color: #00a5d9;

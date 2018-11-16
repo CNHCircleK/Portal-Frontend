@@ -15,14 +15,14 @@ export class AppComponent {
 	isLightTheme: boolean = true;
 	// isExpanded=false;
 	links = [
-	{icon: 'person', text: 'Profile', route: '/', color: '#F2E18B'},
-	{icon: 'assessment', text:'CERFs', route: '/cerfs', color: '#C7D6EE'},
-	{icon: 'table_cell', text:'MRFs', route: '/mrfs', color: '#9EA374'},
+	{icon: 'home', text: 'Dashboard', route: '/', color: '#F2E18B'},
+	{icon: 'assessment', text:'Event Reports', route: '/cerfs', color: '#C7D6EE'},
+	{icon: 'table_cell', text:'Monthly Reports', route: '/mrfs', color: '#9EA374'},
 	// {icon: 'library_books', text: 'Past MRFs'},
 	{division: "Metro", text: 'Division MRFs', route: '/divmrfs'},
 	{icon: 'library_books', text: 'District MRFs', route: '/distmrfs'},
 	{icon: 'people', text: 'Administration', route: '/club'},
-	{icon: 'home', text: 'Clubs', route: '/clubs'}
+	{icon: 'assignment', text: 'Master Records', route: '/clubs'}
 	];
 	userSubject: Observable<Member>;
 	authLinks = [];
@@ -62,7 +62,7 @@ export class AppComponent {
 				if(access.club > 0)
 				{
 					this.authLinks.push(this.links[2]); // MRF
-					this.authLinks.push(this.links[5]);	// Administration
+					// this.authLinks.push(this.links[5]);	// Administration
 				}
 				if(access.division == 1)
 				{

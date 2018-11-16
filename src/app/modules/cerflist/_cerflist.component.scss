@@ -6,7 +6,23 @@
 	$accent: map-get($theme, accent);
 	$backgroundColor: map-get($theme, background);
 
+	.mat-table {
+		background: transparent;
+	}
+
 	.mat-header-row {
+		background: transparent;
+
+		font-family: "Century Gothic";
+		font-weight: bold;
+	}
+
+	.mat-paginator {
+		background: transparent;
+	}
+
+
+	/*.mat-header-row {
 		background-color: mat-color($backgroundColor, app-bar);
 	}
 
@@ -20,5 +36,5 @@
 
 	mat-row::after {
 		border-color: mat-color($accent); /* See other css file for animation of active bar */
-	}
+	//}
 }

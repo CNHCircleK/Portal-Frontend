@@ -4,6 +4,12 @@
 
 // Reference: https://stackoverflow.com/questions/45089178/how-to-get-primary-or-accent-color-of-currently-applied-theme-in-angular-materia
 
+#content {
+	@include cerf-table-theme($light-theme);
+	@include mrf-table-theme($light-theme);
+}
+
+
 .light-theme {
 	@include cerf-table-theme($light-theme);
 	@include mrf-table-theme($light-theme);

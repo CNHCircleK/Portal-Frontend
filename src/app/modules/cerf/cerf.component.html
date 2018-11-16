@@ -1,87 +1,33 @@
+<!-- mat expansion panel: add mat-elevation-z0 class, hideToggle = true -->
+<!-- outline overlapping with label issue: https://github.com/angular/material2/pull/13477 -->
+
 <div id="cerf-header">
+	<h1 class="mat-title">Event Report</h1>
+
 	<div id="cerf-actions">
-		<a mat-icon-button (click)="goBack()">
-			<mat-icon>arrow_back</mat-icon>
-		</a>
-
-		<p>Cerf ID: {{ cerf._id }}</p>
-
-		<!-- <button *ngFor="let buttonColor of buttonColors" [disabled]="pendingAction || cerf.status==2" mat-mini-fab [class.activeColor]="color==buttonColor" [style.background-color]="buttonColor" (click)="setColor(buttonColor)"></button> -->
-<!-- 		<button mat-mini-fab [class.activeColor]="color=='blue'" style="background-color: blue" (click)="setColor('blue')"></button>
-		<button mat-mini-fab [class.activeColor]="color=='red'" style="background-color: red" (click)="setColor('red')"></button>
-		<button mat-mini-fab [class.activeColor]="color=='orange'" style="background-color: orange" (click)="setColor('orange')"></button>
-		<button mat-mini-fab [class.activeColor]="color=='green'" style="background-color: green" (click)="setColor('green')"></button> -->
-
-		<button mat-icon-button (click)="deleteCerf()" [disabled]="pendingAction || cerf.status>=1" matTooltip="Already submitted" [matTooltipDisabled]="cerf.status == 0">
-			<mat-icon>delete_outline</mat-icon>
-		</button>
-
-		<!-- <button *ngIf="cerf.status==1" mat-raised-button (click)="approveCerf()">	CHANGED data.status to just status, removed mrfView
-			Approve
-		</button> -->
-
-		<button mat-raised-button [disabled]="!myForm.dirty || !myForm.valid || pendingAction" (click)="saveCerf()">Save</button>
-		<button mat-raised-button *ngIf="cerf._id=='new' || cerf.status==0" [disabled]="!myForm.pristine || !myForm.valid || pendingAction" (click)="submitCerf()">Submit</button>
-		<span *ngIf="cerf.status>=1 && cerf.author_id == user._id" matTooltip="Already approved" [matTooltipDisabled]="cerf.status != 2">
-			<button mat-raised-button  [disabled]="pendingAction || cerf.status==2" (click)="unsubmitCerf()">Unsubmit</button>
-		</span>
-		<button mat-raised-button *ngIf="cerf.status==1 && user.access.club==2" [disabled]="pendingAction" (click)="approveCerf()">Approve</button>
-		<button mat-raised-button *ngIf="cerf.status==2 && user.access.club==2" [disabled]="pendingAction" (click)="unapproveCerf()">Unapprove</button>
 		<mat-spinner *ngIf="pendingAction" diameter="36"></mat-spinner>
+		<button mat-icon-button [disabled]="!myForm.dirty || !myForm.valid || pendingAction" (click)="saveCerf()"><mat-icon>save</mat-icon></button>
+		<button mat-icon-button *ngIf="cerf._id=='new' || cerf.status==0" [disabled]="!myForm.pristine || !myForm.valid || pendingAction" (click)="submitCerf()"><mat-icon>send</mat-icon></button>
+		<span *ngIf="cerf.status>=1 && cerf.author_id == user._id" matTooltip="Already approved" [matTooltipDisabled]="cerf.status != 2">
+			<button mat-icon-button  [disabled]="pendingAction || cerf.status==2" (click)="unsubmitCerf()"><mat-icon>cloud_off</mat-icon></button>
+		</span>
+		<!-- <button mat-icon-button *ngIf="cerf.status==1 && user.access.club==2" [disabled]="pendingAction" (click)="approveCerf()">Approve</button>
+		<button mat-icon-button *ngIf="cerf.status==2 && user.access.club==2" [disabled]="pendingAction" (click)="unapproveCerf()">Unapprove</button> -->
 	</div>
-
 </div>
 
 
 
-<mat-divider></mat-divider>
-<nav id="cerf-tabs">
-	<ul>
-		<li [class.mat-elevation-z4]="currentTab=='main'">
-			<button mat-icon-button style="color: green" (click)="currentTab='main'">
-				<mat-icon matTooltip="Main">description</mat-icon>
-			</button>
-		</li>
-		<li [class.mat-elevation-z4]="currentTab=='attendance'">
-			<button mat-icon-button (click)="currentTab='attendance'">
-				<mat-icon matTooltip="Attendance">person_outline</mat-icon>
-			</button>
-		</li>
-		<li [class.mat-elevation-z4]="currentTab=='fundraising'">
-			<button mat-icon-button style="color: green" (click)="currentTab='fundraising'">
-				<mat-icon matTooltip="Fundraising">attach_money</mat-icon>
-			</button>
-		</li>
-		<li [class.mat-elevation-z4]="currentTab=='drivers'">
-			<button mat-icon-button style="color: red" (click)="currentTab='drivers'">
-				<mat-icon matTooltip="Drivers">drive_eta</mat-icon>
-			</button>
-		</li>
-		<li [class.mat-elevation-z4]="currentTab=='commentary'">
-			<button mat-icon-button style="color: blue" (click)="currentTab='commentary'">
-				<mat-icon matTooltip="Commentary">comment</mat-icon>
-			</button>
-		</li>
-		<li [class.mat-elevation-z4]="currentTab=='categories'">
-			<button mat-icon-button (click)="currentTab='categories'">
-				<mat-icon matTooltip="Categories">search</mat-icon>
-			</button>
-		</li>
-		</ul>
-	</nav>
-
-	<!-- <br/> -->
-
 <form [formGroup]="myForm">
 
-	<div id="main" *ngIf="currentTab=='main'">
-		<h3>Main</h3>
-		<!-- <mat-form-field>
+	<div id="main">
+		<h3 class="mat-subheading-1">General Information</h3>
+		<!-- <mat-form-f appearance="outline"ield>
 			<mat-label>ID</mat-label>
 			<input matInput formControlName="_id" readonly>
 		</mat-form-field> -->
 
-		<mat-form-field>
+		<mat-form-field appearance="outline">
 			<mat-label>Event Name</mat-label>
 			<input matInput formControlName="name" required>
 			<!-- <button mat-icon-button matSuffix *ngIf="comment" matTooltip="{{comment}}">
@@ -89,7 +35,7 @@
 			</button> -->
 			<mat-error>Required</mat-error>
 		</mat-form-field>
-		<mat-form-field>
+		<mat-form-field appearance="outline">
 			<mat-label>Event Chair</mat-label>
 			<input matInput formControlName="chair_id" readonly>
 			<!-- <button mat-icon-button matSuffix *ngIf="comment" matTooltip="{{comment}}">
@@ -97,7 +43,7 @@
 			</button> -->
 			<mat-error>Required</mat-error>
 		</mat-form-field>
-		<mat-form-field>
+		<mat-form-field appearance="outline">
 			<mat-label>Person Filling out CERF</mat-label>
 			<input matInput formControlName="chair_id" readonly>
 			<!-- <button mat-icon-button matSuffix *ngIf="comment" matTooltip="{{comment}}">
@@ -105,27 +51,11 @@
 			</button> -->
 			<mat-error>Required</mat-error>
 		</mat-form-field>
-		<br/>
-
-		<mat-form-field>
-			<mat-label>Location</mat-label>
-			<input matInput>
-			<!-- <button mat-icon-button matSuffix *ngIf="comment" matTooltip="{{comment}}">
-				<mat-icon>chat_bubble</mat-icon>
-			</button> -->
-		</mat-form-field>
-		<mat-form-field>
-			<mat-label>Contact Information</mat-label>
-			<input matInput>
-			<!-- <button mat-icon-button matSuffix *ngIf="comment" matTooltip="{{comment}}">
-				<mat-icon>chat_bubble</mat-icon>
-			</button> -->
-		</mat-form-field>
 
 		<br/>
 
 		<ng-container formGroupName="time">
-			<mat-form-field>
+			<mat-form-field appearance="outline">
 				<mat-label>Start Time</mat-label>
 				<input matInput [matDatepicker]="start" formControlName="start">
 				<mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
@@ -133,7 +63,7 @@
 				<mat-error>Invalid Time format</mat-error>
 			</mat-form-field>
 
-			<mat-form-field>
+			<mat-form-field appearance="outline">
 				<mat-label>End Time</mat-label>
 				<input matInput [matDatepicker]="end" formControlName="end">
 				<mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
@@ -144,13 +74,24 @@
 
 		<br/>
 
-		<ng-container formGroupName="tags">
-			<mat-form-field *ngFor="let tag of tags; let i=index">
-				<mat-label>Tags</mat-label>
-				<input matInput [formControlName]="i">
-			</mat-form-field>
-		</ng-container>
+		<mat-form-field appearance="outline">
+			<mat-label>Location</mat-label>
+			<input matInput>
+			<!-- <button mat-icon-button matSuffix *ngIf="comment" matTooltip="{{comment}}">
+				<mat-icon>chat_bubble</mat-icon>
+			</button> -->
+		</mat-form-field>
+		<mat-form-field appearance="outline">
+			<mat-label>Contact Information</mat-label>
+			<input matInput>
+			<!-- <button mat-icon-button matSuffix *ngIf="comment" matTooltip="{{comment}}">
+				<mat-icon>chat_bubble</mat-icon>
+			</button> -->
+		</mat-form-field>
 
+		
+
+		
 
 		<!-- <p>Labels</p>
 		<button mat-raised-button [disabled]="myForm.disabled" (click)="addLabel()">Add Label</button>
@@ -163,29 +104,68 @@
 			</ng-container>
 		</div> -->
 
-		<p>Tags <a mat-icon-button (click)="openTagHelp()"><mat-icon [inline]="true">help</mat-icon></a></p>
+		
+
+	</div>
+
+
+	<mat-accordion displayMode="flat" [multi]="true">
+
+
+	  <mat-expansion-panel [class.mat-elevation-z0]="true" [hideToggle]="true"
+	  						(opened)="openedPanels[0] = 1"
+	                       (closed)="openedPanels[0] = 0">
+	    <mat-expansion-panel-header>
+	      <mat-panel-title>
+	        <mat-icon class="expansion-icon" [inline]="true">{{ openedPanels[0] ? "expand_less" : "expand_more" }}</mat-icon>
+	        <h3 class="mat-subheading-1">Event Tags*</h3>
+	      </mat-panel-title>
+	      <mat-panel-description>
+	      </mat-panel-description>
+	    </mat-expansion-panel-header>
+
+	    <ng-container formGroupName="tags">
+			<mat-form-field *n appearance="outline"gFor="let tag of tags; let i=index">
+				<mat-label>Tags</mat-label>
+				<input matInput [formControlName]="i">
+			</mat-form-field>
+		</ng-container>
+		<a mat-icon-button (click)="openTagHelp()"><mat-icon [inline]="true">help</mat-icon></a>
 		<div id="tags">
 			<mat-checkbox *ngFor="let tag of tagOptions; let i=index" [checked]="cerf.tags.includes(tag)" [disabled]="myForm.disabled" (change)="addRemoveTag(tag, $event.checked)">{{ tagNames[i] }}</mat-checkbox>
 		</div>
 
-	</div>
+	  </mat-expansion-panel>
 
-	<div id="attendance" *ngIf="currentTab=='attendance'">
 
-		<h3>Attendance</h3>
 
-		<ng-container formGroupName="hoursPerAttendee">
-			<mat-form-field>
+
+
+
+
+	  <mat-expansion-panel [class.mat-elevation-z0]="true" [hideToggle]="true"
+	  						(opened)="openedPanels[1] = 1"
+	                       (closed)="openedPanels[1] = 0">
+	    <mat-expansion-panel-header>
+	      <mat-panel-title>
+	        <mat-icon class="expansion-icon" [inline]="true">{{ openedPanels[1] ? "expand_less" : "expand_more" }}</mat-icon>
+	        <h3 class="mat-subheading-1">Home Club Attendance</h3>
+	      </mat-panel-title>
+	      <mat-panel-description>
+	      </mat-panel-description>
+	    </mat-expansion-panel-header>
+	    <ng-container formGroupName="hoursPerAttendee">
+			<mat-form-field appearance="outline">
 				<mat-label>Default Service Hours</mat-label>
 				<input matInput formControlName="service">
 			</mat-form-field>
 
-			<mat-form-field>
+			<mat-form-field appearance="outline">
 				<mat-label>Default Leadership Hours</mat-label>
 				<input matInput formControlName="leadership">
 			</mat-form-field>
 
-			<mat-form-field>
+			<mat-form-field appearance="outline">
 				<mat-label>Default Fellowship Hours</mat-label>
 				<input matInput formControlName="fellowship">
 			</mat-form-field>
@@ -198,14 +178,11 @@
 				<ng-container matColumnDef="members">
 					<mat-header-cell *matHeaderCellDef> Members </mat-header-cell>
 					<mat-cell *matCellDef="let member; let i=index" [formGroupName]="i">
-						<button mat-icon-button (click)="removeMember(i)"> <mat-icon>cancel</mat-icon> </button>
+						<!-- <button mat-icon-button (click)="removeMember(i)"> <mat-icon>cancel</mat-icon> </button> -->
 						<mat-form-field>
-							<input matInput formControlName="name" (change)="myForm.markAsTouched()">
+							<input matInput formControlName="name" (change)="myForm.markAsTouched()" readonly>
 						</mat-form-field>
 					</mat-cell>
-					<mat-footer-cell *matFooterCellDef>
-						<button mat-raised-button [disabled]="myForm.disabled" (click)="addMember()">Add Member</button>
-					</mat-footer-cell>
 				</ng-container>
 
 				<!-- <ng-container matColumnDef="override">
@@ -218,85 +195,183 @@
 					<mat-header-cell *matHeaderCellDef> Service </mat-header-cell>
 					<mat-cell *matCellDef="let member; let i=index"  [formGroupName]="i">
 						<mat-form-field>
-							<input matInput formControlName="service">
+							<input matInput formControlName="service" readonly>
 						</mat-form-field>
 					</mat-cell>
-					<mat-footer-cell *matFooterCellDef>{{myForm.get('hoursPerAttendee.service').value}}</mat-footer-cell>
 				</ng-container>
 				<ng-container matColumnDef="leadership">
 					<mat-header-cell *matHeaderCellDef> Leadership </mat-header-cell>
 					<mat-cell *matCellDef="let member; let i=index"  [formGroupName]="i">
 						<mat-form-field>
-							<input matInput formControlName="leadership">
+							<input matInput formControlName="leadership" readonly>
 						</mat-form-field>
 					</mat-cell>
-					<mat-footer-cell *matFooterCellDef>{{myForm.get('hoursPerAttendee.leadership').value}}</mat-footer-cell>
 				</ng-container>
 				<ng-container matColumnDef="fellowship">
 					<mat-header-cell *matHeaderCellDef> Fellowship </mat-header-cell>
 					<mat-cell *matCellDef="let member; let i=index"  [formGroupName]="i">
 						<mat-form-field>
-							<input matInput formControlName="fellowship">
+							<input matInput formControlName="fellowship" readonly>
 						</mat-form-field>
 					</mat-cell>
-					<mat-footer-cell *matFooterCellDef>{{myForm.get('hoursPerAttendee.fellowship').value}}</mat-footer-cell>
 				</ng-container>
 
 				<mat-header-row *matHeaderRowDef="attendanceColumns"></mat-header-row>
 				<mat-row *matRowDef="let row; columns: attendanceColumns;"></mat-row>
-				<mat-footer-row *matFooterRowDef="attendanceColumns"></mat-footer-row>
 			</mat-table>
+			<form #member="ngForm" class="addMember">
+				<mat-form-field appearance="outline">
+					<mat-label>Add Member</mat-label>
+					<input matInput name="memberName" [(ngModel)]="memberName">
+				</mat-form-field>
+				<mat-form-field appearance="outline">
+					<mat-label>Service</mat-label>
+					<input matInput [value]="myForm.get('hoursPerAttendee.service').value" name="memberService" [(ngModel)]="memberService">
+				</mat-form-field>
+				<mat-form-field appearance="outline">
+					<mat-label>Leadership</mat-label>
+					<input matInput [value]="myForm.get('hoursPerAttendee.leadership').value" name="memberLeadership" [(ngModel)]="memberLeadership">
+				</mat-form-field>
+				<mat-form-field appearance="outline">
+					<mat-label>Fellowship</mat-label>
+					<input matInput [value]="myForm.get('hoursPerAttendee.fellowship').value" name="memberFellowship" [(ngModel)]="memberFellowship">
+				</mat-form-field>
+				<button mat-fab [disabled]="myForm.disabled" (click)="addMember()">+</button>
+			</form>
 		</div>
-	</div>
+	  </mat-expansion-panel>
 
-	<div id="fundraising" *ngIf="currentTab=='fundraising'" formGroupName="fundraised">
 
-		<h3>Fundraising</h3>
 
-		<mat-form-field>
+
+
+
+
+	  <mat-expansion-panel [class.mat-elevation-z0]="true" [hideToggle]="true"
+	  						(opened)="openedPanels[2] = 1"
+	                       (closed)="openedPanels[2] = 0">
+	    <mat-expansion-panel-header>
+	      <mat-panel-title>
+	        <mat-icon class="expansion-icon" [inline]="true">{{ openedPanels[2] ? "expand_less" : "expand_more" }}</mat-icon>
+	        <h3 class="mat-subheading-1">Kiwanis Family Attendance</h3>
+	      </mat-panel-title>
+	      <mat-panel-description>
+	      </mat-panel-description>
+	    </mat-expansion-panel-header>
+	    
+<!-- 	    <mat-table>
+
+			<ng-container matColumnDef="members">
+				<mat-header-cell *matHeaderCellDef> Kiwanis Family Club </mat-header-cell>
+				<mat-cell>
+				</mat-cell>
+			</ng-container>
+
+			<mat-header-row *matHeaderRowDef="''"></mat-header-row>
+			<mat-row *matRowDef="let row; columns: attendanceColumns;"></mat-row>
+		</mat-table>
+-->
+	  </mat-expansion-panel>
+
+
+
+
+
+
+
+	  <mat-expansion-panel [class.mat-elevation-z0]="true" [hideToggle]="true"
+	  						(opened)="openedPanels[3] = 1"
+	                       (closed)="openedPanels[3] = 0">
+	    <mat-expansion-panel-header>
+	      <mat-panel-title>
+	        <mat-icon class="expansion-icon" [inline]="true">{{ openedPanels[3] ? "expand_less" : "expand_more" }}</mat-icon>
+	        <h3 class="mat-subheading-1">Driving</h3>
+	      </mat-panel-title>
+	      <mat-panel-description>
+	      </mat-panel-description>
+	    </mat-expansion-panel-header>
+	    
+	<!--     <mat-table>
+
+			<ng-container matColumnDef="members">
+				<mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+				<mat-cell>
+				</mat-cell>
+			</ng-container>
+
+			<mat-header-row *matHeaderRowDef="''"></mat-header-row>
+			<mat-row *matRowDef="let row; columns: attendanceColumns;"></mat-row>
+		</mat-table> -->
+
+	  </mat-expansion-panel>
+
+
+
+
+
+
+	  <mat-expansion-panel [class.mat-elevation-z0]="true" [hideToggle]="true"
+	  						(opened)="openedPanels[4] = 1"
+	                       (closed)="openedPanels[4] = 0"
+	                       formGroupName="fundraised">
+	    <mat-expansion-panel-header>
+	      <mat-panel-title>
+	        <mat-icon class="expansion-icon" [inline]="true">{{ openedPanels[4] ? "expand_less" : "expand_more" }}</mat-icon>
+	        <h3 class="mat-subheading-1">Fundraising</h3>
+	      </mat-panel-title>
+	      <mat-panel-description>
+	      </mat-panel-description>
+	    </mat-expansion-panel-header>
+
+		<mat-form-field appearance="outline">
 			<mat-label>PTP</mat-label>
 			<input matInput formControlName="ptp">
 		</mat-form-field>
-		<mat-form-field>
+		<mat-form-field appearance="outline">
 			<mat-label>FA</mat-label>
 			<input matInput formControlName="fa">
 		</mat-form-field>
-		<mat-form-field>
+		<mat-form-field appearance="outline">
 			<mat-label>KFH</mat-label>	<!-- readonly -->
 			<input matInput formControlName="kfh">
 		</mat-form-field>
 
-	</div>
+	  </mat-expansion-panel>
 
-	<div id="drivers" *ngIf="currentTab=='drivers'" ><!-- formGroupName="drivers" -->
 
-		<h3>Drivers</h3>
 
-		<!-- <mat-form-field>
-			<mat-label>KFH</mat-label>	readonly
-			<input matInput formControlName="kfh">
-		</mat-form-field> -->
 
-	</div>
 
-	<div id="commentary" *ngIf="currentTab=='commentary'" ><!-- formGroupName="commentary" -->
 
-		<h3>Commentary</h3>
+	  <mat-expansion-panel [class.mat-elevation-z0]="true" [hideToggle]="true"
+	  						(opened)="openedPanels[5] = 1"
+	                       (closed)="openedPanels[5] = 0">
+	    <mat-expansion-panel-header>
+	      <mat-panel-title>
+	        <mat-icon class="expansion-icon" [inline]="true">{{ openedPanels[5] ? "expand_less" : "expand_more" }}</mat-icon>
+	        <h3 class="mat-subheading-1">Comments</h3>
+	      </mat-panel-title>
+	      <mat-panel-description>
+	      </mat-panel-description>
+	    </mat-expansion-panel-header>
+	    
+	    <mat-form-field appearance="outline">
+	    	<textarea matInput placeholder="Summary"></textarea>
+	    	<mat-hint>Make your summary clear and concise so that anyone who reads it can know what the event was about without
+	    	actually having to be there.</mat-hint>
+	    </mat-form-field>
 
-		<!-- <mat-form-field>
-			<mat-label>KFH</mat-label>	readonly
-			<input matInput formControlName="kfh">
-		</mat-form-field> -->
+	  </mat-expansion-panel>
 
-	</div>
+	</mat-accordion>
 
-	<div id="categories" *ngIf="currentTab=='categories'" ><!-- formArrayName="categories" -->
+	<div id="categories"><!-- formArrayName="categories" -->
 
 		<h3>Categories</h3>
 		<p>(for your own cataloging)</p>
 
 		<div id="labels" formArrayName="labels">
-			<!-- <ng-container *ngFor="let label of myForm.controls.labels.controls; let i=index"> -->
+		<!-- <ng-container *ngFor="let label of myForm.controls.labels.controls; let i=index"> -->
 			<div *ngFor="let category of categoryButtons; let i=index">
 				<button mat-button class="categoryButton" (click)="toggleLabel(category)" [ngClass]="{'mat-elevation-z4': !isLabelActive(category), 'activeCategory': isLabelActive(category)}">{{category}}</button>
 				<button mat-icon-button class="deleteCategory" (click)="removeLabel(i)"> <mat-icon>cancel</mat-icon> </button>
@@ -310,11 +385,6 @@
 				<mat-icon matSuffix (click)="addingCategory=false">cancel</mat-icon>
 			</mat-form-field>
 		</form>
-
-		<!-- <mat-form-field>
-			<mat-label>KFH</mat-label>	readonly
-			<input matInput formControlName="kfh">
-		</mat-form-field> -->
 
 	</div>
 

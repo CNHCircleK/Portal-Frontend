@@ -1,3 +1,7 @@
-<h2 class="title">Your current CERFs</h2>
-<button mat-raised-button (click)="newCerf()">Create New CERF</button>
+<div class="action">
+	<h2 class="mat-title">Event Reports</h2>
+	<div>
+		<button mat-raised-button (click)="newCerf()">+ New Report</button>
+	</div>
+</div>
 <app-cerflist [cerfList]="resolvedData"></app-cerflist>

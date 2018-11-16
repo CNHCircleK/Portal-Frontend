@@ -19,6 +19,7 @@ export class MrfComponent {
 	cerfList: Cerf[];
 	mrfForm: FormGroup;
 	currentTab: string;
+	openedPanels: number[] = [0, 0, 0, 0];
 
 	constructor(private route: ActivatedRoute, private dataService: DataService,
 		private _location: Location, private builder: FormBuilder) {
@@ -58,14 +59,19 @@ export class MrfComponent {
 		this.mrfForm.get('meetings').markAsDirty();
 	}
 
+	saveMrf() {
+		this.dataService.updateMrf(this.getMrfFromForm()).subscribe(res => {this.mrfForm.markAsPristine();});
+	}
+
 	private createMrf(model: Mrf): FormGroup {
 		/* Fill in CERF with null values so we can at least create a form */
 		/* We're assuming a Cerf IS passed in (i.e. has all the non-optional properties at least) */
 		this.fillDefaults(model);
 		let copyModel = JSON.parse(JSON.stringify(model));	// Cooking the data passes by reference, so nested arrays in objects are altered
 		const form = this.cookData(copyModel);
-		this.setValidators(form, [
-			]);
+		// this.setValidators(form, [
+		// 	]);
+		console.log(form);
 		return form;
 	}
 

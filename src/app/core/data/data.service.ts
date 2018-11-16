@@ -226,7 +226,7 @@ export class DataService {
       console.error("Cerf with id " + data._id + " does not exist");
       return of(false);
     } else {
-      return this.http.patch(HttpConfig.baseUrl + "/events/" + data._id, data).pipe(map((res: response) => res.success));
+      return this.http.patch(HttpConfig.baseUrl + "/events/" + data._id, data).pipe(tap(res => console.log(res)), map((res: response) => res.success));
     }
   }
 
@@ -318,6 +318,16 @@ export class DataService {
     }
 
     this.mrfs[index] = data;
+  }
+
+  updateMrf(data: Mrf): Observable<boolean> {
+    let index = this.findIndexOfMrf(data.year, data.month);
+    if(index == -1) {
+      console.log("MRF with year " + data.year + " and month " + data.month + " not found");
+      return of(false);
+    } else {
+      return this.http.patch(HttpConfig.baseUrl + "/clubs/" + this.user.club_id + "/mrfs/" + data.year + "/" + data.month, data).pipe(tap(res => console.log(res)), map((res: response) => res.success));
+    }
   }
 
   private findIndexOfMrf(year: number, month: number): number {

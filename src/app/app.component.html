@@ -1,7 +1,6 @@
-<mat-sidenav-container class="menu-container" fullscreen [class.light-theme]="isLightTheme" [class.dark-theme]="!isLightTheme" class="mat-app-background mat-typography">
+<!-- <mat-sidenav-container class="menu-container" fullscreen [class.light-theme]="isLightTheme" [class.dark-theme]="!isLightTheme" class="mat-app-background mat-typography">
   <mat-sidenav #sidenav mode="over" class="menu" [autoFocus]="false">
     <mat-nav-list>
-      <!-- <img matListAvatar src="https://cdn.frontify.com/api/screen/thumbnail/XpAQmPIeugwk-YlQmqh5IG1cjaOlgmHMP6yU-0U2RikNGjJdPLw7tzaKc0J94K2y55GA44JvKPsBo6SwSiNLhg/798"> -->
 
       <a mat-list-item *ngFor="let link of authLinks" [routerLink]="link.route" (click)="sidenav.close()">
         <span>{{ link.text }}</span>
@@ -21,7 +20,6 @@
         <button mat-icon-button [disableRipple]="true" [disabled]="!(userSubject | async)" (click)="sidenav.open()">
           <mat-icon>menu</mat-icon>
         </button>
-        <!-- <h2 class="title">MRF Portal</h2> -->
         <button mat-mini-fab [disableRipple]="true" (click)="toggleTheme()"></button>
       </mat-toolbar>
 
@@ -47,4 +45,30 @@
       </footer>
     </div>
   </mat-sidenav-content>
-</mat-sidenav-container>
+</mat-sidenav-container> -->
+  <mat-drawer-container class="menu-container">
+    <mat-drawer mode="side" [opened]="(userSubject | async)" class="menu" [autoFocus]="false">
+
+    <mat-nav-list>
+      <img id="cnhlogo" src="/assets/cnh_district_emblem.png" />
+      <a mat-list-item *ngFor="let link of authLinks" [routerLink]="link.route" [disableRipple]="true" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active-route">
+        <span class="mat-subheading-1">{{ link.text }}</span>
+        <mat-icon matListIcon *ngIf="link.icon">{{ link.icon }}</mat-icon>
+      </a>
+
+      <a id="settings" mat-list-item [routerLink]="['/settings']" [disableRipple]="true" routerLinkActive="active-route">
+        <span class="mat-subheading-1">Settings</span>
+        <mat-icon matListIcon>settings</mat-icon>
+      </a>
+    </mat-nav-list>
+    </mat-drawer>
+    <mat-drawer-content>
+      <div id="content">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
+
+<!-- <div class="content">
+  <router-outlet></router-outlet>
+</div> -->
