@@ -1,24 +1,22 @@
 <div class="body">
 	<h1>Online MRF Portal</h1>
-	<img src="assets/cnhlogo.png" class="logo"> 
-	<h1>Log In</h1>
+
 
 	<form #loginForm= "ngForm">
+		<img src="assets/cnhlogo.png" class="logo"> 
 		<div>
-			<mat-form-field appearance="outline"> <mat-label>Username</mat-label>
+			<span class="marginRight"><mat-form-field appearance="outline"> <mat-label>Username</mat-label>
 				<input required matInput ngModel
 				#Username= "ngModel" name= "Username" placeholder= "Username"/>
 				<mat-error *ngIf= "Username.touched && Username.invalid">Username is required</mat-error>
-			</mat-form-field>
-		</div><!-- Username field -->
+			</mat-form-field></span><!-- Username field -->
 
-		<div>
 			<mat-form-field appearance="outline"> <mat-label>Password</mat-label>
 				<input required matInput ngModel 
 				#Password= "ngModel" name= "Password" placeholder= "Password" type= "password"/>
 				<mat-error *ngIf= "Password.touched && Password.invalid">Password is required</mat-error>
-			</mat-form-field>
-		</div><!-- Password field -->
+			</mat-form-field><!-- Password field -->
+		</div>
 
 		<div class="marginBottom"> <a href="" class="linkDeco"> Forgot your credentials? </a> </div>
 

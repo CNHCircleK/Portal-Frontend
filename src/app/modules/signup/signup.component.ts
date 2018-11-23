@@ -15,50 +15,67 @@ export class SignupComponent implements OnInit {
     private dataService: DataService,
     private router: Router) {}
 
-  codeValidity: boolean = false;
-  databaseValidity: boolean = false;
+  validCode: boolean = false;
+  dataCorrect: boolean = false;
 
+  formUnlocked: boolean = false;
 
+  code: string;
   firstName: string;
   lastName: string;
   school: string;
   division: string;
+  matchedPass: boolean = true;
 
 
   ngOnInit() { }
 
-  setCodeValidity(x) {
-  	if( x > 0 ) { this.codeValidity = true; }
-  	else{ this.codeValidity = false; }
+  isValidCode() {
+  	return this.validCode;
   }
 
-  getCodeValidity() {
-  	return this.codeValidity;
-  }
-
-  setDatabaseValidity(firstName, lastName, school, division) {
+  editUserData(firstName, lastName, school, division) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.school = school;
     this.division = division;
-    this.databaseValidity = !this.databaseValidity;
-
+    this.dataCorrect = true;
+    this.formUnlocked = false;
   }
-  // Sets databaseValidity to true if user clicks next after the validation form is shown
-  // Sets databaseValidity to false if users return to the validation form
-  // *If extending the sign up form to more pages consider replacing this system
 
-  getDatabaseValidity() {
-    return this.databaseValidity;
+  unlockForm(){
+    this.formUnlocked = true;
+  }
+
+  isFormUnlocked(){
+    return this.formUnlocked;
+  }
+
+  setDataCorrect(x){
+    if(x>0){ this.dataCorrect = true; }
+    else{ this.dataCorrect = false; }
+  }
+
+  isDataCorrect() {
+    return this.dataCorrect;
+  }
+
+  getMatchedPass(){
+    return this.matchedPass;
   }
 
   checkCode(SignUpCode){
-  	if(SignUpCode == "code"){ this.setCodeValidity(true); }
-  	else{ this.setCodeValidity(false); }
+  	if(SignUpCode == "code"){ this.validCode = true; this.code = SignUpCode }
+  	else{ this.validCode = false; }
   }
 
-  signup( code, email, user, pass ){
-    this.auth.signup(code, email, user, pass).subscribe(res=> { this.router.navigate(['']) }, error=>console.error(error), ()=> {});
+  signup(email, user, pass, confirmedPass ){
+    if(pass == confirmedPass){
+      this.auth.signup( this.code, email, user, pass).subscribe(res=> { this.router.navigate(['']) }, error=>console.error(error), ()=> {});
+    }
+    else{
+      this.matchedPass = false;
+    }
   }
 
   // signup( code, email, user, pass ){
