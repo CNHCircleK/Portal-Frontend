@@ -20,13 +20,14 @@ import { Observable, zip } from 'rxjs';
 
 export class MyCerfsComponent {
 	mrfView: boolean = false;
-	resolvedData: Cerf[] = [];
+	cerfs: Cerf[] = [];
 	resolve;
 
 	constructor(private route: ActivatedRoute, private router: Router, private dataService: DataService,
 		private auth: AuthService, private _location: Location) {
 		// this.route.data.subscribe(response => this.resolvedData = response.myCerfs);
-		this.resolvedData = this.route.snapshot.data['myCerfs'];
+		this.cerfs = this.route.snapshot.data['myCerfs'];
+		this.cerfs.concat(this.route.snapshot.data['pendingCerfs']);
 	}
 
 	ngOnInit() {

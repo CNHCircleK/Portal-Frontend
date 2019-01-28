@@ -1,4 +1,4 @@
-import { Component, Input, Directive, Renderer2, ElementRef, ViewChild } from '@angular/core';
+import { Component, Input, Directive, Renderer2, ElementRef, ViewChild, ViewChildren, QueryList } from '@angular/core';
 // import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { FormGroup, FormControl, FormBuilder, FormArray, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -17,19 +17,17 @@ import { TagsDialog } from './tags-dialog.component';
 import { AuthService } from '@core/authentication/auth.service';
 import { Member } from '@core/authentication/member';
 
-import { Observable, zip } from 'rxjs';
+import { Observable, BehaviorSubject, zip } from 'rxjs';
 
 type Attendee = {name: string, service: number, leadership: number, fellowship: number};
-
 
 @Component({
 	selector: 'app-cerf',
 	templateUrl: './cerf.component.html',
 	styleUrls: ['./cerf.component.css', './_cerf.component.scss'],
 })
-
 export class CerfComponent {
-	
+
 	pendingAction: boolean = false;
 	fromMrf: boolean = false;
 
@@ -40,9 +38,9 @@ export class CerfComponent {
 	members: MatTableDataSource<Attendee>;
 	attendanceColumns: string[] = ['members', 'service', 'leadership', 'fellowship'];// 'unpaid'];
 	memberName: string;
-	memberService: number;
-	memberLeadership: number;
-	memberFellowship: number;
+	// memberService: number;
+	// memberLeadership: number;
+	// memberFellowship: number;
 
 	myForm: FormGroup;
 	// comment: string = "HEY";
@@ -77,6 +75,9 @@ export class CerfComponent {
 	"An event hosted by and for the District",
 	"An event hosted by Circle K International",
 	"Any event hosted through your Circle K club"];
+	showTagHints = false;
+
+	filteredRoster: Observable<{name: string, email: string}[]>;
 
 	constructor(private route: ActivatedRoute, private dataService: DataService,
 		private auth: AuthService, private _location: Location, public dialog: MatDialog,
@@ -87,7 +88,6 @@ export class CerfComponent {
 		console.log("Coming from MRF ", this.fromMrf);
 		this.myForm = this.createCerf(this.cerf);
 
-		this.currentTab = "main";
 		console.log(this.myForm);
 	}
 
@@ -97,12 +97,12 @@ export class CerfComponent {
 	
 	@ViewChild(MatSort) sort;
 
-	private get editable() {
+	get editable() {
 		return (this.cerf.status == 0 && this.cerf.author_id == this.user._id) ||
 		(this.cerf.status <= 1 && this.user.access.club == 2);
 	}
 
-	ngOnInit() {
+	 ngAfterContentInit() {
 		this.auth.getUser().subscribe(user => {
 			this.user = user;
 		});
@@ -149,7 +149,8 @@ export class CerfComponent {
 	// }
 
 	openTagHelp() {
-		const dialogRef = this.dialog.open(TagsDialog);
+		this.showTagHints = !this.showTagHints;
+		// const dialogRef = this.dialog.open(TagsDialog);
 		// let descriptions = "";
 		// for(let i = 0; i < this.tagDescriptions.length; i++) {
 		// 	descriptions += "<p><strong>" + this.tagNames[i] + "</strong>: " + this.tagDescriptions[i] + "</p>";
@@ -236,8 +237,11 @@ export class CerfComponent {
 		attendees.controls.push(this.builder.group({name: [this.memberName], service: [this.memberService || 0], leadership: [this.memberLeadership || 0],
 			fellowship: [this.memberFellowship || 0]}));
 		console.log(attendees.getRawValue());
-		this.members = new MatTableDataSource(attendees.getRawValue());
+		// this.members = new MatTableDataSource(attendees.getRawValue());
+		this.members.data.push({name: this.memberName, service: this.memberService || 0, leadership: this.memberLeadership || 0, fellowship: this.memberFellowship || 0});
+		this.members._updateChangeSubscription();
 		this.myForm.get('attendees').markAsDirty();
+		this.filterMembers({target: {value: ""}});
 	}
 
 	removeMember(i: number) {
@@ -246,7 +250,9 @@ export class CerfComponent {
 
 
 		// this.members.data = new Array(attendees.length).map((v, index) => attendees.at(index).value as string);
-		this.members = new MatTableDataSource(attendees.getRawValue());
+		// this.members = new MatTableDataSource(attendees.getRawValue());
+		this.members.data.splice(i, 1);
+		this.members._updateChangeSubscription();
 		this.myForm.get('attendees').markAsDirty();
 	}
 
@@ -260,8 +266,22 @@ export class CerfComponent {
 		// }
 	}
 
+	filterMembers(event: any) {
+		this.filteredRoster = this.dataService.filterMembers(event.target.value);
+	}
+
 	get attendees() {
 		return (this.myForm.controls['attendees'] as FormArray);
+	}
+
+	get memberService() {
+		return this.myForm.get('hoursPerAttendee.service').value;
+	}
+	get memberLeadership() {
+		return this.myForm.get('hoursPerAttendee.leadership').value;
+	}
+	get memberFellowship() {
+		return this.myForm.get('hoursPerAttendee.fellowship').value;
 	}
 
 	saveCerf() {
@@ -292,8 +312,8 @@ export class CerfComponent {
 	submitCerf() {
 		this.pendingAction = true;
 		this.myForm.disable();
-		this.dataService.updateCerfToPending(this.cerf._id, true).subscribe(res => {
-			if(res)
+		this.dataService.changeCerfStatus(this.cerf._id, "SUBMIT").subscribe(res => {
+			if(res.result)
 				this.cerf.status = 1;
 			this.pendingAction = false;
 			if(this.editable) {
@@ -314,8 +334,8 @@ export class CerfComponent {
 	unsubmitCerf() {
 		this.pendingAction = true;
 		this.myForm.disable();
-		this.dataService.updateCerfToPending(this.cerf._id, false).subscribe(res => {
-			if(res)
+		this.dataService.changeCerfStatus(this.cerf._id, "UNSUBMIT").subscribe(res => {
+			if(res.result)
 				this.cerf.status = 0;
 			this.pendingAction = false;
 			if(this.editable) {
@@ -333,8 +353,8 @@ export class CerfComponent {
 	approveCerf() {
 		this.pendingAction = true;
 		this.myForm.disable();
-		this.dataService.updateCerfToConfirm(this.cerf._id, true).subscribe(res => {
-			if(res)
+		this.dataService.changeCerfStatus(this.cerf._id, "CONFIRM").subscribe(res => {
+			if(res.result)
 				this.cerf.status = 2;
 			this.pendingAction = false;
 			if(this.editable) {
@@ -353,8 +373,8 @@ export class CerfComponent {
 	unapproveCerf() {
 		this.pendingAction = true;
 		this.myForm.disable();
-		this.dataService.updateCerfToConfirm(this.cerf._id, false).subscribe(res => {
-			if(res)
+		this.dataService.changeCerfStatus(this.cerf._id, "UNCONFIRM").subscribe(res => {
+			if(res.result)
 				this.cerf.status = 1;
 			this.pendingAction = false;
 			if(this.editable) {
@@ -369,6 +389,27 @@ export class CerfComponent {
 		() => {});
 	}
 
+
+	/* Structure
+	
+	author_id
+	chair_id
+	club_id
+	division_id
+	name
+	status
+	tags: [ ]
+	time: { start, end }
+	labels: [ ]
+	hoursPerAttendee: { service, leadership, fellowship }
+	attendees: [{ _id }]
+	unverifiedAttendees: [{ any_string }]
+	overrideHours: [{ _id, service, leadership, fellowship }]
+	color
+	fundraised: { fa, kfh, ptp }
+
+	*/
+
 	private createCerf(model: Cerf): FormGroup {
 		/* Fill in CERF with null values so we can at least create a form */
 		/* We're assuming a Cerf IS passed in (i.e. has all the non-optional properties at least */
@@ -377,9 +418,17 @@ export class CerfComponent {
 		const form = this.cookData(copyModel);
 		this.setValidators(form, [
 			{ control: 'name', validator: Validators.required },
-			{ control: 'hoursPerAttendee.service', validator: Validators.pattern('^[0-9]*$')}
+			{ control: 'hoursPerAttendee', validator: Validators.pattern('^[0-9]*$')}
 			]);
+		for(let x of (form.controls['attendees'] as FormArray).controls) {
+			x.setValidators([this.memberListValidator]);
+		}
 		console.log(form);
+
+		// this.memberService = form.get('hoursPerAttendee.service').value;
+		// this.memberLeadership = form.get('hoursPerAttendee.leadership').value;
+		// this.memberFellowship = form.get('hoursPerAttendee.fellowship').value;
+
 		return form;
 	}
 
@@ -389,93 +438,6 @@ export class CerfComponent {
 			model.labels = [];
 		if(!model.color)
 			model.color = "";
-		// Set default values of a Partial<Cerf>
-		// if(!model.data) {
-		// 	model.data = {
-		// 		cerf_author: "",
-		// 		chair_id: "",
-		// 		chair_name: "",
-		// 		event_contact: "",
-		// 		event_number: "",
-		// 		time: {
-		// 			start: new Date('2018-01-01T00:00:00'),
-		// 			end: new Date('2018-01-01T00:00:00')
-		// 		},
-		// 		location: "",
-		// 		hours_per_attendee: {
-		// 			service: 0,
-		// 			leadership: 0,
-		// 			fellowship: 0
-		// 		},
-		// 		attendees: [],
-		// 		total_attendees: 0,
-		// 		tags: {
-		// 			service: "",
-		// 			leadership: "",
-		// 			fellowship: "",
-		// 			miscellaneous: "",
-		// 		},
-
-		// 		drivers: [],
-		// 		total_drivers: 0,
-		// 		total_mileageTo: 0,
-		// 		total_mileageFrom: 0,
-		// 		total_mileage: 0,
-
-		// 		funds_raised: 0,
-		// 		funds_spent: 0,
-		// 		funds_profit: 0,
-		// 		funds_usage: "",
-
-		// 		commentary: {
-		// 			summary: "",
-		// 			strengths: "",
-		// 			weaknesses: "",
-		// 			advice: ""
-		// 		},
-
-		// 		comments: [],
-
-		// 		history: [],
-
-		// 		status: 1
-		// 	}
-		// } else {
-		// 	if(!model.data.cerf_author)
-		// 		model.data.cerf_author = "";
-		// 	if(!model.data.hours_per_attendee) {
-		// 		model.data.hours_per_attendee = {
-		// 			service: 0,
-		// 			leadership: 0,
-		// 			fellowship: 0
-		// 		}
-		// 	}
-		// 	if(!model.data.attendees)
-		// 		model.data.attendees = [];
-		// 	if(!model.data.tags) {
-		// 		model.data.tags = {
-		// 			service: "",
-		// 			leadership: "",
-		// 			fellowship: "",
-		// 			miscellaneous: ""
-		// 		}
-		// 	}
-		// 	if(!model.data.drivers)
-		// 		model.data.drivers = []
-		// 	if(!model.data.commentary){
-		// 		model.data.commentary = {
-		// 			summary: "",
-		// 			strengths: "",
-		// 			weaknesses:  "",
-		// 			advice: ""
-		// 		}
-		// 		if(!model.data.comments)
-		// 			model.data.comments = [];
-		// 		if(!model.data.history)
-		// 			model.data.history = [];
-		// 	}
-
-		// }
 	}
 
 	private cookData(model: Object): FormGroup
@@ -492,7 +454,7 @@ export class CerfComponent {
 		return this.builder.group(formGroup);
 	}
 
-	private  helperCookArray(arr: any[]): any[] {
+	private helperCookArray(arr: any[]): any[] {
 		arr.forEach((element, index, array) => {
 			if(element instanceof Object)
 				array[index] = this.cookData(element);
@@ -512,6 +474,12 @@ export class CerfComponent {
 				}
 				*/
 			})
+	}
+
+	private memberListValidator(): ValidatorFn {
+		return (control: AbstractControl): { [key:string]: any } | null => {
+			return this.dataService.searchMember(control.value) ? null : {'notMember': {value: control.value}};
+		};
 	}
 
 	public getCerfFromForm() {

@@ -4,6 +4,41 @@
 
 // Reference: https://stackoverflow.com/questions/45089178/how-to-get-primary-or-accent-color-of-currently-applied-theme-in-angular-materia
 
+	.mat-table {
+		background: transparent;
+	}
+
+	// Header styling | Larger font and remove extra space
+	.mat-header-row {
+		background: transparent;
+		min-height: 36px;
+
+		.mat-sort-header-button {
+			font-family: "Century Gothic";
+			font-weight: bold;
+			font-size: 18px;
+		}
+	}
+
+	.mat-paginator {
+		background: transparent;
+	}
+
+	// Remove left right padding from header and cell rows
+	.mat-table {
+	  mat-cell:first-child, mat-footer-cell:first-child, mat-header-cell:first-child {
+	    padding-left: 0;
+	  }
+
+	  mat-cell:last-child, mat-footer-cell:last-child, mat-header-cell:last-child {
+	    padding-right: 0;
+	  }
+
+	  .mat-row {
+	  	border-bottom-width: 0px;
+	  }
+	}
+
 #content {
 	@include cerf-table-theme($light-theme);
 	@include mrf-table-theme($light-theme);

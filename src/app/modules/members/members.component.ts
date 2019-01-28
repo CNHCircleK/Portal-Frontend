@@ -52,9 +52,9 @@ export class MembersComponent {
 	}
 
 	updateList() {
-		this.dataService.getMembers(true).subscribe(res => {
-			this.members=res;
-			this.list.data=res;
+		this.dataService.getMembers().subscribe(res => {
+			this.members=res.result || [];
+			this.list.data=res.result || [];
 		});
 	}
 

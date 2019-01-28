@@ -3,6 +3,7 @@ export * from './signup/signup.component';
 export * from './faqs/faqs.component';
 export * from './settings/settings.component';
 
+export * from './input-list/input-list.component';
 
 export * from './cerf/cerf.component';
 export * from './mrf/mrf.component';
@@ -21,6 +22,8 @@ export * from './profile/profile.component'; // make homepage instead
 export * from './confirm-dialog/confirm-dialog.component';
 export * from './info-dialog/info-dialog';
 export * from './cerf/tags-dialog.component';
+
+export { NewFocusInput } from './cerf/newfocusinput';
 
 export { MaterialsModule } from './materials.module';
 // export { AppRoutingModule } from './app-routing.module'; // Circular dependency

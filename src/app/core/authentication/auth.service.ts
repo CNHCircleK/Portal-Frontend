@@ -89,6 +89,7 @@ export class AuthService {
     if (token != null && !this.helper.isTokenExpired(token))
       return true;
     localStorage.removeItem(tokenName);  // really feel like an is() function shouldn't be handling this
+    this.user.next(null);
     return false;
   }
 

@@ -14,12 +14,11 @@ export class MembersResolver implements Resolve<Member[]> {
 
 	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Member[]> {
 		return this.dataService.getMembers().pipe(map(res => {
-			if(!res) {
-				console.log(res);
+			if(!res.success) {
 				this.router.navigate(['']);
 				return null;
 			}
-			return res;
+			return res.result.map(member => ({...member, name: member.name.first + ' ' + member.name.last}));
 		}));
 	}
 }

@@ -1,3 +1,7 @@
+.mat-drawer-side {
+    border: none;
+}
+
 .menu {
 /*	position: fixed;
     top: 0;
@@ -36,6 +40,12 @@ Event action icons: #6c6d6e;
     left: 0;
     right: 0;
 }
+.menu-container mat-icon, .menu-container span {
+    color: #636566;
+}
+.menu-container span {
+    /*font-weight: bold;*/
+}
 
 /*
 .menu ul {
@@ -63,7 +73,7 @@ Event action icons: #6c6d6e;
 */
 
 .menu a span {
-    padding-left: 16px;
+    padding-left: 24px;
     margin-bottom: 0; /* darn material typography */
 }
 /*.menu a {
@@ -118,6 +128,8 @@ Event action icons: #6c6d6e;
 .active-route {
     pointer-events: none;
     cursor: default;
+
+    border-radius: 10px;
     background: #dbe5eb !important;
     color: #185287;
     transition: background ease 0.6s, color ease 0.6s;

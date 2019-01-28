@@ -21,7 +21,7 @@
 
     <!-- Time Column -->
     <ng-container matColumnDef="time.start">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Time</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Date</mat-header-cell>
       <mat-cell *matCellDef="let row">{{row.time.start | date:'shortDate'}}</mat-cell>
     </ng-container>
 
@@ -35,13 +35,19 @@
       </mat-cell>
     </ng-container> -->
 
+    <!-- Author Column -->
+    <ng-container matColumnDef="author">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Submitted By</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.cerf_author}}</mat-cell>
+    </ng-container>
+
     <!-- Status Column (MRF View Only) -->
     <ng-container matColumnDef="status">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
       <mat-cell *matCellDef="let row">
-        <mat-icon *ngIf="!row.status">check</mat-icon>  <!-- Only confirmed events (status==2, but not contained in data) and pending (statuss=1) exist -->
-        <mat-icon *ngIf="row.status==1">cloud_download</mat-icon>
-        <!-- <mat-icon *ngIf="row.status==0">notifications_none</mat-icon> -->
+        <span *ngIf="row.status==0"><mat-icon class="red_icon">warning</mat-icon> Draft</span>
+        <span *ngIf="row.status==1"><mat-icon class="red_icon">sms_failed</mat-icon> Submitted</span>
+        <span *ngIf="row.status==2"><mat-icon>check</mat-icon> Added to MRF</span>
       </mat-cell>
     </ng-container>
 

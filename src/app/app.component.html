@@ -68,6 +68,20 @@
       </div>
     </mat-drawer-content>
   </mat-drawer-container>
+  <footer class="footer">
+        <img *ngIf="isLightTheme" id="masthead"
+        srcset="/assets/Black_Masthead.png 2398w,
+        /assets/Black_Masthead_1567x80.png 1567w"
+        sizes="(max-width: 600px) 2500px,
+        1500px" 
+        src="/assets/Black_Masthead.png">
+        <img *ngIf="!isLightTheme" id="masthead"
+        srcset="/assets/White_Masthead.png 2398w,
+        /assets/White_Masthead_1567x80.png 1567w"
+        sizes="(max-width: 600px) 2500px,
+        1500px" 
+        src="/assets/White_Masthead.png">
+      </footer>
 
 <!-- <div class="content">
   <router-outlet></router-outlet>

@@ -6,12 +6,21 @@
 
 	<div id="cerf-actions">
 		<mat-spinner *ngIf="pendingAction" diameter="36"></mat-spinner>
-		<button mat-icon-button [disabled]="!myForm.dirty || !myForm.valid || pendingAction" (click)="saveCerf()"><mat-icon>save</mat-icon></button>
-		<button mat-icon-button *ngIf="cerf._id=='new' || cerf.status==0" [disabled]="!myForm.pristine || !myForm.valid || pendingAction" (click)="submitCerf()"><mat-icon>send</mat-icon></button>
-		<span *ngIf="cerf.status>=1 && cerf.author_id == user._id" matTooltip="Already approved" [matTooltipDisabled]="cerf.status != 2">
-			<button mat-icon-button  [disabled]="pendingAction || cerf.status==2" (click)="unsubmitCerf()"><mat-icon>cloud_off</mat-icon></button>
+		<button mat-icon-button [disabled]="!editable || !myForm.dirty || !myForm.valid || pendingAction" (click)="saveCerf()"><mat-icon>save</mat-icon></button>
+		<!-- remove "cerf.status==0" once we change "draft" abstraction definition -->
+		<button mat-icon-button *ngIf="cerf.status==0 || user.access.club < 2" [disabled]="!myForm.pristine || !myForm.valid || pendingAction || cerf.status > 0" (click)="submitCerf()" matTooltip="Submit to Secretary"><mat-icon>send</mat-icon></button>
+
+		<!-- Secretary Only -->
+		<ng-container *ngIf="user.access.club==2">
+			<button mat-icon-button (click)="unsubmitCerf()" [disabled]="pendingAction || !myForm.valid || cerf.author_id==user._id" matTooltip="Release"><mat-icon>restore</mat-icon></button>
+			<button mat-icon-button *ngIf="cerf.status==1" (click)="approveCerf()" [disabled]="pendingAction || !myForm.valid" matTooltip="Add to MRF"><mat-icon>playlist_add</mat-icon></button>
+			<button mat-icon-button *ngIf="cerf.status==2" (click)="unapproveCerf()" [disabled]="pendingAction || !myForm.valid" matTooltip="Remove from MRF"><mat-icon>playlist_remove</mat-icon></button>
+		</ng-container>
+
+		<!-- <span *ngIf="cerf.status>=1 && cerf.author_id == user._id" matTooltip="Already approved" [matTooltipDisabled]="cerf.status != 2">
+			<button mat-icon-button  [disabled]="pendingAction || cerf.status==2" (click)="unsubmitCerf()"><mat-icon>playlist_add</mat-icon></button>
 		</span>
-		<!-- <button mat-icon-button *ngIf="cerf.status==1 && user.access.club==2" [disabled]="pendingAction" (click)="approveCerf()">Approve</button>
+		<button mat-icon-button *ngIf="cerf.status==1 && user.access.club==2" [disabled]="pendingAction" (click)="approveCerf()">Approve</button>
 		<button mat-icon-button *ngIf="cerf.status==2 && user.access.club==2" [disabled]="pendingAction" (click)="unapproveCerf()">Unapprove</button> -->
 	</div>
 </div>
@@ -19,6 +28,8 @@
 
 
 <form [formGroup]="myForm">
+
+	<app-input-list [data]="testInput" [columns]="testColumns"></app-input-list>
 
 	<div id="main">
 		<h3 class="mat-subheading-1">General Information</h3>
@@ -130,9 +141,120 @@
 				<input matInput [formControlName]="i">
 			</mat-form-field>
 		</ng-container>
-		<a mat-icon-button (click)="openTagHelp()"><mat-icon [inline]="true">help</mat-icon></a>
+		<p>Click to display info about each tag <a mat-icon-button (click)="openTagHelp()"><mat-icon [inline]="true">help</mat-icon></a></p>
+
+<!-- 		<div id="tags">
+			<div *ngFor="let tag of tagOptions; let i=index">
+				<mat-checkbox [checked]="cerf.tags.includes(tag)" [disabled]="myForm.disabled" (change)="addRemoveTag(tag, $event.checked)">{{ tagNames[i] }}</mat-checkbox>
+				<p [class.show-tag-hints]="showTagHints">{{ tagDescriptions[i] }}</p>
+			</div>
+
+		</div> -->
+
 		<div id="tags">
-			<mat-checkbox *ngFor="let tag of tagOptions; let i=index" [checked]="cerf.tags.includes(tag)" [disabled]="myForm.disabled" (change)="addRemoveTag(tag, $event.checked)">{{ tagNames[i] }}</mat-checkbox>
+
+			<div class="tag-service">
+				<h4>Service</h4>
+				<div>
+					<mat-checkbox [checked]="cerf.tags.includes('CO')" [disabled]="myForm.disabled" (change)="addRemoveTag('CO', $event.checked)">Community Service</mat-checkbox>
+					<p [class.show-tag-hints]="showTagHints">An event where your club members are serving for the community without pay</p>
+				</div>
+
+				<div>
+					<mat-checkbox [checked]="cerf.tags.includes('CA')" [disabled]="myForm.disabled" (change)="addRemoveTag('CA', $event.checked)">Campus Service</mat-checkbox>
+					<p [class.show-tag-hints]="showTagHints">Any event where your club is doing community service on your school's campus</p>
+				</div>
+
+				<div>
+					<mat-checkbox [checked]="cerf.tags.includes('CS')" [disabled]="myForm.disabled" (change)="addRemoveTag('CS', $event.checked)">Continuing Service</mat-checkbox>
+					<p [class.show-tag-hints]="showTagHints">An event that has been completed with the same organization repeatedly at least once a month for a two-month duration</p>
+				</div>
+
+				<div>
+					<mat-checkbox [checked]="cerf.tags.includes('DSI')" [disabled]="myForm.disabled" (change)="addRemoveTag('DSI', $event.checked)">District Service Initiative</mat-checkbox>
+					<p [class.show-tag-hints]="showTagHints">Any event that contributes to the current District Service Initiative</p>
+				</div>
+
+				<div>
+					<mat-checkbox [checked]="cerf.tags.includes('ISI')" [disabled]="myForm.disabled" (change)="addRemoveTag('ISI', $event.checked)">International Service Initiative</mat-checkbox>
+					<p [class.show-tag-hints]="showTagHints">Any event that contributes to the current International Service Initiative</p>
+				</div>
+			</div>
+
+
+			<div class="tag-leadership">
+				<h4>Leadership</h4>
+				<div>
+					<mat-checkbox [checked]="cerf.tags.includes('AD')" [disabled]="myForm.disabled" (change)="addRemoveTag('AD', $event.checked)">Administrative</mat-checkbox>
+					<p [class.show-tag-hints]="showTagHints">Any event related to the operation of the club should be tagged as AD. Examples of administrative events include but are not limited to attending meetings (e.g. general meetings, board meetings, committee meetings, Kiwanis meetings), and workshops</p>
+				</div>
+			</div>
+			<div class="tag-fellowship">
+				<h4>Fellowship</h4>
+				<div>
+					<mat-checkbox [checked]="cerf.tags.includes('SD')" [disabled]="myForm.disabled" (change)="addRemoveTag('SD', $event.checked)">Social Event</mat-checkbox>
+					<p [class.show-tag-hints]="showTagHints">Any event in which club members are socially interacting with one another should be tagged as SE. A social event promotes the moral of members so it is usually tagged as MD; however, remember that although all SE events are MD-tagged, not all MD events are SE-tagged (e.g. workshops)</p>
+				</div>
+			</div>
+
+
+			
+
+			<div class="tag-misc">
+				<h4>Miscellaneous</h4>
+				<div>
+					<mat-checkbox [checked]="cerf.tags.includes('MD')" [disabled]="myForm.disabled" (change)="addRemoveTag('MD', $event.checked)">Membership Development</mat-checkbox>
+					<p [class.show-tag-hints]="showTagHints">An event that promotes membership recruitment and development</p>
+				</div>
+
+				<div>
+					<mat-checkbox [checked]="cerf.tags.includes('FR')" [disabled]="myForm.disabled" (change)="addRemoveTag('FR', $event.checked)">Fundraiser</mat-checkbox>
+					<p [class.show-tag-hints]="showTagHints">A home club-hosted event that raises money for a charity or for administrative funds</p>
+				</div>
+
+				<div>
+					<mat-checkbox [checked]="cerf.tags.includes('CK')" [disabled]="myForm.disabled" (change)="addRemoveTag('CK', $event.checked)">Circle K</mat-checkbox>
+					<p [class.show-tag-hints]="showTagHints">An event in which at least two members from your Circle K club and at least two members from another Circle K club are present</p>
+				</div>
+
+				<div>
+					<mat-checkbox [checked]="cerf.tags.includes('KF')" [disabled]="myForm.disabled" (change)="addRemoveTag('KF', $event.checked)">Kiwanis Family</mat-checkbox>
+					<p [class.show-tag-hints]="showTagHints">An event in which at least two members from your Circle K club and at least two members from another non-Circle K Kiwanis Family club are present</p>
+				</div>
+
+				<div>
+					<mat-checkbox [checked]="cerf.tags.includes('IN')" [disabled]="myForm.disabled" (change)="addRemoveTag('IN', $event.checked)">Interclub</mat-checkbox>
+					<p [class.show-tag-hints]="showTagHints">An event in which there must be a certain amount of members from your Circle K club and the same amount of members from another Circle K/Kiwanis Family club present, depending on your Circle K club's number of dues paid members. Clubs with less than or equal to 20 members need a minimum of two members present; clubs with 21-30 members need a minimum of three memberrs present; and clubs with greater than or equal to 31 members need a minimum of four members present</p>
+				</div>
+
+				<div>
+					<mat-checkbox [checked]="cerf.tags.includes('WB')" [disabled]="myForm.disabled" (change)="addRemoveTag('WB', $event.checked)">Webinar</mat-checkbox>
+					<p [class.show-tag-hints]="showTagHints">An online webinar usualy hosted by the District Board for the District. This tag applies to both District and International webinars</p>
+				</div>
+
+				<div>
+					<mat-checkbox [checked]="cerf.tags.includes('DV')" [disabled]="myForm.disabled" (change)="addRemoveTag('DV', $event.checked)">Divisional</mat-checkbox>
+					<p [class.show-tag-hints]="showTagHints">An event hosted by and for the Division, which is usually hosted by the respective Lieutenant Governor (and Divisional Board)</p>
+				</div>
+
+				<div>
+					<mat-checkbox [checked]="cerf.tags.includes('DE')" [disabled]="myForm.disabled" (change)="addRemoveTag('DE', $event.checked)">District</mat-checkbox>
+					<p [class.show-tag-hints]="showTagHints">An event hosted by and for the District</p>
+				</div>
+
+				<div>
+					<mat-checkbox [checked]="cerf.tags.includes('INT')" [disabled]="myForm.disabled" (change)="addRemoveTag('INT', $event.checked)">International</mat-checkbox>
+					<p [class.show-tag-hints]="showTagHints">An event hosted by Circle K International</p>
+				</div>
+
+				<div>
+					<mat-checkbox [checked]="cerf.tags.includes('HE')" [disabled]="myForm.disabled" (change)="addRemoveTag('HE', $event.checked)">Club Hosted</mat-checkbox>
+					<p [class.show-tag-hints]="showTagHints">Any event hosted through your Circle K club</p>
+				</div>
+			</div>
+
+			
+
 		</div>
 
 	  </mat-expansion-panel>
@@ -174,70 +296,71 @@
 		<br/>
 		<div id="memberTable">
 			<mat-table [dataSource]="members" formArrayName="attendees">
-
 				<ng-container matColumnDef="members">
 					<mat-header-cell *matHeaderCellDef> Members </mat-header-cell>
 					<mat-cell *matCellDef="let member; let i=index" [formGroupName]="i">
 						<!-- <button mat-icon-button (click)="removeMember(i)"> <mat-icon>cancel</mat-icon> </button> -->
-						<mat-form-field>
-							<input matInput formControlName="name" (change)="myForm.markAsTouched()" readonly>
-						</mat-form-field>
+						<input newlyfocus matInput formControlName="name" [matAutocomplete]="auto" (keyup)="filterMembers($event)">
 					</mat-cell>
+					<mat-footer-cell *matFooterCellDef>
+						<mat-form-field class="member-cell">
+							<mat-label>+ Add Attendee</mat-label>
+							<input matInput (focus)="addMember()">
+						</mat-form-field>
+					</mat-footer-cell>
 				</ng-container>
 
-				<!-- <ng-container matColumnDef="override">
-					<mat-header-cell *matHeaderCellDef> </mat-header-cell>
-					<mat-cell *matCellDef="let member; let i=index" >
-						<button mat-raised-button>Override Hours</button>
-					</mat-cell>
-				</ng-container> -->
 				<ng-container matColumnDef="service">
 					<mat-header-cell *matHeaderCellDef> Service </mat-header-cell>
 					<mat-cell *matCellDef="let member; let i=index"  [formGroupName]="i">
-						<mat-form-field>
-							<input matInput formControlName="service" readonly>
-						</mat-form-field>
+						<input matInput formControlName="service">
 					</mat-cell>
+					<mat-footer-cell *matFooterCellDef>
+						<!-- <mat-form-field appearance="outline">
+							<mat-label>Service</mat-label>
+							<input matInput placeholder="test" (focus)="addMember()">
+						</mat-form-field> -->
+						<p class="mat-body">{{memberService}}</p>
+					</mat-footer-cell>
 				</ng-container>
 				<ng-container matColumnDef="leadership">
 					<mat-header-cell *matHeaderCellDef> Leadership </mat-header-cell>
 					<mat-cell *matCellDef="let member; let i=index"  [formGroupName]="i">
-						<mat-form-field>
-							<input matInput formControlName="leadership" readonly>
-						</mat-form-field>
+						<input matInput formControlName="leadership">
 					</mat-cell>
+					<mat-footer-cell *matFooterCellDef>
+						<!-- <mat-form-field appearance="outline">
+							<mat-label>Leadership</mat-label>
+							<input matInput placeholder="test" (focus)="addMember()">
+						</mat-form-field> -->
+						<p class="mat-body">{{memberLeadership}}</p>
+					</mat-footer-cell>
 				</ng-container>
 				<ng-container matColumnDef="fellowship">
 					<mat-header-cell *matHeaderCellDef> Fellowship </mat-header-cell>
 					<mat-cell *matCellDef="let member; let i=index"  [formGroupName]="i">
-						<mat-form-field>
-							<input matInput formControlName="fellowship" readonly>
-						</mat-form-field>
+						<input matInput formControlName="fellowship">
 					</mat-cell>
+					<mat-footer-cell *matFooterCellDef>
+						<!-- <mat-form-field appearance="outline">
+							<mat-label>Fellowship</mat-label>
+							<input matInput placeholder="test" (focus)="addMember()">
+						</mat-form-field> -->
+						<p class="mat-body">{{memberFellowship}}</p>
+					</mat-footer-cell>
 				</ng-container>
 
 				<mat-header-row *matHeaderRowDef="attendanceColumns"></mat-header-row>
 				<mat-row *matRowDef="let row; columns: attendanceColumns;"></mat-row>
+				<mat-footer-row *matFooterRowDef="attendanceColumns"></mat-footer-row>
 			</mat-table>
-			<form #member="ngForm" class="addMember">
-				<mat-form-field appearance="outline">
-					<mat-label>Add Member</mat-label>
-					<input matInput name="memberName" [(ngModel)]="memberName">
-				</mat-form-field>
-				<mat-form-field appearance="outline">
-					<mat-label>Service</mat-label>
-					<input matInput [value]="myForm.get('hoursPerAttendee.service').value" name="memberService" [(ngModel)]="memberService">
-				</mat-form-field>
-				<mat-form-field appearance="outline">
-					<mat-label>Leadership</mat-label>
-					<input matInput [value]="myForm.get('hoursPerAttendee.leadership').value" name="memberLeadership" [(ngModel)]="memberLeadership">
-				</mat-form-field>
-				<mat-form-field appearance="outline">
-					<mat-label>Fellowship</mat-label>
-					<input matInput [value]="myForm.get('hoursPerAttendee.fellowship').value" name="memberFellowship" [(ngModel)]="memberFellowship">
-				</mat-form-field>
-				<button mat-fab [disabled]="myForm.disabled" (click)="addMember()">+</button>
-			</form>
+
+			<mat-autocomplete #auto="matAutocomplete">
+				<mat-option *ngFor="let option of filteredRoster | async" [value]="option.name">
+					<p class="mat-body name">{{option.name}}</p>
+					<p class="mat-caption email">{{option.email}}</p>
+				</mat-option>
+			</mat-autocomplete>
 		</div>
 	  </mat-expansion-panel>
 
@@ -355,10 +478,23 @@
 	      </mat-panel-description>
 	    </mat-expansion-panel-header>
 	    
-	    <mat-form-field appearance="outline">
+	    <mat-form-field class="full-width" appearance="outline">
 	    	<textarea matInput placeholder="Summary"></textarea>
 	    	<mat-hint>Make your summary clear and concise so that anyone who reads it can know what the event was about without
 	    	actually having to be there.</mat-hint>
+	    </mat-form-field>
+
+	    <mat-form-field class="full-width" appearance="outline">
+	    	<textarea matInput placeholder="Strengths"></textarea>
+	    </mat-form-field>
+
+	    <mat-form-field class="full-width" appearance="outline">
+	    	<textarea matInput placeholder="Weaknesses"></textarea>
+	    </mat-form-field>
+
+	    <mat-form-field class="full-width" appearance="outline">
+	    	<textarea matInput placeholder="Improvements"></textarea>
+	    	<mat-hint>What would you do differently if you did this event again?</mat-hint>
 	    </mat-form-field>
 
 	  </mat-expansion-panel>

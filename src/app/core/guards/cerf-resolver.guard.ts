@@ -12,7 +12,12 @@ export class MyCerfsResolver implements Resolve<Cerf[]> {
 	constructor(private dataService: DataService, private router: Router) { }
 
 	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Cerf[]> {
-		return this.dataService.getMyCerfList().pipe(catchError(err => {
+		return this.dataService.getMyCerfList().pipe(map(res => {
+			if(res['success'])
+				return res['result'];
+			return null;
+		}),
+		catchError(err => {
 			console.log("Error retrieving data");
 			return of([]);
 		}),
@@ -27,7 +32,7 @@ export class CerfResolver implements Resolve<Cerf> {
 	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Cerf> {
 		if(route.params.id=='new')
 			return of(this.dataService.newCerf());
-		return this.dataService.getCerfById(route.params.id).pipe(map(
+		return this.dataService.getCerf(route.params.id).pipe(map(
 			cerf => {
 				if(!cerf){
 					this.router.navigate(['/cerfs']);

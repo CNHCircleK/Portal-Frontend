@@ -16,7 +16,6 @@ export class MrfComponent {
 
 	//id: number;
 	mrf: Mrf;
-	cerfList: Cerf[];
 	mrfForm: FormGroup;
 	currentTab: string;
 	openedPanels: number[] = [0, 0, 0, 0];
@@ -29,7 +28,6 @@ export class MrfComponent {
 		if(!this.mrfForm)
 			this.mrfForm = this.createMrf(this.mrf);
 
-		this.dataService.getMrfPendingCerfs(this.mrf.month, this.mrf.year).subscribe(res => this.cerfList = this.mrf.events.concat(res));
 		this.currentTab = this.dataService.getMrfTabState;
 	}
 

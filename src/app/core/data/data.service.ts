@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, BehaviorSubject, of ,  zip ,  forkJoin } from 'rxjs';
 import { defaultIfEmpty, concatMap, map, tap, filter, catchError, first, last } from 'rxjs/operators';
-import { zip } from 'rxjs';
-import { forkJoin } from 'rxjs';
 import { LocalStorage } from '@ngx-pwa/local-storage';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as moment from 'moment';
@@ -53,16 +51,10 @@ export class DataService {
     **/
 
     user: Member;
-    cerfs: Cerf[]; nextCerfId: number;
-    clubCerfs: Cerf[];
-    cerfsLoaded: boolean = false;
-    clubCerfsLoaded: boolean = false;
-    mrfs: Mrf[] = [];
     mrfState: Mrf;
     mrfFormState;
     mrfTabState: string;
-    members: Member[];
-    clubs: string[];
+    memberList: {name: string, email: string}[];  // Explicitly cached because we don't want to deal with the maxage reset
 
     // mockData: Mrf[] = [
     // {
@@ -89,12 +81,12 @@ export class DataService {
 
     // ];
 
-    constructor(protected localStorage: LocalStorage, private auth: AuthService, private http: HttpClient) {
-      this.auth.getUser().subscribe(user => this.user=user);
-    }
+  constructor(protected localStorage: LocalStorage, private auth: AuthService, private http: HttpClient) {
+    this.auth.getUser().subscribe(user => this.user=user);
+  }
 
-    resetData()
-    {
+  resetData()
+  {
     this.localStorage.clear().subscribe(()=>{});  // removes token also
   }
 
@@ -114,10 +106,6 @@ export class DataService {
   });
 
   logoutData() {
-    this.cerfs = null;
-    this.clubCerfs = null;
-    this.cerfsLoaded = false; this.clubCerfsLoaded = false;
-    this.mrfs = [];
     this.auth.getUser().subscribe(user => this.user=user);
   }
 
@@ -133,158 +121,54 @@ export class DataService {
     // return this.http.post<Cerf>(HttpConfig.baseUrl + "/events/new", data).pipe(tap((res: response) => { console.log(res); this.cerfs.push(res)}));
   }
 
-	// READ/GET
-	getMyCerfList(refresh?: boolean): Observable<Cerf[]> {
-    if(!this.cerfsLoaded || refresh)
-    {
-      this.cerfsLoaded = true;
-      return this.http.get<Cerf[]>(HttpConfig.baseUrl + '/members/' + this.user._id + '/events').pipe(
-        map( (res: {success: boolean, auth: boolean, result: Cerf[]}) => {
-          if(res.success) {
-            return res.result;
-          }
-          return [];
-        }),
-        tap(res => {
-          this.cerfs = res;
-        }));
-      // let cerfRequests: Observable<Cerf>[] = [];
-      // return this.http.get(HttpConfig.baseUrl + "/clubs/" + this.user.club_id + "/mrfs/2018/08/events")
-      //   .pipe(tap(res=>console.log(res)),concatMap( (res: {"success": boolean, "auth": boolean, "result": {"_id": string, "status": number, "name": string}[]}) => {
-      //                     for(let event of res.result)
-      //                       cerfRequests.push(this.http.get<Cerf>(HttpConfig.baseUrl + "/events/" + event._id).pipe(tap(data => { console.log(data); this.cerfs.push(data)})));
-      //                     return forkJoin(cerfRequests);
-      //                   }
-      //                 )
-      //        )
-    }
-    return of(this.cerfs);
+
+  getCerf(id: string) {
+    return this.http.get<any>(HttpConfig.baseUrl + '/events/' + id);
+  }
+  getMyCerfList(): Observable<Cerf[]> {
+    return this.http.get<any>(HttpConfig.baseUrl + '/members/' + this.user._id + '/events');
+    // it is not the service's concern to clean up the data for the app to consume (e.g. reading 'success' or returning [])
+  }
+  getPendingCerfs() {
+    return this.http.get<any>(HttpConfig.baseUrl + '/clubs/' + this.user.club_id + '/events/status/1');
+    // This returns all. Endpoint to get it for specific month? Or we can filter and split up, but inefficient
   }
 
-  getMrfPendingCerfs(month: number, year: number, refresh?: boolean): Observable<Cerf[]> {
-    return this.http.get<Cerf[]>(HttpConfig.baseUrl + '/clubs/' + this.user.club_id + '/events/status/1').pipe(
-      map( (res: response) => res.success ? (res.result as Cerf[]).filter(cerf => moment(cerf.time.start).month()==month-1 && moment(cerf.time.start).year()==year) : []));
-  }
+  updateCerf(data: Cerf) {
+    if(data._id == "new") {
+      return this.http.post(HttpConfig.baseUrl + "/events/new", data);
+      // this.getMyCerfList();
 
-  // getClubCerfList(refresh?: boolean): Observable<Cerf[]> {
-  //   if(!this.clubCerfsLoaded || refresh)
-  //   {
-  //     this.clubCerfsLoaded = true;
-  //     return this.http.get<Cerf[]>(HttpConfig.baseUrl + '/clubs/' + this.user.club_id + '/events').pipe(
-  //       tap((res: {result: Cerf[]}) => {
-  //         this.clubCerfs = res.result;
-  //       }));
-  //   }
-  //   return of(this.clubCerfs);
-  // }
-
-  getCerfById(id: string, refresh?: boolean): Observable<Cerf> {
-    // if(!Array.isArray(this.cerfs)) { // refreshed or direct route access
-    //   return this.getCerfList(true).pipe(map((res: response) => {
-    //     if(res.success)
-    //     {
-    //       return this.getCerfById(id, true);
-    //     }
-    //   }));
-    // }
-    if(!this.isCerfLoaded(id) || refresh){
-      return this.http.get<any>(HttpConfig.baseUrl + '/events/' + id).pipe(
-        map( res => { 
-          if(typeof(res.success) != "undefined" && res.success===false)
-            return null;
-          else
-            return res;
-        }),
-        tap(res => {
-          if(res)
-            this.updateOrInsertCerfLocal(res);
-        }));
-    } else {
-      return of(this.cerfs[this.findIndexOfCerf(id)]);
+      // TODO: Special cache handler since the user will access this new cerf through its id
+      // or leave it to refresh get requests again
     }
+    return this.http.patch(HttpConfig.baseUrl + "/events/" + data._id, data);
+    // TODO: cache-bust according to data._id
   }
-
-	// UPDATE
-  private updateOrInsertCerfLocal(data: Cerf): void {
-    if(!this.cerfs) {
-      this.cerfs = [data];
-    }
-    const index = this.findIndexOfCerf(data._id);
-    if(index==-1) {
-      this.cerfs.push(data);
-      return;
+  
+  changeCerfStatus(id: string, action: string) {
+    if(action == "SUBMIT") {
+      return this.http.patch(HttpConfig.baseUrl + "/events/" + id + "/submit", {submit: true});
+    } else if(action == "UNSUBMIT") {
+      return this.http.patch(HttpConfig.baseUrl + "/events/" + id + "/submit", {submit: false});
+    } else if(action == "CONFIRM") {
+      return this.http.patch(HttpConfig.baseUrl + "/events/" + id + "/confirm", {confirm: true});
+    } else if(action == "UNCONFIRM") {
+      return this.http.patch(HttpConfig.baseUrl + "/events/" + id + "/confirm", {confirm: false})
     }
 
-    this.cerfs[index] = data;
-  }
-  updateCerf(data: Cerf): Observable<boolean> {
-    if(data._id == "new")
-      return this.createNewCerf(data);
-    let index = this.findIndexOfCerf(data._id);
-    if(index == -1) {
-      console.log(this.cerfs);
-      console.error("Cerf with id " + data._id + " does not exist");
-      return of(false);
-    } else {
-      return this.http.patch(HttpConfig.baseUrl + "/events/" + data._id, data).pipe(tap(res => console.log(res)), map((res: response) => res.success));
-    }
+    return of(null);
   }
 
-  createNewCerf(data: Cerf): Observable<boolean> {
-    return this.http.post<any>(HttpConfig.baseUrl + "/events/new", data).pipe(tap((res: response) => {
-      if(res.result){
-        this.updateOrInsertCerfLocal({...data, _id: res.result});
-      }
-    }), map((res: response) => res.success));
-  }
-
-  updateCerfToPending(id: string, doSubmit: boolean) {
-    return this.http.patch(HttpConfig.baseUrl + "/events/" + id + "/submit", {submit: doSubmit}).pipe(
-      map( (res: response) => res.success),
-      tap( res => {
-        if(res && this.isCerfLoaded(id))
-          this.cerfs[this.findIndexOfCerf(id)].status = doSubmit ? 1 : 0; 
-        
-      }));
-  }
-  updateCerfToConfirm(id: string, doConfirm: boolean) {
-    return this.http.patch(HttpConfig.baseUrl + "/events/" + id + "/confirm", {confirm: doConfirm}).pipe(
-      tap( res => {if(res && this.isCerfLoaded(id)) this.cerfs[this.findIndexOfCerf(id)].status = doConfirm ? 2 : 1; }));
-  }
-
-	// DELETE
-	deleteCerf(id: string) {
-		if(!this.isCerfLoaded(id))
-      return;
-    return this.http.delete(HttpConfig.baseUrl + "/events/" + id).pipe(
-      map( (res: response) => res.success ),
-      tap( res => {
-        if(res)
-          this.cerfs.splice(this.findIndexOfCerf(id), 1);
-      }));
-  }
-
-  private findIndexOfCerf(id: string): number {
-    if(!this.cerfs) return -1;
-    return this.cerfs.map(cerf => cerf._id).indexOf(id);
-  }
-
-  private isCerfLoaded(id: string): boolean {
-    if(this.findIndexOfCerf(id) == -1) return false;
-    return this.cerfs.find(cerf => cerf._id==id).chair_id != null;  // weak condition for checking if it's loaded...
+  deleteCerf(id: string) {
+    return this.http.delete(HttpConfig.baseUrl + "/events/" + id);
   }
 
 
-  /* MRF handling */
 
-	// READ
-	getMrfList(refresh?: boolean): Observable<Mrf[]> {
-  		// if(!Array.isArray(this.mrfs) || refresh)
-    //   {
-    //     this.mrfs = this.mockData;
-    //     return of(this.mrfs);
-    //   }
-    //   return of(this.mrfs);
+
+  // just a simple array of month-year objects
+  getMrfList(): Observable<Mrf[]> {
     const current = moment();
     const oldest = moment().month() > 5 ? moment().set('month', 5) : moment().subtract(1, 'year').set('month', 5);
     let list = [];
@@ -295,50 +179,90 @@ export class DataService {
 
     return of(list);
   }
-  getMrfByDate(year: number, month: number, refresh?: boolean): Observable<Mrf> {
-    if(this.mrfState && this.mrfState.month == month && this.mrfState.year == year)
-    {
-      return of(this.mrfState);
+
+
+  /*
+  Result:
+  {
+    color: "",
+    labels: [""],
+    communications: {
+      ltg: {
+        contacted: {
+          email: "", newsletter: "", phone: "", visit: "", other: ""  [booleans?]
+        }
+        message: ""
+      },
+      dboard: ""
+    },
+    dcm: {
+      date: "",
+      presidentAttended: bool,
+      nextDate: "",
+      numMembers: "" (specify HOME club members)
+    },
+    events: [],
+    goals: [],
+    kfamReport: bool,
+    meetings: [{date, numMembers, numKiwanis, numNonHomeMembers,
+      numGuests, advisorAttended: {faculty: bool, kiwanis: bool}}], (specify general/board meeting)
+    month: int,
+    year: int,
+    status: int,
+    submissionTime: "",
+    updates: {
+      duesPaid: bool,
+      newDuesPaid: bool
     }
-    if(!this.isMrfLoaded(year, month)) {
-      return this.http.get(HttpConfig.baseUrl + '/clubs/' + this.user.club_id + '/mrfs/' + year + "/" + month).pipe(
-        map( (res: response) => res.success ? res.result : null),
-        tap (res => this.updateOrInsertMrfLocal(res)));
+  }
+  */
+  getMrfByDate(year: number, month: number) {
+    // mock data for UI implementation while backend data structure gets updated
+    let mockMRF = { result: {
+        color: "",
+        labels: [""],
+        communications: {
+          ltg: {
+            contacted: {
+              email: "", newsletter: "", phone: "", visit: "", other: ""
+            },
+            message: ""
+          },
+          dboard: ""
+        },
+        dcm: {
+          date: "",
+          presidentAttended: true,
+          nextDate: "",
+          numMembers: ""
+        },
+        events: [],
+        goals: [],
+        kfamReport: true,
+        meetings: [{date: "", numMembers: "", numKiwanis: "", numNonHomeMembers: "",
+          numGuests: "", advisorAttended: {faculty: true, kiwanis: true}}],
+        fundraising: [{source: "", ptp: 0, kfh: 0, fa: 0, other: 0, admin: 0}],
+        month: 1,
+        year: 2019,
+        status: 0,
+        submissionTime: "",
+        updates: {
+          dues_paid: 0
+        }
+      }
     }
-    return of(this.mrfs[this.findIndexOfMrf(year, month)]);
+    return of(mockMRF);
+
+
+    // return this.http.get<any>(HttpConfig.baseUrl + '/clubs/' + this.user.club_id + '/mrfs/' + year + "/" + month)
+    // .pipe(tap(response => console.log(response)));
   }
 
-  private updateOrInsertMrfLocal(data: Mrf): void {
-    if(!this.mrfs)
-      return;
-    const index = this.findIndexOfMrf(data.year, data.month);
-    if(index==-1) {
-      this.mrfs.push(data);
-      return;
-    }
-
-    this.mrfs[index] = data;
+  updateMrf(data: Mrf) {
+    return this.http.patch(HttpConfig.baseUrl + "/clubs/" + this.user.club_id + "/mrfs/" + data.year + "/" + data.month, data);
   }
 
-  updateMrf(data: Mrf): Observable<boolean> {
-    let index = this.findIndexOfMrf(data.year, data.month);
-    if(index == -1) {
-      console.log("MRF with year " + data.year + " and month " + data.month + " not found");
-      return of(false);
-    } else {
-      return this.http.patch(HttpConfig.baseUrl + "/clubs/" + this.user.club_id + "/mrfs/" + data.year + "/" + data.month, data).pipe(tap(res => console.log(res)), map((res: response) => res.success));
-    }
-  }
 
-  private findIndexOfMrf(year: number, month: number): number {
-    if(!this.mrfs) return -1;
-    return this.mrfs.map(mrf => mrf.year.toString() + mrf.month).indexOf(year.toString() + month);
-  }
-
-  private isMrfLoaded(year: number, month: number): boolean {
-    if(this.findIndexOfMrf(year, month) == -1) return false;
-    return this.mrfs.find(mrf => mrf.year==year && mrf.month==month).goals != null;  // weak condition for checking if it's loaded...
-  }
 
   routeThroughMrf: boolean = false;
   set routeMrf(throughMrf: boolean) {
@@ -360,10 +284,6 @@ export class DataService {
     this.mrfTabState = undefined;
   }
 
-  loadMrfState() {
-
-  }
-
   get getMrfTabState() {
     if(this.mrfTabState) {
       return this.mrfTabState;
@@ -377,43 +297,67 @@ export class DataService {
   }
 
 
-  getMembers(refresh?: boolean) {
-    if(!Array.isArray(this.members) || refresh) {
-      return this.http.get(HttpConfig.baseUrl + "/clubs/" + this.user.club_id + "/members").pipe(
-        map( (res: response) => {
-          if(res.success) {
-            this.members = res.result.map(member => ({...member, name: member.name.first + ' ' + member.name.last}));
-          }
-          return this.members;
-        })
-        );
-    }
-    return of(this.members);
-  }
-
-  addMember(first: string, last: string) {
-    return this.http.post(HttpConfig.baseUrl + '/clubs/' + this.user.club_id + "/members/new", {'firstName': first, 'lastName': last}).pipe(
-      map( (res: response) => res.success));
-  }
-
-  getMemberCode(id: string) {
-    return this.http.get(HttpConfig.baseUrl + '/members/' + id + '/registration').pipe(
-      tap( (res: response) => {
-        if(res.success)
-          this.members[this.members.findIndex(member => member._id == id)]['code'] = res.result;
+  getMembers() {
+    return this.http.get<any>(HttpConfig.baseUrl + "/clubs/" + this.user.club_id + "/members").pipe(tap(response => {
+      if(response.success) {
+        this.memberList = response.result.map(member => ({name: member.name.first + " " + member.name.last, email: member.email}) );
+        if(this.memberList.length==0)
+          this.memberList = [{name: "None", email: "none"}];
+        console.log(this.memberList);
+      }
     }));
   }
 
-  getClubs(refresh?: boolean): Observable<string[]> {
-    if(!Array.isArray(this.clubs) || refresh) {
-      return this.http.get(HttpConfig.baseUrl + "/divisions/" + this.user.division_id + "/clubs").pipe(
-        map( (res: response) => {
-          if(res.success)
-            this.clubs = res.result;
-          return this.clubs;
-        }))
+  filterMembers(value: string) {
+    if(!value)
+    {
+      value="";
     }
-    return of(this.clubs);
+    if(this.memberList===undefined)
+    {
+      return this.getMembers().pipe(map(done => this.memberList.filter(member => (member.name && member.name.toLowerCase().indexOf(value.toLowerCase()) > -1)
+     || (member.email && member.email.toLowerCase().indexOf(value.toLowerCase()) > -1)
+     )));
+    }
+    return of(this.memberList.filter(member => (member.name && member.name.toLowerCase().indexOf(value.toLowerCase()) > -1)
+     || (member.email && member.email.toLowerCase().indexOf(value.toLowerCase()) > -1)));
+  }
+
+  searchMember(value: string) {
+    if(!value)
+      return false;
+    if(this.memberList===undefined)
+      return false;
+    if(this.memberList.map(member => member.name && member.name.toLowerCase()).indexOf(value.toLowerCase()) > -1)
+      return true;
+    return false;
+  }
+
+  addMember(first: string, last: string) {
+    return this.http.post(HttpConfig.baseUrl + '/clubs/' + this.user.club_id + "/members/new", {'firstName': first, 'lastName': last});
+    // .pipe(
+    //   map( (res: response) => res.success));
+  }
+
+  getMemberCode(id: string) {
+    return this.http.get<any>(HttpConfig.baseUrl + '/members/' + id + '/registration');
+    // .pipe(
+    //   tap( (res: response) => {
+    //     if(res.success)
+    //       this.members[this.members.findIndex(member => member._id == id)]['code'] = res.result;
+    // }));
+  }
+
+  getClubs() {
+    return this.http.get<any>(HttpConfig.baseUrl + "/divisions/" + this.user.division_id + "/clubs");
+    // .pipe(
+    //     map( (res: response) => {
+    //       if(res.success)
+    //         this.clubs = res.result;
+    //       return this.clubs;
+    //     }))
+    // }
+    // return of(this.clubs);
   }
 
   newClub(name: string) {

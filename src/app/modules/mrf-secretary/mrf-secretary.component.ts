@@ -1,6 +1,7 @@
 import { Component, ViewChild, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Mrf } from '@core/data/mrf';
+import { Cerf } from '@core/data/cerf';
 import { DataService } from '@core/data/data.service';
 
 @Component({
@@ -10,10 +11,9 @@ import { DataService } from '@core/data/data.service';
 })
 
 export class MrfSecretaryComponent {
-	resolvedData: Mrf[];
-	resolve;
+	mrfList: Mrf[];
 
 	constructor(private dataService: DataService, private router: ActivatedRoute) {
-		this.resolvedData = this.router.snapshot.data['secretaryMrfs'];
+		this.mrfList = this.router.snapshot.data['mrfs'];
 	}
 }

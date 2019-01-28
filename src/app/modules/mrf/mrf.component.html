@@ -45,10 +45,10 @@
 <form [formGroup]="mrfForm">
 	<div id="main">
 		<h3>General Information</h3>
-		<mat-form-field appearance="outline">
+		<!-- <mat-form-field appearance="outline">
 			<mat-label>Club ID</mat-label>
 			<input matInput formControlName="club_id" readonly>
-		</mat-form-field>
+		</mat-form-field> -->
 		<mat-form-field appearance="outline">
 			<mat-label>Year</mat-label>
 			<input matInput formControlName="year" readonly>
@@ -61,11 +61,15 @@
 		<br/>
 
 		<ng-container formGroupName="updates">
-			<mat-checkbox formControlName="duesPaid">Dues Paid?</mat-checkbox>
-			<mat-checkbox formControlName="newDuesPaid">New Dues Paid?</mat-checkbox>
+			<!-- <mat-checkbox formControlName="duesPaid">Dues Paid?</mat-checkbox>
+			<mat-checkbox formControlName="newDuesPaid">New Dues Paid?</mat-checkbox> -->
+			<mat-form-field appearance="outline">
+				<mat-label># Dues Paid Members</mat-label>
+				<input matInput formControlName="dues_paid">
+			</mat-form-field>
 		</ng-container>
 
-		<h4>Goals</h4>
+		<!-- <h4>Goals</h4>
 		<ng-container formArrayName="goals">
 			<div *ngFor="let goal of mrfForm['controls'].goals['controls']; let i=index">
 				<p>Goal {{i}}</p>
@@ -73,35 +77,12 @@
 					<textarea matInput [formControlName]="i"></textarea>
 				</mat-form-field>
 			</div>
-		</ng-container>
+		</ng-container> -->
 	</div>
 
 
 
 	<mat-accordion displayMode="flat" [multi]="true">
-
-
-	  <mat-expansion-panel [class.mat-elevation-z0]="true" [hideToggle]="true"
-	  						(opened)="openedPanels[0] = 1"
-	                       (closed)="openedPanels[0] = 0">
-	    <mat-expansion-panel-header>
-	      <mat-panel-title>
-	        <mat-icon class="expansion-icon" [inline]="true">{{ openedPanels[0] ? "expand_less" : "expand_more" }}</mat-icon>
-	        <h3 class="mat-subheading-1">Event Reports</h3>
-	      </mat-panel-title>
-	      <mat-panel-description>
-	      </mat-panel-description>
-	    </mat-expansion-panel-header>
-
-	    <div id="events">
-			<app-cerflist *ngIf='cerfList; else loadingCerf' [cerfList]="cerfList" [pendingCerfs]="true"></app-cerflist>
-			<ng-template #loadingCerf> <mat-spinner></mat-spinner> </ng-template>
-		</div>
-
-
-	  </mat-expansion-panel>
-
-
 	  <mat-expansion-panel [class.mat-elevation-z0]="true" [hideToggle]="true"
 	  						(opened)="openedPanels[1] = 1"
 	                       (closed)="openedPanels[1] = 0">
@@ -184,13 +165,10 @@
 				<mat-form-field appearance="outline">
 					<mat-label>Date</mat-label>
 					<input matInput [matDatepicker]="dcmDate" formControlName="date">	<!-- scoping -->
-					<mat-datepicker type="datetime" #dcmDate></mat-datepicker>
+					<mat-datepicker type="date" #dcmDate></mat-datepicker>
 					<mat-datepicker-toggle matSuffix [for]="dcmDate"></mat-datepicker-toggle>
 					<mat-error>Invalid Date Format</mat-error>
 				</mat-form-field>
-				<br/>
-				<mat-checkbox formControlName="presidentAttended">President Attended?</mat-checkbox>
-				<br/>
 				<mat-form-field appearance="outline">
 					<mat-label>Members Attended</mat-label>
 					<input matInput type="number" formControlName="numMembers">
@@ -198,14 +176,116 @@
 				<mat-form-field appearance="outline">
 					<mat-label>Next DCM Date</mat-label>
 					<input matInput [matDatepicker]="dcmDateNext" formControlName="nextDate">	<!-- scoping -->
-					<mat-datepicker type="datetime" #dcmDateNext></mat-datepicker>
+					<mat-datepicker type="date" #dcmDateNext></mat-datepicker>
 					<mat-datepicker-toggle matSuffix [for]="dcmDateNext"></mat-datepicker-toggle>
 					<mat-error>Invalid Date Format</mat-error>
 				</mat-form-field>
+				<mat-checkbox formControlName="presidentAttended">President Attended?</mat-checkbox>
 			</ng-container>
 		</div>
+	  </mat-expansion-panel>
 
 
+	  <mat-expansion-panel [class.mat-elevation-z0]="true" [hideToggle]="true"
+	  						(opened)="openedPanels[2] = 1"
+	                       (closed)="openedPanels[2] = 0">
+	    <mat-expansion-panel-header>
+	      <mat-panel-title>
+	        <mat-icon class="expansion-icon" [inline]="true">{{ openedPanels[2] ? "expand_less" : "expand_more" }}</mat-icon>
+	        <h3 class="mat-subheading-1">Fundraising</h3>
+	      </mat-panel-title>
+	      <mat-panel-description>
+	      </mat-panel-description>
+	    </mat-expansion-panel-header>
+
+	    <div id="fundraising">
+	    	<mat-table [dataSource]="members" formArrayName="fundraising">
+
+				<ng-container matColumnDef="source">
+					<mat-header-cell *matHeaderCellDef>Source</mat-header-cell>
+					<mat-cell *matCellDef="let fundraising; let i=index" [formGroupName]="i">
+						<!-- <button mat-icon-button (click)="removeMember(i)"> <mat-icon>cancel</mat-icon> </button> -->
+						<input newlyfocus matInput formControlName="source">
+					</mat-cell>
+					<mat-footer-cell *matFooterCellDef>
+						<mat-form-field class="fundraising-cell">
+							<mat-label>+ Add fundraising</mat-label>
+							<input matInput (focus)="addFundraising()">
+						</mat-form-field>
+					</mat-footer-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="ptp">
+					<mat-header-cell *matHeaderCellDef>PTP</mat-header-cell>
+					<mat-cell *matCellDef="let fundraising; let i=index"  [formGroupName]="i">
+						<input matInput formControlName="ptp">
+					</mat-cell>
+					<mat-footer-cell *matFooterCellDef>
+						<!-- <mat-form-field appearance="outline">
+							<mat-label>Service</mat-label>
+							<input matInput placeholder="test" (focus)="addMember()">
+						</mat-form-field> -->
+						<p class="mat-body">0</p>
+					</mat-footer-cell>
+				</ng-container>
+				<ng-container matColumnDef="kfh">
+					<mat-header-cell *matHeaderCellDef>KFH</mat-header-cell>
+					<mat-cell *matCellDef="let fundraising; let i=index"  [formGroupName]="i">
+						<input matInput formControlName="kfh">
+					</mat-cell>
+					<mat-footer-cell *matFooterCellDef>
+						<!-- <mat-form-field appearance="outline">
+							<mat-label>Leadership</mat-label>
+							<input matInput placeholder="test" (focus)="addMember()">
+						</mat-form-field> -->
+						<p class="mat-body">0</p>
+					</mat-footer-cell>
+				</ng-container>
+				<ng-container matColumnDef="fa">
+					<mat-header-cell *matHeaderCellDef>Feeding America</mat-header-cell>
+					<mat-cell *matCellDef="let fundraising; let i=index"  [formGroupName]="i">
+						<input matInput formControlName="fa">
+					</mat-cell>
+					<mat-footer-cell *matFooterCellDef>
+						<!-- <mat-form-field appearance="outline">
+							<mat-label>Fellowship</mat-label>
+							<input matInput placeholder="test" (focus)="addMember()">
+						</mat-form-field> -->
+						<p class="mat-body">0</p>
+					</mat-footer-cell>
+				</ng-container>
+				<ng-container matColumnDef="other">
+					<mat-header-cell *matHeaderCellDef>Other Charity</mat-header-cell>
+					<mat-cell *matCellDef="let fundraising; let i=index"  [formGroupName]="i">
+						<input matInput formControlName="other">
+					</mat-cell>
+					<mat-footer-cell *matFooterCellDef>
+						<!-- <mat-form-field appearance="outline">
+							<mat-label>Fellowship</mat-label>
+							<input matInput placeholder="test" (focus)="addMember()">
+						</mat-form-field> -->
+						<p class="mat-body">0</p>
+					</mat-footer-cell>
+				</ng-container>
+				<ng-container matColumnDef="admin">
+					<mat-header-cell *matHeaderCellDef>Administrative</mat-header-cell>
+					<mat-cell *matCellDef="let fundraising; let i=index"  [formGroupName]="i">
+						<input matInput formControlName="admin">
+					</mat-cell>
+					<mat-footer-cell *matFooterCellDef>
+						<!-- <mat-form-field appearance="outline">
+							<mat-label>Fellowship</mat-label>
+							<input matInput placeholder="test" (focus)="addMember()">
+						</mat-form-field> -->
+						<p class="mat-body">0</p>
+					</mat-footer-cell>
+				</ng-container>
+
+				<mat-header-row *matHeaderRowDef="fundraisingColumns"></mat-header-row>
+				<mat-row *matRowDef="let row; columns: fundraisingColumns;"></mat-row>
+				<mat-footer-row *matFooterRowDef="fundraisingColumns"></mat-footer-row>
+			</mat-table>
+		</div>
 	  </mat-expansion-panel>
 
 
@@ -260,8 +340,25 @@
 				<textarea matInput formControlName="dboard" matTextareaAutosize></textarea>
 			</mat-form-field>
 		</div>
+	  </mat-expansion-panel>
 
 
+	  <mat-expansion-panel [class.mat-elevation-z0]="true" [hideToggle]="true"
+	  						(opened)="openedPanels[0] = 1"
+	                       (closed)="openedPanels[0] = 0">
+	    <mat-expansion-panel-header>
+	      <mat-panel-title>
+	        <mat-icon class="expansion-icon" [inline]="true">{{ openedPanels[0] ? "expand_less" : "expand_more" }}</mat-icon>
+	        <h3 class="mat-subheading-1">Event Reports</h3>
+	      </mat-panel-title>
+	      <mat-panel-description>
+	      </mat-panel-description>
+	    </mat-expansion-panel-header>
+
+	    <div id="events">
+			<app-cerflist *ngIf='mrf.events; else loadingCerf' [cerfList]="mrf.events"></app-cerflist>
+			<ng-template #loadingCerf> <mat-spinner></mat-spinner> </ng-template>
+		</div>
 	  </mat-expansion-panel>
 
 	</mat-accordion>

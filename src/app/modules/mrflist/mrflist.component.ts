@@ -31,7 +31,7 @@ export class MrfListComponent {
 
 	ngOnInit() {
 		this.list = new MatTableDataSource(this.mrfList);
-		this.displayedColumns = ['month', 'year', 'action']
+		this.displayedColumns = ['month', 'year']//, 'action']
 		// if(this.display) this.displayedColumns = this.displayedColumns.concat(this.display);
 	}
 

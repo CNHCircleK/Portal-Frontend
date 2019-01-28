@@ -78,6 +78,12 @@ h1 {
 #memberTable {
 	max-width: 80%;
 }
+#memberTable input {
+	border: 0;
+}
+#memberTable mat-row:hover input {
+	background: rgba(0, 0, 0, 0.04);
+}
 .addMember {
 	display: flex;
 	max-width: 80%;
@@ -87,12 +93,19 @@ h1 {
 	max-width: 33%;
 	flex: 1;
 }
+.name {
+	margin: 0;
+}
+.email {
+	margin: 0;
+	color: #ccc;
+}
 /* TODO: Responsive for mobile */
-
+/*
 #commentary {
 	display: flex;
 	flex-direction: column;
-}
+}*/
 
 
 .activeColor {
@@ -104,17 +117,52 @@ h1 {
 }*/
 #tags {
 	display: grid;
-	grid-auto-flow: row;
+	grid-template-rows: 2fr 1fr 1fr;
+	grid-gap: 0px 20px;
+	grid-auto-flow: column;
+	grid-auto-columns: 1fr 1fr;
+	/*column-count: 2;
+	-webkit-column-break-inside:avoid;
+	-moz-column-break-inside:avoid;
+	-o-column-break-inside:avoid;
+	-ms-column-break-inside:avoid;
+	column-break-inside:avoid; */
 }
-@media screen and (min-width: 500px) and (max-width: 768px) {
+.tag-misc {
+	grid-row: 1/4;
+}
+.tag-group {
+	/*display: inline-block;*/
+	/*grid-auto-flow: row;*/
+}
+#tags h4 {
+	/*margin: 0;*/
+}
+/*@media screen and (min-width: 500px) and (max-width: 768px) {
 	#tags {
 		grid-template-columns: 300px 300px;
 	}
 }
 @media screen and (min-width: 769px) {
 	#tags {
-		grid-template-columns: 300px 300px 300px;
+		grid-template-columns: 250px 250px 250px;
 	}
+}*/
+#tags > div {
+	/*margin: 0 5px;*/
+}
+#tags p {
+	margin: 0 0 0 20px;
+	color: gray;
+	font-size: 12px;
+	overflow: hidden;
+
+	max-height: 0px;
+	transition: max-height 0.5s ease-in-out;
+}
+
+#tags p.show-tag-hints {
+	max-height: 500px;
 }
 
 #labels {
@@ -142,6 +190,14 @@ h1 {
 .categoryButton:hover ~ .deleteCategory, .deleteCategory:hover {
 	visibility: visible;
 }
+
+.full-width {	/* text area */
+	width: 100%;
+}
+.mat-column-members {
+	flex: 0 0 200px;
+}
+
 
 /* Validation/feedback */
 /*input.ng-valid[required], .ng-valid.required  {

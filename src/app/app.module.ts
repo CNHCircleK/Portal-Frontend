@@ -26,7 +26,9 @@ import {
     SettingsComponent,
     ConfirmDialogComponent,
     InfoDialog,
-    TagsDialog } from '@app/modules/';
+    TagsDialog,
+    NewFocusInput,
+    InputList } from '@app/modules/';
 
 import { RouteReuseStrategy } from '@angular/router';
 import { MrfReuseStrategy } from '@core/guards/reuse-strategy';
@@ -60,7 +62,9 @@ import HttpConfig from '@env/api_config';
     SettingsComponent,
     ConfirmDialogComponent,
     InfoDialog,
-    TagsDialog
+    TagsDialog,
+    NewFocusInput,
+    InputList
   ],
   imports: [
     BrowserModule,

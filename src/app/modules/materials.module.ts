@@ -4,7 +4,7 @@ import { MatFormFieldModule, MatIconModule, MatCardModule, MatGridListModule, Ma
 			MatButtonModule, MatTooltipModule, MatSelectModule, MatTableModule,
 			MatSortModule, MatPaginatorModule, MatDividerModule, MatDialogModule, MatCheckboxModule,
 			MatProgressSpinnerModule, MatSidenavModule, MatListModule, MatToolbarModule, MatSnackBarModule,
-			MatExpansionModule } from '@angular/material';
+			MatExpansionModule, MatAutocompleteModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
@@ -29,6 +29,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 		MatToolbarModule,
 		MatSnackBarModule,
 		MatExpansionModule,
+		MatAutocompleteModule,
 		BrowserAnimationsModule
 	],
 	exports: [
@@ -52,6 +53,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 		MatToolbarModule,
 		MatSnackBarModule,
 		MatExpansionModule,
+		MatAutocompleteModule,
 		BrowserAnimationsModule
 	],
 })

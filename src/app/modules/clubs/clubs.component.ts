@@ -47,7 +47,7 @@ export class ClubsComponent {
 	}
 
 	updateList() {
-		this.dataService.getClubs(true).subscribe(res => {
+		this.dataService.getClubs().subscribe(res => {
 			this.clubs=res;
 			this.list.data=res;
 		});

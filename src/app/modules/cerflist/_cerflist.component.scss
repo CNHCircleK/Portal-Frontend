@@ -6,20 +6,7 @@
 	$accent: map-get($theme, accent);
 	$backgroundColor: map-get($theme, background);
 
-	.mat-table {
-		background: transparent;
-	}
 
-	.mat-header-row {
-		background: transparent;
-
-		font-family: "Century Gothic";
-		font-weight: bold;
-	}
-
-	.mat-paginator {
-		background: transparent;
-	}
 
 
 	/*.mat-header-row {

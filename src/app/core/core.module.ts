@@ -8,7 +8,7 @@ import { CerfComponent, CerfListComponent,
     MyCerfsComponent,
 		ProfileComponent,
     MembersComponent,
-    ConfirmDialogComponent } from '@app/modules/';
+    ConfirmDialogComponent, InputList } from '@app/modules/';
 
 /* Our services */
 // import { DataService } from '@core/data/data.service';
