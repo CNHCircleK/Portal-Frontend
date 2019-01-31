@@ -35,12 +35,12 @@ export class CerfComponent {
 	currentTab: string;
 	openedPanels: number[] = [0, 0, 0, 0, 0, 0];
 
-	members: MatTableDataSource<Attendee>;
-	attendanceColumns: string[] = ['members', 'service', 'leadership', 'fellowship'];// 'unpaid'];
-	memberName: string;
-	// memberService: number;
-	// memberLeadership: number;
-	// memberFellowship: number;
+	memberColumns = [];
+	kfamColumns = [{def: "org", title: "Organization", footer: "+ Add Org", defaultFooter: ""},
+					{def: "numAttendees", title: "Number Attendees", footer: "Attendees", defaultFooter: 0}];
+	driverColumns = [{def: "driver", title: "Driver", footer: "+ Add Driver", defaultFooter: ""},
+						{def: "milesTo", title: "Miles to Event", footer: "Miles", defaultFooter: 0},
+						{def: "milesFrom", title: "Miles from Event", footer: "Miles", defaultFooter: 0}];
 
 	myForm: FormGroup;
 	// comment: string = "HEY";
@@ -77,16 +77,18 @@ export class CerfComponent {
 	"Any event hosted through your Circle K club"];
 	showTagHints = false;
 
-	filteredRoster: Observable<{name: string, email: string}[]>;
 
 	constructor(private route: ActivatedRoute, private dataService: DataService,
 		private auth: AuthService, private _location: Location, public dialog: MatDialog,
 		private builder: FormBuilder) {
 		// this.route.data.subscribe(response => this.cerf = response.cerf);
 		this.cerf = this.route.snapshot.data['cerf'];
+		console.log(this.cerf);
 		this.fromMrf = this.route.snapshot.data['mrfNav'];
 		console.log("Coming from MRF ", this.fromMrf);
 		this.myForm = this.createCerf(this.cerf);
+
+		console.log(this.createReactiveForm(this.cerf));
 
 		console.log(this.myForm);
 	}
@@ -102,22 +104,18 @@ export class CerfComponent {
 		(this.cerf.status <= 1 && this.user.access.club == 2);
 	}
 
+	ngOnInit() {
+	}
+
 	 ngAfterContentInit() {
+		this.memberColumns = [{def: "member", title: "Name", footer: "+ Add Member", defaultFooter: ""},
+	 		{def: "service", title: "Service", footer: "Service", defaultFooter: this.myForm.get('hoursPerAttendee.service')},
+	 		{def: "leadership", title: "Leadership", footer: "Leadership", defaultFooter: this.myForm.get('hoursPerAttendee.leadership')},
+	 		{def: "fellowship", title: "Fellowship", footer: "Fellowship", defaultFooter: this.myForm.get('hoursPerAttendee.fellowship')}]
+
 		this.auth.getUser().subscribe(user => {
 			this.user = user;
 		});
-
-		// this.members = new MatTableDataSource(this.cerf.data.attendees);
-
-		let membersControl = this.attendees;	// invoke getter
-		// this.members = new MatTableDataSource(new Array(membersControl.length).map((v, index) => membersControl.at(index).value as string));
-		for(let control of membersControl.controls) {
-			if(typeof control.value === 'string' || control.value instanceof String)
-			{
-				control = this.builder.group({name: control.value, service: [''], leadership: [''], fellowship: ['']});
-			}
-		}
-		this.members = new MatTableDataSource(membersControl.getRawValue());
 
 		this.categoriesActive = this.labels.value;
 
@@ -127,26 +125,12 @@ export class CerfComponent {
 	}
 
 	ngAfterViewInit() {
-		// if(!this.editable) {
-		// 	this.myForm.disable();
-		// }
-		this.members.sort = this.sort;
+
 	}
 
-	trackByIndex(index: number, obj: any): any {
-		return index;
+	inputListReady(name, event) {
+		this.myForm.setControl(name, event);
 	}
-
-	// setColor(color: string) {
-	// 	if(this.color==color) {
-	// 		this.color = '';
-	// 	} else {
-	// 		this.color = color;
-	// 	}
-	// 	this.myForm.patchValue({color: this.color});
-	// 	this.myForm.get('color').markAsDirty();
-	// 	// console.log(this.myForm);
-	// }
 
 	openTagHelp() {
 		this.showTagHints = !this.showTagHints;
@@ -224,64 +208,6 @@ export class CerfComponent {
 			tagArray.removeAt(index);
 		}
 		this.myForm.get('tags').markAsDirty();
-	}
-
-	addMember() {
-		// this.cerf.data.attendees = this.members.data;
-		// this.cerf.data.attendees.push("Member " + this.cerf.data.attendees.length);
-		// this.members.data = this.cerf.data.attendees;
-
-		const attendees = this.attendees;
-		// const hours = this.myForm.get('hoursPerAttendee').value;
-		// attendees.controls.push(this.builder.group({name: [''], service: [hours.service || 0], leadership: [hours.leadership || 0], fellowship: [hours.fellowship || 0]}));
-		attendees.controls.push(this.builder.group({name: [this.memberName], service: [this.memberService || 0], leadership: [this.memberLeadership || 0],
-			fellowship: [this.memberFellowship || 0]}));
-		console.log(attendees.getRawValue());
-		// this.members = new MatTableDataSource(attendees.getRawValue());
-		this.members.data.push({name: this.memberName, service: this.memberService || 0, leadership: this.memberLeadership || 0, fellowship: this.memberFellowship || 0});
-		this.members._updateChangeSubscription();
-		this.myForm.get('attendees').markAsDirty();
-		this.filterMembers({target: {value: ""}});
-	}
-
-	removeMember(i: number) {
-		const attendees = this.attendees;	// invoke the getter
-		attendees.removeAt(i);
-
-
-		// this.members.data = new Array(attendees.length).map((v, index) => attendees.at(index).value as string);
-		// this.members = new MatTableDataSource(attendees.getRawValue());
-		this.members.data.splice(i, 1);
-		this.members._updateChangeSubscription();
-		this.myForm.get('attendees').markAsDirty();
-	}
-
-	// Only update hours. Safer to update everything though
-	syncMemberList() {
-		const attendees = this.attendees;
-		const hours = this.members.data;
-
-		// for(let i=0; i < attendees.length; i++) {
-		// 	attendees.at(i).patchValue({override_hours: hours[i].})
-		// }
-	}
-
-	filterMembers(event: any) {
-		this.filteredRoster = this.dataService.filterMembers(event.target.value);
-	}
-
-	get attendees() {
-		return (this.myForm.controls['attendees'] as FormArray);
-	}
-
-	get memberService() {
-		return this.myForm.get('hoursPerAttendee.service').value;
-	}
-	get memberLeadership() {
-		return this.myForm.get('hoursPerAttendee.leadership').value;
-	}
-	get memberFellowship() {
-		return this.myForm.get('hoursPerAttendee.fellowship').value;
 	}
 
 	saveCerf() {
@@ -410,6 +336,56 @@ export class CerfComponent {
 
 	*/
 
+	private createReactiveForm(model: Cerf): FormGroup {
+		// Make initial FormGroup (this does a shallow construction)
+		// let form = this.builder.group(model);
+
+		/* List of nested arrays/objects we need to define:
+			time: { start, end }
+			tags: []
+			attendees: []
+			hoursPerAttendee: { service, leadership, fellowship }
+			overrideHours: { attendee_id, service, leadership, fellowship }[]
+			fundraised: { amountRaised, amountSpent, usedFor }
+			comments: { summary, strengths, weaknesses, improvements }
+			categories: []
+			drivers: { driver, milesTo, milesFrom }[]
+			kfamAttendance: { org, numAttendees }[]
+		*/
+
+		this.fillDefaults(model);
+
+
+		let form = this.builder.group({
+			name: [model.name],
+			chair_id: [model.chair_id],
+			time: this.builder.group(model.time),
+			location: model.location,
+			contact: model.contact,
+			tags: this.builder.array(model.tags),
+			attendees: this.builder.array(model.attendees),
+			hoursPerAttendee: this.builder.group(model.hoursPerAttendee),
+			overrideHours: this.builder.array(model.overrideHours.map(eachOverride => this.builder.group(eachOverride))),
+			fundraised: this.builder.group(model.fundraised),
+			categories: this.builder.array(model.categories),
+			comments: this.builder.group(model.comments),
+			drivers: this.builder.array(model.drivers.map(eachDriver => this.builder.group(eachDriver))),
+			kfamAttendance: this.builder.array(model.kfamAttendance.map(eachkfam => this.builder.group(eachkfam)))
+		})
+
+		// form.registerControl('time', this.builder.group(model.time));	// TODO: date validator
+		// form.registerControl('tags', this.builder.array(model.tags));
+		// form.registerControl('attendees', this.builder.array(model.attendees));
+		// form.registerControl('hoursPerAttendee', this.builder.group(model.hoursPerAttendee));
+		// form.registerControl('overrideHours', this.builder.array(model.overrideHours));
+		// form.registerControl('fundraised', this.builder.group(model.fundraised));
+		// form.registerControl('comments', this.builder.group(model.comments));
+		// form.registerControl('categories', this.builder.array(model.categories));
+		// form.registerControl('drivers', this.builder.group(model.drivers));
+
+		return form;
+	}
+
 	private createCerf(model: Cerf): FormGroup {
 		/* Fill in CERF with null values so we can at least create a form */
 		/* We're assuming a Cerf IS passed in (i.e. has all the non-optional properties at least */
@@ -418,7 +394,9 @@ export class CerfComponent {
 		const form = this.cookData(copyModel);
 		this.setValidators(form, [
 			{ control: 'name', validator: Validators.required },
-			{ control: 'hoursPerAttendee', validator: Validators.pattern('^[0-9]*$')}
+			{ control: 'hoursPerAttendee.service', validator: Validators.pattern('^[0-9]*$')},
+			{ control: 'hoursPerAttendee.leadership', validator: Validators.pattern('^[0-9]*$')},
+			{ control: 'hoursPerAttendee.fellowship', validator: Validators.pattern('^[0-9]*$')}
 			]);
 		for(let x of (form.controls['attendees'] as FormArray).controls) {
 			x.setValidators([this.memberListValidator]);
@@ -434,10 +412,24 @@ export class CerfComponent {
 
 	private fillDefaults(model: Cerf): void
 	{
-		if(!model.labels)
-			model.labels = [];
-		if(!model.color)
-			model.color = "";
+		// For structural changes, need to null-check because these won't be included in legacy CERFs
+		if(!model.location) model.location = "";
+		if(!model.contact) model.contact = "";
+		if(!model.comments) {
+			model.comments = { summary: "", strengths: "", weaknesses: "", improvements: ""};
+		}
+		if(!model.fundraised.amountRaised) {
+			model.fundraised = { amountRaised: 0, amountSpent: 0, usedFor: ""};
+		}
+		if(!model.drivers) {
+			model.drivers = [];
+		}
+		if(!model.kfamAttendance) {
+			model.kfamAttendance = [];
+		}
+		if(!model.categories) {
+			model.categories = [];
+		}
 	}
 
 	private cookData(model: Object): FormGroup
@@ -480,6 +472,10 @@ export class CerfComponent {
 		return (control: AbstractControl): { [key:string]: any } | null => {
 			return this.dataService.searchMember(control.value) ? null : {'notMember': {value: control.value}};
 		};
+	}
+
+	public printForm() {
+		console.log(this.myForm);
 	}
 
 	public getCerfFromForm() {

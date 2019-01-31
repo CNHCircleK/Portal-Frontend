@@ -20,6 +20,25 @@ export class MrfComponent {
 	currentTab: string;
 	openedPanels: number[] = [0, 0, 0, 0];
 
+	meetingColumns = [{def: "date", title: "Date", footer: "Date", defaultFooter: ""},
+						{def: "numMembers", title: "Home Club Members", footer: "#", defaultFooter: 0},
+						{def: "numNonHomeMembers", title: "Outside CKI Members", footer: "#", defaultFooter: 0},
+						{def: "numKiwanis", title: "Date", footer: "Kiwanis", defaultFooter: 0},
+						{def: "numGuests", title: "Date", footer: "Other Guests", defaultFooter: 0},
+						{def: "advisorAttended.faculty", title: "Faculty advisor", footer: "True/False", defaultFooter: ""},
+						{def: "advisorAttended.kiwanis", title: "Kiwanis advisor", footer: "True/False", defaultFooter: ""}]
+						// {def: "date", title: "Date", footer: "Date", defaultFooter: ""},];
+	boardMeetingColumns = [{def: "date", title: "Date", footer: "Date", defaultFooter: ""},
+						{def: "boardMembers", title: "Board Members", footer: "#", defaultFooter: 0},
+						{def: "guests", title: "Guests", footer: "#", defaultFooter: 0}];
+	fundraisingColumns = [{def: "source", title: "Source", footer: "+ Add Fundraiser", defaultFooter: ""},
+						{def: "ptp", title: "PTP", footer: "#", defaultFooter: 0},
+						{def: "kfh", title: "KFH", footer: "#", defaultFooter: 0},
+						{def: "fa", title: "Feeding America", footer: "#", defaultFooter: 0},
+						{def: "other", title: "Other charity", footer: "#", defaultFooter: 0},
+						{def: "admin", title: "Administrative", footer: "#", defaultFooter: 0}]
+
+
 	constructor(private route: ActivatedRoute, private dataService: DataService,
 		private _location: Location, private builder: FormBuilder) {
 		this.mrf = this.route.snapshot.data['mrf'];
@@ -40,6 +59,9 @@ export class MrfComponent {
 		// console.log("init"); // Lifecycles not executed on route reuse
 	}
 
+	inputListReady(name, event) {
+		this.mrfForm.setControl(name, event);
+	}
 
 	deleteMeeting(i: number) {
 		const meetings = this.mrfForm.controls['meetings'] as FormArray;
@@ -59,6 +81,43 @@ export class MrfComponent {
 
 	saveMrf() {
 		this.dataService.updateMrf(this.getMrfFromForm()).subscribe(res => {this.mrfForm.markAsPristine();});
+	}
+
+	private createReactiveForm(model: Mrf): FormGroup {
+		// Make initial FormGroup (this does a shallow construction)
+		// let form = this.builder.group(model);
+
+		/* List of nested arrays/objects we need to define:
+			time: { start, end }
+			tags: []
+			attendees: []
+			hoursPerAttendee: { service, leadership, fellowship }
+			overrideHours: { attendee_id, service, leadership, fellowship }[]
+			fundraised: { amountRaised, amountSpent, usedFor }
+			comments: { summary, strengths, weaknesses, improvements }
+			categories: []
+			drivers: { driver, milesTo, milesFrom }[]
+			kfamAttendance: { org, numAttendees }[]
+		*/
+
+		this.fillDefaults(model);
+
+
+		let form = this.builder.group({
+			communications: this.builder.group(model.communications),
+	        dcm: this.builder.group(model.dcm),
+	        events: this.builder.array(model.events),
+	        // goals: [],
+	        kfamReport: this.builder.control(model.kfamReport),
+	        // meetings: [],
+	        // boardMeetings: [],
+	        // fundraising: [],
+	        month: this.builder.control(model.month),
+	        year: this.builder.control(model.year),
+	        updates: this.builder.group(model.updates)
+	    })
+
+		return form;
 	}
 
 	private createMrf(model: Mrf): FormGroup {

@@ -6,6 +6,8 @@
 
 	<div id="cerf-actions">
 		<mat-spinner *ngIf="pendingAction" diameter="36"></mat-spinner>
+		<button mat-icon-button [disabled]="pendingAction || (cerf.status > 0 && user.access.club < 2) || (cerf.status > 1)" (click)="deleteCerf()"><mat-icon>delete</mat-icon></button>
+		{{myForm.valid}}
 		<button mat-icon-button [disabled]="!editable || !myForm.dirty || !myForm.valid || pendingAction" (click)="saveCerf()"><mat-icon>save</mat-icon></button>
 		<!-- remove "cerf.status==0" once we change "draft" abstraction definition -->
 		<button mat-icon-button *ngIf="cerf.status==0 || user.access.club < 2" [disabled]="!myForm.pristine || !myForm.valid || pendingAction || cerf.status > 0" (click)="submitCerf()" matTooltip="Submit to Secretary"><mat-icon>send</mat-icon></button>
@@ -28,8 +30,6 @@
 
 
 <form [formGroup]="myForm">
-
-	<app-input-list [data]="testInput" [columns]="testColumns"></app-input-list>
 
 	<div id="main">
 		<h3 class="mat-subheading-1">General Information</h3>
@@ -87,14 +87,14 @@
 
 		<mat-form-field appearance="outline">
 			<mat-label>Location</mat-label>
-			<input matInput>
+			<input matInput formControlName="location">
 			<!-- <button mat-icon-button matSuffix *ngIf="comment" matTooltip="{{comment}}">
 				<mat-icon>chat_bubble</mat-icon>
 			</button> -->
 		</mat-form-field>
 		<mat-form-field appearance="outline">
 			<mat-label>Contact Information</mat-label>
-			<input matInput>
+			<input matInput formControlName="contact">
 			<!-- <button mat-icon-button matSuffix *ngIf="comment" matTooltip="{{comment}}">
 				<mat-icon>chat_bubble</mat-icon>
 			</button> -->
@@ -295,72 +295,8 @@
 		<!-- ngFor attendees -->
 		<br/>
 		<div id="memberTable">
-			<mat-table [dataSource]="members" formArrayName="attendees">
-				<ng-container matColumnDef="members">
-					<mat-header-cell *matHeaderCellDef> Members </mat-header-cell>
-					<mat-cell *matCellDef="let member; let i=index" [formGroupName]="i">
-						<!-- <button mat-icon-button (click)="removeMember(i)"> <mat-icon>cancel</mat-icon> </button> -->
-						<input newlyfocus matInput formControlName="name" [matAutocomplete]="auto" (keyup)="filterMembers($event)">
-					</mat-cell>
-					<mat-footer-cell *matFooterCellDef>
-						<mat-form-field class="member-cell">
-							<mat-label>+ Add Attendee</mat-label>
-							<input matInput (focus)="addMember()">
-						</mat-form-field>
-					</mat-footer-cell>
-				</ng-container>
-
-				<ng-container matColumnDef="service">
-					<mat-header-cell *matHeaderCellDef> Service </mat-header-cell>
-					<mat-cell *matCellDef="let member; let i=index"  [formGroupName]="i">
-						<input matInput formControlName="service">
-					</mat-cell>
-					<mat-footer-cell *matFooterCellDef>
-						<!-- <mat-form-field appearance="outline">
-							<mat-label>Service</mat-label>
-							<input matInput placeholder="test" (focus)="addMember()">
-						</mat-form-field> -->
-						<p class="mat-body">{{memberService}}</p>
-					</mat-footer-cell>
-				</ng-container>
-				<ng-container matColumnDef="leadership">
-					<mat-header-cell *matHeaderCellDef> Leadership </mat-header-cell>
-					<mat-cell *matCellDef="let member; let i=index"  [formGroupName]="i">
-						<input matInput formControlName="leadership">
-					</mat-cell>
-					<mat-footer-cell *matFooterCellDef>
-						<!-- <mat-form-field appearance="outline">
-							<mat-label>Leadership</mat-label>
-							<input matInput placeholder="test" (focus)="addMember()">
-						</mat-form-field> -->
-						<p class="mat-body">{{memberLeadership}}</p>
-					</mat-footer-cell>
-				</ng-container>
-				<ng-container matColumnDef="fellowship">
-					<mat-header-cell *matHeaderCellDef> Fellowship </mat-header-cell>
-					<mat-cell *matCellDef="let member; let i=index"  [formGroupName]="i">
-						<input matInput formControlName="fellowship">
-					</mat-cell>
-					<mat-footer-cell *matFooterCellDef>
-						<!-- <mat-form-field appearance="outline">
-							<mat-label>Fellowship</mat-label>
-							<input matInput placeholder="test" (focus)="addMember()">
-						</mat-form-field> -->
-						<p class="mat-body">{{memberFellowship}}</p>
-					</mat-footer-cell>
-				</ng-container>
-
-				<mat-header-row *matHeaderRowDef="attendanceColumns"></mat-header-row>
-				<mat-row *matRowDef="let row; columns: attendanceColumns;"></mat-row>
-				<mat-footer-row *matFooterRowDef="attendanceColumns"></mat-footer-row>
-			</mat-table>
-
-			<mat-autocomplete #auto="matAutocomplete">
-				<mat-option *ngFor="let option of filteredRoster | async" [value]="option.name">
-					<p class="mat-body name">{{option.name}}</p>
-					<p class="mat-caption email">{{option.email}}</p>
-				</mat-option>
-			</mat-autocomplete>
+			<button (click)="printForm()">click</button>
+			<app-input-list [data]="cerf.attendees" [columns]="memberColumns" (formReady)="inputListReady('overrideHours', $event)"></app-input-list>
 		</div>
 	  </mat-expansion-panel>
 
@@ -382,6 +318,7 @@
 	      </mat-panel-description>
 	    </mat-expansion-panel-header>
 	    
+		<app-input-list [data]="cerf.kfamAttendance" [columns]="kfamColumns" (formReady)="inputListReady('kfamAttendance', $event)"></app-input-list>
 <!-- 	    <mat-table>
 
 			<ng-container matColumnDef="members">
@@ -414,6 +351,7 @@
 	      </mat-panel-description>
 	    </mat-expansion-panel-header>
 	    
+	    <app-input-list [data]="cerf.drivers" [columns]="driverColumns" (formReady)="inputListReady('drivers', $event)"></app-input-list>
 	<!--     <mat-table>
 
 			<ng-container matColumnDef="members">
@@ -447,16 +385,16 @@
 	    </mat-expansion-panel-header>
 
 		<mat-form-field appearance="outline">
-			<mat-label>PTP</mat-label>
-			<input matInput formControlName="ptp">
+			<mat-label>Amount Raised</mat-label>
+			<input matInput formControlName="amountRaised">
 		</mat-form-field>
 		<mat-form-field appearance="outline">
-			<mat-label>FA</mat-label>
-			<input matInput formControlName="fa">
+			<mat-label>Amount Spent</mat-label>
+			<input matInput formControlName="amountSpent">
 		</mat-form-field>
 		<mat-form-field appearance="outline">
-			<mat-label>KFH</mat-label>	<!-- readonly -->
-			<input matInput formControlName="kfh">
+			<mat-label>How were the funds used</mat-label>
+			<textarea matInput formControlName="usedFor"></textarea>
 		</mat-form-field>
 
 	  </mat-expansion-panel>

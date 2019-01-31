@@ -22,22 +22,13 @@ export interface Mrf extends MrfData {
 
 export interface MrfData {
 	updates: {
-		duesPaid: boolean,
-		newDuesPaid: boolean
+		dues_paid: number
 	},
 	events: Cerf[],
 	goals: string[],
-	meetings: {
-		date: Date,
-		numMembers: number,
-		numNonHomeMembers: number,
-		numKiwanis: number,
-		numGuests: number,
-		advisorAttended:{
-			faculty: number,
-			kiwanis: number
-		}
-	}[],
+	meetings: {date: string, numMembers: string, numKiwanis: string, numNonHomeMembers: string,
+          numGuests: string, advisorAttended: {faculty: true, kiwanis: true}}[],
+    boardMeetings: [{date: string, boardMembers: number, guests: number}],
 
 	dcm:{
 		date: Date,
@@ -59,10 +50,8 @@ export interface MrfData {
 		},
 		dboard: string
 	},
-
-	kfamReport:{
-		completed: boolean
-	}
+    fundraising: {source: string, ptp: number, kfh: number, fa: number, other: number, admin: number, fromEventReport: boolean}[],
+	kfamReport: boolean,
 }
 
 

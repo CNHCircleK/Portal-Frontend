@@ -92,17 +92,27 @@ export class DataService {
 
   blankCerf = (): Cerf => ({  // a factory
     "_id":"new","name":"New Event",chair_id:this.user._id,author_id:this.user._id,club_id:this.user.club_id,division_id:this.user.division_id,
+    author: "",
     time: {start: new Date(), end: new Date() },
     attendees: [],
     hoursPerAttendee: {service: 0, leadership: 0, fellowship: 0 },
     overrideHours: [],
     tags: [],
     fundraised: {
-      ptp: 0,
-      fa: 0,
-      kfh: 0
+      amountRaised: 0,
+      amountSpent: 0,
+      usedFor: ""
     },
-    status: 0
+    status: 0,
+    drivers: [],
+    comments: {
+      summary: "",
+      strengths: "",
+      weaknesses: "",
+      improvements: ""
+    },
+    kfamAttendance: [],
+    categories: []
   });
 
   logoutData() {
@@ -136,25 +146,25 @@ export class DataService {
 
   updateCerf(data: Cerf) {
     if(data._id == "new") {
-      return this.http.post(HttpConfig.baseUrl + "/events/new", data);
+      return this.http.post(HttpConfig.baseUrl + "/events/new", data).pipe(tap(res => console.log(res)));;
       // this.getMyCerfList();
 
       // TODO: Special cache handler since the user will access this new cerf through its id
       // or leave it to refresh get requests again
     }
-    return this.http.patch(HttpConfig.baseUrl + "/events/" + data._id, data);
+    return this.http.patch(HttpConfig.baseUrl + "/events/" + data._id, data).pipe(tap(res => console.log(res)));;
     // TODO: cache-bust according to data._id
   }
   
   changeCerfStatus(id: string, action: string) {
     if(action == "SUBMIT") {
-      return this.http.patch(HttpConfig.baseUrl + "/events/" + id + "/submit", {submit: true});
+      return this.http.patch(HttpConfig.baseUrl + "/events/" + id + "/submit", {submit: true}).pipe(tap(res => console.log(res)));
     } else if(action == "UNSUBMIT") {
-      return this.http.patch(HttpConfig.baseUrl + "/events/" + id + "/submit", {submit: false});
+      return this.http.patch(HttpConfig.baseUrl + "/events/" + id + "/submit", {submit: false}).pipe(tap(res => console.log(res)));
     } else if(action == "CONFIRM") {
-      return this.http.patch(HttpConfig.baseUrl + "/events/" + id + "/confirm", {confirm: true});
+      return this.http.patch(HttpConfig.baseUrl + "/events/" + id + "/confirm", {confirm: true}).pipe(tap(res => console.log(res)));
     } else if(action == "UNCONFIRM") {
-      return this.http.patch(HttpConfig.baseUrl + "/events/" + id + "/confirm", {confirm: false})
+      return this.http.patch(HttpConfig.baseUrl + "/events/" + id + "/confirm", {confirm: false}).pipe(tap(res => console.log(res)));
     }
 
     return of(null);
@@ -219,8 +229,6 @@ export class DataService {
   getMrfByDate(year: number, month: number) {
     // mock data for UI implementation while backend data structure gets updated
     let mockMRF = { result: {
-        color: "",
-        labels: [""],
         communications: {
           ltg: {
             contacted: {
@@ -241,7 +249,8 @@ export class DataService {
         kfamReport: true,
         meetings: [{date: "", numMembers: "", numKiwanis: "", numNonHomeMembers: "",
           numGuests: "", advisorAttended: {faculty: true, kiwanis: true}}],
-        fundraising: [{source: "", ptp: 0, kfh: 0, fa: 0, other: 0, admin: 0}],
+        boardMeetings: [{date: "", boardMembers: 0, guests: 0}],
+        fundraising: [{source: "Go West", ptp: 0, kfh: 0, fa: 0, other: 0, admin: 0, fromEventReport: true}],
         month: 1,
         year: 2019,
         status: 0,
@@ -296,8 +305,14 @@ export class DataService {
       return this.mrfFormState;
   }
 
+  getMembers(): Observable<any> {  // stop caching in this service
+    if(this.memberList)
+      return of(this.memberList);
+    else
+      return this.fetchMembers();
+  }
 
-  getMembers() {
+  private fetchMembers() {
     return this.http.get<any>(HttpConfig.baseUrl + "/clubs/" + this.user.club_id + "/members").pipe(tap(response => {
       if(response.success) {
         this.memberList = response.result.map(member => ({name: member.name.first + " " + member.name.last, email: member.email}) );

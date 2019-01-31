@@ -86,7 +86,8 @@ export interface Cerf extends Partial<CerfData> {
 	time: {
 		start: Date,
 		end: Date
-	}
+	},
+	author: string,
 }
 
 export interface CerfData {
@@ -94,19 +95,40 @@ export interface CerfData {
 	readonly author_id: string,
 	readonly club_id: string,
 	readonly division_id: string,
+	location: string,
+	contact: string,
+	tags: string[],
 	attendees: string[],
 	hoursPerAttendee: {
 		service: number,
 		leadership: number,
 		fellowship: number
 	}
-	overrideHours: number[]
+	overrideHours: {
+		attendee_id: string,
+		service: number,
+		leadership: number,
+		fellowship: number
+	}[]
 	fundraised: {
-		ptp: number,
-		fa: number,
-		kfh: number
+		amountRaised: number,
+		amountSpent: number,
+		usedFor: string
 	}
-	tags: string[],
-	labels: string[],
-	color: string
+	drivers: {
+		driver: string,
+		milesFrom: number,
+		milesTo: number
+	}[]
+	comments: {
+		summary: string,
+		strengths: string,
+		weaknesses: string,
+		improvements: string
+	},
+	kfamAttendance: {
+		org: string,
+		numAttendees: number
+	}[]
+	categories: string[],
 }
