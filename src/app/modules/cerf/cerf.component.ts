@@ -35,6 +35,7 @@ export class CerfComponent {
 	currentTab: string;
 	openedPanels: number[] = [0, 0, 0, 0, 0, 0];
 
+	attendees = [];
 	memberColumns = [];
 	kfamColumns = [{def: "org", title: "Organization", footer: "+ Add Org", defaultFooter: ""},
 					{def: "numAttendees", title: "Number Attendees", footer: "Attendees", defaultFooter: 0}];
@@ -86,9 +87,9 @@ export class CerfComponent {
 		console.log(this.cerf);
 		this.fromMrf = this.route.snapshot.data['mrfNav'];
 		console.log("Coming from MRF ", this.fromMrf);
-		this.myForm = this.createCerf(this.cerf);
+		// this.myForm = this.createCerf(this.cerf);
 
-		console.log(this.createReactiveForm(this.cerf));
+		this.myForm = this.createReactiveForm(this.cerf);
 
 		console.log(this.myForm);
 	}
@@ -112,12 +113,16 @@ export class CerfComponent {
 	 		{def: "service", title: "Service", footer: "Service", defaultFooter: this.myForm.get('hoursPerAttendee.service')},
 	 		{def: "leadership", title: "Leadership", footer: "Leadership", defaultFooter: this.myForm.get('hoursPerAttendee.leadership')},
 	 		{def: "fellowship", title: "Fellowship", footer: "Fellowship", defaultFooter: this.myForm.get('hoursPerAttendee.fellowship')}]
+	 	this.attendees = this.cerf.attendees.map(attendee => ({member: attendee, service: this.cerf.hoursPerAttendee.service,
+	 		leadership: this.cerf.hoursPerAttendee.leadership, fellowship: this.cerf.hoursPerAttendee.fellowship})).concat(
+	 		this.cerf.overrideHours.map(attendee => ({member: attendee.attendee_id, service: attendee.service, leadership: attendee.leadership, fellowship: attendee.fellowship})));
+	 	console.log(this.attendees);
 
 		this.auth.getUser().subscribe(user => {
 			this.user = user;
 		});
 
-		this.categoriesActive = this.labels.value;
+		this.categoriesActive = this.categories.value;
 
 		if(!this.editable) {
 			this.myForm.disable();
@@ -147,53 +152,53 @@ export class CerfComponent {
 		return this.categoriesActive.includes(label);
 	}
 
-	toggleLabel(label: string) {
+	// toggleLabel(label: string) {
 
-		if(this.isLabelActive(label)) {
-			this.categoriesActive.splice(this.categoriesActive.indexOf(label), 1);
-			this.labels.removeAt(this.labels.value.indexOf(this.categoryButtons.indexOf(label)));
-		}
-		else {
-			this.categoriesActive.push(label);
-			this.labels.controls.push(this.builder.control(label));
-		}
-		// const labels = this.myForm.controls['labels'] as FormArray;
-		// labels.controls.push(this.builder.control(""));
-		console.log(this.myForm.get('labels'));
-		this.myForm.get('labels').markAsDirty();
-	}
+	// 	if(this.isLabelActive(label)) {
+	// 		this.categoriesActive.splice(this.categoriesActive.indexOf(label), 1);
+	// 		this.labels.removeAt(this.labels.value.indexOf(this.categoryButtons.indexOf(label)));
+	// 	}
+	// 	else {
+	// 		this.categoriesActive.push(label);
+	// 		this.labels.controls.push(this.builder.control(label));
+	// 	}
+	// 	// const labels = this.myForm.controls['labels'] as FormArray;
+	// 	// labels.controls.push(this.builder.control(""));
+	// 	console.log(this.myForm.get('labels'));
+	// 	this.myForm.get('labels').markAsDirty();
+	// }
 
-	newLabel(label: string) {
+	// newLabel(label: string) {
 
-		if(!this.categoryButtons.includes(label)) {
-			this.categoryButtons.push(label);
-			this.categoriesActive.push(label);
-			this.labels.controls.push(this.builder.control(label));
-		}
-		// const labels = this.myForm.controls['labels'] as FormArray;
-		// labels.controls.push(this.builder.control(""));
-		// this.myForm.patch({labels: this.categoriesActive});
-		console.log(this.myForm.get('labels'));
-		this.myForm.get('labels').markAsDirty();
-		this.addingCategory = false;
-	}
+	// 	if(!this.categoryButtons.includes(label)) {
+	// 		this.categoryButtons.push(label);
+	// 		this.categoriesActive.push(label);
+	// 		this.labels.controls.push(this.builder.control(label));
+	// 	}
+	// 	// const labels = this.myForm.controls['labels'] as FormArray;
+	// 	// labels.controls.push(this.builder.control(""));
+	// 	// this.myForm.patch({labels: this.categoriesActive});
+	// 	console.log(this.myForm.get('labels'));
+	// 	this.myForm.get('labels').markAsDirty();
+	// 	this.addingCategory = false;
+	// }
 
-	removeLabel(i: number) {
+	// removeLabel(i: number) {
 
-		if(this.categoriesActive.indexOf(this.categoryButtons[i]) > 0) {
-			this.categoriesActive.splice(this.categoriesActive.indexOf(this.categoryButtons[i]), 1);
-			this.labels.removeAt(this.labels.value.indexOf(this.categoryButtons[i]));
-		}
-		this.categoryButtons.splice(i, 1);
+	// 	if(this.categoriesActive.indexOf(this.categoryButtons[i]) > 0) {
+	// 		this.categoriesActive.splice(this.categoriesActive.indexOf(this.categoryButtons[i]), 1);
+	// 		this.labels.removeAt(this.labels.value.indexOf(this.categoryButtons[i]));
+	// 	}
+	// 	this.categoryButtons.splice(i, 1);
 
-		// const labels = this.myForm.controls['labels'] as FormArray;
-		// labels.removeAt(i);
-		console.log(this.myForm.get('labels'));
-		this.myForm.get('labels').markAsDirty();
-	}
+	// 	// const labels = this.myForm.controls['labels'] as FormArray;
+	// 	// labels.removeAt(i);
+	// 	console.log(this.myForm.get('labels'));
+	// 	this.myForm.get('labels').markAsDirty();
+	// }
 
-	get labels() {
-		return (this.myForm.controls['labels'] as FormArray);
+	get categories() {
+		return (this.myForm.controls['categories'] as FormArray);
 	}
 
 	addRemoveTag(tag: string, isChecked: boolean)
@@ -382,7 +387,7 @@ export class CerfComponent {
 		// form.registerControl('comments', this.builder.group(model.comments));
 		// form.registerControl('categories', this.builder.array(model.categories));
 		// form.registerControl('drivers', this.builder.group(model.drivers));
-
+		console.log(form);
 		return form;
 	}
 
@@ -390,17 +395,18 @@ export class CerfComponent {
 		/* Fill in CERF with null values so we can at least create a form */
 		/* We're assuming a Cerf IS passed in (i.e. has all the non-optional properties at least */
 		this.fillDefaults(model);
+		console.log(JSON.stringify(model));
 		let copyModel = JSON.parse(JSON.stringify(model));	// Cooking the data passes by reference, so nested arrays in objects are altered
 		const form = this.cookData(copyModel);
 		this.setValidators(form, [
 			{ control: 'name', validator: Validators.required },
-			{ control: 'hoursPerAttendee.service', validator: Validators.pattern('^[0-9]*$')},
-			{ control: 'hoursPerAttendee.leadership', validator: Validators.pattern('^[0-9]*$')},
-			{ control: 'hoursPerAttendee.fellowship', validator: Validators.pattern('^[0-9]*$')}
+			{ control: 'hoursPerAttendee.service', validator: Validators.pattern('^[-]?[0-9]*[.]?[0-9]{0,2}$')},
+			{ control: 'hoursPerAttendee.leadership', validator: Validators.pattern('^[-]?[0-9]*[.]?[0-9]{0,2}$')},
+			{ control: 'hoursPerAttendee.fellowship', validator: Validators.pattern('^[-]?[0-9]*[.]?[0-9]{0,2}$')}
 			]);
-		for(let x of (form.controls['attendees'] as FormArray).controls) {
-			x.setValidators([this.memberListValidator]);
-		}
+		// for(let x of (form.controls['attendees'] as FormArray).controls) {
+		// 	x.setValidators([this.memberListValidator]);
+		// }
 		console.log(form);
 
 		// this.memberService = form.get('hoursPerAttendee.service').value;
@@ -468,11 +474,11 @@ export class CerfComponent {
 			})
 	}
 
-	private memberListValidator(): ValidatorFn {
-		return (control: AbstractControl): { [key:string]: any } | null => {
-			return this.dataService.searchMember(control.value) ? null : {'notMember': {value: control.value}};
-		};
-	}
+	// private memberListValidator(): ValidatorFn {
+	// 	return (control: AbstractControl): { [key:string]: any } | null => {
+	// 		return this.dataService.searchMember(control.value) ? null : {'notMember': {value: control.value}};
+	// 	};
+	// }
 
 	public printForm() {
 		console.log(this.myForm);
@@ -485,7 +491,18 @@ export class CerfComponent {
 		// 	if(rawCerf instanceof AbstractControl)
 		// 		rawCerf[key] = rawCerf[key].getRawValue();
 		// });
-		console.log(rawCerf);
+
+		/* Split up attendees and overrideHours */
+		const defaultHours = this.myForm.get('hoursPerAttendee').value;
+		const attendees = rawCerf.attendees.filter(a => (a.service == defaultHours.service && a.leadership == defaultHours.leadership
+			&& a.fellowship == defaultHours.fellowship)).map(attendee => attendee.member);
+		const overrideHours = rawCerf.attendees.filter(a => (a.service != defaultHours.service || a.leadership != defaultHours.leadership
+			|| a.fellowship != defaultHours.fellowship));
+		console.log(overrideHours);
+		overrideHours.forEach((attendee, index, arr) => arr[index]['attendee_id'] = arr[index].member);
+		rawCerf.attendees = attendees;
+		rawCerf.overrideHours = overrideHours;
+
 		Object.assign(this.cerf, rawCerf);
 		console.log(this.cerf);
 		return this.cerf;

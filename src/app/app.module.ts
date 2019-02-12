@@ -35,6 +35,7 @@ import { MrfReuseStrategy } from '@core/guards/reuse-strategy';
 import { httpInterceptorProviders } from '@core/http-interceptors';
 import { HttpClientModule } from '@angular/common/http';
 import HttpConfig from '@env/api_config';
+import { MemberIDPipe } from '@core/utils/memberid.pipe';
 // import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 // export function tokenGetter() {
 //   return localStorage.getItem('access_token');
@@ -64,7 +65,8 @@ import HttpConfig from '@env/api_config';
     InfoDialog,
     TagsDialog,
     NewFocusInput,
-    InputList
+    InputList,
+    MemberIDPipe
   ],
   imports: [
     BrowserModule,

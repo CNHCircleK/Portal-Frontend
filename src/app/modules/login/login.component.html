@@ -5,6 +5,7 @@
 	<form #loginForm= "ngForm">
 		<img src="assets/cnhlogo.png" class="logo"> 
 		<div>
+			<p *ngIf="wrong"><strong>Username or Password is incorrect</strong></p>
 			<span class="marginRight"><mat-form-field appearance="outline"> <mat-label>Username</mat-label>
 				<input required matInput ngModel
 				#Username= "ngModel" name= "Username" placeholder= "Username"/>

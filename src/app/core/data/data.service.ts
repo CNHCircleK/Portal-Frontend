@@ -54,7 +54,6 @@ export class DataService {
     mrfState: Mrf;
     mrfFormState;
     mrfTabState: string;
-    memberList: {name: string, email: string}[];  // Explicitly cached because we don't want to deal with the maxage reset
 
     // mockData: Mrf[] = [
     // {
@@ -197,12 +196,7 @@ export class DataService {
     color: "",
     labels: [""],
     communications: {
-      ltg: {
-        contacted: {
-          email: "", newsletter: "", phone: "", visit: "", other: ""  [booleans?]
-        }
-        message: ""
-      },
+      ltg: "",
       dboard: ""
     },
     dcm: {
@@ -230,12 +224,7 @@ export class DataService {
     // mock data for UI implementation while backend data structure gets updated
     let mockMRF = { result: {
         communications: {
-          ltg: {
-            contacted: {
-              email: "", newsletter: "", phone: "", visit: "", other: ""
-            },
-            message: ""
-          },
+          ltg: "",
           dboard: ""
         },
         dcm: {
@@ -244,12 +233,12 @@ export class DataService {
           nextDate: "",
           numMembers: ""
         },
-        events: [],
+        events: [{id: "5b78ffcc14ac533fd9f9d556", date: new Date(), name: "Test Event", numAttendees: 2, totalService: 200, totalLeadership: 140, totalFellowship: 24, tags: ["co", "do"]}],
         goals: [],
         kfamReport: true,
-        meetings: [{date: "", numMembers: "", numKiwanis: "", numNonHomeMembers: "",
+        meetings: [{date: "1/28", numMembers: "", numKiwanis: "", numNonHomeMembers: "",
           numGuests: "", advisorAttended: {faculty: true, kiwanis: true}}],
-        boardMeetings: [{date: "", boardMembers: 0, guests: 0}],
+        boardMeetings: [{date: "1/28", boardMembers: 0, guests: 0}],
         fundraising: [{source: "Go West", ptp: 0, kfh: 0, fa: 0, other: 0, admin: 0, fromEventReport: true}],
         month: 1,
         year: 2019,
@@ -305,62 +294,18 @@ export class DataService {
       return this.mrfFormState;
   }
 
-  getMembers(): Observable<any> {  // stop caching in this service
-    if(this.memberList)
-      return of(this.memberList);
-    else
-      return this.fetchMembers();
-  }
 
-  private fetchMembers() {
-    return this.http.get<any>(HttpConfig.baseUrl + "/clubs/" + this.user.club_id + "/members").pipe(tap(response => {
-      if(response.success) {
-        this.memberList = response.result.map(member => ({name: member.name.first + " " + member.name.last, email: member.email}) );
-        if(this.memberList.length==0)
-          this.memberList = [{name: "None", email: "none"}];
-        console.log(this.memberList);
-      }
-    }));
-  }
 
-  filterMembers(value: string) {
-    if(!value)
-    {
-      value="";
-    }
-    if(this.memberList===undefined)
-    {
-      return this.getMembers().pipe(map(done => this.memberList.filter(member => (member.name && member.name.toLowerCase().indexOf(value.toLowerCase()) > -1)
-     || (member.email && member.email.toLowerCase().indexOf(value.toLowerCase()) > -1)
-     )));
-    }
-    return of(this.memberList.filter(member => (member.name && member.name.toLowerCase().indexOf(value.toLowerCase()) > -1)
-     || (member.email && member.email.toLowerCase().indexOf(value.toLowerCase()) > -1)));
-  }
-
-  searchMember(value: string) {
-    if(!value)
-      return false;
-    if(this.memberList===undefined)
-      return false;
-    if(this.memberList.map(member => member.name && member.name.toLowerCase()).indexOf(value.toLowerCase()) > -1)
-      return true;
-    return false;
+  fetchMembers() {
+    return this.http.get<any>(HttpConfig.baseUrl + "/clubs/" + this.user.club_id + "/members");
   }
 
   addMember(first: string, last: string) {
     return this.http.post(HttpConfig.baseUrl + '/clubs/' + this.user.club_id + "/members/new", {'firstName': first, 'lastName': last});
-    // .pipe(
-    //   map( (res: response) => res.success));
   }
 
   getMemberCode(id: string) {
     return this.http.get<any>(HttpConfig.baseUrl + '/members/' + id + '/registration');
-    // .pipe(
-    //   tap( (res: response) => {
-    //     if(res.success)
-    //       this.members[this.members.findIndex(member => member._id == id)]['code'] = res.result;
-    // }));
   }
 
   getClubs() {

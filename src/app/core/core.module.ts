@@ -12,6 +12,7 @@ import { CerfComponent, CerfListComponent,
 
 /* Our services */
 // import { DataService } from '@core/data/data.service';
+// import { MemberIDPipe } from '@core/utils/memberid.pipe';
 
 /* Our modules */
 import { MaterialsModule } from '@app/modules/';
@@ -43,7 +44,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
     ColorPickerModule
   ],
   declarations: [
-	 
+	 // MemberIDPipe
   ],
   providers: [
     // DataService

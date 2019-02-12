@@ -20,6 +20,12 @@ h1 {
 	border: none;
 }
 
+/*
+.mat-column-org, .mat-column-numAttendees {
+	flex: 0 0 100px;
+}
+*/
+
 /* Alignment */
 #main {
 	margin-left: 36px;

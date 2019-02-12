@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+import { MemberService } from '@core/data/member.service';
 import { DataService } from '@core/data/data.service';
 import { AuthService } from '@core/authentication/auth.service';
 import { Member } from '@core/authentication/member';
@@ -28,7 +29,8 @@ export class MembersComponent {
 	memberRegistrationMode: boolean = false;
 	gettingCode: boolean = false;
 
-	constructor(private dataService: DataService, private auth: AuthService, private route: ActivatedRoute, private dialog: MatDialog,
+	constructor(private dataService: DataService, private memberService: MemberService,
+		private auth: AuthService, private route: ActivatedRoute, private dialog: MatDialog,
 		private snackBar: MatSnackBar) {
 		this.members = this.route.snapshot.data['members'];
 		console.log(this.members);
@@ -52,7 +54,7 @@ export class MembersComponent {
 	}
 
 	updateList() {
-		this.dataService.getMembers().subscribe(res => {
+		this.memberService.getMembers().subscribe(res => {
 			this.members=res.result || [];
 			this.list.data=res.result || [];
 		});

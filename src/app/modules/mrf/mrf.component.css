@@ -78,3 +78,15 @@ h1 {
 #main {
 	margin-left: 36px;
 }
+
+.mat-header-row, .mat-row, .mat-footer-row {
+	/*display: inline-flex;*/
+}
+
+.mat-column-actions, .mat-column-facultyAttended, .mat-column-kiwanisAttended {
+	justify-content: center;
+}
+
+.editing {
+	border-bottom: 1px solid #ccc;
+}

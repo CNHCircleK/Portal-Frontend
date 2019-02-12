@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ViewChildren, QueryList } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, AbstractControl, Validators, ValidatorFn } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Cerf } from '@core/data/cerf';
 import { Mrf } from '@core/data/mrf';
 import { DataService } from '@core/data/data.service';
 import { Location } from '@angular/common';
+import { MatTable } from '@angular/material';
 
 @Component({
 	selector: 'app-mrf',
@@ -20,24 +21,40 @@ export class MrfComponent {
 	currentTab: string;
 	openedPanels: number[] = [0, 0, 0, 0];
 
-	meetingColumns = [{def: "date", title: "Date", footer: "Date", defaultFooter: ""},
-						{def: "numMembers", title: "Home Club Members", footer: "#", defaultFooter: 0},
-						{def: "numNonHomeMembers", title: "Outside CKI Members", footer: "#", defaultFooter: 0},
-						{def: "numKiwanis", title: "Date", footer: "Kiwanis", defaultFooter: 0},
-						{def: "numGuests", title: "Date", footer: "Other Guests", defaultFooter: 0},
-						{def: "advisorAttended.faculty", title: "Faculty advisor", footer: "True/False", defaultFooter: ""},
-						{def: "advisorAttended.kiwanis", title: "Kiwanis advisor", footer: "True/False", defaultFooter: ""}]
-						// {def: "date", title: "Date", footer: "Date", defaultFooter: ""},];
-	boardMeetingColumns = [{def: "date", title: "Date", footer: "Date", defaultFooter: ""},
-						{def: "boardMembers", title: "Board Members", footer: "#", defaultFooter: 0},
-						{def: "guests", title: "Guests", footer: "#", defaultFooter: 0}];
-	fundraisingColumns = [{def: "source", title: "Source", footer: "+ Add Fundraiser", defaultFooter: ""},
-						{def: "ptp", title: "PTP", footer: "#", defaultFooter: 0},
-						{def: "kfh", title: "KFH", footer: "#", defaultFooter: 0},
-						{def: "fa", title: "Feeding America", footer: "#", defaultFooter: 0},
-						{def: "other", title: "Other charity", footer: "#", defaultFooter: 0},
-						{def: "admin", title: "Administrative", footer: "#", defaultFooter: 0}]
+	editingMeetings: boolean = false;
+	editingBoardMeetings: boolean = false;
+	editingFundraising: boolean = false;
 
+	meetingColumns = ["date", "numMembers", "numNonHomeMembers", "numKiwanis", "numGuests", "facultyAttended", "kiwanisAttended", "actions"];
+	boardMeetingColumns = ["date", "boardMembers", "guests", "actions"];
+	fundraisingColumns = ["source", "ptp", "kfh", "fa", "other", "admin", "actions"];
+	eventsColumns = ["name", "date", "numAttendees", "totalService", "totalLeadership", "totalFellowship", "tags", "actions"];
+
+	defaultMeeting = { date: "", numMembers: 0, numNonHomeMembers: 0, numKiwanis: 0, numGuests: 0, advisorAttended: {faculty: false, kiwanis: false }};
+	defaultBoardMeeting = { date: "", boardMembers: 0, guests: 0 };
+	defaultFundraising = { source: "", ptp: 0, kfh: 0, fa: 0, other: 0, admin: 0 };
+
+	newMeeting = { date: "", numMembers: 0, numNonHomeMembers: 0, numKiwanis: 0, numGuests: 0, advisorAttended: {faculty: false, kiwanis: false }};
+	newBoardMeeting = { date: "", boardMembers: 0, guests: 0 };
+	newFundraising = { source: "", ptp: 0, kfh: 0, fa: 0, other: 0, admin: 0 };
+	// meetingColumns = [{def: "date", title: "Date", footer: "Date", defaultFooter: ""},
+	// 					{def: "numMembers", title: "Home Club Members", footer: "#", defaultFooter: 0},
+	// 					{def: "numNonHomeMembers", title: "Outside CKI Members", footer: "#", defaultFooter: 0},
+	// 					{def: "numKiwanis", title: "Date", footer: "Kiwanis", defaultFooter: 0},
+	// 					{def: "numGuests", title: "Date", footer: "Other Guests", defaultFooter: 0},
+	// 					{def: "advisorAttended.faculty", title: "Faculty advisor", footer: "True/False", defaultFooter: ""},
+	// 					{def: "advisorAttended.kiwanis", title: "Kiwanis advisor", footer: "True/False", defaultFooter: ""}]
+	// boardMeetingColumns = [{def: "date", title: "Date", footer: "Date", defaultFooter: ""},
+	// 					{def: "boardMembers", title: "Board Members", footer: "#", defaultFooter: 0},
+	// 					{def: "guests", title: "Guests", footer: "#", defaultFooter: 0}];
+	// fundraisingColumns = [{def: "source", title: "Source", footer: "+ Add Fundraiser", defaultFooter: ""},
+	// 					{def: "ptp", title: "PTP", footer: "#", defaultFooter: 0},
+	// 					{def: "kfh", title: "KFH", footer: "#", defaultFooter: 0},
+	// 					{def: "fa", title: "Feeding America", footer: "#", defaultFooter: 0},
+	// 					{def: "other", title: "Other charity", footer: "#", defaultFooter: 0},
+	// 					{def: "admin", title: "Administrative", footer: "#", defaultFooter: 0}]
+
+	@ViewChildren(MatTable) tables: QueryList<MatTable<any>>;
 
 	constructor(private route: ActivatedRoute, private dataService: DataService,
 		private _location: Location, private builder: FormBuilder) {
@@ -48,6 +65,8 @@ export class MrfComponent {
 			this.mrfForm = this.createMrf(this.mrf);
 
 		this.currentTab = this.dataService.getMrfTabState;
+
+		console.log(this.eventsArray.controls);
 	}
 
 	ngOnInit() {
@@ -59,28 +78,71 @@ export class MrfComponent {
 		// console.log("init"); // Lifecycles not executed on route reuse
 	}
 
-	inputListReady(name, event) {
-		this.mrfForm.setControl(name, event);
+	toggleEdit(num) {
+		if(num==1)
+			this.editingMeetings = !this.editingMeetings;
+		else if(num==2)
+			this.editingBoardMeetings = !this.editingBoardMeetings;
+		else if(num==3)
+			this.editingFundraising = !this.editingFundraising;
 	}
 
-	deleteMeeting(i: number) {
-		const meetings = this.mrfForm.controls['meetings'] as FormArray;
-		meetings.removeAt(i);
-		this.mrfForm.get('meetings').markAsDirty();
+	deleteMeeting(index) {
+		this.meetingArray.removeAt(index);
+		this.tables.toArray()[0].renderRows();
+	}
+	deleteBoardMeeting(index) {
+		this.boardMeetingArray.removeAt(index);
+		this.tables.toArray()[1].renderRows();
+	}
+	deleteFundraising(index) {
+		this.fundraisingArray.removeAt(index);
+		this.tables.toArray()[2].renderRows();
 	}
 
-	addMeeting() {
-		const meetings = this.mrfForm.controls['meetings'] as FormArray;
-		meetings.controls.push(this.builder.group({
-			advisorAttended: this.builder.group({faculty: [""], kiwanis: [""]}), date: [""], numGuests: [""],
-			numKiwanis: [""], numMembers: [""], numNonHomeMembers: [""]}
-		));
-		console.log(meetings);
-		this.mrfForm.get('meetings').markAsDirty();
+	addMeetingRow() {
+		// Validate inputs
+		if(!this.newMeeting.date || isNaN(this.newMeeting.numMembers) || isNaN(this.newMeeting.numNonHomeMembers) || 
+			isNaN(this.newMeeting.numKiwanis) || isNaN(this.newMeeting.numGuests))
+			return;
+		this.meetingArray.push(this.builder.group({...this.newMeeting, advisorAttended: this.builder.group(this.newMeeting.advisorAttended)}));
+		Object.assign(this.newMeeting, this.defaultMeeting);
+		this.tables.toArray()[0].renderRows();
+	}
+	addBoardMeetingRow() {
+		// Validate inputs
+		if(!this.newBoardMeeting.date || isNaN(this.newBoardMeeting.boardMembers) || isNaN(this.newBoardMeeting.guests))
+			return;
+		this.boardMeetingArray.push(this.builder.group(this.newBoardMeeting));
+		Object.assign(this.newBoardMeeting, this.defaultBoardMeeting);
+		this.tables.toArray()[1].renderRows();
+	}
+	addFundraisingRow() {
+		// Validate inputs
+		if(!this.newFundraising.source || isNaN(this.newFundraising.ptp) || isNaN(this.newFundraising.kfh) || isNaN(this.newFundraising.fa) ||
+			isNaN(this.newFundraising.other) || isNaN(this.newFundraising.admin))
+			return;
+		this.fundraisingArray.push(this.builder.group(this.newFundraising));
+		Object.assign(this.newFundraising, this.defaultFundraising);
+		this.tables.toArray()[2].renderRows();
+	}
+
+	get meetingArray() {
+		return this.mrfForm.get('meetings') as FormArray;
+	}
+	get boardMeetingArray() {
+		return this.mrfForm.get('boardMeetings') as FormArray;
+	}
+	get fundraisingArray() {
+		return this.mrfForm.get('fundraising') as FormArray;
+	}
+	get eventsArray() {
+		return this.mrfForm.get('events') as FormArray;
 	}
 
 	saveMrf() {
-		this.dataService.updateMrf(this.getMrfFromForm()).subscribe(res => {this.mrfForm.markAsPristine();});
+		this.getMrfFromForm();
+		// this.dataService.updateMrf(this.getMrfFromForm()).subscribe(res => {this.mrfForm.markAsPristine();});
 	}
 
 	private createReactiveForm(model: Mrf): FormGroup {
@@ -106,12 +168,12 @@ export class MrfComponent {
 		let form = this.builder.group({
 			communications: this.builder.group(model.communications),
 	        dcm: this.builder.group(model.dcm),
-	        events: this.builder.array(model.events),
-	        // goals: [],
+	        events: this.builder.array(model.events.map(eachEvent => this.builder.group(eachEvent))),
+	        goals: this.builder.array(model.goals),
 	        kfamReport: this.builder.control(model.kfamReport),
-	        // meetings: [],
-	        // boardMeetings: [],
-	        // fundraising: [],
+	        meetings: this.builder.array(model.meetings.map(eachMeeting => this.builder.group(eachMeeting))),
+	        boardMeetings: this.builder.array(model.boardMeetings.map(eachBoardMeeting => this.builder.group(eachBoardMeeting))),
+	        fundraising: this.builder.array(model.fundraising.map(eachFundraising => this.builder.group(eachFundraising))),
 	        month: this.builder.control(model.month),
 	        year: this.builder.control(model.year),
 	        updates: this.builder.group(model.updates)

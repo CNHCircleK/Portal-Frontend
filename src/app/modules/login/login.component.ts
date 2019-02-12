@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
 
   user;
   refresh: boolean;
+  wrong: boolean = false;
 
   ngOnInit() {
     this.auth.getUser().subscribe(user => this.user = user);
@@ -24,6 +25,14 @@ export class LoginComponent implements OnInit {
 
   login(Username, Password)
   {
-    this.auth.login(Username, Password).subscribe(res=> { this.router.navigate(['']) }, error=>console.error(error), ()=> {});
+    this.wrong = false;  // some indication of input when they submit another username/password
+    this.auth.login(Username, Password).subscribe((res:any)=> {
+      if(res.success)
+        this.router.navigate([''])
+      else
+        this.wrong = true;
+    },
+    error=> console.error(error),
+    ()=> {});
   }
 }
