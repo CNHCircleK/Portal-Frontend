@@ -4,4 +4,83 @@
 		<button mat-raised-button (click)="newCerf()">+ New Report</button>
 	</div>
 </div>
-<app-cerflist [cerfList]="cerfs"></app-cerflist>
+<mat-table [(dataSource)]="cerfs" matSort>
+
+	<!-- CERF name Column -->
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.name}}</mat-cell>
+  </ng-container>
+
+  <!-- Progress Column -->
+   <!--  <ng-container matColumnDef="chair_id">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Chair </mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.chair_id}}</mat-cell>
+    </ng-container> -->
+
+    <!-- Time Column -->
+    <ng-container matColumnDef="time.start">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Date</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.time.start | date:'shortDate'}}</mat-cell>
+    </ng-container>
+
+
+    <!-- Action Column -->
+    <!-- <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+      	<a mat-icon-button [routerLink]="['/cerf', row._id]"><mat-icon>open_in_new</mat-icon></a>
+      	<button *ngIf="mrfId" mat-icon-button (click)="removeCerfFromMrf(row._id)"><mat-icon>delete_outline</mat-icon></button>
+      </mat-cell>
+    </ng-container> -->
+
+    <!-- Author Column -->
+    <ng-container matColumnDef="author">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Created By</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.cerf_author}}</mat-cell>
+    </ng-container>
+
+    <!-- Status Column (MRF View Only) -->
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <span *ngIf="row.status==0"><mat-icon class="red_icon">warning</mat-icon> Draft</span>
+        <span *ngIf="row.status==1"><mat-icon class="red_icon">sms_failed</mat-icon> Submitted</span>
+        <span *ngIf="row.status==2"><mat-icon>check</mat-icon> Added to MRF</span>
+      </mat-cell>
+    </ng-container>
+
+    <!-- <ng-container matColumnDef="color">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Color</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <mat-icon *ngIf="row.color" [style.color]="row.color">color_lens</mat-icon>
+      </mat-cell>
+    </ng-container> -->
+
+    <ng-container matColumnDef="labels">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Labels</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <ng-container *ngIf="row.labels">{{ row.labels }}</ng-container>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Search Bar -->
+   <!--  <ng-container matColumnDef="search">
+      <mat-header-cell *matHeaderCellDef>
+        
+        <mat-form-field class="search-bar"style="margin-bottom: -1.25em" [floatLabel]="'never'">
+          <input matInput (keyup)="applyFilter($event.target.value)">
+          <mat-placeholder>Search</mat-placeholder>
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+        
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row"></mat-cell>
+    </ng-container> -->
+
+    <!-- Header columns -->
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="clickRow(row)"></mat-row>
+  </mat-table>
+
+<mat-paginator *ngIf="pagination" [pageSizeOptions]="[10, 25, 50]"></mat-paginator>

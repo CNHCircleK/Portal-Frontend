@@ -7,8 +7,9 @@ import { CerfComponent, CerfListComponent,
 		MrfComponent, MrfListComponent,
     MyCerfsComponent,
 		ProfileComponent,
-    MembersComponent,
-    ConfirmDialogComponent, InputList } from '@app/modules/';
+    ClubAdministrationComponent,
+    ConfirmDialogComponent } from '@app/modules/';
+import { NewFocusInput } from '@core/utils/newfocusinput';
 
 /* Our services */
 // import { DataService } from '@core/data/data.service';
@@ -45,6 +46,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
   ],
   declarations: [
 	 // MemberIDPipe
+   NewFocusInput
   ],
   providers: [
     // DataService

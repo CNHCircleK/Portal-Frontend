@@ -1,6 +1,7 @@
 import { Component, HostBinding } from '@angular/core';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Observable } from 'rxjs';
+import { MemberService } from '@core/data/member.service';
 import { AuthService } from '@core/authentication/auth.service';
 import { Member } from '@core/authentication/member';
 
@@ -21,16 +22,17 @@ export class AppComponent {
 	// {icon: 'library_books', text: 'Past MRFs'},
 	{division: "Metro", text: 'Division MRFs', route: '/divmrfs'},
 	{icon: 'library_books', text: 'District MRFs', route: '/distmrfs'},
-	{icon: 'people', text: 'Administration', route: '/club'},
-	{icon: 'assignment', text: 'Master Records', route: '/clubs'}
+	{icon: 'people', text: 'Club Administration', route: '/club'},
+	{icon: 'people', text: 'Clubs', route: '/clubs'},
+	{icon: 'assignment', text: 'Divisions', route: '/divisions'}
 	];
 	userSubject: Observable<Member>;
 	authLinks = [];
 
 	// @Input() level: number = 1;
 
-	constructor(private auth: AuthService, private overlay: OverlayContainer) {
-		this.userSubject = this.auth.getUser();
+	constructor(private auth: AuthService, private member: MemberService, private overlay: OverlayContainer) {
+		this.userSubject = this.auth.getUserObservable();
 		this.overlay.getContainerElement().classList.add('light-theme');
 	}
 
@@ -62,7 +64,7 @@ export class AppComponent {
 				if(access.club > 0)
 				{
 					this.authLinks.push(this.links[2]); // MRF
-					// this.authLinks.push(this.links[5]);	// Administration
+					this.authLinks.push(this.links[5]);	// Administration
 				}
 				if(access.division == 1)
 				{
@@ -71,6 +73,7 @@ export class AppComponent {
 				}
 				if(access.district == 1)
 				{
+					this.authLinks.push(this.links[7]);	// Divisions
 					// this.authLinks.push(this.links[4]); // District MRFs
 				}
 			}

@@ -1,5 +1,5 @@
 @import './main_theme.scss';
-@import 'app/modules/cerflist/_cerflist.component.scss';
+@import 'app/modules/my-cerfs/_my-cerfs.component.scss';
 @import 'app/modules/mrflist/_mrflist.component.scss';
 
 // Reference: https://stackoverflow.com/questions/45089178/how-to-get-primary-or-accent-color-of-currently-applied-theme-in-angular-materia
@@ -42,6 +42,7 @@
 #content {
 	@include cerf-table-theme($light-theme);
 	@include mrf-table-theme($light-theme);
+	font-family: "Roboto", "Helvetica", sans-serif;
 }
 
 

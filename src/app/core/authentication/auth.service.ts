@@ -23,33 +23,40 @@ export class AuthService {
   constructor(private http: HttpClient, private storage: LocalStorage) {
     this.helper = new JwtHelperService();
     if(this.isLoggedIn()) {  // persist login
-      if(!this.decodeUser(localStorage.getItem(tokenName)))
-        this.logout();  // logout if token is expired
+      this.loadUserFromToken();
     }
   }
 
-  public login(user: string, password: string): Observable<boolean>  // Success or not in logging in
+  public login(email: string, password: string): Observable<boolean>  // Success or not in logging in
   {
-    return this.http.post<any>( HttpConfig.baseUrl + "/signin", {'name': user, 'password': password}).pipe(
-                map(res => {
-                  if(res.success) {
-                    localStorage.setItem(tokenName, res.result);
-                    console.log(res.result);
-                    // Do more stuff with the response
-                    this.decodeUser(res.result);
-                    // this.http.get( HttpConfig.baseUrl + '/clubs/5b498a5b200a8f6afa46c1d0/members').subscribe(res => {
-                    //   console.log(res);
-                    // })
-                    this.loggedIn = true;
-                  }
-                  return res.success;
-                }));
-    // if(user != "user" || password != "pass")
-    //   return of(false);
-    // localStorage.setItem(tokenName, "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC93cC5kcmFmdHNpdGUudGsiLCJpYXQiOjE1MzM1ODczOTgsIm5iZiI6MTUzMzU4NzM5OCwiZXhwIjoxNTMzNjczNzk4LCJkYXRhIjp7InVzZXIiOnsiaWQiOiIyIn19fQ.KEnvHM_JKCFP-0ZIsWAG7zEPF3Kr7HXGnqJqUu8lZxA");
-    // // Make sure the token is a valid token by trying to run a helper function on it first;
-    // this.decodeUser(localStorage.getItem(tokenName));
-    // return of(true);
+    return this.sendCredentials(email, password).pipe(map((res:any) => {
+      if(res.success) {
+        localStorage.setItem(tokenName, res.result);
+        console.log(res.result);
+        this.loadUserFromToken();
+      }
+      return res.success;
+    }));
+  }
+
+  private sendCredentials(email: string, password: string): Observable<boolean> {
+    return this.http.post<any>(HttpConfig.baseUrl + "/signin", {'email': email, 'password': password});
+  }
+
+  private loadUserFromToken(): boolean {
+    let data;
+    let token = localStorage.getItem(tokenName);
+    if(!token) return false;
+    try {
+      data = this.helper.decodeToken(token);
+    } catch (error) {
+      console.log(error);
+      this.logout();
+      throw error;
+    }
+    this.user.next(data);
+    console.log(data);
+    return true;
   }
 
   public logout(): void {
@@ -58,97 +65,36 @@ export class AuthService {
     this.user.next(undefined);
   }
 
-  private decodeUser(token: string): boolean {
-    // if(this.helper.isTokenExpired(token))  The whole app breaks since we're using a static token LOL
-      // return false;
-    let data;
-    try {
-      data = this.helper.decodeToken(token);
-    } catch (error) {
-      this.logout();
-      console.log(error);
-      throw error;
-    }
-    this.user.next(data);   // The token doesn't model the user yet
-    console.log(data);
-    // this.user.next({id: 1,
-    //             name: "Chris",
-    //             club_id: 5,
-    //             division_id: 6,
-    //             access: {
-    //               club: 1,
-    //               division: 0,
-    //               district: 0
-    //             }
-    //           });
-    return true;
-  }
-
   public isLoggedIn(): boolean {
     let token = localStorage.getItem(tokenName);
     if (token != null && !this.helper.isTokenExpired(token))
       return true;
-    localStorage.removeItem(tokenName);  // really feel like an is() function shouldn't be handling this
-    this.user.next(null);
-    return false;
+    else {
+      this.logout();
+      return false;
+    }
   }
 
-  public getUser(refresh?: boolean): Observable<Member> {
+  public signup(code: string, email: string, pass: string): Observable<string> {
+    const data = {
+      registration: code,
+      email: email,
+      password: pass
+    }
+    return this.http.post<any>(HttpConfig.baseUrl + "/signup", data);
+  }
+
+  public getUserObservable(refresh?: boolean): Observable<Member> {
       return this.user.asObservable();
   }
 
+  public getUser() {
+    return this.user.getValue();
+  }
+
   public getAccess() {
-    /*
-    tokenData = helper.decodeToken(mytoken);
-    user._id = tokenData._id;
-    */
     if(!this.loggedIn)
       return undefined;
     return this.user.value.access;
   }
-
-  public setAccess(club: number,
-    division: number,
-    district: number) {
-    let tempUser = this.user.value;
-    tempUser.access.club = club;
-    tempUser.access.division = division;
-    tempUser.access.district = district;
-    this.storage.setItem('auth', tempUser).subscribe(()=>{});
-    this.user.next(tempUser);
-  }
-
-
-  public signup(code: string, email: string, user: string, pass: string): Observable<string> {
-    let data = {
-      registration: code,
-      email: email,
-      username: user,
-      password: pass
-    }
-    return this.http.post<any>( HttpConfig.baseUrl + "/signup", data).pipe(map(res => res.token));
-  }
-
-/*
-.subscribe( (data: Config) => { },
-	(error) => { });
-
-	private handleError(error: HttpErrorResponse) {
-  if (error.error instanceof ErrorEvent) {
-    // A client-side or network error occurred. Handle it accordingly.
-    console.error('An error occurred:', error.error.message);
-  } else {
-    // The backend returned an unsuccessful response code.
-    // The response body may contain clues as to what went wrong,
-    console.error(
-      `Backend returned code ${error.status}, ` +
-      `body was: ${error.error}`);
-  }
-  // return an observable with a user-facing error message
-  return throwError(
-    'Something bad happened; please try again later.');
-};
-
-now in getConfig() in service, .pipe(catchError(this.handleError))
-*/
 }

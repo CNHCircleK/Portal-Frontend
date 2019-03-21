@@ -10,13 +10,22 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MatSnackBar } from '@angular/material';
 
+import {animate, state, style, transition, trigger} from '@angular/animations';
+
 @Component({
-	selector: 'app-members',
-	templateUrl: './members.component.html',
-	styleUrls: ['./members.component.css', './_members.component.scss']
+	selector: 'app-administration',
+	templateUrl: './administration.component.html',
+	styleUrls: ['./administration.component.css', './_administration.component.scss'],
+	animations: [
+	    trigger('detailExpand', [
+	      state('collapsed', style({height: '0px', minHeight: '0', display: 'none'})),
+	      state('expanded', style({height: '*'})),
+	      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+	    ]),
+	  ]
 })
 
-export class MembersComponent {
+export class ClubAdministrationComponent {
 
 	members: Member[];
 	club: string;
@@ -24,10 +33,82 @@ export class MembersComponent {
 	@ViewChild(MatPaginator) paginator;
 	@ViewChild(MatSort) sort;
 	list: MatTableDataSource<Member>;
-	displayedColumns: string[] = ["name", "access", "code"];
+	displayedColumns: string[] = ["name", "year", "position", "code", "actions"];
 
 	memberRegistrationMode: boolean = false;
 	gettingCode: boolean = false;
+
+	mockData = {	// replace with api call to /club/administration
+		meeting: {
+			frequency: "",
+			date: "",
+			time: {
+				start: "",
+				end: ""
+			},
+			location: ""
+		},
+		advisors: {
+			faculty: {
+				name: "Nguyet",
+				phone: "",
+				address: "",
+				email: ""
+			},
+			kiwanis: {
+				name: "",
+				phone: "",
+				address: "",
+				email: ""
+			}
+		},
+		members: [
+			{
+				name: {
+					first: "Chris",
+					last: "Lam",
+					_id: "something"
+				},
+				phone: "",
+				address: "",
+				email: "",
+				birthday: "",
+				grad_year: "",
+				pay_date: "",
+				renew_date: "",
+				alumni: false,
+				active: true,
+				position: "Technology Chair",
+				board: {
+					eboard: false,
+					aboard: true
+				}
+			},
+			{
+				name: {
+					first: "Nhi",
+					last: "Truong",
+					_id: "something"
+				},
+				phone: "",
+				address: "",
+				email: "",
+				birthday: "",
+				grad_year: "",
+				pay_date: "",
+				renew_date: "",
+				alumni: false,
+				active: true,
+				position: "Graphics Chair",
+				board: {
+					eboard: false,
+					aboard: true
+				}
+			}
+		]
+	}
+
+	expandedMember = null;
 
 	constructor(private dataService: DataService, private memberService: MemberService,
 		private auth: AuthService, private route: ActivatedRoute, private dialog: MatDialog,
@@ -35,11 +116,12 @@ export class MembersComponent {
 		this.members = this.route.snapshot.data['members'];
 		console.log(this.members);
 
-		this.auth.getUser().subscribe(user => this.club = user.club_id);
+		this.club = this.auth.getUser().club_id;
 	}
 
 	ngOnInit() {
 		this.list = new MatTableDataSource(this.members);
+		// this.list = new MatTableDataSource(this.mockData.members);
 	}
 
 	ngAfterViewInit() {
@@ -55,9 +137,14 @@ export class MembersComponent {
 
 	updateList() {
 		this.memberService.getMembers().subscribe(res => {
-			this.members=res.result || [];
-			this.list.data=res.result || [];
+			this.members=res || [];
+			this.list.data=res || [];
 		});
+	}
+
+	loadTooltip(row) {
+		console.log(row);
+		return row;
 	}
 
 	newMember() {
@@ -68,9 +155,14 @@ export class MembersComponent {
 		dialogRef.afterClosed().subscribe(result => {
 			if(result) {
 				console.log(result);
-				this.dataService.addMember(result.firstName, result.lastName).subscribe(res => this.updateList());
+				this.memberService.newMember(result.firstName, result.lastName).subscribe(res => this.updateList());
 			}
 		});
+	}
+
+	getCode(i) {
+		console.log(i);
+		this.memberService.getRegistrationCode(this.members[i]._id).subscribe(res => this.members[i].code = res);
 	}
 
 	getMemberCode(row) {

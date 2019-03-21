@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject, of ,  zip ,  forkJoin } from 'rxjs';
 import { defaultIfEmpty, concatMap, map, tap, filter, catchError, first, last } from 'rxjs/operators';
 import { LocalStorage } from '@ngx-pwa/local-storage';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import * as moment from 'moment';
 
 import { CerfData, Cerf } from './cerf';
@@ -81,7 +81,7 @@ export class DataService {
     // ];
 
   constructor(protected localStorage: LocalStorage, private auth: AuthService, private http: HttpClient) {
-    this.auth.getUser().subscribe(user => this.user=user);
+    this.auth.getUserObservable().subscribe(user => this.user=user);
   }
 
   resetData()
@@ -90,8 +90,9 @@ export class DataService {
   }
 
   blankCerf = (): Cerf => ({  // a factory
-    "_id":"new","name":"New Event",chair_id:this.user._id,author_id:this.user._id,club_id:this.user.club_id,division_id:this.user.division_id,
-    author: "",
+    "_id":"new","name":"New Event",club_id:this.user.club_id,division_id:this.user.division_id,
+    author: { _id: this.user._id, name: { first: "", last: ""} },
+    chair: { _id: this.user._id, name: { first: "", last: ""} },
     time: {start: new Date(), end: new Date() },
     attendees: [],
     hoursPerAttendee: {service: 0, leadership: 0, fellowship: 0 },
@@ -102,7 +103,7 @@ export class DataService {
       amountSpent: 0,
       usedFor: ""
     },
-    status: 0,
+    status: (this.user.access.club > 1 ? 1 : 0),
     drivers: [],
     comments: {
       summary: "",
@@ -115,19 +116,6 @@ export class DataService {
   });
 
   logoutData() {
-    this.auth.getUser().subscribe(user => this.user=user);
-  }
-
-  newCerf(): Cerf {
-    return this.blankCerf();
-    // let newDate = new Date();
-    // let endDate = new Date(); endDate.setDate(endDate.getDate() + 1);
-    // let data = {
-    //   name: "New",
-    //   start: newDate,
-    //   end: endDate.toISOString()
-    // }
-    // return this.http.post<Cerf>(HttpConfig.baseUrl + "/events/new", data).pipe(tap((res: response) => { console.log(res); this.cerfs.push(res)}));
   }
 
 
@@ -135,24 +123,26 @@ export class DataService {
     return this.http.get<any>(HttpConfig.baseUrl + '/events/' + id);
   }
   getMyCerfList(): Observable<Cerf[]> {
+    if(!this. user) return of(null);
     return this.http.get<any>(HttpConfig.baseUrl + '/members/' + this.user._id + '/events');
     // it is not the service's concern to clean up the data for the app to consume (e.g. reading 'success' or returning [])
   }
   getPendingCerfs() {
-    return this.http.get<any>(HttpConfig.baseUrl + '/clubs/' + this.user.club_id + '/events/status/1');
+    if(!this.user) return of(null);
+    let params = new HttpParams().set('status', '1');
+    return this.http.get<any>(HttpConfig.baseUrl + '/clubs/' + this.user.club_id + '/events', { params: params } );
     // This returns all. Endpoint to get it for specific month? Or we can filter and split up, but inefficient
   }
 
   updateCerf(data: Cerf) {
-    if(data._id == "new") {
-      return this.http.post(HttpConfig.baseUrl + "/events/new", data).pipe(tap(res => console.log(res)));;
-      // this.getMyCerfList();
-
-      // TODO: Special cache handler since the user will access this new cerf through its id
-      // or leave it to refresh get requests again
-    }
     return this.http.patch(HttpConfig.baseUrl + "/events/" + data._id, data).pipe(tap(res => console.log(res)));;
     // TODO: cache-bust according to data._id
+  }
+
+  createNewCerf(data: Cerf) {
+    return this.http.post(HttpConfig.baseUrl + "/events", data).pipe(tap(res => console.log(res)));
+      // TODO: Special cache handler since the user will access this new cerf through its id
+      // or leave it to refresh get requests again
   }
   
   changeCerfStatus(id: string, action: string) {
@@ -221,6 +211,9 @@ export class DataService {
   }
   */
   getMrfByDate(year: number, month: number) {
+    if(year==2019 && month > 1) {
+      return this.http.get(HttpConfig.baseUrl + "/clubs/" + this.user.club_id + "/mrfs/" + year + "/" + month);
+    }
     // mock data for UI implementation while backend data structure gets updated
     let mockMRF = { result: {
         communications: {
@@ -244,9 +237,7 @@ export class DataService {
         year: 2019,
         status: 0,
         submissionTime: "",
-        updates: {
-          dues_paid: 0
-        }
+        numDuesPaid: 0
       }
     }
     return of(mockMRF);
@@ -257,6 +248,7 @@ export class DataService {
   }
 
   updateMrf(data: Mrf) {
+    if(!this.user) return of(null);
     return this.http.patch(HttpConfig.baseUrl + "/clubs/" + this.user.club_id + "/mrfs/" + data.year + "/" + data.month, data);
   }
 
@@ -297,33 +289,49 @@ export class DataService {
 
 
   fetchMembers() {
+    if(!this.user) return of(null);
     return this.http.get<any>(HttpConfig.baseUrl + "/clubs/" + this.user.club_id + "/members");
   }
 
   addMember(first: string, last: string) {
-    return this.http.post(HttpConfig.baseUrl + '/clubs/' + this.user.club_id + "/members/new", {'firstName': first, 'lastName': last});
+    if(!this.user) return of(false);
+    return this.http.post(HttpConfig.baseUrl + '/clubs/' + this.user.club_id + "/members", {name: {'first': first, 'last': last}});
   }
 
   getMemberCode(id: string) {
     return this.http.get<any>(HttpConfig.baseUrl + '/members/' + id + '/registration');
   }
 
-  getClubs() {
-    return this.http.get<any>(HttpConfig.baseUrl + "/divisions/" + this.user.division_id + "/clubs");
-    // .pipe(
-    //     map( (res: response) => {
-    //       if(res.success)
-    //         this.clubs = res.result;
-    //       return this.clubs;
-    //     }))
-    // }
-    // return of(this.clubs);
+
+  // Only usable by district secretary
+  getDivisions() {
+    return this.http.get(HttpConfig.baseUrl + "/divisions");
+  }
+
+  newDivision(name: string) {
+    return this.http.post(HttpConfig.baseUrl + "/divisions", {'name': name});
+  }
+
+  deleteDivision(id: string) {
+    return this.http.delete(HttpConfig.baseUrl + "/divisions/" + id);
+  }
+
+
+
+
+  getClubs(divisionId?: string) {
+    if(!this.user) return of(null);
+    if(!divisionId) divisionId=this.user.division_id;
+    return this.http.get<any>(HttpConfig.baseUrl + "/divisions/" + divisionId + "/clubs");
   }
 
   newClub(name: string) {
-    console.log(name);
-    return this.http.post(HttpConfig.baseUrl + '/divisions/' + this.user.division_id + '/clubs', {'name': name}).pipe(
-      map( (res: response) => res.success));
+    if(!this.user) return of(false);
+    return this.http.post(HttpConfig.baseUrl + '/divisions/' + this.user.division_id + '/clubs', {'name': name});
+  }
+
+  deleteClub(id: string) {
+    return this.http.delete(HttpConfig.baseUrl + '/clubs/' + id);
   }
 
 }

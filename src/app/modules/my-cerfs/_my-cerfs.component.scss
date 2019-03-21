@@ -1,0 +1,27 @@
+@import '~@angular/material/theming';
+
+@mixin cerf-table-theme($theme) {
+
+	$primary: map-get($theme, primary);
+	$accent: map-get($theme, accent);
+	$backgroundColor: map-get($theme, background);
+
+
+
+
+	/*.mat-header-row {
+		background-color: mat-color($backgroundColor, app-bar);
+	}
+
+	mat-row:nth-child(even){
+		background-color: mat-color($primary);
+	}
+
+	mat-row:nth-child(odd){
+		background-color: mat-color($primary, 300);
+	}
+
+	mat-row::after {
+		border-color: mat-color($accent); /* See other css file for animation of active bar */
+	//}
+}

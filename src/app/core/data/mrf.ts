@@ -21,14 +21,12 @@ export interface Mrf extends MrfData {
 }
 
 export interface MrfData {
-	updates: {
-		dues_paid: number
-	},
-	events: Cerf[],
+	numDuesPaid: number,
+	events: Cerf[],	// CERF IDs? OR straight data hmmm
 	goals: string[],
-	meetings: {date: string, numMembers: string, numKiwanis: string, numNonHomeMembers: string,
-          numGuests: string, advisorAttended: {faculty: true, kiwanis: true}}[],
-    boardMeetings: [{date: string, boardMembers: number, guests: number}],
+	meetings: {date: string, attendance: { numMembers: number, numNonHomeMembers: number, numKiwanis: number, numGuests: number },
+          		advisorAttended: {faculty: boolean, kiwanis: boolean}}[],
+    boardMeetings: {date: string, attendance: { numBoard: number, numGuests: number}}[],
 
 	dcm:{
 		date: Date,
@@ -38,16 +36,7 @@ export interface MrfData {
 	},
 
 	communications:{
-		ltg:{
-			message: string,
-			contacted:{
-				visit: string,
-				phone: string,
-				email: string,
-				newsletter: string,
-				other: string
-			}
-		},
+		ltg: string,
 		dboard: string
 	},
     fundraising: {source: string, ptp: number, kfh: number, fa: number, other: number, admin: number, fromEventReport: boolean}[],

@@ -4,17 +4,19 @@
 <div id="cerf-header">
 	<h1 class="mat-title">Event Report</h1>
 
+	<!-- !!!!!!!!!!!!!!****** Change all cerf references to form references since at this point, the form is a copy -->
+	<!-- or somehow make form changes propagate to cerf -->
+
 	<div id="cerf-actions">
 		<mat-spinner *ngIf="pendingAction" diameter="36"></mat-spinner>
 		<button mat-icon-button [disabled]="pendingAction || (cerf.status > 0 && user.access.club < 2) || (cerf.status > 1)" (click)="deleteCerf()"><mat-icon>delete</mat-icon></button>
-		{{myForm.valid}}
 		<button mat-icon-button [disabled]="!editable || !myForm.dirty || !myForm.valid || pendingAction" (click)="saveCerf()"><mat-icon>save</mat-icon></button>
 		<!-- remove "cerf.status==0" once we change "draft" abstraction definition -->
 		<button mat-icon-button *ngIf="cerf.status==0 || user.access.club < 2" [disabled]="!myForm.pristine || !myForm.valid || pendingAction || cerf.status > 0" (click)="submitCerf()" matTooltip="Submit to Secretary"><mat-icon>send</mat-icon></button>
 
 		<!-- Secretary Only -->
 		<ng-container *ngIf="user.access.club==2">
-			<button mat-icon-button (click)="unsubmitCerf()" [disabled]="pendingAction || !myForm.valid || cerf.author_id==user._id" matTooltip="Release"><mat-icon>restore</mat-icon></button>
+			<button mat-icon-button *ngIf="cerf.status==1 && cerf.author._id != user._id" (click)="unsubmitCerf()" [disabled]="pendingAction || !myForm.valid" matTooltip="Release"><mat-icon>restore</mat-icon></button>
 			<button mat-icon-button *ngIf="cerf.status==1" (click)="approveCerf()" [disabled]="pendingAction || !myForm.valid" matTooltip="Add to MRF"><mat-icon>playlist_add</mat-icon></button>
 			<button mat-icon-button *ngIf="cerf.status==2" (click)="unapproveCerf()" [disabled]="pendingAction || !myForm.valid" matTooltip="Remove from MRF"><mat-icon>playlist_remove</mat-icon></button>
 		</ng-container>
@@ -48,7 +50,7 @@
 		</mat-form-field>
 		<mat-form-field appearance="outline">
 			<mat-label>Event Chair</mat-label>
-			<input matInput formControlName="chair_id" [value]="myForm.get('chair_id').value | memberID" readonly>
+			<input matInput formControlName="chair_id" [value]="myForm.get('chair_id').value | memberID" [matAutocomplete]="auto">
 			<!-- <button mat-icon-button matSuffix *ngIf="comment" matTooltip="{{comment}}">
 				<mat-icon>chat_bubble</mat-icon>
 			</button> -->
@@ -56,7 +58,7 @@
 		</mat-form-field>
 		<mat-form-field appearance="outline">
 			<mat-label>Person Filling out CERF</mat-label>
-			<input matInput formControlName="chair_id" [value]="myForm.get('chair_id').value | memberID" readonly>
+			<input matInput formControlName="author" readonly>
 			<!-- <button mat-icon-button matSuffix *ngIf="comment" matTooltip="{{comment}}">
 				<mat-icon>chat_bubble</mat-icon>
 			</button> -->
@@ -145,7 +147,7 @@
 
 <!-- 		<div id="tags">
 			<div *ngFor="let tag of tagOptions; let i=index">
-				<mat-checkbox [checked]="cerf.tags.includes(tag)" [disabled]="myForm.disabled" (change)="addRemoveTag(tag, $event.checked)">{{ tagNames[i] }}</mat-checkbox>
+				<mat-checkbox [checked]="myForm.get('tags').value.includes(tag)" [disabled]="myForm.disabled" (change)="addRemoveTag(tag, $event.checked)">{{ tagNames[i] }}</mat-checkbox>
 				<p [class.show-tag-hints]="showTagHints">{{ tagDescriptions[i] }}</p>
 			</div>
 
@@ -156,27 +158,27 @@
 			<div class="tag-service">
 				<h4>Service</h4>
 				<div>
-					<mat-checkbox [checked]="cerf.tags.includes('CO')" [disabled]="myForm.disabled" (change)="addRemoveTag('CO', $event.checked)">Community Service</mat-checkbox>
+					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[0])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[0], $event.checked)">Community Service</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">An event where your club members are serving for the community without pay</p>
 				</div>
 
 				<div>
-					<mat-checkbox [checked]="cerf.tags.includes('CA')" [disabled]="myForm.disabled" (change)="addRemoveTag('CA', $event.checked)">Campus Service</mat-checkbox>
+					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[1])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[1], $event.checked)">Campus Service</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">Any event where your club is doing community service on your school's campus</p>
 				</div>
 
 				<div>
-					<mat-checkbox [checked]="cerf.tags.includes('CS')" [disabled]="myForm.disabled" (change)="addRemoveTag('CS', $event.checked)">Continuing Service</mat-checkbox>
+					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[2])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[2], $event.checked)">Continuing Service</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">An event that has been completed with the same organization repeatedly at least once a month for a two-month duration</p>
 				</div>
 
 				<div>
-					<mat-checkbox [checked]="cerf.tags.includes('DSI')" [disabled]="myForm.disabled" (change)="addRemoveTag('DSI', $event.checked)">District Service Initiative</mat-checkbox>
+					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[3])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[3], $event.checked)">District Service Initiative</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">Any event that contributes to the current District Service Initiative</p>
 				</div>
 
 				<div>
-					<mat-checkbox [checked]="cerf.tags.includes('ISI')" [disabled]="myForm.disabled" (change)="addRemoveTag('ISI', $event.checked)">International Service Initiative</mat-checkbox>
+					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[4])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[4], $event.checked)">International Service Initiative</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">Any event that contributes to the current International Service Initiative</p>
 				</div>
 			</div>
@@ -185,14 +187,14 @@
 			<div class="tag-leadership">
 				<h4>Leadership</h4>
 				<div>
-					<mat-checkbox [checked]="cerf.tags.includes('AD')" [disabled]="myForm.disabled" (change)="addRemoveTag('AD', $event.checked)">Administrative</mat-checkbox>
+					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[5])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[5], $event.checked)">Administrative</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">Any event related to the operation of the club should be tagged as AD. Examples of administrative events include but are not limited to attending meetings (e.g. general meetings, board meetings, committee meetings, Kiwanis meetings), and workshops</p>
 				</div>
 			</div>
 			<div class="tag-fellowship">
 				<h4>Fellowship</h4>
 				<div>
-					<mat-checkbox [checked]="cerf.tags.includes('SD')" [disabled]="myForm.disabled" (change)="addRemoveTag('SD', $event.checked)">Social Event</mat-checkbox>
+					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[6])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[6], $event.checked)">Social Event</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">Any event in which club members are socially interacting with one another should be tagged as SE. A social event promotes the moral of members so it is usually tagged as MD; however, remember that although all SE events are MD-tagged, not all MD events are SE-tagged (e.g. workshops)</p>
 				</div>
 			</div>
@@ -203,52 +205,52 @@
 			<div class="tag-misc">
 				<h4>Miscellaneous</h4>
 				<div>
-					<mat-checkbox [checked]="cerf.tags.includes('MD')" [disabled]="myForm.disabled" (change)="addRemoveTag('MD', $event.checked)">Membership Development</mat-checkbox>
+					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[7])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[7], $event.checked)">Membership Development</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">An event that promotes membership recruitment and development</p>
 				</div>
 
 				<div>
-					<mat-checkbox [checked]="cerf.tags.includes('FR')" [disabled]="myForm.disabled" (change)="addRemoveTag('FR', $event.checked)">Fundraiser</mat-checkbox>
+					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[8])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[8], $event.checked)">Fundraiser</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">A home club-hosted event that raises money for a charity or for administrative funds</p>
 				</div>
 
 				<div>
-					<mat-checkbox [checked]="cerf.tags.includes('CK')" [disabled]="myForm.disabled" (change)="addRemoveTag('CK', $event.checked)">Circle K</mat-checkbox>
+					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[9])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[9], $event.checked)">Circle K</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">An event in which at least two members from your Circle K club and at least two members from another Circle K club are present</p>
 				</div>
 
 				<div>
-					<mat-checkbox [checked]="cerf.tags.includes('KF')" [disabled]="myForm.disabled" (change)="addRemoveTag('KF', $event.checked)">Kiwanis Family</mat-checkbox>
+					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[10])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[10], $event.checked)">Kiwanis Family</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">An event in which at least two members from your Circle K club and at least two members from another non-Circle K Kiwanis Family club are present</p>
 				</div>
 
 				<div>
-					<mat-checkbox [checked]="cerf.tags.includes('IN')" [disabled]="myForm.disabled" (change)="addRemoveTag('IN', $event.checked)">Interclub</mat-checkbox>
+					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[11])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[11], $event.checked)">Interclub</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">An event in which there must be a certain amount of members from your Circle K club and the same amount of members from another Circle K/Kiwanis Family club present, depending on your Circle K club's number of dues paid members. Clubs with less than or equal to 20 members need a minimum of two members present; clubs with 21-30 members need a minimum of three memberrs present; and clubs with greater than or equal to 31 members need a minimum of four members present</p>
 				</div>
 
 				<div>
-					<mat-checkbox [checked]="cerf.tags.includes('WB')" [disabled]="myForm.disabled" (change)="addRemoveTag('WB', $event.checked)">Webinar</mat-checkbox>
+					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[12])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[12], $event.checked)">Webinar</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">An online webinar usualy hosted by the District Board for the District. This tag applies to both District and International webinars</p>
 				</div>
 
 				<div>
-					<mat-checkbox [checked]="cerf.tags.includes('DV')" [disabled]="myForm.disabled" (change)="addRemoveTag('DV', $event.checked)">Divisional</mat-checkbox>
+					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[13])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[13], $event.checked)">Divisional</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">An event hosted by and for the Division, which is usually hosted by the respective Lieutenant Governor (and Divisional Board)</p>
 				</div>
 
 				<div>
-					<mat-checkbox [checked]="cerf.tags.includes('DE')" [disabled]="myForm.disabled" (change)="addRemoveTag('DE', $event.checked)">District</mat-checkbox>
+					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[14])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[14], $event.checked)">District</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">An event hosted by and for the District</p>
 				</div>
 
 				<div>
-					<mat-checkbox [checked]="cerf.tags.includes('INT')" [disabled]="myForm.disabled" (change)="addRemoveTag('INT', $event.checked)">International</mat-checkbox>
+					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[15])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[15], $event.checked)">International</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">An event hosted by Circle K International</p>
 				</div>
 
 				<div>
-					<mat-checkbox [checked]="cerf.tags.includes('HE')" [disabled]="myForm.disabled" (change)="addRemoveTag('HE', $event.checked)">Club Hosted</mat-checkbox>
+					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[16])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[16], $event.checked)">Club Hosted</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">Any event hosted through your Circle K club</p>
 				</div>
 			</div>
@@ -295,8 +297,74 @@
 		<!-- ngFor attendees -->
 		<br/>
 		<div id="memberTable">
-			<button (click)="printForm()">click</button>
-			<app-input-list [data]="attendees" [columns]="memberColumns" (formReady)="inputListReady('attendees', $event)"></app-input-list>
+			<mat-table [dataSource]="attendanceArray.controls" formArrayName="attendees">
+				<ng-container matColumnDef="members">
+					<mat-header-cell *matHeaderCellDef> Members </mat-header-cell>
+					<mat-cell *matCellDef="let member; let i=index" [formGroupName]="i">
+						<!-- <button mat-icon-button (click)="removeMember(i)"> <mat-icon>cancel</mat-icon> </button> -->
+						<mat-form-field>
+							<input matInput formControlName="name" [value]="attendanceArray.controls[i].value.name | memberID" [matAutocomplete]="auto" (keyup)="filterMembers($event)">
+						</mat-form-field>
+					</mat-cell>
+					<mat-footer-cell *matFooterCellDef>
+						<mat-form-field class="member-cell">
+							<mat-label>+ Add Attendee</mat-label>
+							<input matInput id="attendanceFocus" [value]="newAttendance.name | memberID" [(ngModel)]="newAttendance.name" [ngModelOptions]="{standalone: true}" [matAutocomplete]="auto" (keyup.enter)="addAttendance()">
+						</mat-form-field>
+					</mat-footer-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="service">
+					<mat-header-cell *matHeaderCellDef> Service </mat-header-cell>
+					<mat-cell *matCellDef="let member; let i=index"  [formGroupName]="i">
+						<mat-form-field>
+							<input matInput formControlName="service">
+						</mat-form-field>
+					</mat-cell>
+					<mat-footer-cell *matFooterCellDef>
+						<mat-form-field>
+							<input matInput  [(ngModel)]="newAttendance.service" [ngModelOptions]="{standalone: true}" (keyup.enter)="addAttendance()">
+						</mat-form-field>
+					</mat-footer-cell>
+				</ng-container>
+				<ng-container matColumnDef="leadership">
+					<mat-header-cell *matHeaderCellDef> Leadership </mat-header-cell>
+					<mat-cell *matCellDef="let member; let i=index"  [formGroupName]="i">
+						<mat-form-field>
+							<input matInput formControlName="leadership">
+						</mat-form-field>
+					</mat-cell>
+					<mat-footer-cell *matFooterCellDef>
+						<mat-form-field>
+							<input matInput  [(ngModel)]="newAttendance.leadership" [ngModelOptions]="{standalone: true}" (keyup.enter)="addAttendance()">
+						</mat-form-field>
+					</mat-footer-cell>
+				</ng-container>
+				<ng-container matColumnDef="fellowship">
+					<mat-header-cell *matHeaderCellDef> Fellowship </mat-header-cell>
+					<mat-cell *matCellDef="let member; let i=index"  [formGroupName]="i">
+						<mat-form-field>
+							<input matInput formControlName="fellowship">
+						</mat-form-field>
+					</mat-cell>
+					<mat-footer-cell *matFooterCellDef>
+						<mat-form-field>
+							<input matInput  [(ngModel)]="newAttendance.fellowship" [ngModelOptions]="{standalone: true}" (keyup.enter)="addAttendance()" (keyup.tab)="addAttendance()">
+						</mat-form-field>
+					</mat-footer-cell>
+				</ng-container>
+
+				<mat-header-row *matHeaderRowDef="attendanceColumns"></mat-header-row>
+				<mat-row *matRowDef="let row; columns: attendanceColumns;"></mat-row>
+				<mat-footer-row *matFooterRowDef="attendanceColumns"></mat-footer-row>
+			</mat-table>
+
+			<mat-autocomplete #auto="matAutocomplete">
+				<mat-option *ngFor="let option of filteredRoster" [value]="option._id">
+					<p class="mat-body name">{{option.name}}</p>
+					<p class="mat-caption email">{{option.email}}</p>
+				</mat-option>
+			</mat-autocomplete>
 		</div>
 	  </mat-expansion-panel>
 
@@ -318,7 +386,35 @@
 	      </mat-panel-description>
 	    </mat-expansion-panel-header>
 	    
-		<app-input-list [data]="cerf.kfamAttendance" [columns]="kfamColumns" (formReady)="inputListReady('kfamAttendance', $event)"></app-input-list>
+		<!-- <app-input-list [data]="cerf.kfamAttendance" [columns]="kfamColumns" (formReady)="inputListReady('kfamAttendance', $event)"></app-input-list> -->
+		<mat-table [dataSource]="kfamArray.controls" formArrayName="kfamAttendance">
+			<ng-container matColumnDef="org">
+				<mat-header-cell *matHeaderCellDef>Org</mat-header-cell>
+				<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">
+					<input matInput formControlName="org">
+				</mat-cell>
+				<mat-footer-cell *matFooterCellDef>
+					<mat-form-field>
+						<mat-label>+ Add Org</mat-label>
+						<input matInput  [(ngModel)]="newKfam.org" [ngModelOptions]="{standalone: true}" (keyup.enter)="addKfam()">
+					</mat-form-field>
+				</mat-footer-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="numAttendees">
+				<mat-header-cell *matHeaderCellDef>Num Attendees</mat-header-cell>
+				<mat-cell *matCellDef="let row; let i=index"  [formGroupName]="i">
+					<input matInput formControlName="numAttendees">
+				</mat-cell>
+				<mat-footer-cell *matFooterCellDef>
+					<input matInput  [(ngModel)]="newKfam.numAttendees" [ngModelOptions]="{standalone: true}" (keyup.enter)="addKfam()" (keyup.tab)="addKfam()">
+				</mat-footer-cell>
+			</ng-container>
+
+			<mat-header-row *matHeaderRowDef="kfamColumns"></mat-header-row>
+			<mat-row *matRowDef="let row; columns: kfamColumns;"></mat-row>
+			<mat-footer-row *matFooterRowDef="kfamColumns"></mat-footer-row>
+		</mat-table>
 <!-- 	    <mat-table>
 
 			<ng-container matColumnDef="members">
@@ -351,8 +447,45 @@
 	      </mat-panel-description>
 	    </mat-expansion-panel-header>
 	    
-	    <app-input-list [data]="cerf.drivers" [columns]="driverColumns" (formReady)="inputListReady('drivers', $event)"></app-input-list>
-	<!--     <mat-table>
+	    <!-- <app-input-list [data]="cerf.drivers" [columns]="driverColumns" (formReady)="inputListReady('drivers', $event)"></app-input-list> -->
+		<mat-table [dataSource]="driverArray.controls" formArrayName="drivers">
+			<ng-container matColumnDef="driver">
+				<mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+				<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">
+					<input matInput formControlName="driver">
+				</mat-cell>
+				<mat-footer-cell *matFooterCellDef>
+					<mat-form-field>
+						<mat-label>+ Add Driver</mat-label>
+						<input matInput  [(ngModel)]="newDriver.driver" [ngModelOptions]="{standalone: true}" (keyup.enter)="addDriver()">
+					</mat-form-field>
+				</mat-footer-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="milesTo">
+				<mat-header-cell *matHeaderCellDef>Miles To</mat-header-cell>
+				<mat-cell *matCellDef="let row; let i=index"  [formGroupName]="i">
+					<input matInput formControlName="milesTo">
+				</mat-cell>
+				<mat-footer-cell *matFooterCellDef>
+					<input matInput  [(ngModel)]="newDriver.milesTo" [ngModelOptions]="{standalone: true}" (keyup.enter)="addDriver()">
+				</mat-footer-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="milesFrom">
+				<mat-header-cell *matHeaderCellDef>Miles From</mat-header-cell>
+				<mat-cell *matCellDef="let row; let i=index"  [formGroupName]="i">
+					<input matInput formControlName="milesFrom">
+				</mat-cell>
+				<mat-footer-cell *matFooterCellDef>
+					<input matInput  [(ngModel)]="newDriver.milesFrom" [ngModelOptions]="{standalone: true}" (keyup.enter)="addDriver()" (keyup.tab)="addDriver()">
+				</mat-footer-cell>
+			</ng-container>
+
+			<mat-header-row *matHeaderRowDef="driverColumns"></mat-header-row>
+			<mat-row *matRowDef="let row; columns: driverColumns;"></mat-row>
+			<mat-footer-row *matFooterRowDef="driverColumns"></mat-footer-row>
+		</mat-table>	<!--     <mat-table>
 
 			<ng-container matColumnDef="members">
 				<mat-header-cell *matHeaderCellDef> Name </mat-header-cell>

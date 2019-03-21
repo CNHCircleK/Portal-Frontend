@@ -31,14 +31,14 @@ export class CerfResolver implements Resolve<Cerf> {
 
 	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Cerf> {
 		if(route.params.id=='new')
-			return of(this.dataService.newCerf());
+			return of(this.dataService.blankCerf());
 		return this.dataService.getCerf(route.params.id).pipe(map(
-			cerf => {
-				if(!cerf){
+			(res: {success: boolean, result}) => {
+				if(!res.success){
 					this.router.navigate(['/cerfs']);
 					return null;
 				}
-				return cerf;
+				return res.result;
 		}));
 	}
 }

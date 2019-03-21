@@ -26,27 +26,27 @@ export class AuthGuard implements CanActivate {
 			return true;	// YES you're allowed to access /login if you're not logged in
 		}
 
-		return this.auth.getUser().pipe(map(user => {
-			if(!user) return false;
+		const user = this.auth.getUser();
 
-			if(state.url=='/login' || state.url=='/signup') {
+		if(!user) return false;
+
+		if(state.url=='/login' || state.url=='/signup') {
+			this.router.navigate(['']);
+			return false;	// ur already logged in
+		}
+		
+		
+		if(state.url=='/mrfs')
+		{
+			if(user.access.club > 0) return true;
+			else {
+				window.alert("You do not have permission to view this");
 				this.router.navigate(['']);
-				return false;	// ur already logged in
+				return false;
 			}
-			
-			
-			if(state.url=='/mrfs')
-			{
-				if(user.access.club > 0) return true;
-				else {
-					window.alert("You do not have permission to view this");
-					this.router.navigate(['']);
-					return false;
-				}
-			}
-			if(state.url=='/cerfs')
-					return true;
-			return true;	// should definitely default false, but need to figure out how to authorize '/cerf/:id'
-		}));
+		}
+		if(state.url=='/cerfs')
+				return true;
+		return true;	// should definitely default false, but need to figure out how to authorize '/cerf/:id'
 	}
 }

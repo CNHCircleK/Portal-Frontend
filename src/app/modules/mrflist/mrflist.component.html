@@ -11,11 +11,14 @@
 <div id="cerf-list-header">
   <nav id="month-tabs">
     <ul>
-      <li [class.mat-elevation-z4]="currentTab=='secretary'">
-        <button mat-button (click)="currentTab='secretary'">Show Club</button>
+      <li [class.mat-elevation-z4]="currentTab=='mrfs'">
+        <button mat-raised-button (click)="currentTab='mrfs'">Home</button>
       </li>
-      <li [class.mat-elevation-z4]="currentTab=='division'">
-        <button mat-button (click)="currentTab='division'">Show Division</button>
+      <li [class.mat-elevation-z4]="currentTab=='divisions'">
+        <button mat-raised-button (click)="currentTab='divisions'">Divisions</button>
+      </li>
+      <li [class.mat-elevation-z4]="currentTab=='clubs'">
+        <button mat-raised-button [disabled]="!currentDivision" (click)="currentTab='clubs'">Clubs</button>
       </li>
       <!-- <li [class.mat-elevation-z4]="currentTab=='district'">
         <button mat-button (click)="currentTab='district'">Show All</button>
@@ -23,7 +26,7 @@
     </ul>
   </nav>
 </div>
-<mat-table [dataSource]="list" matSort>
+<mat-table *ngIf="currentTab=='mrfs'" [dataSource]="list" matSort>
 
 	<!-- Month Column -->
     <ng-container matColumnDef="month">
@@ -73,3 +76,29 @@
     <mat-row *matRowDef="let row; columns: displayedColumns;" [routerLink]="['/mrf', row.year, row.month]"></mat-row>
 </mat-table>
 <mat-paginator [pageSizeOptions]="[10, 25, 50]"></mat-paginator>
+
+<mat-table *ngIf="currentTab=='divisions'" [dataSource]="divisions">
+
+  <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+      <mat-cell *matCellDef="let row; let i = index">{{divisions[i].name}}</mat-cell>
+    </ng-container>
+
+    <!-- Header columns -->
+    <mat-header-row *matHeaderRowDef="['name']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['name'];" (click)="showClubs(row)"></mat-row>
+</mat-table>
+
+<mat-table *ngIf="currentTab=='clubs'" [dataSource]="clubs">
+
+  <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+      <mat-cell *matCellDef="let row; let i = index">{{clubs[i].name}}</mat-cell>
+    </ng-container>
+
+    <!-- Header columns -->
+    <mat-header-row *matHeaderRowDef="['name']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['name'];"></mat-row>
+</mat-table>

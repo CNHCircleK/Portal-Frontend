@@ -8,4 +8,6 @@ export interface Member {
     division: number,
     district: number
   }
+  code: string,
+  email: string
 }

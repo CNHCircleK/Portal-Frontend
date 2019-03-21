@@ -1,0 +1,147 @@
+import { Component, ViewChild, ViewChildren, Input, Output, EventEmitter, OnInit, IterableDiffers } from '@angular/core';
+import { FormGroup, FormControl, FormBuilder, FormArray, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
+import { MatTable, MatSort, MatTableDataSource } from '@angular/material';
+import { AuthService } from '@core/authentication/auth.service';
+import { DataService } from '@core/data/data.service';
+import { MemberService } from '@core/data/member.service';
+import { ActivatedRoute } from '@angular/router';
+
+import { Observable, isObservable, Subscription, zip } from 'rxjs';
+
+// Linking reactive form across components https://itnext.io/partial-reactive-form-with-angular-components-443ca06d8419
+
+@Component({
+	selector: 'app-input-list',
+	templateUrl: './input-list.component.html',
+	styleUrls: ['./input-list.component.css', './_input-list.component.scss'],
+})
+export class InputList {
+	// Data flow: parent supplies data (array of objects) and columns to display
+	//				-> build a formArray and a MatTable
+	//				-> emit the formArray for the parent to link in its reactive form
+	@Input() data: [];
+	@Input() columns: {def, title, footer, defaultFooter}[] = [];
+	@Input() defaultFooters;
+	defaultFootersDiffers;
+	@Input() showRoster: boolean;	// TODO: should expand autocomplete option to more than just filtering members
+
+	formData: FormGroup;
+	dataSource: MatTableDataSource<any>;
+	displayColumns: string[] = [];
+	newRowValues: any[];
+	footerSubscription: Subscription;
+	@ViewChild(MatTable) matTable;
+	/* If a data array is provided, the table must be notified when the array's objects are added, removed, or moved.
+	This can be done by calling the renderRows() function which will render the diff since the last table render.
+	If the data array reference is changed, the table will automatically trigger an update to the rows. 
+
+	When providing a DataSource object, the table will use the Observable stream provided by the connect function
+	and trigger updates when that stream emits new data array values. During the table's ngOnDestroy or when the
+	data source is removed from the table, the table will call the DataSource's disconnect function
+	(may be useful for cleaning up any subscriptions registered during the connect process).*/
+
+	@Output() formReady = new EventEmitter<FormArray>();
+
+	filtering: boolean = false;
+	filteredRoster: {name: string, email: string, _id: string}[]	;
+
+	constructor(private dataService: DataService, private memberService: MemberService, private builder: FormBuilder) {
+	}
+
+	@ViewChild(MatSort) sort;
+
+	ngOnInit() {
+		if(!this.columns) {
+			this.columns = [];
+		}
+
+		this.displayColumns = this.columns.map(column => { 
+			if(column.def == 'member')
+				this.filtering = true;
+			return column.def
+		});
+		this.newRowValues = this.columns.map(column => column.defaultFooter);
+	}
+
+	ngAfterContentInit() {
+		this.formData = this.cookData({"array": this.data, "footer": this.newRowValues});
+		/* Make a read-only (by usage) form structure so we can pass controls in and hook onto changes */
+		// the cooking algorithm manipulates the array, we want raw values not FormControls
+		// console.log(this.formData);
+		this.newRowValues = this.formData.get('footer').value.slice();
+		this.footerSubscription = this.formData.get('footer').valueChanges.subscribe(changes => this.newRowValues = changes.slice());
+
+
+		this.formReady.emit(this.formData.get('array') as FormArray);
+	}
+
+	ngAfterViewInit() {
+		// this.tableData.sort = this.sort;
+		this.matTable.renderRows();
+		// console.log(this.newRowValues,this.formData.get('footer'));
+	}
+
+	ngDoCheck() {
+		
+	}
+
+	ngOnDestroy() {
+		// this.footerSubscription.unsubscribe(); throwing an error
+	}
+
+	trackByIndex(index: number, obj: any): any {
+		return index;
+	}
+	addRow(index) {
+		let newRow = {};
+		this.columns.forEach((item, i)=> {
+			newRow[item.def] = this.newRowValues[i];
+		});
+		this.dataArray.push(this.builder.group(newRow));
+		this.newRowValues = this.formData.get('footer').value.slice();
+		console.log(this.formData.get('footer').value);
+		this.matTable.renderRows();
+
+		// if(false)	// roster
+		// 	this.filterMembers({target: {value: ""}});
+	}
+
+	get dataArray() {
+		return (this.formData.get('array') as FormArray);
+	}
+
+	removeMember(i: number) {
+		this.dataSource.data.splice(i, 1);
+		this.dataSource._updateChangeSubscription();
+	}
+
+	filterMembers(event: any) {
+		this.filteredRoster = this.memberService.filterMembers(event.target.value);
+	}
+
+	private cookData(model: Object): FormGroup
+	{
+		if(model instanceof FormGroup)	// Some protection against infinite loops
+			return model;
+		let formGroup: { [id: string]: AbstractControl; } = {};
+		Object.keys(model).forEach(key => {
+			formGroup[key] = 	model[key] instanceof Date ? this.builder.control(model[key]) : // making formgroups out of single Dates doesn't make sense
+			model[key] instanceof Array ? this.builder.array(this.helperCookArray(model[key])) :
+			(model[key] instanceof Object ? this.cookData(model[key]) : this.builder.control(model[key]));
+			// Note, Arrays are objects but objects are not arrays
+		});
+		return this.builder.group(formGroup);
+	}
+
+	private helperCookArray(arr: any[]): any[] {
+		arr.forEach((element, index, array) => {
+			if(element instanceof FormControl)
+				array[index] = element;		// leave controls as is
+			else if(element instanceof Object)
+				array[index] = this.cookData(element);
+			else
+				array[index] = this.builder.control(element);
+		});	// Dangerously infinite loop
+		return arr;
+	}
+}

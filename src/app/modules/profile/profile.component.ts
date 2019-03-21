@@ -17,13 +17,7 @@ export class ProfileComponent implements OnInit {
   refresh: boolean;
 
   ngOnInit() {
-  	this.auth.getUser().subscribe(user => this.user = user);
-  }
-
-  setAccess()
-  {
-  	this.auth.setAccess(this.user.access.club, this.user.access.division, this.user.access.district);
-  	this.refresh = true;
+  	this.auth.getUserObservable().subscribe(user => this.user = user);
   }
 
   logout()

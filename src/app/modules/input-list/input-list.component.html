@@ -1,0 +1,31 @@
+<div [formGroup]="formData">
+	<mat-table [dataSource]="dataArray.controls" formArrayName="array">
+		<ng-container *ngFor="let column of columns; let k=index" [matColumnDef]="column['def']">
+			<mat-header-cell *matHeaderCellDef>{{column.title}}</mat-header-cell>
+			<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">
+				<input matInput *ngIf="column.def=='member'" [formControlName]="column.def" [value]="dataArray.controls[i].value.member | memberID">
+				<input matInput *ngIf="column.def!='member'" [formControlName]="column.def">
+			</mat-cell>
+
+			<mat-footer-cell *matFooterCellDef>
+				<mat-form-field class="new-row">
+					<mat-label>{{column.footer}}</mat-label>
+					<input matInput *ngIf="column.def=='member'" [matAutocomplete]="auto" [(ngModel)]="newRowValues[k]" [ngModelOptions]="{standalone: true}" (keyup.enter)="addRow(k)" (keyup)="filterMembers($event)">
+					<input matInput *ngIf="column.def != 'member'" [(ngModel)]="newRowValues[k]" [ngModelOptions]="{standalone: true}" (keyup.enter)="addRow(k)">
+				</mat-form-field>
+			</mat-footer-cell>
+
+		</ng-container>
+
+		<mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
+		<mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
+		<mat-footer-row *matFooterRowDef="displayColumns"></mat-footer-row>
+	</mat-table>
+
+	<mat-autocomplete #auto="matAutocomplete">
+		<mat-option *ngFor="let option of filteredRoster" [value]="option._id">
+			<p class="mat-body name">{{option.name}}</p>
+			<p class="mat-caption email">{{option.email}}</p>
+		</mat-option>
+	</mat-autocomplete>
+</div>

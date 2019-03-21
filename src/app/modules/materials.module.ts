@@ -29,8 +29,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 		MatToolbarModule,
 		MatSnackBarModule,
 		MatExpansionModule,
-		MatAutocompleteModule,
-		BrowserAnimationsModule
+		MatAutocompleteModule
 	],
 	exports: [
 		MatFormFieldModule,
@@ -53,8 +52,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 		MatToolbarModule,
 		MatSnackBarModule,
 		MatExpansionModule,
-		MatAutocompleteModule,
-		BrowserAnimationsModule
+		MatAutocompleteModule
 	],
 })
 

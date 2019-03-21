@@ -1,6 +1,7 @@
 import { Component, ViewChild, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Mrf } from '@core/data/mrf';
+import { AuthService } from '@core/authentication/auth.service';
 import { DataService } from '@core/data/data.service';
 
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
@@ -18,6 +19,17 @@ export class MrfListComponent {
 	displayedColumns;
 	list: MatTableDataSource<Mrf>;
 
+	static readonly NONE = 0;
+	static readonly CLUB = 1;
+	static readonly DIVISION = 2;
+	static readonly DISTRICT = 3;
+	extraList: number;
+	currentDivision: string = "";
+	currentClub: string = "";
+
+	divisions = [];
+	clubs = [];
+
 	@ViewChild(MatPaginator) paginator;
 	@ViewChild(MatSort) sort;
 
@@ -25,8 +37,27 @@ export class MrfListComponent {
 	// @Input() display: string[];
 	months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-	constructor(private dataService: DataService, private router: Router) {
-		this.currentTab = 'secretary';
+	constructor(private auth: AuthService, private dataService: DataService, private router: Router) {
+		const user = auth.getUser();
+		this.extraList = user.access.district > 0 ? MrfListComponent.DISTRICT : (user.access.division > 0 ? MrfListComponent.DIVISION : MrfListComponent.NONE);
+
+		if(this.extraList == MrfListComponent.DISTRICT)
+		{
+			dataService.getDivisions().subscribe( (res: {success, result}) => {
+				if(res.success)
+					this.divisions = res.result;
+				console.log(res);
+			});
+		}
+		if(this.extraList == MrfListComponent.DIVISION)
+		{
+			dataService.getClubs().subscribe( (res: {success, result}) => {
+				if(res.success)
+					this.clubs = res.result;
+			})
+		}
+
+		this.currentTab = "mrfs";
 	}
 
 	ngOnInit() {
@@ -44,5 +75,18 @@ export class MrfListComponent {
 		filterValue = filterValue.trim();
 		filterValue = filterValue.toLowerCase();
 		this.list.filter = filterValue;
+	}
+
+	showDivisions() {
+		this.currentTab = "divisions";
+	}
+
+	showClubs(row) {
+		this.currentDivision = row.name;
+		this.dataService.getClubs(row._id).subscribe( (res: {success, result}) => {
+			if(res.success)
+				this.clubs = res.result;
+			this.currentTab = "clubs";
+		})
 	}
 }

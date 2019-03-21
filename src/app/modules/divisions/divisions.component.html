@@ -1,12 +1,9 @@
-<h1>Clubs in {{ division }}</h1>
-<button mat-raised-button (click)="newClub()">Add Club</button>
-
-<mat-table [dataSource]="clubs" matSort>
+ <mat-table [dataSource]="divisions" matSort>
 
   <!-- Name Column -->
   <ng-container matColumnDef="name">
     <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-    <mat-cell *matCellDef="let row" (click)="openClub(row)"> <!-- multiTemplateDataRows -> dataIndex instead of index -->
+    <mat-cell *matCellDef="let row" (click)="openDivision(row)"> <!-- multiTemplateDataRows -> dataIndex instead of index -->
       <p class="mat-body-1">{{row.name}}</p>
     </mat-cell>
   </ng-container>

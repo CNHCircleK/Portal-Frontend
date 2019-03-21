@@ -20,14 +20,14 @@ export class LoginComponent implements OnInit {
   wrong: boolean = false;
 
   ngOnInit() {
-    this.auth.getUser().subscribe(user => this.user = user);
+    this.user = this.auth.getUser();
   }
 
-  login(Username, Password)
+  submitLogin({value, valid})
   {
-    this.wrong = false;  // some indication of input when they submit another username/password
-    this.auth.login(Username, Password).subscribe((res:any)=> {
-      if(res.success)
+    this.wrong = false;  // some indication of input when they submit another email/password
+    this.auth.login(value.email, value.password).subscribe(success => {
+      if(success)
         this.router.navigate([''])
       else
         this.wrong = true;

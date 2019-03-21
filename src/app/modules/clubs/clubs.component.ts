@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { DataService } from '@core/data/data.service';
@@ -8,27 +8,26 @@ import { Member } from '@core/authentication/member';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
+type Club = { _id: string, name: string };
+
 @Component({
 	selector: 'app-clubs',
 	templateUrl: './clubs.component.html',
 	styleUrls: ['./clubs.component.css', './_clubs.component.scss']
 })
-
 export class ClubsComponent {
 
-	division: string;
-	clubs: string[];
+	clubs: Club[] = [];
+	list: MatTableDataSource<Club>;
+	displayedColumns: string[] = ["name"];
 
-	@ViewChild(MatPaginator) paginator;
-	@ViewChild(MatSort) sort;
-	list: MatTableDataSource<string>;
-	displayedColumns: string[] = ["club_name", "id", "search"];
+	@Input() division = null;
 
 	constructor(private dataService: DataService, private auth: AuthService, private route: ActivatedRoute, private dialog: MatDialog) {
-		this.clubs = this.route.snapshot.data['clubs'];
-		console.log(this.clubs);
-
-		this.auth.getUser().subscribe(user => this.division = user.division_id);
+		// this.division = this.auth.getUser().division_id;
+		this.dataService.getClubs(this.division).subscribe( (res: any) => {
+			this.clubs = res.result;
+		});	// if null, it'll grab user's division
 	}
 
 	ngOnInit() {
@@ -36,16 +35,8 @@ export class ClubsComponent {
 	}
 
 	ngAfterViewInit() {
-		this.list.paginator = this.paginator;
-		this.list.sort = this.sort;
 	}
-
-	applyFilter(filterValue: string) { 
-		filterValue = filterValue.trim();
-		filterValue = filterValue.toLowerCase();
-		this.list.filter = filterValue;
-	}
-
+	
 	updateList() {
 		this.dataService.getClubs().subscribe(res => {
 			this.clubs=res;

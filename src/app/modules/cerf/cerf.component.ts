@@ -7,7 +7,7 @@ import { DataService } from '@core/data/data.service';
 import { NgForm } from '@angular/forms';
 import { Location } from '@angular/common';
 
-import { MatSort, MatTableDataSource } from '@angular/material';
+import { MatTable, MatSort, MatTableDataSource } from '@angular/material';
 
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ConfirmDialogComponent } from '@app/modules/confirm-dialog/confirm-dialog.component';
@@ -16,10 +16,12 @@ import { TagsDialog } from './tags-dialog.component';
 
 import { AuthService } from '@core/authentication/auth.service';
 import { Member } from '@core/authentication/member';
+import { MemberService } from '@core/data/member.service';
 
 import { Observable, BehaviorSubject, zip } from 'rxjs';
 
 type Attendee = {name: string, service: number, leadership: number, fellowship: number};
+// type Member = {name: string, email: string, _id: string};	// Put into Member interface to be used by MemberService too
 
 @Component({
 	selector: 'app-cerf',
@@ -31,20 +33,32 @@ export class CerfComponent {
 	pendingAction: boolean = false;
 	fromMrf: boolean = false;
 
-	tabs: string[] = ["main", "attendance", "fundraising", "drivers", "commentary"];
-	currentTab: string;
 	openedPanels: number[] = [0, 0, 0, 0, 0, 0];
 
-	attendees = [];
-	memberColumns = [];
-	kfamColumns = [{def: "org", title: "Organization", footer: "+ Add Org", defaultFooter: ""},
-					{def: "numAttendees", title: "Number Attendees", footer: "Attendees", defaultFooter: 0}];
-	driverColumns = [{def: "driver", title: "Driver", footer: "+ Add Driver", defaultFooter: ""},
-						{def: "milesTo", title: "Miles to Event", footer: "Miles", defaultFooter: 0},
-						{def: "milesFrom", title: "Miles from Event", footer: "Miles", defaultFooter: 0}];
+	attendees;
+	attendanceColumns = ['members', 'service', 'leadership', 'fellowship'];
+	kfamColumns = ['org', 'numAttendees'];
+	driverColumns = ['driver', 'milesTo', 'milesFrom'];
+
+	// For adding new rows
+	defaultAttendance = {name: "", service: 0, leadership: 0, fellowship: 0};	// default should update to current "Default Hours" input
+	defaultKfam = {org: "", numAttendees: 0};
+	defaultDriver = {driver: "", milesTo: 0, milesFrom: 0};
+
+	newAttendance = {name: "", service: 0, leadership: 0, fellowship: 0};
+	newKfam = {org: "", numAttendees: 0};
+	newDriver = {driver: "", milesTo: 0, milesFrom: 0};
+
+	filteredRoster;
+
+	// kfamColumns = [{def: "org", title: "Organization", footer: "+ Add Org", defaultFooter: ""},
+	// 				{def: "numAttendees", title: "Number Attendees", footer: "Attendees", defaultFooter: 0}];
+	// driverColumns = [{def: "driver", title: "Driver", footer: "+ Add Driver", defaultFooter: ""},
+	// 					{def: "milesTo", title: "Miles to Event", footer: "Miles", defaultFooter: 0},
+	// 					{def: "milesFrom", title: "Miles from Event", footer: "Miles", defaultFooter: 0}];
 
 	myForm: FormGroup;
-	// comment: string = "HEY";
+
 	categoryButtons: string[] = ["service", "leadership", "fellowship", "dogs"];
 	categoriesActive: string[] = [];
 	addingCategory: boolean = false;
@@ -53,6 +67,7 @@ export class CerfComponent {
 	tagNames: string[] = ['Community Service', 'Campus Service', 'Continuing Service', 'District Service Initiative',
 							'International Service Initiative', 'Administrative', 'Social Event', 'Membership Development', 'Fundraiser',
 							'Circle K', 'Kiwanis Family', 'Interclub', 'Webinar', 'Divisional', 'District', 'International', 'Club Hosted'];
+	tagIds: string[] = ["5c7e30c5d6f264025fe03332", "5c87f48fd434f107fa8c3f64", "5c87f4a0d434f107fa8c3f65", "5c87f4acd434f107fa8c3f66", "5c87f4d8d434f107fa8c3f67", "5c87f4e2d434f107fa8c3f68", "5c87f4e9d434f107fa8c3f69", "5c87f4f1d434f107fa8c3f6a", "5c87f4f7d434f107fa8c3f6b", "5c87f4fdd434f107fa8c3f6c", "5c87f506d434f107fa8c3f6d", "5c87f50ed434f107fa8c3f6e", "5c87f52dd434f107fa8c3f6f", "5c87f538d434f107fa8c3f70", "5c87f53fd434f107fa8c3f71", "5c87f543d434f107fa8c3f72", "5c87f549d434f107fa8c3f73"];
 	tagDescriptions: string[] = [
 	"An event where your club members are serving for the community without pay",
 	"Any event where your club is doing community service on your school's campus",
@@ -79,9 +94,9 @@ export class CerfComponent {
 	showTagHints = false;
 
 
-	constructor(private route: ActivatedRoute, private dataService: DataService,
+	constructor(private route: ActivatedRoute, private dataService: DataService, private memberService: MemberService,
 		private auth: AuthService, private _location: Location, public dialog: MatDialog,
-		private builder: FormBuilder) {
+		private builder: FormBuilder, private renderer: Renderer2) {
 		// this.route.data.subscribe(response => this.cerf = response.cerf);
 		this.cerf = this.route.snapshot.data['cerf'];
 		console.log(this.cerf);
@@ -89,7 +104,11 @@ export class CerfComponent {
 		console.log("Coming from MRF ", this.fromMrf);
 		// this.myForm = this.createCerf(this.cerf);
 
-		this.myForm = this.createReactiveForm(this.cerf);
+		this.myForm = this.createCerf(this.cerf);
+
+		memberService.getMembers().subscribe(res => {
+			this.filteredRoster = res;
+		});
 
 		console.log(this.myForm);
 	}
@@ -99,28 +118,24 @@ export class CerfComponent {
 	cerf: Cerf;
 	
 	@ViewChild(MatSort) sort;
+	@ViewChildren(MatTable) tables: QueryList<MatTable<any>>;
 
 	get editable() {
-		return (this.cerf.status == 0 && this.cerf.author_id == this.user._id) ||
+		return (this.cerf.status == 0 && this.cerf.author._id == this.user._id) ||
 		(this.cerf.status <= 1 && this.user.access.club == 2);
 	}
 
 	ngOnInit() {
+		
 	}
 
 	 ngAfterContentInit() {
-		this.memberColumns = [{def: "member", title: "Name", footer: "+ Add Member", defaultFooter: ""},
-	 		{def: "service", title: "Service", footer: "Service", defaultFooter: this.myForm.get('hoursPerAttendee.service')},
-	 		{def: "leadership", title: "Leadership", footer: "Leadership", defaultFooter: this.myForm.get('hoursPerAttendee.leadership')},
-	 		{def: "fellowship", title: "Fellowship", footer: "Fellowship", defaultFooter: this.myForm.get('hoursPerAttendee.fellowship')}]
-	 	this.attendees = this.cerf.attendees.map(attendee => ({member: attendee, service: this.cerf.hoursPerAttendee.service,
-	 		leadership: this.cerf.hoursPerAttendee.leadership, fellowship: this.cerf.hoursPerAttendee.fellowship})).concat(
-	 		this.cerf.overrideHours.map(attendee => ({member: attendee.attendee_id, service: attendee.service, leadership: attendee.leadership, fellowship: attendee.fellowship})));
-	 	console.log(this.attendees);
+		// this.memberColumns = [{def: "member", title: "Name", footer: "+ Add Member", defaultFooter: ""},
+	 // 		{def: "service", title: "Service", footer: "Service", defaultFooter: this.myForm.get('hoursPerAttendee.service')},
+	 // 		{def: "leadership", title: "Leadership", footer: "Leadership", defaultFooter: this.myForm.get('hoursPerAttendee.leadership')},
+	 // 		{def: "fellowship", title: "Fellowship", footer: "Fellowship", defaultFooter: this.myForm.get('hoursPerAttendee.fellowship')}]
 
-		this.auth.getUser().subscribe(user => {
-			this.user = user;
-		});
+		this.user = this.auth.getUser();
 
 		this.categoriesActive = this.categories.value;
 
@@ -133,8 +148,77 @@ export class CerfComponent {
 
 	}
 
-	inputListReady(name, event) {
-		this.myForm.setControl(name, event);
+	// inputListReady(name, event) {
+	// 	this.myForm.setControl(name, event);
+	// }
+
+	addAttendance() {
+		// Validate inputs
+
+		this.attendanceArray.push(this.builder.group(this.newAttendance));
+		this.newAttendance.name = "";
+		this.newAttendance.service = this.myForm.get("hoursPerAttendee.service").value;
+		this.newAttendance.leadership = this.myForm.get("hoursPerAttendee.leadership").value;
+		this.newAttendance.fellowship = this.myForm.get("hoursPerAttendee.fellowship").value;
+
+		this.tables.toArray()[0].renderRows();
+		const element = this.renderer.selectRootElement("#attendanceFocus");
+		setTimeout(() => element.focus(), 0);
+
+		this.myForm.markAsDirty();
+	}
+	addKfam() {
+		// Validate inputs
+
+		this.kfamArray.push(this.builder.group(this.newKfam));
+		Object.assign(this.newKfam, this.defaultKfam);
+
+		this.tables.toArray()[1].renderRows();
+		const element = this.renderer.selectRootElement("#kfamFocus");
+		setTimeout(() => element.focus(), 0);
+
+		this.myForm.markAsDirty();
+	}
+	addDriver() {
+		// Validate inputs
+
+		this.driverArray.push(this.builder.group(this.newDriver));
+		Object.assign(this.newDriver, this.defaultDriver);
+
+		this.tables.toArray()[2].renderRows();
+		const element = this.renderer.selectRootElement("#driverFocus");
+		setTimeout(() => element.focus(), 0);
+
+		this.myForm.markAsDirty();
+	}
+	deleteAttendee(index) {
+		this.attendanceArray.removeAt(index);
+		this.tables.toArray()[0].renderRows();
+		this.myForm.markAsDirty();
+	}
+	deleteKfam(index) {
+		this.kfamArray.removeAt(index);
+		this.tables.toArray()[1].renderRows();
+		this.myForm.markAsDirty();
+	}
+	deleteDriver(index) {
+		this.driverArray.removeAt(index);
+		this.tables.toArray()[2].renderRows();
+		this.myForm.markAsDirty();
+	}
+
+	get attendanceArray() {
+		return this.myForm.get("attendees") as FormArray;
+	}
+	get kfamArray() {
+		return this.myForm.get("kfamAttendance") as FormArray;
+	}
+	get driverArray() {
+		return this.myForm.get("drivers") as FormArray;
+	}
+
+	filterMembers(event: any) {
+		this.filteredRoster = this.memberService.filterMembers(event.target.value);
 	}
 
 	openTagHelp() {
@@ -151,51 +235,6 @@ export class CerfComponent {
 	isLabelActive(label: string): boolean {
 		return this.categoriesActive.includes(label);
 	}
-
-	// toggleLabel(label: string) {
-
-	// 	if(this.isLabelActive(label)) {
-	// 		this.categoriesActive.splice(this.categoriesActive.indexOf(label), 1);
-	// 		this.labels.removeAt(this.labels.value.indexOf(this.categoryButtons.indexOf(label)));
-	// 	}
-	// 	else {
-	// 		this.categoriesActive.push(label);
-	// 		this.labels.controls.push(this.builder.control(label));
-	// 	}
-	// 	// const labels = this.myForm.controls['labels'] as FormArray;
-	// 	// labels.controls.push(this.builder.control(""));
-	// 	console.log(this.myForm.get('labels'));
-	// 	this.myForm.get('labels').markAsDirty();
-	// }
-
-	// newLabel(label: string) {
-
-	// 	if(!this.categoryButtons.includes(label)) {
-	// 		this.categoryButtons.push(label);
-	// 		this.categoriesActive.push(label);
-	// 		this.labels.controls.push(this.builder.control(label));
-	// 	}
-	// 	// const labels = this.myForm.controls['labels'] as FormArray;
-	// 	// labels.controls.push(this.builder.control(""));
-	// 	// this.myForm.patch({labels: this.categoriesActive});
-	// 	console.log(this.myForm.get('labels'));
-	// 	this.myForm.get('labels').markAsDirty();
-	// 	this.addingCategory = false;
-	// }
-
-	// removeLabel(i: number) {
-
-	// 	if(this.categoriesActive.indexOf(this.categoryButtons[i]) > 0) {
-	// 		this.categoriesActive.splice(this.categoriesActive.indexOf(this.categoryButtons[i]), 1);
-	// 		this.labels.removeAt(this.labels.value.indexOf(this.categoryButtons[i]));
-	// 	}
-	// 	this.categoryButtons.splice(i, 1);
-
-	// 	// const labels = this.myForm.controls['labels'] as FormArray;
-	// 	// labels.removeAt(i);
-	// 	console.log(this.myForm.get('labels'));
-	// 	this.myForm.get('labels').markAsDirty();
-	// }
 
 	get categories() {
 		return (this.myForm.controls['categories'] as FormArray);
@@ -217,7 +256,22 @@ export class CerfComponent {
 
 	saveCerf() {
 		// this.cerf.data.attendees = this.members.data;
-		this.dataService.updateCerf(this.getCerfFromForm()).subscribe(res => {this.myForm.markAsPristine();});
+		if(this.cerf._id == "new")
+		{
+			this.dataService.createNewCerf(this.getCerfFromForm()).subscribe((res: {success, result}) => {
+				if(res.success)
+				{
+					const id = res.result;
+					this._location.replaceState("cerfs/" + id);
+					this.cerf._id = id;
+					// this.myForm.get("_id").setValue(id);
+				} else {
+					// Handle failure
+				}
+			});
+		} else {
+			this.dataService.updateCerf(this.getCerfFromForm()).subscribe(res => {this.myForm.markAsPristine();});
+		}
 	}
 
 	deleteCerf() {
@@ -358,17 +412,15 @@ export class CerfComponent {
 			kfamAttendance: { org, numAttendees }[]
 		*/
 
-		this.fillDefaults(model);
-
-
 		let form = this.builder.group({
 			name: [model.name],
-			chair_id: [model.chair_id],
+			chair_id: [model.chair._id],
+			author: [model.author.name.first + " " + model.author.name.last],	// could create a name concatenator function...
 			time: this.builder.group(model.time),
 			location: model.location,
 			contact: model.contact,
 			tags: this.builder.array(model.tags),
-			attendees: this.builder.array(model.attendees),
+			attendees: this.builder.array(model.attendees.map(eachAttendee => this.builder.group(eachAttendee))),
 			hoursPerAttendee: this.builder.group(model.hoursPerAttendee),
 			overrideHours: this.builder.array(model.overrideHours.map(eachOverride => this.builder.group(eachOverride))),
 			fundraised: this.builder.group(model.fundraised),
@@ -394,10 +446,9 @@ export class CerfComponent {
 	private createCerf(model: Cerf): FormGroup {
 		/* Fill in CERF with null values so we can at least create a form */
 		/* We're assuming a Cerf IS passed in (i.e. has all the non-optional properties at least */
-		this.fillDefaults(model);
-		console.log(JSON.stringify(model));
 		let copyModel = JSON.parse(JSON.stringify(model));	// Cooking the data passes by reference, so nested arrays in objects are altered
-		const form = this.cookData(copyModel);
+		this.fillDefaults(copyModel);
+		const form = this.createReactiveForm(copyModel); //this.cookData(copyModel);
 		this.setValidators(form, [
 			{ control: 'name', validator: Validators.required },
 			{ control: 'hoursPerAttendee.service', validator: Validators.pattern('^[-]?[0-9]*[.]?[0-9]{0,2}$')},
@@ -415,7 +466,7 @@ export class CerfComponent {
 
 		return form;
 	}
-
+	
 	private fillDefaults(model: Cerf): void
 	{
 		// For structural changes, need to null-check because these won't be included in legacy CERFs
@@ -436,6 +487,11 @@ export class CerfComponent {
 		if(!model.categories) {
 			model.categories = [];
 		}
+
+		model.attendees = model.attendees.map(attendee => ({name: attendee._id, service: model.hoursPerAttendee.service,
+	 		leadership: model.hoursPerAttendee.leadership, fellowship: model.hoursPerAttendee.fellowship})).concat(
+	 		model.overrideHours.map(attendee => ({name: attendee.attendee_id, service: attendee.service, leadership: attendee.leadership, fellowship: attendee.fellowship})));
+	 	
 	}
 
 	private cookData(model: Object): FormGroup

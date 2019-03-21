@@ -21,12 +21,10 @@
 			<input matInput formControlName="month" readonly>
 		</mat-form-field>
 
-		<ng-container formGroupName="updates">
-			<mat-form-field appearance="outline">
-				<mat-label># Dues Paid Members</mat-label>
-				<input matInput formControlName="dues_paid">
-			</mat-form-field>
-		</ng-container>
+		<mat-form-field appearance="outline">
+			<mat-label># Dues Paid Members</mat-label>
+			<input matInput formControlName="numDuesPaid">
+		</mat-form-field>
 	</div>
 
 
@@ -48,60 +46,68 @@
 				<ng-container matColumnDef="date">
 					<mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
 					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">
-						<input pattern="[0-9]{1,2}\/[0-9]{1,2}" [readonly]="!editingMeetings" [class.editing]="editingMeetings" matInput formControlName="date">
+						<input  [readonly]="!editingMeetings" [class.editing]="editingMeetings" matInput formControlName="date">
 					</mat-cell>
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
-							<mat-label>+ Add Meeting</mat-label>
-							<input matInput pattern="[0-9]{1,2}\/[0-9]{1,2}" [(ngModel)]="newMeeting.date" [ngModelOptions]="{standalone: true}" (keyup.enter)="addMeetingRow()">
+							<mat-label>MM-DD-YYYY</mat-label>
+							<input matInput  [(ngModel)]="newMeeting.date" [ngModelOptions]="{standalone: true}" (keyup.enter)="addMeetingRow()" id="meetingFocus">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
 				<ng-container matColumnDef="numMembers">
 					<mat-header-cell *matHeaderCellDef>Home club members</mat-header-cell>
 					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">
-						<input [readonly]="!editingMeetings" [class.editing]="editingMeetings" matInput formControlName="numMembers">
+						<ng-container formGroupName="attendance">
+							<input [readonly]="!editingMeetings" [class.editing]="editingMeetings" matInput formControlName="numMembers">
+						</ng-container>
 					</mat-cell>
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
 							<mat-label>#</mat-label>
-							<input matInput pattern="[0-9]{1,}" [(ngModel)]="newMeeting.numMembers" [ngModelOptions]="{standalone: true}" (keyup.enter)="addMeetingRow()">
+							<input matInput  [(ngModel)]="newMeeting.attendance.numMembers" [ngModelOptions]="{standalone: true}" (keyup.enter)="addMeetingRow()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
 				<ng-container matColumnDef="numNonHomeMembers">
 					<mat-header-cell *matHeaderCellDef>Other CKI members</mat-header-cell>
 					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">
-						<input [readonly]="!editingMeetings" [class.editing]="editingMeetings" matInput formControlName="numNonHomeMembers">
+						<ng-container formGroupName="attendance">
+							<input [readonly]="!editingMeetings" [class.editing]="editingMeetings" matInput formControlName="numNonHomeMembers">
+						</ng-container>
 					</mat-cell>
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
 							<mat-label>#</mat-label>
-							<input matInput pattern="[0-9]{1,}" [(ngModel)]="newMeeting.numNonHomeMembers" [ngModelOptions]="{standalone: true}" (keyup.enter)="addMeetingRow()">
+							<input matInput  [(ngModel)]="newMeeting.attendance.numNonHomeMembers" [ngModelOptions]="{standalone: true}" (keyup.enter)="addMeetingRow()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
 				<ng-container matColumnDef="numKiwanis">
 					<mat-header-cell *matHeaderCellDef>Kiwanians</mat-header-cell>
 					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">
-						<input [readonly]="!editingMeetings" [class.editing]="editingMeetings" matInput formControlName="numKiwanis">
+						<ng-container formGroupName="attendance">
+							<input [readonly]="!editingMeetings" [class.editing]="editingMeetings" matInput formControlName="numKiwanis">
+						</ng-container>
 					</mat-cell>
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
 							<mat-label>#</mat-label>
-							<input matInput pattern="[0-9]{1,}" [(ngModel)]="newMeeting.numKiwanis" [ngModelOptions]="{standalone: true}" (keyup.enter)="addMeetingRow()">
+							<input matInput  [(ngModel)]="newMeeting.attendance.numKiwanis" [ngModelOptions]="{standalone: true}" (keyup.enter)="addMeetingRow()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
 				<ng-container matColumnDef="numGuests">
 					<mat-header-cell *matHeaderCellDef>Other guests</mat-header-cell>
 					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">
-						<input [readonly]="!editingMeetings" [class.editing]="editingMeetings" matInput formControlName="numGuests">
+						<ng-container formGroupName="attendance">
+							<input [readonly]="!editingMeetings" [class.editing]="editingMeetings" matInput formControlName="numGuests">
+						</ng-container>
 					</mat-cell>
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
 							<mat-label>#</mat-label>
-							<input matInput pattern="[0-9]{1,}" [(ngModel)]="newMeeting.numGuests" [ngModelOptions]="{standalone: true}" (keyup.enter)="addMeetingRow()">
+							<input matInput  [(ngModel)]="newMeeting.attendance.numGuests" [ngModelOptions]="{standalone: true}" (keyup.enter)="addMeetingRow()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -124,7 +130,7 @@
 						</ng-container>
 					</mat-cell>
 					<mat-footer-cell *matFooterCellDef>
-						<mat-checkbox [(ngModel)]="newMeeting.advisorAttended.kiwanis" [ngModelOptions]="{standalone: true}"></mat-checkbox>
+						<mat-checkbox [(ngModel)]="newMeeting.advisorAttended.kiwanis" [ngModelOptions]="{standalone: true}" (keydown.Tab)="addMeetingRow()"></mat-checkbox>
 					</mat-footer-cell>
 				</ng-container>
 				<ng-container matColumnDef="actions">
@@ -161,36 +167,40 @@
 				<ng-container matColumnDef="date">
 					<mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
 					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">
-						<input pattern="[0-9]{1,2}\/[0-9]{1,2}" [readonly]="!editingBoardMeetings" [class.editing]="editingBoardMeetings" matInput formControlName="date">
+						<input  [readonly]="!editingBoardMeetings" [class.editing]="editingBoardMeetings" matInput formControlName="date">
 					</mat-cell>
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
-							<mat-label>+ Add Meeting</mat-label>
-							<input matInput pattern="[0-9]{1,2}\/[0-9]{1,2}" [(ngModel)]="newBoardMeeting.date" [ngModelOptions]="{standalone: true}" (keyup.enter)="addBoardMeetingRow()">
+							<mat-label>MM-DD-YYYY</mat-label>
+							<input matInput  [(ngModel)]="newBoardMeeting.date" [ngModelOptions]="{standalone: true}" (keyup.enter)="addBoardMeetingRow()" id="boardMeetingFocus">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
 				<ng-container matColumnDef="boardMembers">
 					<mat-header-cell *matHeaderCellDef>Board members</mat-header-cell>
 					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">
-						<input [readonly]="!editingBoardMeetings" [class.editing]="editingBoardMeetings" matInput formControlName="boardMembers">
+						<ng-container formGroupName="attendance">
+							<input [readonly]="!editingBoardMeetings" [class.editing]="editingBoardMeetings" matInput formControlName="numBoard">
+						</ng-container>
 					</mat-cell>
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
 							<mat-label>#</mat-label>
-							<input matInput pattern="[0-9]{1,}" [(ngModel)]="newBoardMeeting.boardMembers" [ngModelOptions]="{standalone: true}" (keyup.enter)="addBoardMeetingRow()">
+							<input matInput  [(ngModel)]="newBoardMeeting.attendance.numBoard" [ngModelOptions]="{standalone: true}" (keyup.enter)="addBoardMeetingRow()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
 				<ng-container matColumnDef="guests">
 					<mat-header-cell *matHeaderCellDef>Guests</mat-header-cell>
 					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">
-						<input [readonly]="!editingBoardMeetings" [class.editing]="editingBoardMeetings" matInput formControlName="guests">
+						<ng-container formGroupName="attendance">
+							<input [readonly]="!editingBoardMeetings" [class.editing]="editingBoardMeetings" matInput formControlName="numGuests">
+						</ng-container>
 					</mat-cell>
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
 							<mat-label>#</mat-label>
-							<input matInput pattern="[0-9]{1,}" [(ngModel)]="newBoardMeeting.guests" [ngModelOptions]="{standalone: true}" (keyup.enter)="addBoardMeetingRow()">
+							<input matInput  [(ngModel)]="newBoardMeeting.attendance.numGuests" [ngModelOptions]="{standalone: true}" (keyup.enter)="addBoardMeetingRow()" (keydown.Tab)="addBoardMeetingRow()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -264,12 +274,12 @@
 				<ng-container matColumnDef="source">
 					<mat-header-cell *matHeaderCellDef>Source</mat-header-cell>
 					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">
-						<input pattern=".+" [readonly]="!editingFundraising" [class.editing]="editingFundraising" matInput formControlName="source">
+						<input  [readonly]="!editingFundraising" [class.editing]="editingFundraising" matInput formControlName="source">
 					</mat-cell>
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
 							<mat-label>+ Add Fundraiser</mat-label>
-							<input matInput pattern=".+" [(ngModel)]="newFundraising.source" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()">
+							<input matInput  [(ngModel)]="newFundraising.source" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()" id="fundraisingFocus">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -281,7 +291,7 @@
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
 							<mat-label>$</mat-label>
-							<input matInput pattern="[0-9]{1,}" [(ngModel)]="newFundraising.ptp" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()">
+							<input matInput  [(ngModel)]="newFundraising.ptp" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -293,7 +303,7 @@
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
 							<mat-label>$</mat-label>
-							<input matInput pattern="[0-9]{1,}" [(ngModel)]="newFundraising.kfh" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()">
+							<input matInput  [(ngModel)]="newFundraising.kfh" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -305,7 +315,7 @@
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
 							<mat-label>$</mat-label>
-							<input matInput pattern="[0-9]{1,}" [(ngModel)]="newFundraising.fa" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()">
+							<input matInput  [(ngModel)]="newFundraising.fa" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -317,7 +327,7 @@
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
 							<mat-label>$</mat-label>
-							<input matInput pattern="[0-9]{1,}" [(ngModel)]="newFundraising.other" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()">
+							<input matInput  [(ngModel)]="newFundraising.other" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -329,7 +339,7 @@
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
 							<mat-label>$</mat-label>
-							<input matInput pattern="[0-9]{1,}" [(ngModel)]="newFundraising.admin" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()">
+							<input matInput  [(ngModel)]="newFundraising.admin" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()" (keydown.Tab)="addFundraisingRow()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>

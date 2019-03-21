@@ -15,6 +15,8 @@ export class MrfSecretaryResolver implements Resolve<Mrf[]> {
 		return this.dataService.getMrfList();
 	}
 }
+
+// Move to CERF resolver
 @Injectable( { providedIn: 'root' })
 export class MrfPendingCerfResolver implements Resolve<Cerf[]> {
 	constructor(private dataService: DataService, private router: Router) { }
@@ -52,7 +54,7 @@ export class MrfResolver implements Resolve<any> {
 	constructor(private dataService: DataService, private router: Router) { }
 
 	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
-		return this.dataService.getMrfByDate(route.params.year, route.params.month).pipe(map(res => {
+		return this.dataService.getMrfByDate(route.params.year, route.params.month).pipe(map( (res: {success: boolean, result}) => {
 				if(!res.result){
 					this.router.navigate(['/mrfs']);
 					return null;

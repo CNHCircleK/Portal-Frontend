@@ -1,94 +1,58 @@
-<div class="body"><h1> Sign Up </h1>
-<form #validateCode="ngForm">
-	<!-- TODO: Check if code is valid to active signupcodes -->
-	<div *ngIf="!isValidCode()">
-		<mat-form-field appearance="outline"> <mat-label>SignUpCode</mat-label>
-			<input required	matInput ngModel
-			#SignUpCode= "ngModel" name= "SignUpCode" placeholder= "Sign Up Code">
-			<mat-error *ngIf="SignUpCode.touched && SignUpCode.invalid">Sign Up Code is required</mat-error>
-		</mat-form-field><!-- Sign Up Code Field -->
+<div class="body">
+	<h1> Sign Up </h1>
 
-		<button mat-raised-button class= "marginLeft" (click)="checkCode( SignUpCode.value )">Verify</button>
-
-		<div><a href="" class="linkDeco">Where can I get a code?</a></div>
-	</div>
-
-	<!-- TODO: Load user info for "display" fields -->
-	<div *ngIf="isValidCode() && !isDataCorrect()">
-		<p> Is this information correct? </p>
-
-		<div class="marginBottom">
-			<button mat-raised-button (click)="unlockForm()" class="marginRight">No</button>
-			<span *ngIf="!isFormUnlocked()"><button mat-raised-button (click)="setDataCorrect(true)">Yes</button></span>
-		</div>
-
-		<div> First Name:
-			<span> <mat-form-field appearance="outline"> <mat-label>Your First Name</mat-label>
-				<input matInput	ngModel [disabled]="!isFormUnlocked()"
-				#FirstName= "ngModel" name= "FirstName"  placeholder="John">
-			</mat-form-field> </span><!-- First Name -->
-		</div>
-
-		<div> Last Name:
-			<span> <mat-form-field appearance="outline"> <mat-label>Your Last Name</mat-label>
-				<input matInput	ngModel [disabled]="!isFormUnlocked()"
-				#LastName= "ngModel" name= "LastName"  placeholder="Snow">
-			</mat-form-field> </span><!-- Last Name -->
-		</div>
-
-		<div> Division:
-			<span> <mat-form-field appearance="outline"><mat-label>Your Division</mat-label>
-				<input matInput	ngModel [disabled]="!isFormUnlocked()"
-				#Division= "ngModel" name= "Division" placeholder="The North">
-			</mat-form-field> </span><!-- Division -->
-		</div>
-
-		<div> School:
-			<span> <mat-form-field appearance="outline"> <mat-label>Your School</mat-label>
-				<input matInput	ngModel  [disabled]="!isFormUnlocked()"
-				#School= "ngModel" name= "School" placeholder="Winterfell">
-			</mat-form-field> </span><!-- School -->
-		</div>
-
-		<a [routerLink]="['/faqs']" class="marginRight linkDeco">Is this not you?</a>
-<!-- 		TODO: check that these values aren't empty -->
-		<div *ngIf="isFormUnlocked()">
-			<button mat-raised-button (click)="editUserData(FirstName.value, LastName.value, School.value, Division.value)">Next</button>
-		</div>
-	</div>
-
-	<div *ngIf="isDataCorrect()">Choose your username and password
-		<div> <mat-form-field appearance="outline"> <mat-label>Username</mat-label>
-			<input required matInput ngModel
-			#Username= "ngModel" name= "Username" placeholder= "Username">
-			<mat-error *ngIf="Username.touched && Username.invalid">Username is required</mat-error>
-		</mat-form-field> </div>
-
-		<div> <mat-form-field appearance="outline"> <mat-label>Password</mat-label>
-				<input required	matInput ngModel
-				#Password= "ngModel" name= "Password" placeholder= "Password" type= "password">
+	<form #signupForm="ngForm" (submit)="signup(signupForm)">
+			<!-- <mat-form-field appearance="outline">
+				<mat-label>Name</mat-label>
+				<input matInput disabled [value]="verifiedCode.name">
+			</mat-form-field>
+			<mat-form-field appearance="outline">
+				<mat-label>Division</mat-label>
+				<input matInput disabled [value]="verifiedCode.division">
+			</mat-form-field>
+			<mat-form-field appearance="outline">
+				<mat-label>Club</mat-label>
+				<input matInput disabled [value]="verifiedCode.club">
+			</mat-form-field>
+			<br /> -->
+			<mat-form-field appearance="outline">
+				<mat-label>Registration Code</mat-label>
+				<input required matInput [(ngModel)]="code" #Code="ngModel" name="Code">
+				<mat-error *ngIf="Code.touched && Code.invalid">Registration code is required</mat-error>
+			</mat-form-field>
+			<br />
+			<mat-form-field appearance="outline">
+				<mat-label>Email</mat-label>
+				<input required matInput [(ngModel)]="email" #Email="ngModel" name="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+				<mat-error *ngIf="Email.touched && Email.invalid">Enter valid email</mat-error>
+			</mat-form-field>
+			<br />
+			<!-- <mat-form-field appearance="outline">
+				<mat-label>Username</mat-label>
+				<input required matInput [(ngModel)]="username"
+				#Username="ngModel" name="Username">
+				<mat-error *ngIf="Username.touched && Username.invalid">Username is required</mat-error>
+			</mat-form-field> -->
+			<mat-form-field appearance="outline">
+				<mat-label>Password</mat-label>
+				<input required	matInput [(ngModel)]="password" #Password="ngModel" name="Password" type="password" validateEqual="ConfirmPassword" reverse="true">
 				<mat-error *ngIf="Password.touched && Password.invalid">Password is required</mat-error>
-		</mat-form-field> </div>
+			</mat-form-field>
+			<br />
+			<mat-form-field appearance="outline">
+				<mat-label>Confirm Password</mat-label>
+				<input required	matInput [(ngModel)]="confirmPassword" #ConfirmPassword="ngModel" name="ConfirmPassword" type="password" validateEqual="Password">
+				<mat-error *ngIf="ConfirmPassword.touched && ConfirmPassword.invalid">Passwords do not match</mat-error>
+			</mat-form-field>
+			<br />
 
-		<!-- TODO: clientside verification of confirmed password -->
-		<div> <mat-form-field appearance="outline"> <mat-label>Confirm Password</mat-label>
-				<input required	matInput ngModel
-				#ConfirmPassword= "ngModel"	name= "ConfirmPassword"	placeholder= "Confirm Password"	type= "password">
-				<mat-error *ngIf="ConfirmPassword.touched && ConfirmPassword.invalid">Please confirm your password</mat-error>
-				<mat-error *ngIf="getMatchedPass()">Passwords do not match</mat-error>
-		</mat-form-field> </div>
+			<!-- <a [routerLink]="['/faqs']" class="marginRight linkDeco">Is this not you?</a> -->
+			<!-- 		TODO: check that these values aren't empty -->
+<!-- 			<div *ngIf="isFormUnlocked()">
+				<button mat-raised-button (click)="editUserData(FirstName.value, LastName.value, School.value, Division.value)">Next</button>
+			</div> -->
+			<button mat-raised-button type="submit" [disabled]="!ConfirmPassword.valid || !Password.valid || !Code.valid || !Email.valid">Submit<mat-icon inline="true">done</mat-icon> </button>
+			<button mat-raised-button type="button" [routerLink]="['/login']">Login instead</button>
+	</form>
 
-		<div> <mat-form-field appearance="outline"> <mat-label>Email</mat-label>
-			<input required	matInput ngModel
-			#Email= "ngModel" name= "Email"	placeholder= "Email" type= "email">
-			<mat-error *ngIf="Email.touched && Email.invalid">Email is required</mat-error>
-		</mat-form-field> </div>	
-
-		<a mat-raised-button class="marginRight linkDeco" (click)="setDataCorrect(false)">Back</a>
-		<button mat-raised-button type="submit" [disabled]="!ConfirmPassword.valid || !Password.valid || !Username.valid || !Email.valid"
-			(click)="signup(Email.value, Username.value, Password.value, ConfirmPassword.value)">
-			Submit <i class="material-icons">done</i>
-		</button>
-	</div>
-</form>
 </div>

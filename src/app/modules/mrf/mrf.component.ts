@@ -1,4 +1,4 @@
-import { Component, ViewChildren, QueryList } from '@angular/core';
+import { Component, ViewChildren, QueryList, Renderer2 } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, AbstractControl, Validators, ValidatorFn } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Cerf } from '@core/data/cerf';
@@ -6,6 +6,7 @@ import { Mrf } from '@core/data/mrf';
 import { DataService } from '@core/data/data.service';
 import { Location } from '@angular/common';
 import { MatTable } from '@angular/material';
+import * as moment from 'moment';
 
 @Component({
 	selector: 'app-mrf',
@@ -30,12 +31,12 @@ export class MrfComponent {
 	fundraisingColumns = ["source", "ptp", "kfh", "fa", "other", "admin", "actions"];
 	eventsColumns = ["name", "date", "numAttendees", "totalService", "totalLeadership", "totalFellowship", "tags", "actions"];
 
-	defaultMeeting = { date: "", numMembers: 0, numNonHomeMembers: 0, numKiwanis: 0, numGuests: 0, advisorAttended: {faculty: false, kiwanis: false }};
-	defaultBoardMeeting = { date: "", boardMembers: 0, guests: 0 };
+	defaultMeeting = { date: "", attendance: { numMembers: 0, numNonHomeMembers: 0, numKiwanis: 0, numGuests: 0}, advisorAttended: {faculty: false, kiwanis: false }};
+	defaultBoardMeeting = { date: "", attendance: { numBoard: 0, numGuests: 0 } };
 	defaultFundraising = { source: "", ptp: 0, kfh: 0, fa: 0, other: 0, admin: 0 };
 
-	newMeeting = { date: "", numMembers: 0, numNonHomeMembers: 0, numKiwanis: 0, numGuests: 0, advisorAttended: {faculty: false, kiwanis: false }};
-	newBoardMeeting = { date: "", boardMembers: 0, guests: 0 };
+	newMeeting = { date: "", attendance: { numMembers: 0, numNonHomeMembers: 0, numKiwanis: 0, numGuests: 0}, advisorAttended: {faculty: false, kiwanis: false }};
+	newBoardMeeting = { date: "", attendance: { numBoard: 0, numGuests: 0 } };
 	newFundraising = { source: "", ptp: 0, kfh: 0, fa: 0, other: 0, admin: 0 };
 	// meetingColumns = [{def: "date", title: "Date", footer: "Date", defaultFooter: ""},
 	// 					{def: "numMembers", title: "Home Club Members", footer: "#", defaultFooter: 0},
@@ -57,7 +58,7 @@ export class MrfComponent {
 	@ViewChildren(MatTable) tables: QueryList<MatTable<any>>;
 
 	constructor(private route: ActivatedRoute, private dataService: DataService,
-		private _location: Location, private builder: FormBuilder) {
+		private _location: Location, private builder: FormBuilder, private renderer: Renderer2) {
 		this.mrf = this.route.snapshot.data['mrf'];
 
 		this.mrfForm = this.dataService.getMrfFormState;
@@ -66,7 +67,7 @@ export class MrfComponent {
 
 		this.currentTab = this.dataService.getMrfTabState;
 
-		console.log(this.eventsArray.controls);
+		console.log(this.meetingArray.getRawValue()[0]);
 	}
 
 	ngOnInit() {
@@ -90,32 +91,48 @@ export class MrfComponent {
 	deleteMeeting(index) {
 		this.meetingArray.removeAt(index);
 		this.tables.toArray()[0].renderRows();
+		this.mrfForm.markAsDirty();
 	}
 	deleteBoardMeeting(index) {
 		this.boardMeetingArray.removeAt(index);
 		this.tables.toArray()[1].renderRows();
+		this.mrfForm.markAsDirty();
 	}
 	deleteFundraising(index) {
 		this.fundraisingArray.removeAt(index);
 		this.tables.toArray()[2].renderRows();
+		this.mrfForm.markAsDirty();
 	}
 
 	addMeetingRow() {
 		// Validate inputs
-		if(!this.newMeeting.date || isNaN(this.newMeeting.numMembers) || isNaN(this.newMeeting.numNonHomeMembers) || 
-			isNaN(this.newMeeting.numKiwanis) || isNaN(this.newMeeting.numGuests))
+		if(!this.newMeeting.date || isNaN(this.newMeeting.attendance.numMembers) || isNaN(this.newMeeting.attendance.numNonHomeMembers) || 
+			isNaN(this.newMeeting.attendance.numKiwanis) || isNaN(this.newMeeting.attendance.numGuests))
 			return;
-		this.meetingArray.push(this.builder.group({...this.newMeeting, advisorAttended: this.builder.group(this.newMeeting.advisorAttended)}));
+		// this.meetingArray.push(this.builder.group({date: this.newMeeting.date, attendance: { numMembers: this.newMeeting.numMembers,
+			// numNonHomeMembers: this.newMeeting.numNonHomeMembers, numKiwanis: this.newMeeting.numKiwanis, numGuests: this.newMeeting.numGuests } advisorAttended: this.builder.group(this.newMeeting.advisorAttended)}));
+		this.meetingArray.push(this.builder.group({...this.newMeeting, attendance: this.builder.group(this.newMeeting.attendance), advisorAttended: this.builder.group(this.newMeeting.advisorAttended)}));
+		console.log(this.meetingArray);
 		Object.assign(this.newMeeting, this.defaultMeeting);
 		this.tables.toArray()[0].renderRows();
+
+		const element = this.renderer.selectRootElement('#meetingFocus');
+		setTimeout(() => element.focus(), 0);
+
+		this.mrfForm.markAsDirty();
 	}
 	addBoardMeetingRow() {
 		// Validate inputs
-		if(!this.newBoardMeeting.date || isNaN(this.newBoardMeeting.boardMembers) || isNaN(this.newBoardMeeting.guests))
+		if(!this.newBoardMeeting.date || isNaN(this.newBoardMeeting.attendance.numBoard) || isNaN(this.newBoardMeeting.attendance.numGuests))
 			return;
-		this.boardMeetingArray.push(this.builder.group(this.newBoardMeeting));
+		this.boardMeetingArray.push(this.builder.group({...this.newBoardMeeting, attendance: this.builder.group(this.newBoardMeeting.attendance)}));
 		Object.assign(this.newBoardMeeting, this.defaultBoardMeeting);
 		this.tables.toArray()[1].renderRows();
+
+		const element = this.renderer.selectRootElement('#boardMeetingFocus');
+		setTimeout(() => element.focus(), 0);
+
+		this.mrfForm.markAsDirty();
 	}
 	addFundraisingRow() {
 		// Validate inputs
@@ -125,6 +142,11 @@ export class MrfComponent {
 		this.fundraisingArray.push(this.builder.group(this.newFundraising));
 		Object.assign(this.newFundraising, this.defaultFundraising);
 		this.tables.toArray()[2].renderRows();
+
+		const element = this.renderer.selectRootElement('#fundraisingFocus');
+		setTimeout(() => element.focus(), 0);
+
+		this.mrfForm.markAsDirty();
 	}
 
 	get meetingArray() {
@@ -141,8 +163,8 @@ export class MrfComponent {
 	}
 
 	saveMrf() {
-		this.getMrfFromForm();
-		// this.dataService.updateMrf(this.getMrfFromForm()).subscribe(res => {this.mrfForm.markAsPristine();});
+		// this.getMrfFromForm();
+		this.dataService.updateMrf(this.getMrfFromForm()).subscribe(res => {console.log(res); this.mrfForm.markAsPristine();});
 	}
 
 	private createReactiveForm(model: Mrf): FormGroup {
@@ -171,12 +193,15 @@ export class MrfComponent {
 	        events: this.builder.array(model.events.map(eachEvent => this.builder.group(eachEvent))),
 	        goals: this.builder.array(model.goals),
 	        kfamReport: this.builder.control(model.kfamReport),
-	        meetings: this.builder.array(model.meetings.map(eachMeeting => this.builder.group(eachMeeting))),
-	        boardMeetings: this.builder.array(model.boardMeetings.map(eachBoardMeeting => this.builder.group(eachBoardMeeting))),
+	        meetings: this.builder.array(model.meetings.map(eachMeeting => this.builder.group({date: this.builder.control(moment(eachMeeting.date).format("MM-DD-YYYY")), attendance: this.builder.group(eachMeeting.attendance), advisorAttended: this.builder.group(eachMeeting.advisorAttended)}))),
+	        boardMeetings: this.builder.array(model.boardMeetings.map(eachBoardMeeting => this.builder.group({date: this.builder.control(moment(eachBoardMeeting.date).format("MM-DD-YYYY")), attendance: this.builder.group(eachBoardMeeting.attendance)}))),
 	        fundraising: this.builder.array(model.fundraising.map(eachFundraising => this.builder.group(eachFundraising))),
 	        month: this.builder.control(model.month),
 	        year: this.builder.control(model.year),
-	        updates: this.builder.group(model.updates)
+	        club_id: this.builder.control(model.club_id),
+	        numDuesPaid: this.builder.control(model.numDuesPaid),
+	        status: this.builder.control(model.status),
+	        submissionTime: this.builder.control(model.submissionTime)
 	    })
 
 		return form;
@@ -187,7 +212,8 @@ export class MrfComponent {
 		/* We're assuming a Cerf IS passed in (i.e. has all the non-optional properties at least) */
 		this.fillDefaults(model);
 		let copyModel = JSON.parse(JSON.stringify(model));	// Cooking the data passes by reference, so nested arrays in objects are altered
-		const form = this.cookData(copyModel);
+		// const form = this.cookData(copyModel);
+		const form = this.createReactiveForm(copyModel);
 		// this.setValidators(form, [
 		// 	]);
 		console.log(form);
@@ -197,6 +223,10 @@ export class MrfComponent {
 	private fillDefaults(model: Mrf): void
 	{
 		// Set default values of a Partial<Cerf>
+		if(!model.events)
+		{
+			model.events = [];
+		}
 	}
 
 	private cookData(model: Object): FormGroup
@@ -237,8 +267,10 @@ export class MrfComponent {
 
 	public getMrfFromForm() {
 		let rawMrf = this.mrfForm.getRawValue();
+		rawMrf.meetings.forEach(meeting => meeting.date = new Date(meeting.date).toISOString());
+		rawMrf.boardMeetings.forEach(meeting => meeting.date = new Date(meeting.date).toISOString());
 		console.log(rawMrf);
-		// Object.assign(this.mrf, rawMrf);
+		Object.assign(this.mrf, rawMrf);
 		// console.log(this.mrf);
 		return this.mrf;
 	}

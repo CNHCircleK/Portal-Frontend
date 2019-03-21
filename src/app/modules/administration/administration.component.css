@@ -1,0 +1,26 @@
+/*button {
+	margin-bottom: 16px;
+}*/
+#header button {
+	margin-left: 16px;
+}
+
+.selecting mat-row {
+	cursor: pointer;
+}
+
+mat-row:not(.member-detail-row):hover {
+  background: #f5f5f5;
+}
+
+.member-detail-row {
+	height: 0;
+}
+
+.member-detail {
+	overflow: hidden;
+}
+
+.expanded-row, .mat-column-expandedDetail {
+	border-bottom-width: 0;
+}

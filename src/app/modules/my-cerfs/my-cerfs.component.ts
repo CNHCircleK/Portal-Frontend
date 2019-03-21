@@ -5,6 +5,7 @@ import { Cerf } from '@core/data/cerf';
 import { DataService } from '@core/data/data.service';
 import { NgForm } from '@angular/forms';
 import { Location } from '@angular/common';
+import { MatPaginator, MatSort, MatTableDataSource, MatSortable } from '@angular/material';
 
 import { AuthService } from '@core/authentication/auth.service';
 import { Member } from '@core/authentication/member';
@@ -19,8 +20,14 @@ import { Observable, zip } from 'rxjs';
 })
 
 export class MyCerfsComponent {
+	displayedColumns = ["name", "time.start", "author", "status"];	// Add "status" to display notification of status
+	@ViewChild(MatPaginator) paginator: MatPaginator;
+	@ViewChild(MatSort) sort: MatSort;
+	@Input() pagination: boolean;
+
 	mrfView: boolean = false;
 	cerfs: Cerf[] = [];
+	list: MatTableDataSource<Cerf>;
 	resolve;
 
 	constructor(private route: ActivatedRoute, private router: Router, private dataService: DataService,
@@ -31,7 +38,39 @@ export class MyCerfsComponent {
 	}
 
 	ngOnInit() {
-		
+		if(this.cerfs) {
+			this.list = new MatTableDataSource(this.cerfs);
+			this.pagination = this.cerfs.length > 10 || this.pagination;	// even if not specified, automatically attach pagination when there's enough elements
+		}
+	}
+
+	ngAfterViewInit() {
+		if(this.list) {
+			this.list.sort = this.sort;
+			this.list.sortingDataAccessor = (data, header) => {
+				switch (header) {
+					case "time.start":
+						return new Date(data.time.start);
+					
+					default:
+						return data[header]; // https://github.com/angular/material2/issues/9966
+				}
+			}
+			if(this.pagination)
+				this.list.paginator = this.paginator;
+		}
+	}
+
+	applyFilter(filterValue: string) {
+		if(this.list) {
+		    filterValue = filterValue.trim(); // Remove whitespace
+		    filterValue = filterValue.toLowerCase(); // list defaults to lowercase matches
+		    this.list.filter = filterValue;
+		}
+	}
+
+	clickRow(row) {
+		this.router.navigate(['/cerf', row._id]);
 	}
 
 	newCerf() {
