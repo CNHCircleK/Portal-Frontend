@@ -3,8 +3,7 @@ import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot, Navigatio
 import { Observable, of } from 'rxjs';
 import { map, take, filter, pairwise, tap } from 'rxjs/operators';
 
-import { Mrf } from '@core/data/mrf';
-import { Cerf } from '@core/data/cerf';
+import { Cerf, Mrf } from '@core/models';
 import { DataService } from '@core/data/data.service';
 
 @Injectable( { providedIn: 'root' })

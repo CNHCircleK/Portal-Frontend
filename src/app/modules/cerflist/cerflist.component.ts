@@ -5,7 +5,7 @@ import { MatPaginator, MatSort, MatTableDataSource, MatSortable } from '@angular
 
 import { Observable } from 'rxjs';
 import { DataService } from '@core/data/data.service';
-import { Cerf } from '@core/data/cerf';
+import { Cerf } from '@core/models';
 
 @Component({
 	selector: 'app-cerflist',

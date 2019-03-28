@@ -7,7 +7,7 @@
 	<!-- !!!!!!!!!!!!!!****** Change all cerf references to form references since at this point, the form is a copy -->
 	<!-- or somehow make form changes propagate to cerf -->
 
-	<div id="cerf-actions">
+	<div id="cerf-actions" *ngIf="myForm; else loading">
 		<mat-spinner *ngIf="pendingAction" diameter="36"></mat-spinner>
 		<button mat-icon-button [disabled]="pendingAction || (cerf.status > 0 && user.access.club < 2) || (cerf.status > 1)" (click)="deleteCerf()"><mat-icon>delete</mat-icon></button>
 		<button mat-icon-button [disabled]="!editable || !myForm.dirty || !myForm.valid || pendingAction" (click)="saveCerf()"><mat-icon>save</mat-icon></button>
@@ -31,7 +31,7 @@
 
 
 
-<form [formGroup]="myForm">
+<form [formGroup]="myForm" *ngIf="myForm; else loading">
 
 	<div id="main">
 		<h3 class="mat-subheading-1">General Information</h3>
@@ -39,7 +39,7 @@
 			<mat-label>ID</mat-label>
 			<input matInput formControlName="_id" readonly>
 		</mat-form-field> -->
-
+		<button mat-button (click)="printForm()">Print</button><br/>
 		<mat-form-field appearance="outline">
 			<mat-label>Event Name</mat-label>
 			<input matInput formControlName="name" required>
@@ -595,3 +595,5 @@
 	</div>
 
 </form>
+
+<ng-template #loading><h3>Loading...</h3></ng-template>

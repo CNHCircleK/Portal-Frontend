@@ -1,9 +1,9 @@
 import { Component, HostBinding } from '@angular/core';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Observable } from 'rxjs';
-import { MemberService } from '@core/data/member.service';
+import { MemberService } from '@core/services';
 import { AuthService } from '@core/authentication/auth.service';
-import { Member } from '@core/authentication/member';
+import { Member } from '@core/models';
 
 @Component({
   selector: 'app-root',

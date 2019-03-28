@@ -27,7 +27,7 @@ import { MrfDeactivateGuard } from '@core/guards/mrf-deactivate.guard';
 
 const routes: Routes = [
 	{ path: 'cerfs', component: MyCerfsComponent, resolve: { myCerfs: MyCerfsResolver, pendingCerfs: MrfPendingCerfResolver }, canActivate: [AuthGuard] },
-	{ path: 'cerf/:id', component: CerfComponent, resolve: { cerf: CerfResolver, mrfNav: CerfNavResolver }, canActivate: [AuthGuard] },
+	{ path: 'cerf/:id', component: CerfComponent, canActivate: [AuthGuard] },
 	{ path: 'mrfs', component: MrfSecretaryComponent, resolve: { mrfs: MrfSecretaryResolver }, canActivate: [AuthGuard] },
 	{ path: 'mrf/:year/:month', component: MrfComponent, resolve: { mrf: MrfResolver }, canActivate: [AuthGuard], canDeactivate: [MrfDeactivateGuard] },
 	{ path: 'divmrfs', component: MrfDivisionComponent, resolve: { divisionMrfs: MrfDivisionResolver }, canActivate: [AuthGuard] },

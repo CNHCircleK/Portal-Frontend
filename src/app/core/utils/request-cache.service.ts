@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { Member } from '@core/authentication/member';
+import { Member } from '@core/models';
 import { HttpRequest, HttpResponse } from '@angular/common/http';
 import HttpConfig from '@env/api_config';
 

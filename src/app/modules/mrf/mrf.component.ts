@@ -1,8 +1,7 @@
 import { Component, ViewChildren, QueryList, Renderer2 } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, AbstractControl, Validators, ValidatorFn } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Cerf } from '@core/data/cerf';
-import { Mrf } from '@core/data/mrf';
+import { Mrf, Cerf } from '@core/models';
 import { DataService } from '@core/data/data.service';
 import { Location } from '@angular/common';
 import { MatTable } from '@angular/material';

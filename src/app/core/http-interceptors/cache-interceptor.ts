@@ -28,8 +28,8 @@ export class CacheInterceptor implements HttpInterceptor {
             // log["url"] = request.url.substring(61);
             // log["response"] = event.body;
             // console.log(JSON.stringify(log));
-            if(event instanceof HttpResponse)
-                cache.put(request, event);
+            // if(event instanceof HttpResponse)
+            //     cache.put(request, event);
         }));
     }
 }

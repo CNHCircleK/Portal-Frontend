@@ -3,10 +3,10 @@ import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@a
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { MemberService } from '@core/data/member.service';
+import { MemberService } from '@core/services';
 import { DataService } from '@core/data/data.service';
 import { AuthService } from '@core/authentication/auth.service';
-import { Member } from '@core/authentication/member';
+import { Member } from '@core/models';
 
 
 @Injectable( {providedIn: 'root'} )

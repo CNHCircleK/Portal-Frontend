@@ -1,7 +1,6 @@
 import { Component, ViewChild, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Mrf } from '@core/data/mrf';
-import { Cerf } from '@core/data/cerf';
+import { Mrf, Cerf } from '@core/models';
 import { DataService } from '@core/data/data.service';
 
 @Component({

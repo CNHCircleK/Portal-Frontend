@@ -3,7 +3,7 @@ import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot, RoutesRec
 import { Observable, of } from 'rxjs';
 import { map, take, filter, pairwise, catchError, tap } from 'rxjs/operators';
 
-import { Cerf } from '@core/data/cerf';
+import { Cerf, Member } from '@core/models';
 import { DataService } from '@core/data/data.service';
 import { AuthService } from '@core/authentication/auth.service';
 
@@ -25,13 +25,12 @@ export class MyCerfsResolver implements Resolve<Cerf[]> {
 	}
 }
 
+// Deprecated
 @Injectable( { providedIn: 'root' })
 export class CerfResolver implements Resolve<Cerf> {
 	constructor(private dataService: DataService, private auth: AuthService, private router: Router) { }
 
 	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Cerf> {
-		if(route.params.id=='new')
-			return of(this.dataService.blankCerf());
 		return this.dataService.getCerf(route.params.id).pipe(map(
 			(res: {success: boolean, result}) => {
 				if(!res.success){

@@ -3,12 +3,12 @@ import { ActivatedRoute } from '@angular/router';
 
 import { DataService } from '@core/data/data.service';
 import { AuthService } from '@core/authentication/auth.service';
-import { Member } from '@core/authentication/member';
+import { Member } from '@core/models';
 
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
-type Club = { _id: string, name: string };
+type Club = { _id: string, name: string };	// move into models
 
 @Component({
 	selector: 'app-clubs',

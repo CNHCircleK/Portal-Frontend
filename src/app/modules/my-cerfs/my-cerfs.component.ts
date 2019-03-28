@@ -1,14 +1,13 @@
 import { Component, Input, Directive, Renderer2, ElementRef, ViewChild } from '@angular/core';
 // import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Cerf } from '@core/data/cerf';
+import { Cerf, Member } from '@core/models';
 import { DataService } from '@core/data/data.service';
 import { NgForm } from '@angular/forms';
 import { Location } from '@angular/common';
 import { MatPaginator, MatSort, MatTableDataSource, MatSortable } from '@angular/material';
 
 import { AuthService } from '@core/authentication/auth.service';
-import { Member } from '@core/authentication/member';
 
 import { Observable, zip } from 'rxjs';
 

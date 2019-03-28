@@ -1,4 +1,4 @@
-import { Cerf } from './cerf';
+import { Cerf } from './cerf.model';
 
 export interface Mrf2 {
 	_id: number,

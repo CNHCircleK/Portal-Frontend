@@ -5,11 +5,13 @@ import { LocalStorage } from '@ngx-pwa/local-storage';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import * as moment from 'moment';
 
-import { CerfData, Cerf } from './cerf';
-import { MrfData, Mrf } from './mrf';
+// import { CerfData, Cerf } from './cerf';
+import { Cerf, Mrf, Member, Maker } from '@core/models';
+// import { MrfData, Mrf } from './mrf';
+
 // import { CoreModule } from '@core/core.module';   CIRCULAR DEPENDENCY
 import { AuthService } from '@core/authentication/auth.service';
-import { Member } from '@core/authentication/member';
+// import { Member } from '@core/authentication/member';
 import HttpConfig from '@env/api_config';
 import { MrfReuseStrategy } from '@core/guards/reuse-strategy';
 
@@ -17,6 +19,14 @@ type response = {
   success: boolean,
   auth: boolean,
   result: any    
+}
+
+interface Response<T> {
+  success: boolean,
+  auth: boolean,
+  error?: string,
+  warnings?: string,
+  result: T
 }
 
 @Injectable( { providedIn: 'root' } )
@@ -93,6 +103,8 @@ export class DataService {
     "_id":"new","name":"New Event",club_id:this.user.club_id,division_id:this.user.division_id,
     author: { _id: this.user._id, name: { first: "", last: ""} },
     chair: { _id: this.user._id, name: { first: "", last: ""} },
+    location: "",
+    contact: "",
     time: {start: new Date(), end: new Date() },
     attendees: [],
     hoursPerAttendee: {service: 0, leadership: 0, fellowship: 0 },
@@ -120,7 +132,7 @@ export class DataService {
 
 
   getCerf(id: string) {
-    return this.http.get<any>(HttpConfig.baseUrl + '/events/' + id);
+    return this.http.get<Response<Cerf>>(HttpConfig.baseUrl + '/events/' + id);
   }
   getMyCerfList(): Observable<Cerf[]> {
     if(!this. user) return of(null);

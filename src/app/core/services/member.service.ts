@@ -2,15 +2,15 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 
-import { DataService } from '@core/data/data.service';
+import { Member } from '@core/models/member.model';
+import { ApiService } from './api.service';
 
-// Deprecated
-@Injectable()
+@Injectable({ providedIn: 'root' })	// the member roster will be used throughout the whole app
 export class MemberService {
 	
 	roster: {name: string, email: string, _id: string}[];
 
-	constructor(private data: DataService) {
+	constructor(private apiService: ApiService) {
 		this.getMembers().subscribe();
 	}
 
@@ -18,7 +18,8 @@ export class MemberService {
 		if(this.roster)
 			return of(this.roster);
 		else
-			return this.data.fetchMembers().pipe(map(response => {
+			return this.apiService.fetchMembers().pipe(map(response => {
+				console.log(response);
 				if(response && response.success) {
 					this.roster = response.result.map(member => (
 						{name: member.name.first + " " + member.name.last, email: member.email, _id: member._id}) );
@@ -67,7 +68,7 @@ export class MemberService {
 	}
 
 	newMember(firstName: string, lastName: string) {
-		return this.data.addMember(firstName, lastName).pipe(tap((response: any) => {
+		return this.apiService.addMember(firstName, lastName).pipe(tap((response: any) => {
 			if(response.success)
 				this.roster.push({name: firstName + " " + lastName, email: undefined, _id: response.result});
 		}))
@@ -76,7 +77,7 @@ export class MemberService {
 	getRegistrationCode(_id: string) {
 		if(this.roster===undefined)
 			return of("");
-		return this.data.getMemberCode(_id).pipe(map(res => {
+		return this.apiService.getMemberCode(_id).pipe(map(res => {
 			if(res.success)
 				return res.result;
 			else

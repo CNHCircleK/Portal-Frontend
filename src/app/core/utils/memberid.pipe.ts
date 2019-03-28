@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { MemberService } from '@core/data/member.service';
+import { MemberService } from '@core/services';
 
 @Pipe({ name: 'memberID' })
 export class MemberIDPipe implements PipeTransform {

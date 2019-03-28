@@ -2,7 +2,7 @@ import { Component, Input, Directive, Renderer2, ElementRef, ViewChild, ViewChil
 // import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { FormGroup, FormControl, FormBuilder, FormArray, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Cerf } from '@core/data/cerf';
+import { Cerf, Member } from '@core/models';
 import { DataService } from '@core/data/data.service';
 import { NgForm } from '@angular/forms';
 import { Location } from '@angular/common';
@@ -15,8 +15,9 @@ import { InfoDialog } from '@app/modules/info-dialog/info-dialog';
 import { TagsDialog } from './tags-dialog.component';
 
 import { AuthService } from '@core/authentication/auth.service';
-import { Member } from '@core/authentication/member';
-import { MemberService } from '@core/data/member.service';
+// import { Member } from '@core/authentication/member';
+// import { MemberService } from '@core/data/member.service';
+import { CerfService, MemberService } from '@core/services';
 
 import { Observable, BehaviorSubject, zip } from 'rxjs';
 
@@ -27,11 +28,13 @@ type Attendee = {name: string, service: number, leadership: number, fellowship: 
 	selector: 'app-cerf',
 	templateUrl: './cerf.component.html',
 	styleUrls: ['./cerf.component.css', './_cerf.component.scss'],
+	providers: [ CerfService ]
 })
 export class CerfComponent {
 
+	cerfId: string;
+
 	pendingAction: boolean = false;
-	fromMrf: boolean = false;
 
 	openedPanels: number[] = [0, 0, 0, 0, 0, 0];
 
@@ -96,21 +99,19 @@ export class CerfComponent {
 
 	constructor(private route: ActivatedRoute, private dataService: DataService, private memberService: MemberService,
 		private auth: AuthService, private _location: Location, public dialog: MatDialog,
-		private builder: FormBuilder, private renderer: Renderer2) {
+		private builder: FormBuilder, private renderer: Renderer2, private cerfService: CerfService) {
 		// this.route.data.subscribe(response => this.cerf = response.cerf);
-		this.cerf = this.route.snapshot.data['cerf'];
-		console.log(this.cerf);
-		this.fromMrf = this.route.snapshot.data['mrfNav'];
-		console.log("Coming from MRF ", this.fromMrf);
-		// this.myForm = this.createCerf(this.cerf);
-
-		this.myForm = this.createCerf(this.cerf);
+		this.cerfId = this.route.snapshot.paramMap.get("id"); //this.route.snapshot.data['cerf'];
+		cerfService.loadCerf(this.cerfId).subscribe(done => {
+			this.cerf = cerfService.getCerf(); // move all calculations into the service so we don't need the actual cerf in here
+			this.myForm = cerfService.getCerfForm();			
+		});
 
 		memberService.getMembers().subscribe(res => {
 			this.filteredRoster = res;
 		});
 
-		console.log(this.myForm);
+		console.log(this.myForm, this.cerf, this.route);
 	}
 
 	//id: number;
@@ -126,7 +127,6 @@ export class CerfComponent {
 	}
 
 	ngOnInit() {
-		
 	}
 
 	 ngAfterContentInit() {
@@ -137,11 +137,9 @@ export class CerfComponent {
 
 		this.user = this.auth.getUser();
 
-		this.categoriesActive = this.categories.value;
-
-		if(!this.editable) {
-			this.myForm.disable();
-		}
+		// if(!this.editable) {
+		// 	this.myForm.disable();
+		// }
 	}
 
 	ngAfterViewInit() {
@@ -537,7 +535,7 @@ export class CerfComponent {
 	// }
 
 	public printForm() {
-		console.log(this.myForm);
+		console.log(this.myForm, this.cerfService.getCerfForm());	// CHECK - this.myForm and the form in the service reference the same thing
 	}
 
 	public getCerfFromForm() {

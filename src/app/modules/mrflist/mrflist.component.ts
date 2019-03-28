@@ -1,6 +1,6 @@
 import { Component, ViewChild, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { Mrf } from '@core/data/mrf';
+import { Mrf } from '@core/models';
 import { AuthService } from '@core/authentication/auth.service';
 import { DataService } from '@core/data/data.service';
 

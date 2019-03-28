@@ -3,7 +3,7 @@ import { CanActivate, Router, RouterStateSnapshot, ActivatedRouteSnapshot } from
 import { Observable, of } from 'rxjs';
 import { map, take, filter, pairwise } from 'rxjs/operators';
 
-import { Cerf } from '@core/data/cerf';
+import { Cerf, Member } from '@core/models';
 import { DataService } from '@core/data/data.service';
 import { AuthService } from '@core/authentication/auth.service';
 
