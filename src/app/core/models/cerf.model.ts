@@ -50,12 +50,14 @@ export class Cerf {
 	) {}
 }
 
-export class CerfList {
+export class CerfListEntry {
 	constructor(
-		public list: {_id: string, name: string, status: number,
-			time: {start: Date, end: Date},
-			author: {name: string}}[]
-			) {}
+		public _id: string,
+		public name: string,
+		public status: number,
+		public time: { start: Date, end: Date },
+		public author: { name: string }[]
+	) {}
 }
 
 // // export interface Cerf extends Partial<CerfData> {

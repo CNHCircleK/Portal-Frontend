@@ -8,6 +8,7 @@
 @import '../themes/main_theme.scss';
 
 @import '../themes/custom_mixins.scss';
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 /*.main-theme {
 	@include angular-material-theme($graphic-standard-theme);

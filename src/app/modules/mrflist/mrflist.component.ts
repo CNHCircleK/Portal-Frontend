@@ -2,7 +2,7 @@ import { Component, ViewChild, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Mrf } from '@core/models';
 import { AuthService } from '@core/authentication/auth.service';
-import { DataService } from '@core/data/data.service';
+import { ApiService } from '@core/services';
 
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 
@@ -37,13 +37,13 @@ export class MrfListComponent {
 	// @Input() display: string[];
 	months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-	constructor(private auth: AuthService, private dataService: DataService, private router: Router) {
+	constructor(private auth: AuthService, private apiService: ApiService, private router: Router) {
 		const user = auth.getUser();
 		this.extraList = user.access.district > 0 ? MrfListComponent.DISTRICT : (user.access.division > 0 ? MrfListComponent.DIVISION : MrfListComponent.NONE);
 
 		if(this.extraList == MrfListComponent.DISTRICT)
 		{
-			dataService.getDivisions().subscribe( (res: {success, result}) => {
+			apiService.getDivisions().subscribe( (res: {success, result}) => {
 				if(res.success)
 					this.divisions = res.result;
 				console.log(res);
@@ -51,7 +51,7 @@ export class MrfListComponent {
 		}
 		if(this.extraList == MrfListComponent.DIVISION)
 		{
-			dataService.getClubs().subscribe( (res: {success, result}) => {
+			apiService.getClubs().subscribe( (res: {success, result}) => {
 				if(res.success)
 					this.clubs = res.result;
 			})
@@ -83,7 +83,7 @@ export class MrfListComponent {
 
 	showClubs(row) {
 		this.currentDivision = row.name;
-		this.dataService.getClubs(row._id).subscribe( (res: {success, result}) => {
+		this.apiService.getClubs(row._id).subscribe( (res: {success, result}) => {
 			if(res.success)
 				this.clubs = res.result;
 			this.currentTab = "clubs";

@@ -2,7 +2,6 @@ import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { MemberService } from '@core/services';
-import { DataService } from '@core/data/data.service';
 import { AuthService } from '@core/authentication/auth.service';
 import { Member } from '@core/models';
 
@@ -110,7 +109,7 @@ export class ClubAdministrationComponent {
 
 	expandedMember = null;
 
-	constructor(private dataService: DataService, private memberService: MemberService,
+	constructor(private memberService: MemberService,
 		private auth: AuthService, private route: ActivatedRoute, private dialog: MatDialog,
 		private snackBar: MatSnackBar) {
 		this.members = this.route.snapshot.data['members'];
@@ -170,7 +169,7 @@ export class ClubAdministrationComponent {
 			return;
 		this.gettingCode = true;
 		this.memberRegistrationMode = false;
-		this.dataService.getMemberCode(row._id).subscribe( (res:any) => {
+		this.memberService.getRegistrationCode(row._id).subscribe( (res:any) => {
 			console.log(res);
 			if(res.success) {
 				this.members[this.members.findIndex(member => member._id == row._id)]['code']=res.result;

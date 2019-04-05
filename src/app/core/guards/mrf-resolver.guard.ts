@@ -4,24 +4,24 @@ import { Observable, of } from 'rxjs';
 import { map, take, filter, pairwise, tap } from 'rxjs/operators';
 
 import { Cerf, Mrf } from '@core/models';
-import { DataService } from '@core/data/data.service';
+import { ApiService } from '@core/services';
 
 @Injectable( { providedIn: 'root' })
 export class MrfSecretaryResolver implements Resolve<Mrf[]> {
-	constructor(private dataService: DataService, private router: Router) { }
+	constructor(private apiService: ApiService, private router: Router) { }
 
 	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Mrf[]> {
-		return this.dataService.getMrfList();
+		return this.apiService.getMrfList();
 	}
 }
 
 // Move to CERF resolver
 @Injectable( { providedIn: 'root' })
 export class MrfPendingCerfResolver implements Resolve<Cerf[]> {
-	constructor(private dataService: DataService, private router: Router) { }
+	constructor(private apiService: ApiService, private router: Router) { }
 
 	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Cerf[]> {
-		return this.dataService.getPendingCerfs().pipe(map(response => {
+		return this.apiService.getPendingCerfs().pipe(map(response => {
 			console.log(response);
 			if(response.success)
 				return response.result;
@@ -33,33 +33,17 @@ export class MrfPendingCerfResolver implements Resolve<Cerf[]> {
 
 @Injectable( { providedIn: 'root' })
 export class MrfDivisionResolver implements Resolve<Mrf[]> {
-	constructor(private dataService: DataService, private router: Router) { }
+	constructor(private apiService: ApiService, private router: Router) { }
 
 	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Mrf[]> {
-		return this.dataService.getMrfList();	// get division mrfs
+		return this.apiService.getMrfList();	// get division mrfs
 	}
 }
 @Injectable( { providedIn: 'root' })
 export class MrfDistrictResolver implements Resolve<Mrf[]> {
-	constructor(private dataService: DataService, private router: Router) { }
+	constructor(private apiService: ApiService, private router: Router) { }
 
 	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Mrf[]> {
-		return this.dataService.getMrfList();	// get district mrfs
-	}
-}
-
-@Injectable( { providedIn: 'root' })
-export class MrfResolver implements Resolve<any> {
-	constructor(private dataService: DataService, private router: Router) { }
-
-	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
-		return this.dataService.getMrfByDate(route.params.year, route.params.month).pipe(map( (res: {success: boolean, result}) => {
-				if(!res.result){
-					this.router.navigate(['/mrfs']);
-					return null;
-				}
-				return res.result;
-		}),
-		tap(res => this.dataService.routeMrf = true));
+		return this.apiService.getMrfList();	// get district mrfs
 	}
 }

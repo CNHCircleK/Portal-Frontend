@@ -1,0 +1,362 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>portal documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/material.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">portal documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Interfaces</li>
+  <li>RouteStorageObject</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/core/guards/reuse-strategy.ts</code>
+        </p>
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Interface for object which can store both: 
+An ActivatedRouteSnapshot, which is useful for determining whether or not you should attach a route (see this.shouldAttach)
+A DetachedRouteHandle, which is offered up by this.retrieve, in the case that you do want to attach the stored route</p>
+
+            </p>
+
+
+        <section>
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#handle">handle</a>
+                                </li>
+                                <li>
+                                        <a href="#snapshot">snapshot</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section>
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="handle"></a>
+                                        <span class="name"><b>handle</b><a href="#handle"><span class="icon ion-ios-link"></span></a></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>handle:         <code><a href="https://angular.io/api/router/DetachedRouteHandle" target="_blank" >DetachedRouteHandle</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://angular.io/api/router/DetachedRouteHandle" target="_blank" >DetachedRouteHandle</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="snapshot"></a>
+                                        <span class="name"><b>snapshot</b><a href="#snapshot"><span class="icon ion-ios-link"></span></a></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>snapshot:         <code><a href="https://angular.io/api/router/ActivatedRouteSnapshot" target="_blank" >ActivatedRouteSnapshot</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://angular.io/api/router/ActivatedRouteSnapshot" target="_blank" >ActivatedRouteSnapshot</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { RouteReuseStrategy, ActivatedRouteSnapshot, DetachedRouteHandle } from &#x27;@angular/router&#x27;;
+
+/*
+Reference: https://stackoverflow.com/questions/41280471/how-to-implement-routereusestrategy-shoulddetach-for-specific-routes-in-angular
+*/
+
+/** Interface for object which can store both: 
+ * An ActivatedRouteSnapshot, which is useful for determining whether or not you should attach a route (see this.shouldAttach)
+ * A DetachedRouteHandle, which is offered up by this.retrieve, in the case that you do want to attach the stored route
+ */
+interface RouteStorageObject {
+    snapshot: ActivatedRouteSnapshot;
+    handle: DetachedRouteHandle;
+}
+
+export class MrfReuseStrategy implements RouteReuseStrategy {
+	/** 
+     * Object which will store RouteStorageObjects indexed by keys, which are paths (route.routeConfig.path)
+     */
+    private storedRoutes: { [key: string]: RouteStorageObject } &#x3D; {};
+
+    private routesToStore: string[] &#x3D; [&#x27;mrf/:year/:month&#x27;];
+
+    private saveMrf: boolean;
+    private loadMrf: boolean;
+
+    shouldDetach(route: ActivatedRouteSnapshot): boolean {
+    	if(this.routesToStore.indexOf(route.routeConfig.path) &gt; -1 &amp;&amp; this.saveMrf)
+    		return true;
+    	return false;
+    }
+
+    store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle): void {
+    	let storedRoute: RouteStorageObject &#x3D; { snapshot: route, handle: handle };
+    	this.storedRoutes[route.routeConfig.path] &#x3D; storedRoute;	// Will store in key &quot;mrf/:year/:month&quot;, WILL override, which we want anyways
+    }
+
+    shouldAttach(route: ActivatedRouteSnapshot): boolean {
+    	let canAttach &#x3D; !!route.routeConfig &amp;&amp; !!this.storedRoutes[route.routeConfig.path];
+
+    	if(canAttach &amp;&amp; this.loadMrf) {
+    		// route.params: {year: &quot;2018&quot;, month: &quot;7&quot;}
+    		// route.queryParams: {}
+    		/* storedRoutes.snapshot:
+    				params: {year: &quot;2018&quot;, month: &quot;7&quot;}
+    				queryParams: {}
+    				routeConfig: 
+	    				canActivate: [AuthGuard]
+						component: MrfComponent
+						path: &quot;mrf/:year/:month&quot;
+						resolve: mrf: MrfResolver
+					url (UrlSegments):
+						[0] &quot;mrf&quot; [1] &quot;2018&quot; [2] &quot;7&quot;
+    		*/
+
+    		return this.compareObjects(route.params, this.storedRoutes[route.routeConfig.path].snapshot.params) &amp;&amp;
+    			this.compareObjects(route.queryParams, this.storedRoutes[route.routeConfig.path].snapshot.queryParams);
+    	}
+    	return false;
+    }
+
+    updateEvents() {
+
+    }
+
+    retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle {
+    	if(!route.routeConfig || !this.storedRoutes[route.routeConfig.path]) return null;
+        console.log(this.storedRoutes[route.routeConfig.path]);
+    	return this.storedRoutes[route.routeConfig.path].handle;
+    }
+
+    /** 
+     * Determines whether or not the current route should be reused
+     * @param curr The route the user was on
+     * @param future The route the user is going to, as triggered by the router
+     * @returns boolean basically indicating true if the user intends to leave the current route
+     */
+    shouldReuseRoute(curr: ActivatedRouteSnapshot, future: ActivatedRouteSnapshot): boolean {
+    	// if(future.routeConfig.path &#x3D;&#x3D; &quot;mrf/:year/:month&quot; &amp;&amp; curr.routeConfig.path &#x3D;&#x3D; &quot;cerf/:id&quot;) {
+    	// 	console.log(&quot;trying to reload MRF &quot;);
+    	// 	return true;
+    	// }
+    	if(curr.routeConfig &amp;&amp; future.routeConfig) {
+    		if(curr.routeConfig.path &#x3D;&#x3D; &quot;mrf/:year/:month&quot; &amp;&amp; future.routeConfig.path &#x3D;&#x3D; &quot;cerf/:id&quot;) {
+    			this.saveMrf &#x3D; true;	// Want to save if going into a CERF from MRF
+    		}
+    		else if (curr.routeConfig.path &#x3D;&#x3D; &quot;cerf/:id&quot; &amp;&amp; future.routeConfig.path &#x3D;&#x3D; &quot;mrf/:year/:month&quot;) {
+    			this.loadMrf &#x3D; true;	// Want to load if going back to MRF from CERF
+    		}
+    		else {
+    			this.storedRoutes &#x3D; {};
+    			this.saveMrf &#x3D; false;
+    			this.loadMrf &#x3D; false;
+    		}
+    	}
+    	return future.routeConfig &#x3D;&#x3D;&#x3D; curr.routeConfig;
+    }
+
+    /** 
+     * This nasty bugger finds out whether the objects are _traditionally_ equal to each other, like you might assume someone else would have put this function in vanilla JS already
+     * One thing to note is that it uses coercive comparison (&#x3D;&#x3D;) on properties which both objects have, not strict comparison (&#x3D;&#x3D;&#x3D;)
+     * Another important note is that the method only tells you if &#x60;compare&#x60; has all equal parameters to &#x60;base&#x60;, not the other way around
+     * @param base The base object which you would like to compare another object to
+     * @param compare The object to compare to base
+     * @returns boolean indicating whether or not the objects have all the same properties and those properties are &#x3D;&#x3D;
+     */
+    private compareObjects(base: any, compare: any): boolean {
+
+        // loop through all properties in base object
+        for (let baseProperty in base) {
+
+            // determine if comparrison object has that property, if not: return false
+            if (compare.hasOwnProperty(baseProperty)) {
+                switch(typeof base[baseProperty]) {
+                    // if one is object and other is not: return false
+                    // if they are both objects, recursively call this comparison function
+                    case &#x27;object&#x27;:
+                        if ( typeof compare[baseProperty] !&#x3D;&#x3D; &#x27;object&#x27; || !this.compareObjects(base[baseProperty], compare[baseProperty]) ) { return false; } break;
+                    // if one is function and other is not: return false
+                    // if both are functions, compare function.toString() results
+                    case &#x27;function&#x27;:
+                        if ( typeof compare[baseProperty] !&#x3D;&#x3D; &#x27;function&#x27; || base[baseProperty].toString() !&#x3D;&#x3D; compare[baseProperty].toString() ) { return false; } break;
+                    // otherwise, see if they are equal using coercive comparison
+                    default:
+                        if ( base[baseProperty] !&#x3D; compare[baseProperty] ) { return false; }
+                }
+            } else {
+                return false;
+            }
+        }
+
+        // returns true only after false HAS NOT BEEN returned through all loops
+        return true;
+    }
+}</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'RouteStorageObject.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

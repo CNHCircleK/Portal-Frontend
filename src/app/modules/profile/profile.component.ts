@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@core/authentication/auth.service';
-import { Member } from '@core/models';
-import { DataService } from '@core/data/data.service';
+import { User } from '@core/models';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,9 +10,9 @@ import { Router } from '@angular/router';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(private auth: AuthService, private dataService: DataService, private router: Router) { }
+  constructor(private auth: AuthService, private router: Router) { }
 
-  user: Member;
+  user: User;
   refresh: boolean;
 
   ngOnInit() {
@@ -25,7 +24,7 @@ export class ProfileComponent implements OnInit {
   	this.auth.logout();
     this.user = null;
     this.router.navigate(['/login']);
-    this.dataService.logoutData();
+    // this.dataService.logoutData();
   }
 
   // login()
@@ -37,7 +36,7 @@ export class ProfileComponent implements OnInit {
 
   resetData()
   {
-    this.dataService.resetData();
+    // this.dataService.resetData();
   }
 
 }

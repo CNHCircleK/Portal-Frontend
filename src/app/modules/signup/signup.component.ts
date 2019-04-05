@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@core/authentication/auth.service';
-import { DataService } from '@core/data/data.service';
 import { Router } from '@angular/router';
 
 import { Directive, forwardRef, Provider, Attribute } from '@angular/core';
 import { Validator, AbstractControl, NG_VALIDATORS } from '@angular/forms';
 
+
+// This is just for checking confirm password matching...
 @Directive({
   selector: '[validateEqual][formControlName],[validateEqual][formControl],[validateEqual][ngModel]',
   providers: [
@@ -49,7 +50,7 @@ export class EqualValidator implements Validator {
 })
 export class SignupComponent implements OnInit {
 
-  constructor(private auth: AuthService, private dataService: DataService, private router: Router) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
   email: string;
   code: string;

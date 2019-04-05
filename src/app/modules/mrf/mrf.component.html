@@ -1,6 +1,8 @@
+<!-- might want to change ngIf checks to something more explicit, rather than relying on mrfForm not being undefined -->
+
 <div id="mrf-header">
-	<p class="mat-body-1">MRF Month: {{ mrf.month }} </p>
-	<div id="mrf-actions">
+	<p class="mat-body-1">MRF Month: <ng-container *ngIf="mrfForm">{{ mrf.month }}</ng-container></p>
+	<div id="mrf-actions" *ngIf="mrfForm; else loading">
 		<mat-spinner *ngIf="false" diameter="36"></mat-spinner>
 		<button mat-icon-button [disabled]="!mrfForm.dirty || !mrfForm.valid" (click)="saveMrf()"><mat-icon>save</mat-icon></button>
 	</div>
@@ -9,7 +11,7 @@
 
 <mat-divider></mat-divider>
 
-<form [formGroup]="mrfForm">
+<form [formGroup]="mrfForm" *ngIf="mrfForm; else loading">
 	<div id="main">
 		<h3>General Information</h3>
 		<mat-form-field appearance="outline">
@@ -459,3 +461,5 @@
 
 	</mat-accordion>
 </form>
+
+<ng-template #loading><h3>loading...</h3></ng-template>

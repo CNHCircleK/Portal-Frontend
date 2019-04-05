@@ -3,7 +3,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { Observable } from 'rxjs';
 import { MemberService } from '@core/services';
 import { AuthService } from '@core/authentication/auth.service';
-import { Member } from '@core/models';
+import { User } from '@core/models';
 
 @Component({
   selector: 'app-root',
@@ -26,7 +26,7 @@ export class AppComponent {
 	{icon: 'people', text: 'Clubs', route: '/clubs'},
 	{icon: 'assignment', text: 'Divisions', route: '/divisions'}
 	];
-	userSubject: Observable<Member>;
+	userSubject: Observable<User>;
 	authLinks = [];
 
 	// @Input() level: number = 1;

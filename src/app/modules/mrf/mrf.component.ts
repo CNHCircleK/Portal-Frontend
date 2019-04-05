@@ -1,16 +1,18 @@
 import { Component, ViewChildren, QueryList, Renderer2 } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, AbstractControl, Validators, ValidatorFn } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Mrf, Cerf } from '@core/models';
-import { DataService } from '@core/data/data.service';
 import { Location } from '@angular/common';
 import { MatTable } from '@angular/material';
+import { Mrf, Cerf } from '@core/models';
+import { MrfService, ApiService } from '@core/services';
+
 import * as moment from 'moment';
 
 @Component({
 	selector: 'app-mrf',
 	templateUrl: './mrf.component.html',
-	styleUrls: ['./mrf.component.css', './_mrf.component.scss']
+	styleUrls: ['./mrf.component.css', './_mrf.component.scss'],
+	providers: [ MrfService ]	// Component scoped
 })
 
 export class MrfComponent {
@@ -56,17 +58,20 @@ export class MrfComponent {
 
 	@ViewChildren(MatTable) tables: QueryList<MatTable<any>>;
 
-	constructor(private route: ActivatedRoute, private dataService: DataService,
-		private _location: Location, private builder: FormBuilder, private renderer: Renderer2) {
-		this.mrf = this.route.snapshot.data['mrf'];
+	constructor(private route: ActivatedRoute, private _location: Location, private builder: FormBuilder,
+				private renderer: Renderer2, private mrfService: MrfService, private apiService: ApiService) {
+		// this.mrf = this.route.snapshot.data['mrf'];
+		let year = this.route.snapshot.paramMap.get("year");
+		let month = this.route.snapshot.paramMap.get("month");
+		mrfService.loadMrf(year, month).subscribe(done => {
+			this.mrf = mrfService.getMrf();
+			this.mrfForm = mrfService.getMrfForm();
+		});
+		// this.mrfForm = this.dataService.getMrfFormState;
+		// if(!this.mrfForm)
+		// 	this.mrfForm = this.createMrf(this.mrf);
 
-		this.mrfForm = this.dataService.getMrfFormState;
-		if(!this.mrfForm)
-			this.mrfForm = this.createMrf(this.mrf);
-
-		this.currentTab = this.dataService.getMrfTabState;
-
-		console.log(this.meetingArray.getRawValue()[0]);
+		// this.currentTab = this.dataService.getMrfTabState;
 	}
 
 	ngOnInit() {
@@ -163,7 +168,11 @@ export class MrfComponent {
 
 	saveMrf() {
 		// this.getMrfFromForm();
-		this.dataService.updateMrf(this.getMrfFromForm()).subscribe(res => {console.log(res); this.mrfForm.markAsPristine();});
+		// this.dataService.updateMrf(this.getMrfFromForm()).subscribe(res => {console.log(res); this.mrfForm.markAsPristine();});
+		this.mrfService.dispatchUpdate().subscribe(result => {
+			this.mrfForm.markAsPristine();
+			console.log(result);
+		});
 	}
 
 	private createReactiveForm(model: Mrf): FormGroup {

@@ -4,7 +4,6 @@ import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { MemberService } from '@core/services';
-import { DataService } from '@core/data/data.service';
 import { AuthService } from '@core/authentication/auth.service';
 import { Member } from '@core/models';
 

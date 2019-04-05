@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@core/authentication/auth.service';
-import { DataService } from '@core/data/data.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -12,7 +11,6 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   constructor(
    private auth: AuthService,
-   private dataService: DataService,
    private router: Router) {}
 
   user;

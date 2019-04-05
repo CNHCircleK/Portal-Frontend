@@ -7,18 +7,18 @@
 	<!-- !!!!!!!!!!!!!!****** Change all cerf references to form references since at this point, the form is a copy -->
 	<!-- or somehow make form changes propagate to cerf -->
 
-	<div id="cerf-actions" *ngIf="myForm; else loading">
+	<div id="cerf-actions" *ngIf="cerfForm; else loading">
 		<mat-spinner *ngIf="pendingAction" diameter="36"></mat-spinner>
 		<button mat-icon-button [disabled]="pendingAction || (cerf.status > 0 && user.access.club < 2) || (cerf.status > 1)" (click)="deleteCerf()"><mat-icon>delete</mat-icon></button>
-		<button mat-icon-button [disabled]="!editable || !myForm.dirty || !myForm.valid || pendingAction" (click)="saveCerf()"><mat-icon>save</mat-icon></button>
+		<button mat-icon-button [disabled]="!editable || !cerfForm.dirty || !cerfForm.valid || pendingAction" (click)="saveCerf()"><mat-icon>save</mat-icon></button>
 		<!-- remove "cerf.status==0" once we change "draft" abstraction definition -->
-		<button mat-icon-button *ngIf="cerf.status==0 || user.access.club < 2" [disabled]="!myForm.pristine || !myForm.valid || pendingAction || cerf.status > 0" (click)="submitCerf()" matTooltip="Submit to Secretary"><mat-icon>send</mat-icon></button>
+		<button mat-icon-button *ngIf="cerf.status==0 || user.access.club < 2" [disabled]="!cerfForm.pristine || !cerfForm.valid || pendingAction || cerf.status > 0" (click)="submitCerf()" matTooltip="Submit to Secretary"><mat-icon>send</mat-icon></button>
 
 		<!-- Secretary Only -->
 		<ng-container *ngIf="user.access.club==2">
-			<button mat-icon-button *ngIf="cerf.status==1 && cerf.author._id != user._id" (click)="unsubmitCerf()" [disabled]="pendingAction || !myForm.valid" matTooltip="Release"><mat-icon>restore</mat-icon></button>
-			<button mat-icon-button *ngIf="cerf.status==1" (click)="approveCerf()" [disabled]="pendingAction || !myForm.valid" matTooltip="Add to MRF"><mat-icon>playlist_add</mat-icon></button>
-			<button mat-icon-button *ngIf="cerf.status==2" (click)="unapproveCerf()" [disabled]="pendingAction || !myForm.valid" matTooltip="Remove from MRF"><mat-icon>playlist_remove</mat-icon></button>
+			<button mat-icon-button *ngIf="cerf.status==1 && cerf.author._id != user._id" (click)="unsubmitCerf()" [disabled]="pendingAction || !cerfForm.valid" matTooltip="Release"><mat-icon>restore</mat-icon></button>
+			<button mat-icon-button *ngIf="cerf.status==1" (click)="approveCerf()" [disabled]="pendingAction || !cerfForm.valid" matTooltip="Add to MRF"><mat-icon>playlist_add</mat-icon></button>
+			<button mat-icon-button *ngIf="cerf.status==2" (click)="unapproveCerf()" [disabled]="pendingAction || !cerfForm.valid" matTooltip="Remove from MRF"><mat-icon>playlist_remove</mat-icon></button>
 		</ng-container>
 
 		<!-- <span *ngIf="cerf.status>=1 && cerf.author_id == user._id" matTooltip="Already approved" [matTooltipDisabled]="cerf.status != 2">
@@ -31,7 +31,7 @@
 
 
 
-<form [formGroup]="myForm" *ngIf="myForm; else loading">
+<form [formGroup]="cerfForm" *ngIf="cerfForm; else loading">
 
 	<div id="main">
 		<h3 class="mat-subheading-1">General Information</h3>
@@ -50,7 +50,7 @@
 		</mat-form-field>
 		<mat-form-field appearance="outline">
 			<mat-label>Event Chair</mat-label>
-			<input matInput formControlName="chair_id" [value]="myForm.get('chair_id').value | memberID" [matAutocomplete]="auto">
+			<input matInput formControlName="chair_id" [value]="cerfForm.get('chair_id').value | memberID" [matAutocomplete]="auto">
 			<!-- <button mat-icon-button matSuffix *ngIf="comment" matTooltip="{{comment}}">
 				<mat-icon>chat_bubble</mat-icon>
 			</button> -->
@@ -107,12 +107,12 @@
 		
 
 		<!-- <p>Labels</p>
-		<button mat-raised-button [disabled]="myForm.disabled" (click)="addLabel()">Add Label</button>
+		<button mat-raised-button [disabled]="cerfForm.disabled" (click)="addLabel()">Add Label</button>
 		<div id="labels" formArrayName="labels">
-			<ng-container *ngFor="let label of myForm.controls.labels.controls; let i=index">
+			<ng-container *ngFor="let label of cerfForm.controls.labels.controls; let i=index">
 				<button mat-icon-button (click)="removeLabel(i)"> <mat-icon>cancel</mat-icon> </button>
 				<mat-form-field>
-					<input matInput [disabled]="myForm.disabled" [formControlName]="i">
+					<input matInput [disabled]="cerfForm.disabled" [formControlName]="i">
 				</mat-form-field>
 			</ng-container>
 		</div> -->
@@ -147,7 +147,7 @@
 
 <!-- 		<div id="tags">
 			<div *ngFor="let tag of tagOptions; let i=index">
-				<mat-checkbox [checked]="myForm.get('tags').value.includes(tag)" [disabled]="myForm.disabled" (change)="addRemoveTag(tag, $event.checked)">{{ tagNames[i] }}</mat-checkbox>
+				<mat-checkbox [checked]="cerfForm.get('tags').value.includes(tag)" [disabled]="cerfForm.disabled" (change)="addRemoveTag(tag, $event.checked)">{{ tagNames[i] }}</mat-checkbox>
 				<p [class.show-tag-hints]="showTagHints">{{ tagDescriptions[i] }}</p>
 			</div>
 
@@ -158,27 +158,27 @@
 			<div class="tag-service">
 				<h4>Service</h4>
 				<div>
-					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[0])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[0], $event.checked)">Community Service</mat-checkbox>
+					<mat-checkbox [checked]="cerfForm.get('tags').value.includes(tagIds[0])" [disabled]="cerfForm.disabled" (change)="addRemoveTag(tagIds[0], $event.checked)">Community Service</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">An event where your club members are serving for the community without pay</p>
 				</div>
 
 				<div>
-					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[1])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[1], $event.checked)">Campus Service</mat-checkbox>
+					<mat-checkbox [checked]="cerfForm.get('tags').value.includes(tagIds[1])" [disabled]="cerfForm.disabled" (change)="addRemoveTag(tagIds[1], $event.checked)">Campus Service</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">Any event where your club is doing community service on your school's campus</p>
 				</div>
 
 				<div>
-					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[2])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[2], $event.checked)">Continuing Service</mat-checkbox>
+					<mat-checkbox [checked]="cerfForm.get('tags').value.includes(tagIds[2])" [disabled]="cerfForm.disabled" (change)="addRemoveTag(tagIds[2], $event.checked)">Continuing Service</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">An event that has been completed with the same organization repeatedly at least once a month for a two-month duration</p>
 				</div>
 
 				<div>
-					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[3])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[3], $event.checked)">District Service Initiative</mat-checkbox>
+					<mat-checkbox [checked]="cerfForm.get('tags').value.includes(tagIds[3])" [disabled]="cerfForm.disabled" (change)="addRemoveTag(tagIds[3], $event.checked)">District Service Initiative</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">Any event that contributes to the current District Service Initiative</p>
 				</div>
 
 				<div>
-					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[4])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[4], $event.checked)">International Service Initiative</mat-checkbox>
+					<mat-checkbox [checked]="cerfForm.get('tags').value.includes(tagIds[4])" [disabled]="cerfForm.disabled" (change)="addRemoveTag(tagIds[4], $event.checked)">International Service Initiative</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">Any event that contributes to the current International Service Initiative</p>
 				</div>
 			</div>
@@ -187,14 +187,14 @@
 			<div class="tag-leadership">
 				<h4>Leadership</h4>
 				<div>
-					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[5])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[5], $event.checked)">Administrative</mat-checkbox>
+					<mat-checkbox [checked]="cerfForm.get('tags').value.includes(tagIds[5])" [disabled]="cerfForm.disabled" (change)="addRemoveTag(tagIds[5], $event.checked)">Administrative</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">Any event related to the operation of the club should be tagged as AD. Examples of administrative events include but are not limited to attending meetings (e.g. general meetings, board meetings, committee meetings, Kiwanis meetings), and workshops</p>
 				</div>
 			</div>
 			<div class="tag-fellowship">
 				<h4>Fellowship</h4>
 				<div>
-					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[6])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[6], $event.checked)">Social Event</mat-checkbox>
+					<mat-checkbox [checked]="cerfForm.get('tags').value.includes(tagIds[6])" [disabled]="cerfForm.disabled" (change)="addRemoveTag(tagIds[6], $event.checked)">Social Event</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">Any event in which club members are socially interacting with one another should be tagged as SE. A social event promotes the moral of members so it is usually tagged as MD; however, remember that although all SE events are MD-tagged, not all MD events are SE-tagged (e.g. workshops)</p>
 				</div>
 			</div>
@@ -205,52 +205,52 @@
 			<div class="tag-misc">
 				<h4>Miscellaneous</h4>
 				<div>
-					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[7])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[7], $event.checked)">Membership Development</mat-checkbox>
+					<mat-checkbox [checked]="cerfForm.get('tags').value.includes(tagIds[7])" [disabled]="cerfForm.disabled" (change)="addRemoveTag(tagIds[7], $event.checked)">Membership Development</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">An event that promotes membership recruitment and development</p>
 				</div>
 
 				<div>
-					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[8])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[8], $event.checked)">Fundraiser</mat-checkbox>
+					<mat-checkbox [checked]="cerfForm.get('tags').value.includes(tagIds[8])" [disabled]="cerfForm.disabled" (change)="addRemoveTag(tagIds[8], $event.checked)">Fundraiser</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">A home club-hosted event that raises money for a charity or for administrative funds</p>
 				</div>
 
 				<div>
-					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[9])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[9], $event.checked)">Circle K</mat-checkbox>
+					<mat-checkbox [checked]="cerfForm.get('tags').value.includes(tagIds[9])" [disabled]="cerfForm.disabled" (change)="addRemoveTag(tagIds[9], $event.checked)">Circle K</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">An event in which at least two members from your Circle K club and at least two members from another Circle K club are present</p>
 				</div>
 
 				<div>
-					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[10])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[10], $event.checked)">Kiwanis Family</mat-checkbox>
+					<mat-checkbox [checked]="cerfForm.get('tags').value.includes(tagIds[10])" [disabled]="cerfForm.disabled" (change)="addRemoveTag(tagIds[10], $event.checked)">Kiwanis Family</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">An event in which at least two members from your Circle K club and at least two members from another non-Circle K Kiwanis Family club are present</p>
 				</div>
 
 				<div>
-					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[11])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[11], $event.checked)">Interclub</mat-checkbox>
+					<mat-checkbox [checked]="cerfForm.get('tags').value.includes(tagIds[11])" [disabled]="cerfForm.disabled" (change)="addRemoveTag(tagIds[11], $event.checked)">Interclub</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">An event in which there must be a certain amount of members from your Circle K club and the same amount of members from another Circle K/Kiwanis Family club present, depending on your Circle K club's number of dues paid members. Clubs with less than or equal to 20 members need a minimum of two members present; clubs with 21-30 members need a minimum of three memberrs present; and clubs with greater than or equal to 31 members need a minimum of four members present</p>
 				</div>
 
 				<div>
-					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[12])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[12], $event.checked)">Webinar</mat-checkbox>
+					<mat-checkbox [checked]="cerfForm.get('tags').value.includes(tagIds[12])" [disabled]="cerfForm.disabled" (change)="addRemoveTag(tagIds[12], $event.checked)">Webinar</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">An online webinar usualy hosted by the District Board for the District. This tag applies to both District and International webinars</p>
 				</div>
 
 				<div>
-					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[13])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[13], $event.checked)">Divisional</mat-checkbox>
+					<mat-checkbox [checked]="cerfForm.get('tags').value.includes(tagIds[13])" [disabled]="cerfForm.disabled" (change)="addRemoveTag(tagIds[13], $event.checked)">Divisional</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">An event hosted by and for the Division, which is usually hosted by the respective Lieutenant Governor (and Divisional Board)</p>
 				</div>
 
 				<div>
-					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[14])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[14], $event.checked)">District</mat-checkbox>
+					<mat-checkbox [checked]="cerfForm.get('tags').value.includes(tagIds[14])" [disabled]="cerfForm.disabled" (change)="addRemoveTag(tagIds[14], $event.checked)">District</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">An event hosted by and for the District</p>
 				</div>
 
 				<div>
-					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[15])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[15], $event.checked)">International</mat-checkbox>
+					<mat-checkbox [checked]="cerfForm.get('tags').value.includes(tagIds[15])" [disabled]="cerfForm.disabled" (change)="addRemoveTag(tagIds[15], $event.checked)">International</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">An event hosted by Circle K International</p>
 				</div>
 
 				<div>
-					<mat-checkbox [checked]="myForm.get('tags').value.includes(tagIds[16])" [disabled]="myForm.disabled" (change)="addRemoveTag(tagIds[16], $event.checked)">Club Hosted</mat-checkbox>
+					<mat-checkbox [checked]="cerfForm.get('tags').value.includes(tagIds[16])" [disabled]="cerfForm.disabled" (change)="addRemoveTag(tagIds[16], $event.checked)">Club Hosted</mat-checkbox>
 					<p [class.show-tag-hints]="showTagHints">Any event hosted through your Circle K club</p>
 				</div>
 			</div>
@@ -583,7 +583,7 @@
 				<button mat-icon-button class="deleteCategory" (click)="removeLabel(i)"> <mat-icon>cancel</mat-icon> </button>
 			</div>
 		</div>
-		<button mat-button *ngIf="!addingCategory" [disabled]="myForm.disabled" (click)="addingCategory=true">+ Add Category</button>
+		<button mat-button *ngIf="!addingCategory" [disabled]="cerfForm.disabled" (click)="addingCategory=true">+ Add Category</button>
 		<form *ngIf="addingCategory">
 			<mat-form-field *ngIf="addingCategory" (keyup.enter)="newLabel(newCategory.value)">
 				<input matInput #newCategory>

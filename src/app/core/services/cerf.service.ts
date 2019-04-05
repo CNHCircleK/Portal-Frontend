@@ -37,18 +37,28 @@ export class CerfService {
 			)
 	}
 
+
+	/**
+	 * @param {string} id The id of the CERF to fetch from the back-end
+	 * @returns The API call observable and loading side-effect
+	 * Fetches the CERF from the back-end and loads it into the service
+	 */
 	loadCerf(id: string) {
 		// make api call and adapt it to local variable
 		console.log(id);
 		return this.apiService.getCerf(id).pipe(tap(response => {
-			this.cerf = response.result;
+			this.cerf = response.result;	// new Cerf(response.result)?
 			this.cerfForm.next(this.createReactiveForm(this.cerf));
 		}));
 		// this.cerfForm.next(this.createReactiveForm(this.blankCerf()));
 	}
 
-	dispatchCerf() {
+	dispatchNewCerf() {
+		return this.apiService.createNewCerf(this.getCerfFromForm(this.cerfForm.value));
+	}
 
+	dispatchUpdate() {
+		return this.apiService.updateCerf(this.getCerfFromForm(this.cerfForm.value));
 	}
 
 	getCerf() {
@@ -73,6 +83,27 @@ export class CerfService {
 	/*
 	setters for identifiable subcomponents, e.g. attendees
 	*/
+
+	deleteCerf() {
+		// Can we ensure cerf and cerfForm are in sync
+		return this.apiService.deleteCerf(this.cerf._id);
+	}
+
+	submitCerf() {
+		return this.apiService.changeCerfStatus(this.cerf._id, "SUBMIT");
+	}
+
+	unsubmitCerf() {
+		return this.apiService.changeCerfStatus(this.cerf._id, "UNSUBMIT");
+	}
+
+	addToMRF() {
+		return this.apiService.changeCerfStatus(this.cerf._id, "CONFIRM");
+	}
+
+	removeFromMRF() {
+		return this.apiService.changeCerfStatus(this.cerf._id, "UNCONFIRM");
+	}
 
 	addAttendee(name: string, service: number, leadership: number, fellowship: number, paid: boolean)
 	{
@@ -104,5 +135,24 @@ export class CerfService {
 
 	logForm() {
 		console.log(this.cerfForm.value);
+	}
+
+	public getCerfFromForm(form: FormGroup) {
+		let rawCerf = form.getRawValue();
+
+		/* Split up attendees and overrideHours */
+		const defaultHours = form.get('hoursPerAttendee').value;
+		const attendees = rawCerf.attendees.filter(a => (a.service == defaultHours.service && a.leadership == defaultHours.leadership
+			&& a.fellowship == defaultHours.fellowship)).map(attendee => attendee.member);
+		const overrideHours = rawCerf.attendees.filter(a => (a.service != defaultHours.service || a.leadership != defaultHours.leadership
+			|| a.fellowship != defaultHours.fellowship));
+		console.log(overrideHours);
+		overrideHours.forEach((attendee, index, arr) => arr[index]['attendee_id'] = arr[index].member);
+		rawCerf.attendees = attendees;
+		rawCerf.overrideHours = overrideHours;
+
+		Object.assign(this.cerf, rawCerf);
+		console.log(this.cerf);
+		return this.cerf;
 	}
 }

@@ -8,11 +8,11 @@ import { AuthService } from '@core/authentication/auth.service';
 import * as moment from 'moment';
 
 interface Response<T> {
-  success: boolean,
-  auth: boolean,
-  error?: string,
-  warnings?: string,
-  result: T
+	success: boolean,
+	auth: boolean,
+	error?: string,
+	warnings?: string,
+	result?: T
 }
 
 // Any and all api calls go through here (except end-to-end authentication). Previously data.service.ts
@@ -22,64 +22,70 @@ interface Response<T> {
 export class ApiService {
 
 	constructor(private http: HttpClient, private authService: AuthService) {
-		this.user = authService.getUser();
+		this.authService.getUserObservable().subscribe(user => this.user=user);
 	}
 
-    user: Member;
-    
+	user: User;
+
 	mrfState: Mrf;
 	mrfFormState;
 	mrfTabState: string;
 
+	resetData()	// this goes into auth probably
+	{
+		// this.localStorage.clear().subscribe(()=>{});  // removes token also
+	}
+
+
 	getCerf(id: string) {
 		return this.http.get<Response<Cerf>>(HttpConfig.baseUrl + '/events/' + id);
 	}
-	getMyCerfList(): Observable<Cerf[]> {
+	getMyCerfList() {
 		if(!this. user) return of(null);
-		return this.http.get<any>(HttpConfig.baseUrl + '/members/' + this.user._id + '/events');
+		return this.http.get<Response<Cerf[]>>(HttpConfig.baseUrl + '/members/' + this.user._id + '/events');
 		// it is not the service's concern to clean up the data for the app to consume (e.g. reading 'success' or returning [])
 	}
 	getPendingCerfs() {
 		if(!this.user) return of(null);
 		let params = new HttpParams().set('status', '1');
-		return this.http.get<any>(HttpConfig.baseUrl + '/clubs/' + this.user.club_id + '/events', { params: params } );
+		return this.http.get<Response<Cerf[]>>(HttpConfig.baseUrl + '/clubs/' + this.user.club_id + '/events', { params: params } );
 		// This returns all. Endpoint to get it for specific month? Or we can filter and split up, but inefficient
 	}
 
 	updateCerf(data: Cerf) {
-		return this.http.patch(HttpConfig.baseUrl + "/events/" + data._id, data).pipe(tap(res => console.log(res)));;
+		return this.http.patch<Response<void>>(HttpConfig.baseUrl + "/events/" + data._id, data).pipe(tap(res => console.log(res)));;
 		// TODO: cache-bust according to data._id
 	}
 
 	createNewCerf(data: Cerf) {
-		return this.http.post(HttpConfig.baseUrl + "/events", data).pipe(tap(res => console.log(res)));
+		return this.http.post<Response<string>>(HttpConfig.baseUrl + "/events", data).pipe(tap(res => console.log(res)));
 		// TODO: Special cache handler since the user will access this new cerf through its id
 		// or leave it to refresh get requests again
 	}
 
 	changeCerfStatus(id: string, action: string) {
 		if(action == "SUBMIT") {
-			return this.http.patch(HttpConfig.baseUrl + "/events/" + id + "/submit", {submit: true}).pipe(tap(res => console.log(res)));
+			return this.http.patch<Response<void>>(HttpConfig.baseUrl + "/events/" + id + "/submit", {submit: true});
 		} else if(action == "UNSUBMIT") {
-			return this.http.patch(HttpConfig.baseUrl + "/events/" + id + "/submit", {submit: false}).pipe(tap(res => console.log(res)));
+			return this.http.patch<Response<void>>(HttpConfig.baseUrl + "/events/" + id + "/submit", {submit: false});
 		} else if(action == "CONFIRM") {
-			return this.http.patch(HttpConfig.baseUrl + "/events/" + id + "/confirm", {confirm: true}).pipe(tap(res => console.log(res)));
+			return this.http.patch<Response<void>>(HttpConfig.baseUrl + "/events/" + id + "/confirm", {confirm: true});
 		} else if(action == "UNCONFIRM") {
-			return this.http.patch(HttpConfig.baseUrl + "/events/" + id + "/confirm", {confirm: false}).pipe(tap(res => console.log(res)));
+			return this.http.patch<Response<void>>(HttpConfig.baseUrl + "/events/" + id + "/confirm", {confirm: false});
 		}
 
 		return of(null);
 	}
 
 	deleteCerf(id: string) {
-		return this.http.delete(HttpConfig.baseUrl + "/events/" + id);
+		return this.http.delete<Response<boolean>>(HttpConfig.baseUrl + "/events/" + id);
 	}
 
 
 
 
 	// just a simple array of month-year objects
-	getMrfList(): Observable<Mrf[]> {
+	getMrfList() {
 		const current = moment();
 		const oldest = moment().month() > 5 ? moment().set('month', 5) : moment().subtract(1, 'year').set('month', 5);
 		let list = [];
@@ -91,13 +97,14 @@ export class ApiService {
 		return of(list);
 	}
 
-	getMrfByDate(year: number, month: number) {
-		return this.http.get(HttpConfig.baseUrl + "/clubs/" + this.user.club_id + "/mrfs/" + year + "/" + month);
+	getMrfByDate(year: string, month: string) {
+		return this.http.get<Response<Mrf>>(HttpConfig.baseUrl + "/clubs/" + this.user.club_id + "/mrfs/" + year + "/" + month);
 	}
 
 	updateMrf(data: Mrf) {
 		if(!this.user) return of(null);
-		return this.http.patch(HttpConfig.baseUrl + "/clubs/" + this.user.club_id + "/mrfs/" + data.year + "/" + data.month, data);
+		console.log(data);
+		return this.http.patch<Response<boolean>>(HttpConfig.baseUrl + "/clubs/" + this.user.club_id + "/mrfs/" + data.year + "/" + data.month, data);
 	}
 
 

@@ -4,7 +4,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MatPaginator, MatSort, MatTableDataSource, MatSortable } from '@angular/material';
 
 import { Observable } from 'rxjs';
-import { DataService } from '@core/data/data.service';
 import { Cerf } from '@core/models';
 
 @Component({
@@ -40,7 +39,7 @@ export class CerfListComponent {
             */
 
 
-    constructor(private dataService: DataService, private router: Router) {
+    constructor(private router: Router) {
 		// this.getCerfs();
 		
 	}

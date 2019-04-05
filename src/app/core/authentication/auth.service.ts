@@ -7,15 +7,14 @@ import { LocalStorage } from '@ngx-pwa/local-storage';
 import { JwtHelperService } from '@auth0/angular-jwt';
 // import { DataService } from '@core/data/data.service';
 
-import { Member } from '@core/models';
-import { User } from '@core/models';
+import { User, Member } from '@core/models';
 import HttpConfig from '@env/api_config';
 
 export const tokenName = 'access_token';
 
 @Injectable( {providedIn: 'root'} )
 export class AuthService {
-	private user = new BehaviorSubject<Member>(undefined); // ReplaySubject with buffer size 1 behaves like a BehaviorSubject,
+	private user = new BehaviorSubject<User>(undefined); // ReplaySubject with buffer size 1 behaves like a BehaviorSubject,
                                                 // except it emits nothing (not even null) until the first publish
   private loggedIn: boolean = localStorage.getItem(tokenName) != null;
   public navFromMrf: boolean;
@@ -85,12 +84,12 @@ export class AuthService {
     return this.http.post<any>(HttpConfig.baseUrl + "/signup", data);
   }
 
-  public getUserObservable(refresh?: boolean): Observable<Member> {
+  public getUserObservable(refresh?: boolean): Observable<User> {
       return this.user.asObservable();
   }
 
   public getUser() {
-    return this.user.getValue();
+    return this.user.value;
   }
 
   public getAccess() {

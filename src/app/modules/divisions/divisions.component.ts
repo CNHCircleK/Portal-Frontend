@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { MemberService } from '@core/services';
-import { DataService } from '@core/data/data.service';
+import { ApiService } from '@core/services';
 import { AuthService } from '@core/authentication/auth.service';
 import { Member } from '@core/models';
 
@@ -24,9 +24,9 @@ export class DivisionsComponent {
 	list: MatTableDataSource<Division>;
 	displayedColumns: string[] = ["name"];
 
-	constructor(private dataService: DataService, private memberService: MemberService, private dialog: MatDialog, private snackBar: MatSnackBar) {
+	constructor(private apiService: ApiService, private memberService: MemberService, private dialog: MatDialog, private snackBar: MatSnackBar) {
 		// this.club = this.auth.getUser().club_id;
-		this.dataService.getDivisions().subscribe( (res: any) => {
+		this.apiService.getDivisions().subscribe( (res: any) => {
 			this.divisions = res.result;
 		})
 	}

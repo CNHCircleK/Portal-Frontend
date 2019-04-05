@@ -2,8 +2,6 @@ import { Component, Input, Directive, Renderer2, ElementRef, ViewChild, ViewChil
 // import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { FormGroup, FormControl, FormBuilder, FormArray, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Cerf, Member } from '@core/models';
-import { DataService } from '@core/data/data.service';
 import { NgForm } from '@angular/forms';
 import { Location } from '@angular/common';
 
@@ -14,9 +12,8 @@ import { ConfirmDialogComponent } from '@app/modules/confirm-dialog/confirm-dial
 import { InfoDialog } from '@app/modules/info-dialog/info-dialog';
 import { TagsDialog } from './tags-dialog.component';
 
+import { Cerf, Member, User } from '@core/models';
 import { AuthService } from '@core/authentication/auth.service';
-// import { Member } from '@core/authentication/member';
-// import { MemberService } from '@core/data/member.service';
 import { CerfService, MemberService } from '@core/services';
 
 import { Observable, BehaviorSubject, zip } from 'rxjs';
@@ -54,13 +51,7 @@ export class CerfComponent {
 
 	filteredRoster;
 
-	// kfamColumns = [{def: "org", title: "Organization", footer: "+ Add Org", defaultFooter: ""},
-	// 				{def: "numAttendees", title: "Number Attendees", footer: "Attendees", defaultFooter: 0}];
-	// driverColumns = [{def: "driver", title: "Driver", footer: "+ Add Driver", defaultFooter: ""},
-	// 					{def: "milesTo", title: "Miles to Event", footer: "Miles", defaultFooter: 0},
-	// 					{def: "milesFrom", title: "Miles from Event", footer: "Miles", defaultFooter: 0}];
-
-	myForm: FormGroup;
+	cerfForm: FormGroup;
 
 	categoryButtons: string[] = ["service", "leadership", "fellowship", "dogs"];
 	categoriesActive: string[] = [];
@@ -97,25 +88,25 @@ export class CerfComponent {
 	showTagHints = false;
 
 
-	constructor(private route: ActivatedRoute, private dataService: DataService, private memberService: MemberService,
+	constructor(private route: ActivatedRoute, private memberService: MemberService,
 		private auth: AuthService, private _location: Location, public dialog: MatDialog,
 		private builder: FormBuilder, private renderer: Renderer2, private cerfService: CerfService) {
 		// this.route.data.subscribe(response => this.cerf = response.cerf);
 		this.cerfId = this.route.snapshot.paramMap.get("id"); //this.route.snapshot.data['cerf'];
 		cerfService.loadCerf(this.cerfId).subscribe(done => {
 			this.cerf = cerfService.getCerf(); // move all calculations into the service so we don't need the actual cerf in here
-			this.myForm = cerfService.getCerfForm();			
+			this.cerfForm = cerfService.getCerfForm();			
 		});
 
 		memberService.getMembers().subscribe(res => {
 			this.filteredRoster = res;
 		});
 
-		console.log(this.myForm, this.cerf, this.route);
+		console.log(this.cerfForm, this.cerf, this.route);
 	}
 
 	//id: number;
-	user: Member;
+	user: User;
 	cerf: Cerf;
 	
 	@ViewChild(MatSort) sort;
@@ -131,14 +122,14 @@ export class CerfComponent {
 
 	 ngAfterContentInit() {
 		// this.memberColumns = [{def: "member", title: "Name", footer: "+ Add Member", defaultFooter: ""},
-	 // 		{def: "service", title: "Service", footer: "Service", defaultFooter: this.myForm.get('hoursPerAttendee.service')},
-	 // 		{def: "leadership", title: "Leadership", footer: "Leadership", defaultFooter: this.myForm.get('hoursPerAttendee.leadership')},
-	 // 		{def: "fellowship", title: "Fellowship", footer: "Fellowship", defaultFooter: this.myForm.get('hoursPerAttendee.fellowship')}]
+	 // 		{def: "service", title: "Service", footer: "Service", defaultFooter: this.cerfForm.get('hoursPerAttendee.service')},
+	 // 		{def: "leadership", title: "Leadership", footer: "Leadership", defaultFooter: this.cerfForm.get('hoursPerAttendee.leadership')},
+	 // 		{def: "fellowship", title: "Fellowship", footer: "Fellowship", defaultFooter: this.cerfForm.get('hoursPerAttendee.fellowship')}]
 
 		this.user = this.auth.getUser();
 
 		// if(!this.editable) {
-		// 	this.myForm.disable();
+		// 	this.cerfForm.disable();
 		// }
 	}
 
@@ -147,7 +138,7 @@ export class CerfComponent {
 	}
 
 	// inputListReady(name, event) {
-	// 	this.myForm.setControl(name, event);
+	// 	this.cerfForm.setControl(name, event);
 	// }
 
 	addAttendance() {
@@ -155,15 +146,15 @@ export class CerfComponent {
 
 		this.attendanceArray.push(this.builder.group(this.newAttendance));
 		this.newAttendance.name = "";
-		this.newAttendance.service = this.myForm.get("hoursPerAttendee.service").value;
-		this.newAttendance.leadership = this.myForm.get("hoursPerAttendee.leadership").value;
-		this.newAttendance.fellowship = this.myForm.get("hoursPerAttendee.fellowship").value;
+		this.newAttendance.service = this.cerfForm.get("hoursPerAttendee.service").value;
+		this.newAttendance.leadership = this.cerfForm.get("hoursPerAttendee.leadership").value;
+		this.newAttendance.fellowship = this.cerfForm.get("hoursPerAttendee.fellowship").value;
 
 		this.tables.toArray()[0].renderRows();
 		const element = this.renderer.selectRootElement("#attendanceFocus");
 		setTimeout(() => element.focus(), 0);
 
-		this.myForm.markAsDirty();
+		this.cerfForm.markAsDirty();
 	}
 	addKfam() {
 		// Validate inputs
@@ -175,7 +166,7 @@ export class CerfComponent {
 		const element = this.renderer.selectRootElement("#kfamFocus");
 		setTimeout(() => element.focus(), 0);
 
-		this.myForm.markAsDirty();
+		this.cerfForm.markAsDirty();
 	}
 	addDriver() {
 		// Validate inputs
@@ -187,32 +178,32 @@ export class CerfComponent {
 		const element = this.renderer.selectRootElement("#driverFocus");
 		setTimeout(() => element.focus(), 0);
 
-		this.myForm.markAsDirty();
+		this.cerfForm.markAsDirty();
 	}
 	deleteAttendee(index) {
 		this.attendanceArray.removeAt(index);
 		this.tables.toArray()[0].renderRows();
-		this.myForm.markAsDirty();
+		this.cerfForm.markAsDirty();
 	}
 	deleteKfam(index) {
 		this.kfamArray.removeAt(index);
 		this.tables.toArray()[1].renderRows();
-		this.myForm.markAsDirty();
+		this.cerfForm.markAsDirty();
 	}
 	deleteDriver(index) {
 		this.driverArray.removeAt(index);
 		this.tables.toArray()[2].renderRows();
-		this.myForm.markAsDirty();
+		this.cerfForm.markAsDirty();
 	}
 
 	get attendanceArray() {
-		return this.myForm.get("attendees") as FormArray;
+		return this.cerfForm.get("attendees") as FormArray;
 	}
 	get kfamArray() {
-		return this.myForm.get("kfamAttendance") as FormArray;
+		return this.cerfForm.get("kfamAttendance") as FormArray;
 	}
 	get driverArray() {
-		return this.myForm.get("drivers") as FormArray;
+		return this.cerfForm.get("drivers") as FormArray;
 	}
 
 	filterMembers(event: any) {
@@ -235,12 +226,12 @@ export class CerfComponent {
 	}
 
 	get categories() {
-		return (this.myForm.controls['categories'] as FormArray);
+		return (this.cerfForm.controls['categories'] as FormArray);
 	}
 
 	addRemoveTag(tag: string, isChecked: boolean)
 	{
-		const tagArray = this.myForm.controls.tags as FormArray;
+		const tagArray = this.cerfForm.controls.tags as FormArray;
 		let index = tagArray.controls.findIndex(item => item.value == tag);
 
 		if(isChecked && index == -1)
@@ -249,38 +240,36 @@ export class CerfComponent {
 		} else if(index > 0) {
 			tagArray.removeAt(index);
 		}
-		this.myForm.get('tags').markAsDirty();
+		this.cerfForm.get('tags').markAsDirty();
 	}
 
 	saveCerf() {
-		// this.cerf.data.attendees = this.members.data;
-		if(this.cerf._id == "new")
+		if(this.cerf._id == "new")	// would it be cleaner to create a separate component for a new cerf? No, way too redundant
 		{
-			this.dataService.createNewCerf(this.getCerfFromForm()).subscribe((res: {success, result}) => {
+			this.cerfService.dispatchNewCerf().subscribe(res => {
 				if(res.success)
 				{
 					const id = res.result;
 					this._location.replaceState("cerfs/" + id);
 					this.cerf._id = id;
-					// this.myForm.get("_id").setValue(id);
+
+					this.cerfForm.markAsPristine();	// move to service
 				} else {
 					// Handle failure
 				}
 			});
 		} else {
-			this.dataService.updateCerf(this.getCerfFromForm()).subscribe(res => {this.myForm.markAsPristine();});
+			this.cerfService.dispatchUpdate().subscribe(res => this.cerfForm.markAsPristine());
 		}
 	}
 
 	deleteCerf() {
-		const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-
-		});
+		const dialogRef = this.dialog.open(ConfirmDialogComponent, { /* options? */	});
 		dialogRef.componentInstance.confirmMessage = "Are you sure you want to delete?";
 		dialogRef.afterClosed().subscribe(result => {
 			if(result)
 			{
-				this.dataService.deleteCerf(this.cerf._id).subscribe(res => {
+				this.cerfService.deleteCerf().subscribe(res => {
 					if(res)
 						this._location.back();
 					else
@@ -294,13 +283,13 @@ export class CerfComponent {
 
 	submitCerf() {
 		this.pendingAction = true;
-		this.myForm.disable();
-		this.dataService.changeCerfStatus(this.cerf._id, "SUBMIT").subscribe(res => {
-			if(res.result)
-				this.cerf.status = 1;
+		this.cerfForm.disable();
+		this.cerfService.submitCerf().subscribe(res => {
+			if(res.success)
+				this.cerf.status = 1;	// goes in service
 			this.pendingAction = false;
 			if(this.editable) {
-				this.myForm.enable();
+				this.cerfForm.enable();
 			}
 		},
 		error => {
@@ -308,21 +297,20 @@ export class CerfComponent {
 			window.alert("Failed Submitting!");
 			this.pendingAction = false;
 			if(this.editable) {
-				this.myForm.enable();
+				this.cerfForm.enable();
 			}
-		},
-		() => {});
+		});
 	}
 
 	unsubmitCerf() {
 		this.pendingAction = true;
-		this.myForm.disable();
-		this.dataService.changeCerfStatus(this.cerf._id, "UNSUBMIT").subscribe(res => {
-			if(res.result)
-				this.cerf.status = 0;
+		this.cerfForm.disable();
+		this.cerfService.unsubmitCerf().subscribe(res => {
+			if(res.success)
+				this.cerf.status = 0;	// goes in service
 			this.pendingAction = false;
 			if(this.editable) {
-				this.myForm.enable();
+				this.cerfForm.enable();
 			}
 		},
 		error => {
@@ -335,33 +323,33 @@ export class CerfComponent {
 
 	approveCerf() {
 		this.pendingAction = true;
-		this.myForm.disable();
-		this.dataService.changeCerfStatus(this.cerf._id, "CONFIRM").subscribe(res => {
-			if(res.result)
-				this.cerf.status = 2;
+		this.cerfForm.disable();
+		this.cerfService.addToMRF().subscribe(res => {
+			if(res.success)
+				this.cerf.status = 2;	// goes in service
 			this.pendingAction = false;
 			if(this.editable) {
-				this.myForm.enable();
+				this.cerfForm.enable();
 			}
 		},
 		error => {
 			console.log(error);
 			window.alert("Failed Approving!");
 			this.pendingAction = false;
-			this.myForm.enable();
+			this.cerfForm.enable();
 		},
 		() => {});
 	}
 
 	unapproveCerf() {
 		this.pendingAction = true;
-		this.myForm.disable();
-		this.dataService.changeCerfStatus(this.cerf._id, "UNCONFIRM").subscribe(res => {
-			if(res.result)
-				this.cerf.status = 1;
+		this.cerfForm.disable();
+		this.cerfService.removeFromMRF().subscribe(res => {
+			if(res.success)
+				this.cerf.status = 1;	// goes in service
 			this.pendingAction = false;
 			if(this.editable) {
-				this.myForm.enable();
+				this.cerfForm.enable();
 			}
 		},
 		error => {
@@ -535,11 +523,11 @@ export class CerfComponent {
 	// }
 
 	public printForm() {
-		console.log(this.myForm, this.cerfService.getCerfForm());	// CHECK - this.myForm and the form in the service reference the same thing
+		console.log(this.cerfForm, this.cerfService.getCerfForm());	// CHECK - this.cerfForm and the form in the service reference the same thing
 	}
 
 	public getCerfFromForm() {
-		let rawCerf = this.myForm.getRawValue();
+		let rawCerf = this.cerfForm.getRawValue();
 		// Destructure the form in case 
 		// Object.keys(rawCerf).forEach(key => {
 		// 	if(rawCerf instanceof AbstractControl)
@@ -547,7 +535,7 @@ export class CerfComponent {
 		// });
 
 		/* Split up attendees and overrideHours */
-		const defaultHours = this.myForm.get('hoursPerAttendee').value;
+		const defaultHours = this.cerfForm.get('hoursPerAttendee').value;
 		const attendees = rawCerf.attendees.filter(a => (a.service == defaultHours.service && a.leadership == defaultHours.leadership
 			&& a.fellowship == defaultHours.fellowship)).map(attendee => attendee.member);
 		const overrideHours = rawCerf.attendees.filter(a => (a.service != defaultHours.service || a.leadership != defaultHours.leadership
@@ -580,7 +568,7 @@ export class CerfComponent {
 	}
 
 	goBack() {
-		if(!this.myForm.dirty) {	// No changes made. May have to add another condition to check for newly generated (unsaved)
+		if(!this.cerfForm.dirty) {	// No changes made. May have to add another condition to check for newly generated (unsaved)
 			this._location.back();
 		} // else
 		const dialogRef = this.dialog.open(ConfirmDialogComponent, {

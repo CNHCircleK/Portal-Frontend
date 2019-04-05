@@ -90,6 +90,9 @@
     <mat-icon matSuffix>search</mat-icon>
   </mat-form-field>
 
+
+  <button mat-raised-button (click)="newMember()">Add Member</button>
+
   <mat-table [dataSource]="list" matSort [class.selecting]="memberRegistrationMode" multiTemplateDataRows>
 
     <!-- Name Column -->
@@ -171,7 +174,6 @@
     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="member-detail-row"></tr>
   </mat-table>
 
-  <button mat-raised-button (click)="newMember()">Add Member</button>
   <mat-paginator [pageSizeOptions]="[10, 25, 50]"></mat-paginator>
 
 </form>

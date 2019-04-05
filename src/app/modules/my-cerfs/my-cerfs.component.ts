@@ -2,7 +2,6 @@ import { Component, Input, Directive, Renderer2, ElementRef, ViewChild } from '@
 // import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Cerf, Member } from '@core/models';
-import { DataService } from '@core/data/data.service';
 import { NgForm } from '@angular/forms';
 import { Location } from '@angular/common';
 import { MatPaginator, MatSort, MatTableDataSource, MatSortable } from '@angular/material';
@@ -29,7 +28,7 @@ export class MyCerfsComponent {
 	list: MatTableDataSource<Cerf>;
 	resolve;
 
-	constructor(private route: ActivatedRoute, private router: Router, private dataService: DataService,
+	constructor(private route: ActivatedRoute, private router: Router,
 		private auth: AuthService, private _location: Location) {
 		// this.route.data.subscribe(response => this.resolvedData = response.myCerfs);
 		this.cerfs = this.route.snapshot.data['myCerfs'];

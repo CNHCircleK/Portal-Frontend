@@ -1,0 +1,1159 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>portal documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/material.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">portal documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>MyCerfsComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/modules/my-cerfs/my-cerfs.component.ts</code>
+</p>
+
+
+
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-my-cerfs</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./my-cerfs.component.css,<br>./_my-cerfs.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./my-cerfs.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#cerfs">cerfs</a>
+                            </li>
+                            <li>
+                                <a href="#displayedColumns">displayedColumns</a>
+                            </li>
+                            <li>
+                                <a href="#list">list</a>
+                            </li>
+                            <li>
+                                <a href="#mrfView">mrfView</a>
+                            </li>
+                            <li>
+                                <a href="#paginator">paginator</a>
+                            </li>
+                            <li>
+                                <a href="#resolve">resolve</a>
+                            </li>
+                            <li>
+                                <a href="#sort">sort</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#applyFilter">applyFilter</a>
+                            </li>
+                            <li>
+                                <a href="#clickRow">clickRow</a>
+                            </li>
+                            <li>
+                                <a href="#newCerf">newCerf</a>
+                            </li>
+                            <li>
+                                <a href="#ngAfterViewInit">ngAfterViewInit</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit">ngOnInit</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#pagination">pagination</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(route: <a href="https://angular.io/api/router/ActivatedRoute" target="_blank">ActivatedRoute</a>, router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>, auth: <a href="../injectables/AuthService.html">AuthService</a>, _location: <a href="https://angular.io/api/common/Location" target="_blank">Location</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/modules/my-cerfs/my-cerfs.component.ts:29</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>route</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/ActivatedRoute" target="_blank" >ActivatedRoute</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/Router" target="_blank" >Router</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>auth</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AuthService.html" target="_self" >AuthService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>_location</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/common/Location" target="_blank" >Location</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section>
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="pagination"></a>
+                        <b>pagination</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/modules/my-cerfs/my-cerfs.component.ts:24</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="applyFilter"></a>
+                    <span class="name">
+                        <b>
+                            applyFilter
+                        </b>
+                        <a href="#applyFilter"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>applyFilter(filterValue: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="62"
+                            class="link-to-prism">src/app/modules/my-cerfs/my-cerfs.component.ts:62</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>filterValue</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="clickRow"></a>
+                    <span class="name">
+                        <b>
+                            clickRow
+                        </b>
+                        <a href="#clickRow"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>clickRow(row)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="70"
+                            class="link-to-prism">src/app/modules/my-cerfs/my-cerfs.component.ts:70</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>row</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="newCerf"></a>
+                    <span class="name">
+                        <b>
+                            newCerf
+                        </b>
+                        <a href="#newCerf"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>newCerf()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="74"
+                            class="link-to-prism">src/app/modules/my-cerfs/my-cerfs.component.ts:74</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngAfterViewInit"></a>
+                    <span class="name">
+                        <b>
+                            ngAfterViewInit
+                        </b>
+                        <a href="#ngAfterViewInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngAfterViewInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="45"
+                            class="link-to-prism">src/app/modules/my-cerfs/my-cerfs.component.ts:45</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <b>
+                            ngOnInit
+                        </b>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="38"
+                            class="link-to-prism">src/app/modules/my-cerfs/my-cerfs.component.ts:38</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="cerfs"></a>
+                        <span class="name">
+                            <b>
+                            cerfs</b>
+                            <a href="#cerfs"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../classes/Cerf.html" target="_self" >Cerf[]</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/modules/my-cerfs/my-cerfs.component.ts:27</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="displayedColumns"></a>
+                        <span class="name">
+                            <b>
+                            displayedColumns</b>
+                            <a href="#displayedColumns"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>[]</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[&quot;name&quot;, &quot;time.start&quot;, &quot;author&quot;, &quot;status&quot;]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/app/modules/my-cerfs/my-cerfs.component.ts:21</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="list"></a>
+                        <span class="name">
+                            <b>
+                            list</b>
+                            <a href="#list"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../classes/Cerf.html" target="_self" >MatTableDataSource&lt;Cerf&gt;</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/modules/my-cerfs/my-cerfs.component.ts:28</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="mrfView"></a>
+                        <span class="name">
+                            <b>
+                            mrfView</b>
+                            <a href="#mrfView"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>false</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/modules/my-cerfs/my-cerfs.component.ts:26</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="paginator"></a>
+                        <span class="name">
+                            <b>
+                            paginator</b>
+                            <a href="#paginator"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>MatPaginator</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Decorators : </b>
+                            <br />
+                            <code>
+                                @ViewChild(MatPaginator)<br />
+                            </code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/modules/my-cerfs/my-cerfs.component.ts:22</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="resolve"></a>
+                        <span class="name">
+                            <b>
+                            resolve</b>
+                            <a href="#resolve"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/modules/my-cerfs/my-cerfs.component.ts:29</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="sort"></a>
+                        <span class="name">
+                            <b>
+                            sort</b>
+                            <a href="#sort"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>MatSort</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Decorators : </b>
+                            <br />
+                            <code>
+                                @ViewChild(MatSort)<br />
+                            </code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/modules/my-cerfs/my-cerfs.component.ts:23</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, Input, Directive, Renderer2, ElementRef, ViewChild } from &#x27;@angular/core&#x27;;
+// import { FormGroup, FormArray, FormBuilder, Validators } from &#x27;@angular/forms&#x27;;
+import { ActivatedRoute, Router } from &#x27;@angular/router&#x27;;
+import { Cerf, Member } from &#x27;@core/models&#x27;;
+import { NgForm } from &#x27;@angular/forms&#x27;;
+import { Location } from &#x27;@angular/common&#x27;;
+import { MatPaginator, MatSort, MatTableDataSource, MatSortable } from &#x27;@angular/material&#x27;;
+
+import { AuthService } from &#x27;@core/authentication/auth.service&#x27;;
+
+import { Observable, zip } from &#x27;rxjs&#x27;;
+
+
+@Component({
+	selector: &#x27;app-my-cerfs&#x27;,
+	templateUrl: &#x27;./my-cerfs.component.html&#x27;,
+	styleUrls: [&#x27;./my-cerfs.component.css&#x27;, &#x27;./_my-cerfs.component.scss&#x27;],
+})
+
+export class MyCerfsComponent {
+	displayedColumns &#x3D; [&quot;name&quot;, &quot;time.start&quot;, &quot;author&quot;, &quot;status&quot;];	// Add &quot;status&quot; to display notification of status
+	@ViewChild(MatPaginator) paginator: MatPaginator;
+	@ViewChild(MatSort) sort: MatSort;
+	@Input() pagination: boolean;
+
+	mrfView: boolean &#x3D; false;
+	cerfs: Cerf[] &#x3D; [];
+	list: MatTableDataSource&lt;Cerf&gt;;
+	resolve;
+
+	constructor(private route: ActivatedRoute, private router: Router,
+		private auth: AuthService, private _location: Location) {
+		// this.route.data.subscribe(response &#x3D;&gt; this.resolvedData &#x3D; response.myCerfs);
+		this.cerfs &#x3D; this.route.snapshot.data[&#x27;myCerfs&#x27;];
+		this.cerfs.concat(this.route.snapshot.data[&#x27;pendingCerfs&#x27;]);
+	}
+
+	ngOnInit() {
+		if(this.cerfs) {
+			this.list &#x3D; new MatTableDataSource(this.cerfs);
+			this.pagination &#x3D; this.cerfs.length &gt; 10 || this.pagination;	// even if not specified, automatically attach pagination when there&#x27;s enough elements
+		}
+	}
+
+	ngAfterViewInit() {
+		if(this.list) {
+			this.list.sort &#x3D; this.sort;
+			this.list.sortingDataAccessor &#x3D; (data, header) &#x3D;&gt; {
+				switch (header) {
+					case &quot;time.start&quot;:
+						return new Date(data.time.start);
+					
+					default:
+						return data[header]; // https://github.com/angular/material2/issues/9966
+				}
+			}
+			if(this.pagination)
+				this.list.paginator &#x3D; this.paginator;
+		}
+	}
+
+	applyFilter(filterValue: string) {
+		if(this.list) {
+		    filterValue &#x3D; filterValue.trim(); // Remove whitespace
+		    filterValue &#x3D; filterValue.toLowerCase(); // list defaults to lowercase matches
+		    this.list.filter &#x3D; filterValue;
+		}
+	}
+
+	clickRow(row) {
+		this.router.navigate([&#x27;/cerf&#x27;, row._id]);
+	}
+
+	newCerf() {
+		this.router.navigate([&#x27;/cerf&#x27;, &#x27;new&#x27;]);	// Router resolver handles generating the blank template
+		//if(this.mrfView)
+			//this.dataService.addCerfToMrf(cerf, this.mrfView);
+		
+	}
+}</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;action&quot;&gt;
+	&lt;h2 class&#x3D;&quot;mat-title&quot;&gt;Event Reports&lt;/h2&gt;
+	&lt;div&gt;
+		&lt;button mat-raised-button (click)&#x3D;&quot;newCerf()&quot;&gt;+ New Report&lt;/button&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+&lt;mat-table [(dataSource)]&#x3D;&quot;cerfs&quot; matSort&gt;
+
+	&lt;!-- CERF name Column --&gt;
+  &lt;ng-container matColumnDef&#x3D;&quot;name&quot;&gt;
+    &lt;mat-header-cell *matHeaderCellDef mat-sort-header&gt;Name&lt;/mat-header-cell&gt;
+    &lt;mat-cell *matCellDef&#x3D;&quot;let row&quot;&gt;{{row.name}}&lt;/mat-cell&gt;
+  &lt;/ng-container&gt;
+
+  &lt;!-- Progress Column --&gt;
+   &lt;!--  &lt;ng-container matColumnDef&#x3D;&quot;chair_id&quot;&gt;
+      &lt;mat-header-cell *matHeaderCellDef mat-sort-header&gt; Chair &lt;/mat-header-cell&gt;
+      &lt;mat-cell *matCellDef&#x3D;&quot;let row&quot;&gt;{{row.chair_id}}&lt;/mat-cell&gt;
+    &lt;/ng-container&gt; --&gt;
+
+    &lt;!-- Time Column --&gt;
+    &lt;ng-container matColumnDef&#x3D;&quot;time.start&quot;&gt;
+      &lt;mat-header-cell *matHeaderCellDef mat-sort-header&gt;Date&lt;/mat-header-cell&gt;
+      &lt;mat-cell *matCellDef&#x3D;&quot;let row&quot;&gt;{{row.time.start | date:&#x27;shortDate&#x27;}}&lt;/mat-cell&gt;
+    &lt;/ng-container&gt;
+
+
+    &lt;!-- Action Column --&gt;
+    &lt;!-- &lt;ng-container matColumnDef&#x3D;&quot;action&quot;&gt;
+      &lt;mat-header-cell *matHeaderCellDef&gt;Action&lt;/mat-header-cell&gt;
+      &lt;mat-cell *matCellDef&#x3D;&quot;let row&quot;&gt;
+      	&lt;a mat-icon-button [routerLink]&#x3D;&quot;[&#x27;/cerf&#x27;, row._id]&quot;&gt;&lt;mat-icon&gt;open_in_new&lt;/mat-icon&gt;&lt;/a&gt;
+      	&lt;button *ngIf&#x3D;&quot;mrfId&quot; mat-icon-button (click)&#x3D;&quot;removeCerfFromMrf(row._id)&quot;&gt;&lt;mat-icon&gt;delete_outline&lt;/mat-icon&gt;&lt;/button&gt;
+      &lt;/mat-cell&gt;
+    &lt;/ng-container&gt; --&gt;
+
+    &lt;!-- Author Column --&gt;
+    &lt;ng-container matColumnDef&#x3D;&quot;author&quot;&gt;
+      &lt;mat-header-cell *matHeaderCellDef mat-sort-header&gt;Created By&lt;/mat-header-cell&gt;
+      &lt;mat-cell *matCellDef&#x3D;&quot;let row&quot;&gt;{{row.cerf_author}}&lt;/mat-cell&gt;
+    &lt;/ng-container&gt;
+
+    &lt;!-- Status Column (MRF View Only) --&gt;
+    &lt;ng-container matColumnDef&#x3D;&quot;status&quot;&gt;
+      &lt;mat-header-cell *matHeaderCellDef mat-sort-header&gt;Status&lt;/mat-header-cell&gt;
+      &lt;mat-cell *matCellDef&#x3D;&quot;let row&quot;&gt;
+        &lt;span *ngIf&#x3D;&quot;row.status&#x3D;&#x3D;0&quot;&gt;&lt;mat-icon class&#x3D;&quot;red_icon&quot;&gt;warning&lt;/mat-icon&gt; Draft&lt;/span&gt;
+        &lt;span *ngIf&#x3D;&quot;row.status&#x3D;&#x3D;1&quot;&gt;&lt;mat-icon class&#x3D;&quot;red_icon&quot;&gt;sms_failed&lt;/mat-icon&gt; Submitted&lt;/span&gt;
+        &lt;span *ngIf&#x3D;&quot;row.status&#x3D;&#x3D;2&quot;&gt;&lt;mat-icon&gt;check&lt;/mat-icon&gt; Added to MRF&lt;/span&gt;
+      &lt;/mat-cell&gt;
+    &lt;/ng-container&gt;
+
+    &lt;!-- &lt;ng-container matColumnDef&#x3D;&quot;color&quot;&gt;
+      &lt;mat-header-cell *matHeaderCellDef mat-sort-header&gt;Color&lt;/mat-header-cell&gt;
+      &lt;mat-cell *matCellDef&#x3D;&quot;let row&quot;&gt;
+        &lt;mat-icon *ngIf&#x3D;&quot;row.color&quot; [style.color]&#x3D;&quot;row.color&quot;&gt;color_lens&lt;/mat-icon&gt;
+      &lt;/mat-cell&gt;
+    &lt;/ng-container&gt; --&gt;
+
+    &lt;ng-container matColumnDef&#x3D;&quot;labels&quot;&gt;
+      &lt;mat-header-cell *matHeaderCellDef mat-sort-header&gt;Labels&lt;/mat-header-cell&gt;
+      &lt;mat-cell *matCellDef&#x3D;&quot;let row&quot;&gt;
+        &lt;ng-container *ngIf&#x3D;&quot;row.labels&quot;&gt;{{ row.labels }}&lt;/ng-container&gt;
+      &lt;/mat-cell&gt;
+    &lt;/ng-container&gt;
+
+    &lt;!-- Search Bar --&gt;
+   &lt;!--  &lt;ng-container matColumnDef&#x3D;&quot;search&quot;&gt;
+      &lt;mat-header-cell *matHeaderCellDef&gt;
+        
+        &lt;mat-form-field class&#x3D;&quot;search-bar&quot;style&#x3D;&quot;margin-bottom: -1.25em&quot; [floatLabel]&#x3D;&quot;&#x27;never&#x27;&quot;&gt;
+          &lt;input matInput (keyup)&#x3D;&quot;applyFilter($event.target.value)&quot;&gt;
+          &lt;mat-placeholder&gt;Search&lt;/mat-placeholder&gt;
+          &lt;mat-icon matSuffix&gt;search&lt;/mat-icon&gt;
+        &lt;/mat-form-field&gt;
+        
+      &lt;/mat-header-cell&gt;
+      &lt;mat-cell *matCellDef&#x3D;&quot;let row&quot;&gt;&lt;/mat-cell&gt;
+    &lt;/ng-container&gt; --&gt;
+
+    &lt;!-- Header columns --&gt;
+    &lt;mat-header-row *matHeaderRowDef&#x3D;&quot;displayedColumns&quot;&gt;&lt;/mat-header-row&gt;
+    &lt;mat-row *matRowDef&#x3D;&quot;let row; columns: displayedColumns;&quot; (click)&#x3D;&quot;clickRow(row)&quot;&gt;&lt;/mat-row&gt;
+  &lt;/mat-table&gt;
+
+&lt;mat-paginator *ngIf&#x3D;&quot;pagination&quot; [pageSizeOptions]&#x3D;&quot;[10, 25, 50]&quot;&gt;&lt;/mat-paginator&gt;</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./my-cerfs.component.css</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">/*button {
+	margin-bottom: 16px;
+}*/
+button {
+	font-family: &quot;Century Gothic&quot;;
+}
+h1, h3 {
+	color: #144c83;
+	font-family: &quot;Century Gothic&quot;;
+}
+h2 {
+	font-size: 48px;
+	margin-bottom: 32px;
+}
+
+.action {
+	display: flex;
+	justify-content: space-between;
+}
+.action button {
+	border-radius: 10px;
+	color: white;
+	background-color: #003366;
+	margin-right: 32px;
+}
+
+/*.mat-column-status {
+	flex: 0 0 100px;
+}
+.mat-column-search {	 Stop the search bar from taking up too much space 
+	flex: 0 0 20%;
+}*/
+.mat-cell &gt; span {
+	display: inline-flex;
+	align-items: center;
+}
+.mat-cell &gt; span &gt; mat-icon {
+	padding-right: 10px;
+}
+
+.red_icon {
+	color: rgb(176, 0, 32);
+}
+
+mat-row {
+	cursor: pointer;
+}
+mat-row:hover {
+	background: rgba(0, 0, 0, 0.04);
+}
+/*mat-row::after {
+	position: absolute;
+	content: &#x27;&#x27;;
+	border-left: solid 3px;
+	transform: scaleY(0);
+	transition: transform 250ms ease-in-out;
+}
+mat-row:hover::after {
+	transform: scaleY(1);
+}*/</code></pre>
+                <p class="comment">
+                    <code>./_my-cerfs.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">@import &#x27;~@angular/material/theming&#x27;;
+
+@mixin cerf-table-theme($theme) {
+
+	$primary: map-get($theme, primary);
+	$accent: map-get($theme, accent);
+	$backgroundColor: map-get($theme, background);
+
+
+
+
+	/*.mat-header-row {
+		background-color: mat-color($backgroundColor, app-bar);
+	}
+
+	mat-row:nth-child(even){
+		background-color: mat-color($primary);
+	}
+
+	mat-row:nth-child(odd){
+		background-color: mat-color($primary, 300);
+	}
+
+	mat-row::after {
+		border-color: mat-color($accent); /* See other css file for animation of active bar */
+	//}
+}</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="action">	<h2 class="mat-title">Event Reports</h2>	<div>		<button mat-raised-button (click)="newCerf()">+ New Report</button>	</div></div><mat-table [(dataSource)]="cerfs" matSort>	<!-- CERF name Column -->  <ng-container matColumnDef="name">    <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>    <mat-cell *matCellDef="let row">{{row.name}}</mat-cell>  </ng-container>  <!-- Progress Column -->   <!--  <ng-container matColumnDef="chair_id">      <mat-header-cell *matHeaderCellDef mat-sort-header> Chair </mat-header-cell>      <mat-cell *matCellDef="let row">{{row.chair_id}}</mat-cell>    </ng-container> -->    <!-- Time Column -->    <ng-container matColumnDef="time.start">      <mat-header-cell *matHeaderCellDef mat-sort-header>Date</mat-header-cell>      <mat-cell *matCellDef="let row">{{row.time.start | date:\'shortDate\'}}</mat-cell>    </ng-container>    <!-- Action Column -->    <!-- <ng-container matColumnDef="action">      <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>      <mat-cell *matCellDef="let row">      	<a mat-icon-button [routerLink]="[\'/cerf\', row._id]"><mat-icon>open_in_new</mat-icon></a>      	<button *ngIf="mrfId" mat-icon-button (click)="removeCerfFromMrf(row._id)"><mat-icon>delete_outline</mat-icon></button>      </mat-cell>    </ng-container> -->    <!-- Author Column -->    <ng-container matColumnDef="author">      <mat-header-cell *matHeaderCellDef mat-sort-header>Created By</mat-header-cell>      <mat-cell *matCellDef="let row">{{row.cerf_author}}</mat-cell>    </ng-container>    <!-- Status Column (MRF View Only) -->    <ng-container matColumnDef="status">      <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>      <mat-cell *matCellDef="let row">        <span *ngIf="row.status==0"><mat-icon class="red_icon">warning</mat-icon> Draft</span>        <span *ngIf="row.status==1"><mat-icon class="red_icon">sms_failed</mat-icon> Submitted</span>        <span *ngIf="row.status==2"><mat-icon>check</mat-icon> Added to MRF</span>      </mat-cell>    </ng-container>    <!-- <ng-container matColumnDef="color">      <mat-header-cell *matHeaderCellDef mat-sort-header>Color</mat-header-cell>      <mat-cell *matCellDef="let row">        <mat-icon *ngIf="row.color" [style.color]="row.color">color_lens</mat-icon>      </mat-cell>    </ng-container> -->    <ng-container matColumnDef="labels">      <mat-header-cell *matHeaderCellDef mat-sort-header>Labels</mat-header-cell>      <mat-cell *matCellDef="let row">        <ng-container *ngIf="row.labels">{{ row.labels }}</ng-container>      </mat-cell>    </ng-container>    <!-- Search Bar -->   <!--  <ng-container matColumnDef="search">      <mat-header-cell *matHeaderCellDef>                <mat-form-field class="search-bar"style="margin-bottom: -1.25em" [floatLabel]="\'never\'">          <input matInput (keyup)="applyFilter($event.target.value)">          <mat-placeholder>Search</mat-placeholder>          <mat-icon matSuffix>search</mat-icon>        </mat-form-field>              </mat-header-cell>      <mat-cell *matCellDef="let row"></mat-cell>    </ng-container> -->    <!-- Header columns -->    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>    <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="clickRow(row)"></mat-row>  </mat-table><mat-paginator *ngIf="pagination" [pageSizeOptions]="[10, 25, 50]"></mat-paginator></div>'
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'CerfComponent', 'selector': 'app-cerf'},{'name': 'CerfListComponent', 'selector': 'app-cerflist'},{'name': 'ClubAdministrationComponent', 'selector': 'app-administration'},{'name': 'ClubsComponent', 'selector': 'app-clubs'},{'name': 'ConfirmDialogComponent', 'selector': 'app-confirm-dialog'},{'name': 'DialogNewClub', 'selector': 'dialog-new-club'},{'name': 'DialogNewMember', 'selector': 'dialog-new-member'},{'name': 'DivisionsComponent', 'selector': 'app-divisions'},{'name': 'FAQsComponent', 'selector': 'app-faqs'},{'name': 'InfoDialog', 'selector': 'info-dialog'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MrfComponent', 'selector': 'app-mrf'},{'name': 'MrfDistrictComponent', 'selector': 'app-mrf-district'},{'name': 'MrfDivisionComponent', 'selector': 'app-mrf-division'},{'name': 'MrfListComponent', 'selector': 'app-mrflist'},{'name': 'MrfSecretaryComponent', 'selector': 'app-mrf-secretary'},{'name': 'MyCerfsComponent', 'selector': 'app-my-cerfs'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'SettingsComponent', 'selector': 'app-settings'},{'name': 'SignupComponent', 'selector': 'app-signup'},{'name': 'TagsDialog', 'selector': 'tags-dialog'}];
+    var DIRECTIVES = [{'name': 'EqualValidator', 'selector': '[validateEqual][formControlName],[validateEqual][formControl],[validateEqual][ngModel]'},{'name': 'NewFocusInput', 'selector': '[newlyfocus]'}];
+    var ACTUAL_COMPONENT = {'name': 'MyCerfsComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'MyCerfsComponent.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

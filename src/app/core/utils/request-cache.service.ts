@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { Member } from '@core/models';
+import { User } from '@core/models';
 import { HttpRequest, HttpResponse } from '@angular/common/http';
 import HttpConfig from '@env/api_config';
 
@@ -10,10 +10,10 @@ const maxAge = 30000;
 export class RequestCache  {
 
   cache = new Map();
-  member: Observable<Member>;
-  currentMember: Member;
+  member: Observable<User>;
+  currentMember: User;
 
-  init(member: Observable<Member>)
+  init(member: Observable<User>)
   {
     this.member = member;
     this.member.pipe(first()).subscribe(member => this.currentMember = member);

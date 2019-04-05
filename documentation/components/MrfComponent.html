@@ -1,0 +1,3021 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>portal documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/material.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">portal documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>MrfComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/modules/mrf/mrf.component.ts</code>
+</p>
+
+
+
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">providers</td>
+                <td class="col-md-9">
+                                <code><a href="../injectables/MrfService.html" target="_self" >MrfService</a></code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-mrf</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./mrf.component.css,<br>./_mrf.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./mrf.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#boardMeetingColumns">boardMeetingColumns</a>
+                            </li>
+                            <li>
+                                <a href="#currentTab">currentTab</a>
+                            </li>
+                            <li>
+                                <a href="#defaultBoardMeeting">defaultBoardMeeting</a>
+                            </li>
+                            <li>
+                                <a href="#defaultFundraising">defaultFundraising</a>
+                            </li>
+                            <li>
+                                <a href="#defaultMeeting">defaultMeeting</a>
+                            </li>
+                            <li>
+                                <a href="#editingBoardMeetings">editingBoardMeetings</a>
+                            </li>
+                            <li>
+                                <a href="#editingFundraising">editingFundraising</a>
+                            </li>
+                            <li>
+                                <a href="#editingMeetings">editingMeetings</a>
+                            </li>
+                            <li>
+                                <a href="#eventsColumns">eventsColumns</a>
+                            </li>
+                            <li>
+                                <a href="#fundraisingColumns">fundraisingColumns</a>
+                            </li>
+                            <li>
+                                <a href="#meetingColumns">meetingColumns</a>
+                            </li>
+                            <li>
+                                <a href="#mrf">mrf</a>
+                            </li>
+                            <li>
+                                <a href="#mrfForm">mrfForm</a>
+                            </li>
+                            <li>
+                                <a href="#newBoardMeeting">newBoardMeeting</a>
+                            </li>
+                            <li>
+                                <a href="#newFundraising">newFundraising</a>
+                            </li>
+                            <li>
+                                <a href="#newMeeting">newMeeting</a>
+                            </li>
+                            <li>
+                                <a href="#openedPanels">openedPanels</a>
+                            </li>
+                            <li>
+                                <a href="#tables">tables</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#addBoardMeetingRow">addBoardMeetingRow</a>
+                            </li>
+                            <li>
+                                <a href="#addFundraisingRow">addFundraisingRow</a>
+                            </li>
+                            <li>
+                                <a href="#addMeetingRow">addMeetingRow</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#cookData">cookData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#createMrf">createMrf</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#createReactiveForm">createReactiveForm</a>
+                            </li>
+                            <li>
+                                <a href="#deleteBoardMeeting">deleteBoardMeeting</a>
+                            </li>
+                            <li>
+                                <a href="#deleteFundraising">deleteFundraising</a>
+                            </li>
+                            <li>
+                                <a href="#deleteMeeting">deleteMeeting</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#fillDefaults">fillDefaults</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getMrfFromForm">getMrfFromForm</a>
+                            </li>
+                            <li>
+                                <a href="#goBack">goBack</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#helperCookArray">helperCookArray</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit">ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#saveMrf">saveMrf</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#setValidators">setValidators</a>
+                            </li>
+                            <li>
+                                <a href="#toggleEdit">toggleEdit</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#meetingArray">meetingArray</a>
+                                </li>
+                                <li>
+                                    <a href="#boardMeetingArray">boardMeetingArray</a>
+                                </li>
+                                <li>
+                                    <a href="#fundraisingArray">fundraisingArray</a>
+                                </li>
+                                <li>
+                                    <a href="#eventsArray">eventsArray</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(route: <a href="https://angular.io/api/router/ActivatedRoute" target="_blank">ActivatedRoute</a>, _location: <a href="https://angular.io/api/common/Location" target="_blank">Location</a>, builder: <a href="https://angular.io/api/forms/FormBuilder" target="_blank">FormBuilder</a>, renderer: <a href="https://angular.io/api/core/Renderer2" target="_blank">Renderer2</a>, mrfService: <a href="../injectables/MrfService.html">MrfService</a>, apiService: <a href="../injectables/ApiService.html">ApiService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/app/modules/mrf/mrf.component.ts:59</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>route</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/ActivatedRoute" target="_blank" >ActivatedRoute</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>_location</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/common/Location" target="_blank" >Location</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>builder</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/forms/FormBuilder" target="_blank" >FormBuilder</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>renderer</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/core/Renderer2" target="_blank" >Renderer2</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>mrfService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/MrfService.html" target="_self" >MrfService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>apiService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ApiService.html" target="_self" >ApiService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addBoardMeetingRow"></a>
+                    <span class="name">
+                        <b>
+                            addBoardMeetingRow
+                        </b>
+                        <a href="#addBoardMeetingRow"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>addBoardMeetingRow()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="128"
+                            class="link-to-prism">src/app/modules/mrf/mrf.component.ts:128</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addFundraisingRow"></a>
+                    <span class="name">
+                        <b>
+                            addFundraisingRow
+                        </b>
+                        <a href="#addFundraisingRow"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>addFundraisingRow()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="141"
+                            class="link-to-prism">src/app/modules/mrf/mrf.component.ts:141</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addMeetingRow"></a>
+                    <span class="name">
+                        <b>
+                            addMeetingRow
+                        </b>
+                        <a href="#addMeetingRow"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>addMeetingRow()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="111"
+                            class="link-to-prism">src/app/modules/mrf/mrf.component.ts:111</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cookData"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            cookData
+                        </b>
+                        <a href="#cookData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>cookData(model: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="240"
+                            class="link-to-prism">src/app/modules/mrf/mrf.component.ts:240</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>model</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank" >Object</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://angular.io/api/forms/FormGroup" target="_blank" >FormGroup</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createMrf"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            createMrf
+                        </b>
+                        <a href="#createMrf"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createMrf(model: <a href="../classes/Mrf.html">Mrf</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="218"
+                            class="link-to-prism">src/app/modules/mrf/mrf.component.ts:218</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>model</td>
+                                    <td>
+                                                <code><a href="../classes/Mrf.html" target="_self" >Mrf</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://angular.io/api/forms/FormGroup" target="_blank" >FormGroup</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createReactiveForm"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            createReactiveForm
+                        </b>
+                        <a href="#createReactiveForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createReactiveForm(model: <a href="../classes/Mrf.html">Mrf</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="178"
+                            class="link-to-prism">src/app/modules/mrf/mrf.component.ts:178</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>model</td>
+                                    <td>
+                                                <code><a href="../classes/Mrf.html" target="_self" >Mrf</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://angular.io/api/forms/FormGroup" target="_blank" >FormGroup</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteBoardMeeting"></a>
+                    <span class="name">
+                        <b>
+                            deleteBoardMeeting
+                        </b>
+                        <a href="#deleteBoardMeeting"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>deleteBoardMeeting(index)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="100"
+                            class="link-to-prism">src/app/modules/mrf/mrf.component.ts:100</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>index</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteFundraising"></a>
+                    <span class="name">
+                        <b>
+                            deleteFundraising
+                        </b>
+                        <a href="#deleteFundraising"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>deleteFundraising(index)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="105"
+                            class="link-to-prism">src/app/modules/mrf/mrf.component.ts:105</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>index</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteMeeting"></a>
+                    <span class="name">
+                        <b>
+                            deleteMeeting
+                        </b>
+                        <a href="#deleteMeeting"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>deleteMeeting(index)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="95"
+                            class="link-to-prism">src/app/modules/mrf/mrf.component.ts:95</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>index</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fillDefaults"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            fillDefaults
+                        </b>
+                        <a href="#fillDefaults"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>fillDefaults(model: <a href="../classes/Mrf.html">Mrf</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="231"
+                            class="link-to-prism">src/app/modules/mrf/mrf.component.ts:231</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>model</td>
+                                    <td>
+                                                <code><a href="../classes/Mrf.html" target="_self" >Mrf</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getMrfFromForm"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            getMrfFromForm
+                        </b>
+                        <a href="#getMrfFromForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getMrfFromForm()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="276"
+                            class="link-to-prism">src/app/modules/mrf/mrf.component.ts:276</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="goBack"></a>
+                    <span class="name">
+                        <b>
+                            goBack
+                        </b>
+                        <a href="#goBack"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>goBack()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="286"
+                            class="link-to-prism">src/app/modules/mrf/mrf.component.ts:286</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="helperCookArray"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            helperCookArray
+                        </b>
+                        <a href="#helperCookArray"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>helperCookArray(arr: any[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="254"
+                            class="link-to-prism">src/app/modules/mrf/mrf.component.ts:254</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>arr</td>
+                                    <td>
+                                            <code>any[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>any[]</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <b>
+                            ngOnInit
+                        </b>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="77"
+                            class="link-to-prism">src/app/modules/mrf/mrf.component.ts:77</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveMrf"></a>
+                    <span class="name">
+                        <b>
+                            saveMrf
+                        </b>
+                        <a href="#saveMrf"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>saveMrf()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="169"
+                            class="link-to-prism">src/app/modules/mrf/mrf.component.ts:169</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setValidators"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            setValidators
+                        </b>
+                        <a href="#setValidators"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setValidators(form: <a href="https://angular.io/api/forms/FormGroup" target="_blank">FormGroup</a>, validators: literal type[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="264"
+                            class="link-to-prism">src/app/modules/mrf/mrf.component.ts:264</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>form</td>
+                                    <td>
+                                                <code><a href="https://angular.io/api/forms/FormGroup" target="_blank" >FormGroup</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>validators</td>
+                                    <td>
+                                            <code>literal type[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleEdit"></a>
+                    <span class="name">
+                        <b>
+                            toggleEdit
+                        </b>
+                        <a href="#toggleEdit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleEdit(num)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="86"
+                            class="link-to-prism">src/app/modules/mrf/mrf.component.ts:86</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>num</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="boardMeetingColumns"></a>
+                        <span class="name">
+                            <b>
+                            boardMeetingColumns</b>
+                            <a href="#boardMeetingColumns"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>[]</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[&quot;date&quot;, &quot;boardMembers&quot;, &quot;guests&quot;, &quot;actions&quot;]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/modules/mrf/mrf.component.ts:31</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="currentTab"></a>
+                        <span class="name">
+                            <b>
+                            currentTab</b>
+                            <a href="#currentTab"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/modules/mrf/mrf.component.ts:23</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="defaultBoardMeeting"></a>
+                        <span class="name">
+                            <b>
+                            defaultBoardMeeting</b>
+                            <a href="#defaultBoardMeeting"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>{ date: &quot;&quot;, attendance: { numBoard: 0, numGuests: 0 } }</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/modules/mrf/mrf.component.ts:36</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="defaultFundraising"></a>
+                        <span class="name">
+                            <b>
+                            defaultFundraising</b>
+                            <a href="#defaultFundraising"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>{ source: &quot;&quot;, ptp: 0, kfh: 0, fa: 0, other: 0, admin: 0 }</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/modules/mrf/mrf.component.ts:37</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="defaultMeeting"></a>
+                        <span class="name">
+                            <b>
+                            defaultMeeting</b>
+                            <a href="#defaultMeeting"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>{ date: &quot;&quot;, attendance: { numMembers: 0, numNonHomeMembers: 0, numKiwanis: 0, numGuests: 0}, advisorAttended: {faculty: false, kiwanis: false }}</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/app/modules/mrf/mrf.component.ts:35</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="editingBoardMeetings"></a>
+                        <span class="name">
+                            <b>
+                            editingBoardMeetings</b>
+                            <a href="#editingBoardMeetings"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>false</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/modules/mrf/mrf.component.ts:27</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="editingFundraising"></a>
+                        <span class="name">
+                            <b>
+                            editingFundraising</b>
+                            <a href="#editingFundraising"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>false</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/modules/mrf/mrf.component.ts:28</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="editingMeetings"></a>
+                        <span class="name">
+                            <b>
+                            editingMeetings</b>
+                            <a href="#editingMeetings"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>false</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/modules/mrf/mrf.component.ts:26</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="eventsColumns"></a>
+                        <span class="name">
+                            <b>
+                            eventsColumns</b>
+                            <a href="#eventsColumns"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>[]</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[&quot;name&quot;, &quot;date&quot;, &quot;numAttendees&quot;, &quot;totalService&quot;, &quot;totalLeadership&quot;, &quot;totalFellowship&quot;, &quot;tags&quot;, &quot;actions&quot;]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/modules/mrf/mrf.component.ts:33</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="fundraisingColumns"></a>
+                        <span class="name">
+                            <b>
+                            fundraisingColumns</b>
+                            <a href="#fundraisingColumns"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>[]</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[&quot;source&quot;, &quot;ptp&quot;, &quot;kfh&quot;, &quot;fa&quot;, &quot;other&quot;, &quot;admin&quot;, &quot;actions&quot;]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/modules/mrf/mrf.component.ts:32</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="meetingColumns"></a>
+                        <span class="name">
+                            <b>
+                            meetingColumns</b>
+                            <a href="#meetingColumns"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>[]</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[&quot;date&quot;, &quot;numMembers&quot;, &quot;numNonHomeMembers&quot;, &quot;numKiwanis&quot;, &quot;numGuests&quot;, &quot;facultyAttended&quot;, &quot;kiwanisAttended&quot;, &quot;actions&quot;]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/modules/mrf/mrf.component.ts:30</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="mrf"></a>
+                        <span class="name">
+                            <b>
+                            mrf</b>
+                            <a href="#mrf"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../classes/Mrf.html" target="_self" >Mrf</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/app/modules/mrf/mrf.component.ts:21</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="mrfForm"></a>
+                        <span class="name">
+                            <b>
+                            mrfForm</b>
+                            <a href="#mrfForm"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://angular.io/api/forms/FormGroup" target="_blank" >FormGroup</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/modules/mrf/mrf.component.ts:22</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="newBoardMeeting"></a>
+                        <span class="name">
+                            <b>
+                            newBoardMeeting</b>
+                            <a href="#newBoardMeeting"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>{ date: &quot;&quot;, attendance: { numBoard: 0, numGuests: 0 } }</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/app/modules/mrf/mrf.component.ts:40</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="newFundraising"></a>
+                        <span class="name">
+                            <b>
+                            newFundraising</b>
+                            <a href="#newFundraising"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>{ source: &quot;&quot;, ptp: 0, kfh: 0, fa: 0, other: 0, admin: 0 }</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/modules/mrf/mrf.component.ts:41</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="newMeeting"></a>
+                        <span class="name">
+                            <b>
+                            newMeeting</b>
+                            <a href="#newMeeting"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>{ date: &quot;&quot;, attendance: { numMembers: 0, numNonHomeMembers: 0, numKiwanis: 0, numGuests: 0}, advisorAttended: {faculty: false, kiwanis: false }}</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/modules/mrf/mrf.component.ts:39</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="openedPanels"></a>
+                        <span class="name">
+                            <b>
+                            openedPanels</b>
+                            <a href="#openedPanels"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>number[]</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[0, 0, 0, 0]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/modules/mrf/mrf.component.ts:24</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="tables"></a>
+                        <span class="name">
+                            <b>
+                            tables</b>
+                            <a href="#tables"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>QueryList&lt;MatTable&lt;any&gt;&gt;</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Decorators : </b>
+                            <br />
+                            <code>
+                                @ViewChildren(MatTable)<br />
+                            </code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/app/modules/mrf/mrf.component.ts:59</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+    <section>
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="meetingArray"></a>
+                        <span class="name"><b>meetingArray</b><a href="#meetingArray"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>meetingArray()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="156" class="link-to-prism">src/app/modules/mrf/mrf.component.ts:156</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="boardMeetingArray"></a>
+                        <span class="name"><b>boardMeetingArray</b><a href="#boardMeetingArray"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>boardMeetingArray()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="159" class="link-to-prism">src/app/modules/mrf/mrf.component.ts:159</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="fundraisingArray"></a>
+                        <span class="name"><b>fundraisingArray</b><a href="#fundraisingArray"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>fundraisingArray()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="162" class="link-to-prism">src/app/modules/mrf/mrf.component.ts:162</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="eventsArray"></a>
+                        <span class="name"><b>eventsArray</b><a href="#eventsArray"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>eventsArray()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="165" class="link-to-prism">src/app/modules/mrf/mrf.component.ts:165</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, ViewChildren, QueryList, Renderer2 } from &#x27;@angular/core&#x27;;
+import { FormGroup, FormArray, FormBuilder, AbstractControl, Validators, ValidatorFn } from &#x27;@angular/forms&#x27;;
+import { ActivatedRoute } from &#x27;@angular/router&#x27;;
+import { Location } from &#x27;@angular/common&#x27;;
+import { MatTable } from &#x27;@angular/material&#x27;;
+import { Mrf, Cerf } from &#x27;@core/models&#x27;;
+import { MrfService, ApiService } from &#x27;@core/services&#x27;;
+
+import * as moment from &#x27;moment&#x27;;
+
+@Component({
+	selector: &#x27;app-mrf&#x27;,
+	templateUrl: &#x27;./mrf.component.html&#x27;,
+	styleUrls: [&#x27;./mrf.component.css&#x27;, &#x27;./_mrf.component.scss&#x27;],
+	providers: [ MrfService ]	// Component scoped
+})
+
+export class MrfComponent {
+
+	//id: number;
+	mrf: Mrf;
+	mrfForm: FormGroup;
+	currentTab: string;
+	openedPanels: number[] &#x3D; [0, 0, 0, 0];
+
+	editingMeetings: boolean &#x3D; false;
+	editingBoardMeetings: boolean &#x3D; false;
+	editingFundraising: boolean &#x3D; false;
+
+	meetingColumns &#x3D; [&quot;date&quot;, &quot;numMembers&quot;, &quot;numNonHomeMembers&quot;, &quot;numKiwanis&quot;, &quot;numGuests&quot;, &quot;facultyAttended&quot;, &quot;kiwanisAttended&quot;, &quot;actions&quot;];
+	boardMeetingColumns &#x3D; [&quot;date&quot;, &quot;boardMembers&quot;, &quot;guests&quot;, &quot;actions&quot;];
+	fundraisingColumns &#x3D; [&quot;source&quot;, &quot;ptp&quot;, &quot;kfh&quot;, &quot;fa&quot;, &quot;other&quot;, &quot;admin&quot;, &quot;actions&quot;];
+	eventsColumns &#x3D; [&quot;name&quot;, &quot;date&quot;, &quot;numAttendees&quot;, &quot;totalService&quot;, &quot;totalLeadership&quot;, &quot;totalFellowship&quot;, &quot;tags&quot;, &quot;actions&quot;];
+
+	defaultMeeting &#x3D; { date: &quot;&quot;, attendance: { numMembers: 0, numNonHomeMembers: 0, numKiwanis: 0, numGuests: 0}, advisorAttended: {faculty: false, kiwanis: false }};
+	defaultBoardMeeting &#x3D; { date: &quot;&quot;, attendance: { numBoard: 0, numGuests: 0 } };
+	defaultFundraising &#x3D; { source: &quot;&quot;, ptp: 0, kfh: 0, fa: 0, other: 0, admin: 0 };
+
+	newMeeting &#x3D; { date: &quot;&quot;, attendance: { numMembers: 0, numNonHomeMembers: 0, numKiwanis: 0, numGuests: 0}, advisorAttended: {faculty: false, kiwanis: false }};
+	newBoardMeeting &#x3D; { date: &quot;&quot;, attendance: { numBoard: 0, numGuests: 0 } };
+	newFundraising &#x3D; { source: &quot;&quot;, ptp: 0, kfh: 0, fa: 0, other: 0, admin: 0 };
+	// meetingColumns &#x3D; [{def: &quot;date&quot;, title: &quot;Date&quot;, footer: &quot;Date&quot;, defaultFooter: &quot;&quot;},
+	// 					{def: &quot;numMembers&quot;, title: &quot;Home Club Members&quot;, footer: &quot;#&quot;, defaultFooter: 0},
+	// 					{def: &quot;numNonHomeMembers&quot;, title: &quot;Outside CKI Members&quot;, footer: &quot;#&quot;, defaultFooter: 0},
+	// 					{def: &quot;numKiwanis&quot;, title: &quot;Date&quot;, footer: &quot;Kiwanis&quot;, defaultFooter: 0},
+	// 					{def: &quot;numGuests&quot;, title: &quot;Date&quot;, footer: &quot;Other Guests&quot;, defaultFooter: 0},
+	// 					{def: &quot;advisorAttended.faculty&quot;, title: &quot;Faculty advisor&quot;, footer: &quot;True/False&quot;, defaultFooter: &quot;&quot;},
+	// 					{def: &quot;advisorAttended.kiwanis&quot;, title: &quot;Kiwanis advisor&quot;, footer: &quot;True/False&quot;, defaultFooter: &quot;&quot;}]
+	// boardMeetingColumns &#x3D; [{def: &quot;date&quot;, title: &quot;Date&quot;, footer: &quot;Date&quot;, defaultFooter: &quot;&quot;},
+	// 					{def: &quot;boardMembers&quot;, title: &quot;Board Members&quot;, footer: &quot;#&quot;, defaultFooter: 0},
+	// 					{def: &quot;guests&quot;, title: &quot;Guests&quot;, footer: &quot;#&quot;, defaultFooter: 0}];
+	// fundraisingColumns &#x3D; [{def: &quot;source&quot;, title: &quot;Source&quot;, footer: &quot;+ Add Fundraiser&quot;, defaultFooter: &quot;&quot;},
+	// 					{def: &quot;ptp&quot;, title: &quot;PTP&quot;, footer: &quot;#&quot;, defaultFooter: 0},
+	// 					{def: &quot;kfh&quot;, title: &quot;KFH&quot;, footer: &quot;#&quot;, defaultFooter: 0},
+	// 					{def: &quot;fa&quot;, title: &quot;Feeding America&quot;, footer: &quot;#&quot;, defaultFooter: 0},
+	// 					{def: &quot;other&quot;, title: &quot;Other charity&quot;, footer: &quot;#&quot;, defaultFooter: 0},
+	// 					{def: &quot;admin&quot;, title: &quot;Administrative&quot;, footer: &quot;#&quot;, defaultFooter: 0}]
+
+	@ViewChildren(MatTable) tables: QueryList&lt;MatTable&lt;any&gt;&gt;;
+
+	constructor(private route: ActivatedRoute, private _location: Location, private builder: FormBuilder,
+				private renderer: Renderer2, private mrfService: MrfService, private apiService: ApiService) {
+		// this.mrf &#x3D; this.route.snapshot.data[&#x27;mrf&#x27;];
+		let year &#x3D; this.route.snapshot.paramMap.get(&quot;year&quot;);
+		let month &#x3D; this.route.snapshot.paramMap.get(&quot;month&quot;);
+		mrfService.loadMrf(year, month).subscribe(done &#x3D;&gt; {
+			this.mrf &#x3D; mrfService.getMrf();
+			this.mrfForm &#x3D; mrfService.getMrfForm();
+		});
+		// this.mrfForm &#x3D; this.dataService.getMrfFormState;
+		// if(!this.mrfForm)
+		// 	this.mrfForm &#x3D; this.createMrf(this.mrf);
+
+		// this.currentTab &#x3D; this.dataService.getMrfTabState;
+	}
+
+	ngOnInit() {
+		// if(this.mrf.data)
+		// 	this.cerfs&#x3D;this.mrf.data.events;
+		// let id &#x3D; this.route.snapshot.params.id;
+		// this.dataService.getMrfById(id).subscribe(mrf &#x3D;&gt; this.mrf &#x3D; mrf);
+
+		// console.log(&quot;init&quot;); // Lifecycles not executed on route reuse
+	}
+
+	toggleEdit(num) {
+		if(num&#x3D;&#x3D;1)
+			this.editingMeetings &#x3D; !this.editingMeetings;
+		else if(num&#x3D;&#x3D;2)
+			this.editingBoardMeetings &#x3D; !this.editingBoardMeetings;
+		else if(num&#x3D;&#x3D;3)
+			this.editingFundraising &#x3D; !this.editingFundraising;
+	}
+
+	deleteMeeting(index) {
+		this.meetingArray.removeAt(index);
+		this.tables.toArray()[0].renderRows();
+		this.mrfForm.markAsDirty();
+	}
+	deleteBoardMeeting(index) {
+		this.boardMeetingArray.removeAt(index);
+		this.tables.toArray()[1].renderRows();
+		this.mrfForm.markAsDirty();
+	}
+	deleteFundraising(index) {
+		this.fundraisingArray.removeAt(index);
+		this.tables.toArray()[2].renderRows();
+		this.mrfForm.markAsDirty();
+	}
+
+	addMeetingRow() {
+		// Validate inputs
+		if(!this.newMeeting.date || isNaN(this.newMeeting.attendance.numMembers) || isNaN(this.newMeeting.attendance.numNonHomeMembers) || 
+			isNaN(this.newMeeting.attendance.numKiwanis) || isNaN(this.newMeeting.attendance.numGuests))
+			return;
+		// this.meetingArray.push(this.builder.group({date: this.newMeeting.date, attendance: { numMembers: this.newMeeting.numMembers,
+			// numNonHomeMembers: this.newMeeting.numNonHomeMembers, numKiwanis: this.newMeeting.numKiwanis, numGuests: this.newMeeting.numGuests } advisorAttended: this.builder.group(this.newMeeting.advisorAttended)}));
+		this.meetingArray.push(this.builder.group({...this.newMeeting, attendance: this.builder.group(this.newMeeting.attendance), advisorAttended: this.builder.group(this.newMeeting.advisorAttended)}));
+		console.log(this.meetingArray);
+		Object.assign(this.newMeeting, this.defaultMeeting);
+		this.tables.toArray()[0].renderRows();
+
+		const element &#x3D; this.renderer.selectRootElement(&#x27;#meetingFocus&#x27;);
+		setTimeout(() &#x3D;&gt; element.focus(), 0);
+
+		this.mrfForm.markAsDirty();
+	}
+	addBoardMeetingRow() {
+		// Validate inputs
+		if(!this.newBoardMeeting.date || isNaN(this.newBoardMeeting.attendance.numBoard) || isNaN(this.newBoardMeeting.attendance.numGuests))
+			return;
+		this.boardMeetingArray.push(this.builder.group({...this.newBoardMeeting, attendance: this.builder.group(this.newBoardMeeting.attendance)}));
+		Object.assign(this.newBoardMeeting, this.defaultBoardMeeting);
+		this.tables.toArray()[1].renderRows();
+
+		const element &#x3D; this.renderer.selectRootElement(&#x27;#boardMeetingFocus&#x27;);
+		setTimeout(() &#x3D;&gt; element.focus(), 0);
+
+		this.mrfForm.markAsDirty();
+	}
+	addFundraisingRow() {
+		// Validate inputs
+		if(!this.newFundraising.source || isNaN(this.newFundraising.ptp) || isNaN(this.newFundraising.kfh) || isNaN(this.newFundraising.fa) ||
+			isNaN(this.newFundraising.other) || isNaN(this.newFundraising.admin))
+			return;
+		this.fundraisingArray.push(this.builder.group(this.newFundraising));
+		Object.assign(this.newFundraising, this.defaultFundraising);
+		this.tables.toArray()[2].renderRows();
+
+		const element &#x3D; this.renderer.selectRootElement(&#x27;#fundraisingFocus&#x27;);
+		setTimeout(() &#x3D;&gt; element.focus(), 0);
+
+		this.mrfForm.markAsDirty();
+	}
+
+	get meetingArray() {
+		return this.mrfForm.get(&#x27;meetings&#x27;) as FormArray;
+	}
+	get boardMeetingArray() {
+		return this.mrfForm.get(&#x27;boardMeetings&#x27;) as FormArray;
+	}
+	get fundraisingArray() {
+		return this.mrfForm.get(&#x27;fundraising&#x27;) as FormArray;
+	}
+	get eventsArray() {
+		return this.mrfForm.get(&#x27;events&#x27;) as FormArray;
+	}
+
+	saveMrf() {
+		// this.getMrfFromForm();
+		// this.dataService.updateMrf(this.getMrfFromForm()).subscribe(res &#x3D;&gt; {console.log(res); this.mrfForm.markAsPristine();});
+		this.mrfService.dispatchUpdate().subscribe(result &#x3D;&gt; {
+			this.mrfForm.markAsPristine();
+			console.log(result);
+		});
+	}
+
+	private createReactiveForm(model: Mrf): FormGroup {
+		// Make initial FormGroup (this does a shallow construction)
+		// let form &#x3D; this.builder.group(model);
+
+		/* List of nested arrays/objects we need to define:
+			time: { start, end }
+			tags: []
+			attendees: []
+			hoursPerAttendee: { service, leadership, fellowship }
+			overrideHours: { attendee_id, service, leadership, fellowship }[]
+			fundraised: { amountRaised, amountSpent, usedFor }
+			comments: { summary, strengths, weaknesses, improvements }
+			categories: []
+			drivers: { driver, milesTo, milesFrom }[]
+			kfamAttendance: { org, numAttendees }[]
+		*/
+
+		this.fillDefaults(model);
+
+
+		let form &#x3D; this.builder.group({
+			communications: this.builder.group(model.communications),
+	        dcm: this.builder.group(model.dcm),
+	        events: this.builder.array(model.events.map(eachEvent &#x3D;&gt; this.builder.group(eachEvent))),
+	        goals: this.builder.array(model.goals),
+	        kfamReport: this.builder.control(model.kfamReport),
+	        meetings: this.builder.array(model.meetings.map(eachMeeting &#x3D;&gt; this.builder.group({date: this.builder.control(moment(eachMeeting.date).format(&quot;MM-DD-YYYY&quot;)), attendance: this.builder.group(eachMeeting.attendance), advisorAttended: this.builder.group(eachMeeting.advisorAttended)}))),
+	        boardMeetings: this.builder.array(model.boardMeetings.map(eachBoardMeeting &#x3D;&gt; this.builder.group({date: this.builder.control(moment(eachBoardMeeting.date).format(&quot;MM-DD-YYYY&quot;)), attendance: this.builder.group(eachBoardMeeting.attendance)}))),
+	        fundraising: this.builder.array(model.fundraising.map(eachFundraising &#x3D;&gt; this.builder.group(eachFundraising))),
+	        month: this.builder.control(model.month),
+	        year: this.builder.control(model.year),
+	        club_id: this.builder.control(model.club_id),
+	        numDuesPaid: this.builder.control(model.numDuesPaid),
+	        status: this.builder.control(model.status),
+	        submissionTime: this.builder.control(model.submissionTime)
+	    })
+
+		return form;
+	}
+
+	private createMrf(model: Mrf): FormGroup {
+		/* Fill in CERF with null values so we can at least create a form */
+		/* We&#x27;re assuming a Cerf IS passed in (i.e. has all the non-optional properties at least) */
+		this.fillDefaults(model);
+		let copyModel &#x3D; JSON.parse(JSON.stringify(model));	// Cooking the data passes by reference, so nested arrays in objects are altered
+		// const form &#x3D; this.cookData(copyModel);
+		const form &#x3D; this.createReactiveForm(copyModel);
+		// this.setValidators(form, [
+		// 	]);
+		console.log(form);
+		return form;
+	}
+
+	private fillDefaults(model: Mrf): void
+	{
+		// Set default values of a Partial&lt;Cerf&gt;
+		if(!model.events)
+		{
+			model.events &#x3D; [];
+		}
+	}
+
+	private cookData(model: Object): FormGroup
+	{
+		if(model instanceof FormGroup)
+			return model;
+		let formGroup: { [id: string]: AbstractControl; } &#x3D; {};
+		Object.keys(model).forEach(key &#x3D;&gt; {
+			formGroup[key] &#x3D; model[key] instanceof Date ? this.builder.control(model[key]) : // making formgroups out of single Dates doesn&#x27;t make sense
+			model[key] instanceof Array ? this.builder.array(this.helperCookArray(model[key])) :
+			(model[key] instanceof Object ? this.cookData(model[key]) : this.builder.control(model[key]));
+			// Note, Arrays are objects but objects are not arrays
+		});
+		return this.builder.group(formGroup);
+	}
+
+	private helperCookArray(arr: any[]): any[] {
+		arr.forEach((element, index, array) &#x3D;&gt; { 
+			if(element instanceof Object)
+				array[index] &#x3D; this.cookData(element);
+			else
+				array[index] &#x3D; this.builder.control(element);
+		});	// Dangerously infinite loop
+		return arr;
+	}
+
+	private setValidators(form: FormGroup, validators: {control: string, validator: ValidatorFn | ValidatorFn[]}[]) {
+		validators.forEach((element, index, array) &#x3D;&gt; {
+			form.get(element.control).setValidators(element.validator);
+			/* Check that this method will add new validators to exist validators in case when passed validators will be in array.
+			In other case it will override previous validators. Here is the source:
+				function coerceToValidator(validator: ValidatorFn | ValidatorFn[]): ValidatorFn {
+					return Array.isArray(validator) ? composeValidators(validator) : validator;
+				}
+				*/
+			})
+	}
+
+	public getMrfFromForm() {
+		let rawMrf &#x3D; this.mrfForm.getRawValue();
+		rawMrf.meetings.forEach(meeting &#x3D;&gt; meeting.date &#x3D; new Date(meeting.date).toISOString());
+		rawMrf.boardMeetings.forEach(meeting &#x3D;&gt; meeting.date &#x3D; new Date(meeting.date).toISOString());
+		console.log(rawMrf);
+		Object.assign(this.mrf, rawMrf);
+		// console.log(this.mrf);
+		return this.mrf;
+	}
+
+	goBack() {
+		this._location.back();
+	}
+}</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;!-- might want to change ngIf checks to something more explicit, rather than relying on mrfForm not being undefined --&gt;
+
+&lt;div id&#x3D;&quot;mrf-header&quot;&gt;
+	&lt;p class&#x3D;&quot;mat-body-1&quot;&gt;MRF Month: &lt;ng-container *ngIf&#x3D;&quot;mrfForm&quot;&gt;{{ mrf.month }}&lt;/ng-container&gt;&lt;/p&gt;
+	&lt;div id&#x3D;&quot;mrf-actions&quot; *ngIf&#x3D;&quot;mrfForm; else loading&quot;&gt;
+		&lt;mat-spinner *ngIf&#x3D;&quot;false&quot; diameter&#x3D;&quot;36&quot;&gt;&lt;/mat-spinner&gt;
+		&lt;button mat-icon-button [disabled]&#x3D;&quot;!mrfForm.dirty || !mrfForm.valid&quot; (click)&#x3D;&quot;saveMrf()&quot;&gt;&lt;mat-icon&gt;save&lt;/mat-icon&gt;&lt;/button&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;mat-divider&gt;&lt;/mat-divider&gt;
+
+&lt;form [formGroup]&#x3D;&quot;mrfForm&quot; *ngIf&#x3D;&quot;mrfForm; else loading&quot;&gt;
+	&lt;div id&#x3D;&quot;main&quot;&gt;
+		&lt;h3&gt;General Information&lt;/h3&gt;
+		&lt;mat-form-field appearance&#x3D;&quot;outline&quot;&gt;
+			&lt;mat-label&gt;Year&lt;/mat-label&gt;
+			&lt;input matInput formControlName&#x3D;&quot;year&quot; readonly&gt;
+		&lt;/mat-form-field&gt;
+		&lt;mat-form-field appearance&#x3D;&quot;outline&quot;&gt;
+			&lt;mat-label&gt;Month&lt;/mat-label&gt;
+			&lt;input matInput formControlName&#x3D;&quot;month&quot; readonly&gt;
+		&lt;/mat-form-field&gt;
+
+		&lt;mat-form-field appearance&#x3D;&quot;outline&quot;&gt;
+			&lt;mat-label&gt;# Dues Paid Members&lt;/mat-label&gt;
+			&lt;input matInput formControlName&#x3D;&quot;numDuesPaid&quot;&gt;
+		&lt;/mat-form-field&gt;
+	&lt;/div&gt;
+
+
+
+	&lt;mat-accordion displayMode&#x3D;&quot;flat&quot; [multi]&#x3D;&quot;true&quot;&gt;
+		&lt;mat-expansion-panel [class.mat-elevation-z0]&#x3D;&quot;true&quot; [hideToggle]&#x3D;&quot;true&quot; (opened)&#x3D;&quot;openedPanels[1] &#x3D; 1&quot; (closed)&#x3D;&quot;openedPanels[1] &#x3D; 0&quot;&gt;
+			&lt;mat-expansion-panel-header&gt;
+				&lt;mat-panel-title&gt;
+					&lt;mat-icon class&#x3D;&quot;expansion-icon&quot; [inline]&#x3D;&quot;true&quot;&gt;{{ openedPanels[1] ? &quot;expand_less&quot; : &quot;expand_more&quot; }}&lt;/mat-icon&gt;
+					&lt;h3 class&#x3D;&quot;mat-subheading-1&quot;&gt;Meeting Attendance&lt;/h3&gt;
+				&lt;/mat-panel-title&gt;
+				&lt;mat-panel-description&gt;
+				&lt;/mat-panel-description&gt;
+			&lt;/mat-expansion-panel-header&gt;
+
+			&lt;button mat-icon-button (click)&#x3D;&quot;toggleEdit(1)&quot;&gt;&lt;mat-icon&gt;edit&lt;/mat-icon&gt;&lt;/button&gt;
+
+			&lt;mat-table [dataSource]&#x3D;&quot;meetingArray.controls&quot; formArrayName&#x3D;&quot;meetings&quot;&gt;
+				&lt;ng-container matColumnDef&#x3D;&quot;date&quot;&gt;
+					&lt;mat-header-cell *matHeaderCellDef&gt;Date&lt;/mat-header-cell&gt;
+					&lt;mat-cell *matCellDef&#x3D;&quot;let row; let i&#x3D;index&quot; [formGroupName]&#x3D;&quot;i&quot;&gt;
+						&lt;input  [readonly]&#x3D;&quot;!editingMeetings&quot; [class.editing]&#x3D;&quot;editingMeetings&quot; matInput formControlName&#x3D;&quot;date&quot;&gt;
+					&lt;/mat-cell&gt;
+					&lt;mat-footer-cell *matFooterCellDef&gt;
+						&lt;mat-form-field class&#x3D;&quot;new-row&quot;&gt;
+							&lt;mat-label&gt;MM-DD-YYYY&lt;/mat-label&gt;
+							&lt;input matInput  [(ngModel)]&#x3D;&quot;newMeeting.date&quot; [ngModelOptions]&#x3D;&quot;{standalone: true}&quot; (keyup.enter)&#x3D;&quot;addMeetingRow()&quot; id&#x3D;&quot;meetingFocus&quot;&gt;
+						&lt;/mat-form-field&gt;
+					&lt;/mat-footer-cell&gt;
+				&lt;/ng-container&gt;
+				&lt;ng-container matColumnDef&#x3D;&quot;numMembers&quot;&gt;
+					&lt;mat-header-cell *matHeaderCellDef&gt;Home club members&lt;/mat-header-cell&gt;
+					&lt;mat-cell *matCellDef&#x3D;&quot;let row; let i&#x3D;index&quot; [formGroupName]&#x3D;&quot;i&quot;&gt;
+						&lt;ng-container formGroupName&#x3D;&quot;attendance&quot;&gt;
+							&lt;input [readonly]&#x3D;&quot;!editingMeetings&quot; [class.editing]&#x3D;&quot;editingMeetings&quot; matInput formControlName&#x3D;&quot;numMembers&quot;&gt;
+						&lt;/ng-container&gt;
+					&lt;/mat-cell&gt;
+					&lt;mat-footer-cell *matFooterCellDef&gt;
+						&lt;mat-form-field class&#x3D;&quot;new-row&quot;&gt;
+							&lt;mat-label&gt;#&lt;/mat-label&gt;
+							&lt;input matInput  [(ngModel)]&#x3D;&quot;newMeeting.attendance.numMembers&quot; [ngModelOptions]&#x3D;&quot;{standalone: true}&quot; (keyup.enter)&#x3D;&quot;addMeetingRow()&quot;&gt;
+						&lt;/mat-form-field&gt;
+					&lt;/mat-footer-cell&gt;
+				&lt;/ng-container&gt;
+				&lt;ng-container matColumnDef&#x3D;&quot;numNonHomeMembers&quot;&gt;
+					&lt;mat-header-cell *matHeaderCellDef&gt;Other CKI members&lt;/mat-header-cell&gt;
+					&lt;mat-cell *matCellDef&#x3D;&quot;let row; let i&#x3D;index&quot; [formGroupName]&#x3D;&quot;i&quot;&gt;
+						&lt;ng-container formGroupName&#x3D;&quot;attendance&quot;&gt;
+							&lt;input [readonly]&#x3D;&quot;!editingMeetings&quot; [class.editing]&#x3D;&quot;editingMeetings&quot; matInput formControlName&#x3D;&quot;numNonHomeMembers&quot;&gt;
+						&lt;/ng-container&gt;
+					&lt;/mat-cell&gt;
+					&lt;mat-footer-cell *matFooterCellDef&gt;
+						&lt;mat-form-field class&#x3D;&quot;new-row&quot;&gt;
+							&lt;mat-label&gt;#&lt;/mat-label&gt;
+							&lt;input matInput  [(ngModel)]&#x3D;&quot;newMeeting.attendance.numNonHomeMembers&quot; [ngModelOptions]&#x3D;&quot;{standalone: true}&quot; (keyup.enter)&#x3D;&quot;addMeetingRow()&quot;&gt;
+						&lt;/mat-form-field&gt;
+					&lt;/mat-footer-cell&gt;
+				&lt;/ng-container&gt;
+				&lt;ng-container matColumnDef&#x3D;&quot;numKiwanis&quot;&gt;
+					&lt;mat-header-cell *matHeaderCellDef&gt;Kiwanians&lt;/mat-header-cell&gt;
+					&lt;mat-cell *matCellDef&#x3D;&quot;let row; let i&#x3D;index&quot; [formGroupName]&#x3D;&quot;i&quot;&gt;
+						&lt;ng-container formGroupName&#x3D;&quot;attendance&quot;&gt;
+							&lt;input [readonly]&#x3D;&quot;!editingMeetings&quot; [class.editing]&#x3D;&quot;editingMeetings&quot; matInput formControlName&#x3D;&quot;numKiwanis&quot;&gt;
+						&lt;/ng-container&gt;
+					&lt;/mat-cell&gt;
+					&lt;mat-footer-cell *matFooterCellDef&gt;
+						&lt;mat-form-field class&#x3D;&quot;new-row&quot;&gt;
+							&lt;mat-label&gt;#&lt;/mat-label&gt;
+							&lt;input matInput  [(ngModel)]&#x3D;&quot;newMeeting.attendance.numKiwanis&quot; [ngModelOptions]&#x3D;&quot;{standalone: true}&quot; (keyup.enter)&#x3D;&quot;addMeetingRow()&quot;&gt;
+						&lt;/mat-form-field&gt;
+					&lt;/mat-footer-cell&gt;
+				&lt;/ng-container&gt;
+				&lt;ng-container matColumnDef&#x3D;&quot;numGuests&quot;&gt;
+					&lt;mat-header-cell *matHeaderCellDef&gt;Other guests&lt;/mat-header-cell&gt;
+					&lt;mat-cell *matCellDef&#x3D;&quot;let row; let i&#x3D;index&quot; [formGroupName]&#x3D;&quot;i&quot;&gt;
+						&lt;ng-container formGroupName&#x3D;&quot;attendance&quot;&gt;
+							&lt;input [readonly]&#x3D;&quot;!editingMeetings&quot; [class.editing]&#x3D;&quot;editingMeetings&quot; matInput formControlName&#x3D;&quot;numGuests&quot;&gt;
+						&lt;/ng-container&gt;
+					&lt;/mat-cell&gt;
+					&lt;mat-footer-cell *matFooterCellDef&gt;
+						&lt;mat-form-field class&#x3D;&quot;new-row&quot;&gt;
+							&lt;mat-label&gt;#&lt;/mat-label&gt;
+							&lt;input matInput  [(ngModel)]&#x3D;&quot;newMeeting.attendance.numGuests&quot; [ngModelOptions]&#x3D;&quot;{standalone: true}&quot; (keyup.enter)&#x3D;&quot;addMeetingRow()&quot;&gt;
+						&lt;/mat-form-field&gt;
+					&lt;/mat-footer-cell&gt;
+				&lt;/ng-container&gt;
+				&lt;ng-container matColumnDef&#x3D;&quot;facultyAttended&quot;&gt;
+					&lt;mat-header-cell *matHeaderCellDef&gt;Faculty advisor&lt;/mat-header-cell&gt;
+					&lt;mat-cell *matCellDef&#x3D;&quot;let row; let i&#x3D;index&quot; [formGroupName]&#x3D;&quot;i&quot;&gt;
+						&lt;ng-container formGroupName&#x3D;&quot;advisorAttended&quot;&gt;
+							&lt;mat-checkbox [disabled]&#x3D;&quot;!editingMeetings&quot; formControlName&#x3D;&quot;faculty&quot;&gt;&lt;/mat-checkbox&gt;
+						&lt;/ng-container&gt;
+					&lt;/mat-cell&gt;
+					&lt;mat-footer-cell *matFooterCellDef&gt;
+						&lt;mat-checkbox [(ngModel)]&#x3D;&quot;newMeeting.advisorAttended.faculty&quot; [ngModelOptions]&#x3D;&quot;{standalone: true}&quot;&gt;&lt;/mat-checkbox&gt;
+					&lt;/mat-footer-cell&gt;
+				&lt;/ng-container&gt;
+				&lt;ng-container matColumnDef&#x3D;&quot;kiwanisAttended&quot;&gt;
+					&lt;mat-header-cell *matHeaderCellDef&gt;Kiwanis advisor&lt;/mat-header-cell&gt;
+					&lt;mat-cell *matCellDef&#x3D;&quot;let row; let i&#x3D;index&quot; [formGroupName]&#x3D;&quot;i&quot;&gt;
+						&lt;ng-container formGroupName&#x3D;&quot;advisorAttended&quot;&gt;
+							&lt;mat-checkbox [disabled]&#x3D;&quot;!editingMeetings&quot; formControlName&#x3D;&quot;kiwanis&quot;&gt;&lt;/mat-checkbox&gt;
+						&lt;/ng-container&gt;
+					&lt;/mat-cell&gt;
+					&lt;mat-footer-cell *matFooterCellDef&gt;
+						&lt;mat-checkbox [(ngModel)]&#x3D;&quot;newMeeting.advisorAttended.kiwanis&quot; [ngModelOptions]&#x3D;&quot;{standalone: true}&quot; (keydown.Tab)&#x3D;&quot;addMeetingRow()&quot;&gt;&lt;/mat-checkbox&gt;
+					&lt;/mat-footer-cell&gt;
+				&lt;/ng-container&gt;
+				&lt;ng-container matColumnDef&#x3D;&quot;actions&quot;&gt;
+					&lt;mat-header-cell *matHeaderCellDef&gt;Actions&lt;/mat-header-cell&gt;
+					&lt;mat-cell *matCellDef&#x3D;&quot;let row; let i &#x3D; index&quot;&gt;
+						&lt;button mat-icon-button (click)&#x3D;&quot;toggleEdit(1)&quot;&gt;&lt;mat-icon&gt;edit&lt;/mat-icon&gt;&lt;/button&gt;
+						&lt;button mat-icon-button (click)&#x3D;&quot;deleteMeeting(i)&quot;&gt;&lt;mat-icon&gt;delete&lt;/mat-icon&gt;&lt;/button&gt;
+					&lt;/mat-cell&gt;
+					&lt;mat-footer-cell *matFooterCellDef&gt;
+						&lt;button mat-raised-button (click)&#x3D;&quot;addMeetingRow()&quot;&gt;+ Add&lt;/button&gt;
+					&lt;/mat-footer-cell&gt;
+				&lt;/ng-container&gt;
+
+				&lt;mat-header-row *matHeaderRowDef&#x3D;&quot;meetingColumns&quot;&gt;&lt;/mat-header-row&gt;
+				&lt;mat-row *matRowDef&#x3D;&quot;let row; columns: meetingColumns;&quot;&gt;&lt;/mat-row&gt;
+				&lt;mat-footer-row *matFooterRowDef&#x3D;&quot;meetingColumns&quot;&gt;&lt;/mat-footer-row&gt;
+			&lt;/mat-table&gt;
+
+		&lt;/mat-expansion-panel&gt;
+
+		&lt;mat-expansion-panel [class.mat-elevation-z0]&#x3D;&quot;true&quot; [hideToggle]&#x3D;&quot;true&quot; (opened)&#x3D;&quot;openedPanels[2] &#x3D; 1&quot; (closed)&#x3D;&quot;openedPanels[2] &#x3D; 0&quot;&gt;
+			&lt;mat-expansion-panel-header&gt;
+				&lt;mat-panel-title&gt;
+					&lt;mat-icon class&#x3D;&quot;expansion-icon&quot; [inline]&#x3D;&quot;true&quot;&gt;{{ openedPanels[2] ? &quot;expand_less&quot; : &quot;expand_more&quot; }}&lt;/mat-icon&gt;
+					&lt;h3 class&#x3D;&quot;mat-subheading-1&quot;&gt;Board Meeting Attendance&lt;/h3&gt;
+				&lt;/mat-panel-title&gt;
+				&lt;mat-panel-description&gt;
+				&lt;/mat-panel-description&gt;
+			&lt;/mat-expansion-panel-header&gt;
+
+			&lt;button mat-icon-button (click)&#x3D;&quot;toggleEdit(2)&quot;&gt;&lt;mat-icon&gt;edit&lt;/mat-icon&gt;&lt;/button&gt;
+
+			&lt;mat-table [dataSource]&#x3D;&quot;boardMeetingArray.controls&quot; formArrayName&#x3D;&quot;boardMeetings&quot;&gt;
+				&lt;ng-container matColumnDef&#x3D;&quot;date&quot;&gt;
+					&lt;mat-header-cell *matHeaderCellDef&gt;Date&lt;/mat-header-cell&gt;
+					&lt;mat-cell *matCellDef&#x3D;&quot;let row; let i&#x3D;index&quot; [formGroupName]&#x3D;&quot;i&quot;&gt;
+						&lt;input  [readonly]&#x3D;&quot;!editingBoardMeetings&quot; [class.editing]&#x3D;&quot;editingBoardMeetings&quot; matInput formControlName&#x3D;&quot;date&quot;&gt;
+					&lt;/mat-cell&gt;
+					&lt;mat-footer-cell *matFooterCellDef&gt;
+						&lt;mat-form-field class&#x3D;&quot;new-row&quot;&gt;
+							&lt;mat-label&gt;MM-DD-YYYY&lt;/mat-label&gt;
+							&lt;input matInput  [(ngModel)]&#x3D;&quot;newBoardMeeting.date&quot; [ngModelOptions]&#x3D;&quot;{standalone: true}&quot; (keyup.enter)&#x3D;&quot;addBoardMeetingRow()&quot; id&#x3D;&quot;boardMeetingFocus&quot;&gt;
+						&lt;/mat-form-field&gt;
+					&lt;/mat-footer-cell&gt;
+				&lt;/ng-container&gt;
+				&lt;ng-container matColumnDef&#x3D;&quot;boardMembers&quot;&gt;
+					&lt;mat-header-cell *matHeaderCellDef&gt;Board members&lt;/mat-header-cell&gt;
+					&lt;mat-cell *matCellDef&#x3D;&quot;let row; let i&#x3D;index&quot; [formGroupName]&#x3D;&quot;i&quot;&gt;
+						&lt;ng-container formGroupName&#x3D;&quot;attendance&quot;&gt;
+							&lt;input [readonly]&#x3D;&quot;!editingBoardMeetings&quot; [class.editing]&#x3D;&quot;editingBoardMeetings&quot; matInput formControlName&#x3D;&quot;numBoard&quot;&gt;
+						&lt;/ng-container&gt;
+					&lt;/mat-cell&gt;
+					&lt;mat-footer-cell *matFooterCellDef&gt;
+						&lt;mat-form-field class&#x3D;&quot;new-row&quot;&gt;
+							&lt;mat-label&gt;#&lt;/mat-label&gt;
+							&lt;input matInput  [(ngModel)]&#x3D;&quot;newBoardMeeting.attendance.numBoard&quot; [ngModelOptions]&#x3D;&quot;{standalone: true}&quot; (keyup.enter)&#x3D;&quot;addBoardMeetingRow()&quot;&gt;
+						&lt;/mat-form-field&gt;
+					&lt;/mat-footer-cell&gt;
+				&lt;/ng-container&gt;
+				&lt;ng-container matColumnDef&#x3D;&quot;guests&quot;&gt;
+					&lt;mat-header-cell *matHeaderCellDef&gt;Guests&lt;/mat-header-cell&gt;
+					&lt;mat-cell *matCellDef&#x3D;&quot;let row; let i&#x3D;index&quot; [formGroupName]&#x3D;&quot;i&quot;&gt;
+						&lt;ng-container formGroupName&#x3D;&quot;attendance&quot;&gt;
+							&lt;input [readonly]&#x3D;&quot;!editingBoardMeetings&quot; [class.editing]&#x3D;&quot;editingBoardMeetings&quot; matInput formControlName&#x3D;&quot;numGuests&quot;&gt;
+						&lt;/ng-container&gt;
+					&lt;/mat-cell&gt;
+					&lt;mat-footer-cell *matFooterCellDef&gt;
+						&lt;mat-form-field class&#x3D;&quot;new-row&quot;&gt;
+							&lt;mat-label&gt;#&lt;/mat-label&gt;
+							&lt;input matInput  [(ngModel)]&#x3D;&quot;newBoardMeeting.attendance.numGuests&quot; [ngModelOptions]&#x3D;&quot;{standalone: true}&quot; (keyup.enter)&#x3D;&quot;addBoardMeetingRow()&quot; (keydown.Tab)&#x3D;&quot;addBoardMeetingRow()&quot;&gt;
+						&lt;/mat-form-field&gt;
+					&lt;/mat-footer-cell&gt;
+				&lt;/ng-container&gt;
+				&lt;ng-container matColumnDef&#x3D;&quot;actions&quot;&gt;
+					&lt;mat-header-cell *matHeaderCellDef&gt;Actions&lt;/mat-header-cell&gt;
+					&lt;mat-cell *matCellDef&#x3D;&quot;let row; let i &#x3D; index&quot;&gt;
+						&lt;button mat-icon-button (click)&#x3D;&quot;toggleEdit(2)&quot;&gt;&lt;mat-icon&gt;edit&lt;/mat-icon&gt;&lt;/button&gt;
+						&lt;button mat-icon-button (click)&#x3D;&quot;deleteBoardMeeting(i)&quot;&gt;&lt;mat-icon&gt;delete&lt;/mat-icon&gt;&lt;/button&gt;
+					&lt;/mat-cell&gt;
+					&lt;mat-footer-cell *matFooterCellDef&gt;
+						&lt;button mat-raised-button (click)&#x3D;&quot;addBoardMeetingRow()&quot;&gt;+ Add&lt;/button&gt;
+					&lt;/mat-footer-cell&gt;
+				&lt;/ng-container&gt;
+
+				&lt;mat-header-row *matHeaderRowDef&#x3D;&quot;boardMeetingColumns&quot;&gt;&lt;/mat-header-row&gt;
+				&lt;mat-row *matRowDef&#x3D;&quot;let row; columns: boardMeetingColumns;&quot;&gt;&lt;/mat-row&gt;
+				&lt;mat-footer-row *matFooterRowDef&#x3D;&quot;boardMeetingColumns&quot;&gt;&lt;/mat-footer-row&gt;
+			&lt;/mat-table&gt;
+		&lt;/mat-expansion-panel&gt;
+
+
+
+		&lt;mat-expansion-panel [class.mat-elevation-z0]&#x3D;&quot;true&quot; [hideToggle]&#x3D;&quot;true&quot; (opened)&#x3D;&quot;openedPanels[3] &#x3D; 1&quot; (closed)&#x3D;&quot;openedPanels[3] &#x3D; 0&quot;&gt;
+			&lt;mat-expansion-panel-header&gt;
+				&lt;mat-panel-title&gt;
+					&lt;mat-icon class&#x3D;&quot;expansion-icon&quot; [inline]&#x3D;&quot;true&quot;&gt;{{ openedPanels[3] ? &quot;expand_less&quot; : &quot;expand_more&quot; }}&lt;/mat-icon&gt;
+					&lt;h3 class&#x3D;&quot;mat-subheading-1&quot;&gt;DCM&lt;/h3&gt;
+				&lt;/mat-panel-title&gt;
+				&lt;mat-panel-description&gt;
+				&lt;/mat-panel-description&gt;
+			&lt;/mat-expansion-panel-header&gt;
+
+			&lt;div id&#x3D;&quot;dcms&quot;&gt;
+				&lt;ng-container formGroupName&#x3D;&quot;dcm&quot;&gt;
+					&lt;mat-form-field appearance&#x3D;&quot;outline&quot;&gt;
+						&lt;mat-label&gt;Date&lt;/mat-label&gt;
+						&lt;input matInput [matDatepicker]&#x3D;&quot;dcmDate&quot; formControlName&#x3D;&quot;date&quot;&gt;	&lt;!-- scoping --&gt;
+						&lt;mat-datepicker type&#x3D;&quot;date&quot; #dcmDate&gt;&lt;/mat-datepicker&gt;
+						&lt;mat-datepicker-toggle matSuffix [for]&#x3D;&quot;dcmDate&quot;&gt;&lt;/mat-datepicker-toggle&gt;
+						&lt;mat-error&gt;Invalid Date Format&lt;/mat-error&gt;
+					&lt;/mat-form-field&gt;
+					&lt;mat-form-field appearance&#x3D;&quot;outline&quot;&gt;
+						&lt;mat-label&gt;Members Attended&lt;/mat-label&gt;
+						&lt;input matInput type&#x3D;&quot;number&quot; formControlName&#x3D;&quot;numMembers&quot;&gt;
+					&lt;/mat-form-field&gt;
+					&lt;mat-form-field appearance&#x3D;&quot;outline&quot;&gt;
+						&lt;mat-label&gt;Next DCM Date&lt;/mat-label&gt;
+						&lt;input matInput [matDatepicker]&#x3D;&quot;dcmDateNext&quot; formControlName&#x3D;&quot;nextDate&quot;&gt;	&lt;!-- scoping --&gt;
+						&lt;mat-datepicker type&#x3D;&quot;date&quot; #dcmDateNext&gt;&lt;/mat-datepicker&gt;
+						&lt;mat-datepicker-toggle matSuffix [for]&#x3D;&quot;dcmDateNext&quot;&gt;&lt;/mat-datepicker-toggle&gt;
+						&lt;mat-error&gt;Invalid Date Format&lt;/mat-error&gt;
+					&lt;/mat-form-field&gt;
+					&lt;mat-checkbox formControlName&#x3D;&quot;presidentAttended&quot;&gt;President Attended?&lt;/mat-checkbox&gt;
+				&lt;/ng-container&gt;
+			&lt;/div&gt;
+		&lt;/mat-expansion-panel&gt;
+
+
+		&lt;mat-expansion-panel [class.mat-elevation-z0]&#x3D;&quot;true&quot; [hideToggle]&#x3D;&quot;true&quot; (opened)&#x3D;&quot;openedPanels[4] &#x3D; 1&quot; (closed)&#x3D;&quot;openedPanels[4] &#x3D; 0&quot;&gt;
+			&lt;mat-expansion-panel-header&gt;
+				&lt;mat-panel-title&gt;
+					&lt;mat-icon class&#x3D;&quot;expansion-icon&quot; [inline]&#x3D;&quot;true&quot;&gt;{{ openedPanels[4] ? &quot;expand_less&quot; : &quot;expand_more&quot; }}&lt;/mat-icon&gt;
+					&lt;h3 class&#x3D;&quot;mat-subheading-1&quot;&gt;Fundraising&lt;/h3&gt;
+				&lt;/mat-panel-title&gt;
+				&lt;mat-panel-description&gt;
+				&lt;/mat-panel-description&gt;
+			&lt;/mat-expansion-panel-header&gt;
+
+			&lt;button mat-icon-button (click)&#x3D;&quot;toggleEdit(3)&quot;&gt;&lt;mat-icon&gt;edit&lt;/mat-icon&gt;&lt;/button&gt;
+			&lt;mat-table [dataSource]&#x3D;&quot;fundraisingArray.controls&quot; formArrayName&#x3D;&quot;fundraising&quot;&gt;
+				&lt;ng-container matColumnDef&#x3D;&quot;source&quot;&gt;
+					&lt;mat-header-cell *matHeaderCellDef&gt;Source&lt;/mat-header-cell&gt;
+					&lt;mat-cell *matCellDef&#x3D;&quot;let row; let i&#x3D;index&quot; [formGroupName]&#x3D;&quot;i&quot;&gt;
+						&lt;input  [readonly]&#x3D;&quot;!editingFundraising&quot; [class.editing]&#x3D;&quot;editingFundraising&quot; matInput formControlName&#x3D;&quot;source&quot;&gt;
+					&lt;/mat-cell&gt;
+					&lt;mat-footer-cell *matFooterCellDef&gt;
+						&lt;mat-form-field class&#x3D;&quot;new-row&quot;&gt;
+							&lt;mat-label&gt;+ Add Fundraiser&lt;/mat-label&gt;
+							&lt;input matInput  [(ngModel)]&#x3D;&quot;newFundraising.source&quot; [ngModelOptions]&#x3D;&quot;{standalone: true}&quot; (keyup.enter)&#x3D;&quot;addFundraisingRow()&quot; id&#x3D;&quot;fundraisingFocus&quot;&gt;
+						&lt;/mat-form-field&gt;
+					&lt;/mat-footer-cell&gt;
+				&lt;/ng-container&gt;
+				&lt;ng-container matColumnDef&#x3D;&quot;ptp&quot;&gt;
+					&lt;mat-header-cell *matHeaderCellDef&gt;PTP&lt;/mat-header-cell&gt;
+					&lt;mat-cell *matCellDef&#x3D;&quot;let row; let i&#x3D;index&quot; [formGroupName]&#x3D;&quot;i&quot;&gt;
+						&lt;input [readonly]&#x3D;&quot;!editingFundraising&quot; [class.editing]&#x3D;&quot;editingFundraising&quot; matInput formControlName&#x3D;&quot;ptp&quot;&gt;
+					&lt;/mat-cell&gt;
+					&lt;mat-footer-cell *matFooterCellDef&gt;
+						&lt;mat-form-field class&#x3D;&quot;new-row&quot;&gt;
+							&lt;mat-label&gt;$&lt;/mat-label&gt;
+							&lt;input matInput  [(ngModel)]&#x3D;&quot;newFundraising.ptp&quot; [ngModelOptions]&#x3D;&quot;{standalone: true}&quot; (keyup.enter)&#x3D;&quot;addFundraisingRow()&quot;&gt;
+						&lt;/mat-form-field&gt;
+					&lt;/mat-footer-cell&gt;
+				&lt;/ng-container&gt;
+				&lt;ng-container matColumnDef&#x3D;&quot;kfh&quot;&gt;
+					&lt;mat-header-cell *matHeaderCellDef&gt;KFH&lt;/mat-header-cell&gt;
+					&lt;mat-cell *matCellDef&#x3D;&quot;let row; let i&#x3D;index&quot; [formGroupName]&#x3D;&quot;i&quot;&gt;
+						&lt;input [readonly]&#x3D;&quot;!editingFundraising&quot; [class.editing]&#x3D;&quot;editingFundraising&quot; matInput formControlName&#x3D;&quot;kfh&quot;&gt;
+					&lt;/mat-cell&gt;
+					&lt;mat-footer-cell *matFooterCellDef&gt;
+						&lt;mat-form-field class&#x3D;&quot;new-row&quot;&gt;
+							&lt;mat-label&gt;$&lt;/mat-label&gt;
+							&lt;input matInput  [(ngModel)]&#x3D;&quot;newFundraising.kfh&quot; [ngModelOptions]&#x3D;&quot;{standalone: true}&quot; (keyup.enter)&#x3D;&quot;addFundraisingRow()&quot;&gt;
+						&lt;/mat-form-field&gt;
+					&lt;/mat-footer-cell&gt;
+				&lt;/ng-container&gt;
+				&lt;ng-container matColumnDef&#x3D;&quot;fa&quot;&gt;
+					&lt;mat-header-cell *matHeaderCellDef&gt;Feeding America&lt;/mat-header-cell&gt;
+					&lt;mat-cell *matCellDef&#x3D;&quot;let row; let i&#x3D;index&quot; [formGroupName]&#x3D;&quot;i&quot;&gt;
+						&lt;input [readonly]&#x3D;&quot;!editingFundraising&quot; [class.editing]&#x3D;&quot;editingFundraising&quot; matInput formControlName&#x3D;&quot;fa&quot;&gt;
+					&lt;/mat-cell&gt;
+					&lt;mat-footer-cell *matFooterCellDef&gt;
+						&lt;mat-form-field class&#x3D;&quot;new-row&quot;&gt;
+							&lt;mat-label&gt;$&lt;/mat-label&gt;
+							&lt;input matInput  [(ngModel)]&#x3D;&quot;newFundraising.fa&quot; [ngModelOptions]&#x3D;&quot;{standalone: true}&quot; (keyup.enter)&#x3D;&quot;addFundraisingRow()&quot;&gt;
+						&lt;/mat-form-field&gt;
+					&lt;/mat-footer-cell&gt;
+				&lt;/ng-container&gt;
+				&lt;ng-container matColumnDef&#x3D;&quot;other&quot;&gt;
+					&lt;mat-header-cell *matHeaderCellDef&gt;Other charity&lt;/mat-header-cell&gt;
+					&lt;mat-cell *matCellDef&#x3D;&quot;let row; let i&#x3D;index&quot; [formGroupName]&#x3D;&quot;i&quot;&gt;
+						&lt;input [readonly]&#x3D;&quot;!editingFundraising&quot; [class.editing]&#x3D;&quot;editingFundraising&quot; matInput formControlName&#x3D;&quot;other&quot;&gt;
+					&lt;/mat-cell&gt;
+					&lt;mat-footer-cell *matFooterCellDef&gt;
+						&lt;mat-form-field class&#x3D;&quot;new-row&quot;&gt;
+							&lt;mat-label&gt;$&lt;/mat-label&gt;
+							&lt;input matInput  [(ngModel)]&#x3D;&quot;newFundraising.other&quot; [ngModelOptions]&#x3D;&quot;{standalone: true}&quot; (keyup.enter)&#x3D;&quot;addFundraisingRow()&quot;&gt;
+						&lt;/mat-form-field&gt;
+					&lt;/mat-footer-cell&gt;
+				&lt;/ng-container&gt;
+				&lt;ng-container matColumnDef&#x3D;&quot;admin&quot;&gt;
+					&lt;mat-header-cell *matHeaderCellDef&gt;Administrative&lt;/mat-header-cell&gt;
+					&lt;mat-cell *matCellDef&#x3D;&quot;let row; let i&#x3D;index&quot; [formGroupName]&#x3D;&quot;i&quot;&gt;
+						&lt;input [readonly]&#x3D;&quot;!editingFundraising&quot; [class.editing]&#x3D;&quot;editingFundraising&quot; matInput formControlName&#x3D;&quot;admin&quot;&gt;
+					&lt;/mat-cell&gt;
+					&lt;mat-footer-cell *matFooterCellDef&gt;
+						&lt;mat-form-field class&#x3D;&quot;new-row&quot;&gt;
+							&lt;mat-label&gt;$&lt;/mat-label&gt;
+							&lt;input matInput  [(ngModel)]&#x3D;&quot;newFundraising.admin&quot; [ngModelOptions]&#x3D;&quot;{standalone: true}&quot; (keyup.enter)&#x3D;&quot;addFundraisingRow()&quot; (keydown.Tab)&#x3D;&quot;addFundraisingRow()&quot;&gt;
+						&lt;/mat-form-field&gt;
+					&lt;/mat-footer-cell&gt;
+				&lt;/ng-container&gt;
+				&lt;ng-container matColumnDef&#x3D;&quot;actions&quot;&gt;
+					&lt;mat-header-cell *matHeaderCellDef&gt;Actions&lt;/mat-header-cell&gt;
+					&lt;mat-cell *matCellDef&#x3D;&quot;let row; let i &#x3D; index&quot;&gt;
+						&lt;button mat-icon-button (click)&#x3D;&quot;toggleEdit(3)&quot;&gt;&lt;mat-icon&gt;edit&lt;/mat-icon&gt;&lt;/button&gt;
+						&lt;button mat-icon-button (click)&#x3D;&quot;deleteFundraising(i)&quot;&gt;&lt;mat-icon&gt;delete&lt;/mat-icon&gt;&lt;/button&gt;
+					&lt;/mat-cell&gt;
+					&lt;mat-footer-cell *matFooterCellDef&gt;
+						&lt;button mat-raised-button (click)&#x3D;&quot;addFundraisingRow()&quot;&gt;+ Add&lt;/button&gt;
+					&lt;/mat-footer-cell&gt;
+				&lt;/ng-container&gt;
+
+
+				&lt;mat-header-row *matHeaderRowDef&#x3D;&quot;fundraisingColumns&quot;&gt;&lt;/mat-header-row&gt;
+				&lt;mat-row *matRowDef&#x3D;&quot;let row; columns: fundraisingColumns;&quot;&gt;&lt;/mat-row&gt;
+				&lt;mat-footer-row *matFooterRowDef&#x3D;&quot;fundraisingColumns&quot;&gt;&lt;/mat-footer-row&gt;
+			&lt;/mat-table&gt;
+		&lt;/mat-expansion-panel&gt;
+
+
+
+
+		&lt;mat-expansion-panel [class.mat-elevation-z0]&#x3D;&quot;true&quot; [hideToggle]&#x3D;&quot;true&quot; (opened)&#x3D;&quot;openedPanels[5] &#x3D; 1&quot; (closed)&#x3D;&quot;openedPanels[5] &#x3D; 0&quot;&gt;
+			&lt;mat-expansion-panel-header&gt;
+				&lt;mat-panel-title&gt;
+					&lt;mat-icon class&#x3D;&quot;expansion-icon&quot; [inline]&#x3D;&quot;true&quot;&gt;{{ openedPanels[5] ? &quot;expand_less&quot; : &quot;expand_more&quot; }}&lt;/mat-icon&gt;
+					&lt;h3 class&#x3D;&quot;mat-subheading-1&quot;&gt;Feedback&lt;/h3&gt;
+				&lt;/mat-panel-title&gt;
+				&lt;mat-panel-description&gt;
+				&lt;/mat-panel-description&gt;
+			&lt;/mat-expansion-panel-header&gt;
+
+			&lt;div id&#x3D;&quot;feedback&quot; formGroupName&#x3D;&quot;communications&quot;&gt;
+				&lt;mat-form-field appearance&#x3D;&quot;outline&quot; class&#x3D;&quot;full-width&quot;&gt;
+					&lt;mat-label&gt;LTG&lt;/mat-label&gt;
+					&lt;textarea matInput formControlName&#x3D;&quot;ltg&quot; matTextareaAutosize&gt;&lt;/textarea&gt;
+				&lt;/mat-form-field&gt;
+
+				&lt;mat-form-field appearance&#x3D;&quot;outline&quot; class&#x3D;&quot;full-width&quot;&gt;
+					&lt;mat-label&gt;District Board&lt;/mat-label&gt;
+					&lt;textarea matInput formControlName&#x3D;&quot;dboard&quot; matTextareaAutosize&gt;&lt;/textarea&gt;
+				&lt;/mat-form-field&gt;
+			&lt;/div&gt;
+		&lt;/mat-expansion-panel&gt;
+
+
+		&lt;mat-expansion-panel [class.mat-elevation-z0]&#x3D;&quot;true&quot; [hideToggle]&#x3D;&quot;true&quot; (opened)&#x3D;&quot;openedPanels[0] &#x3D; 1&quot; (closed)&#x3D;&quot;openedPanels[0] &#x3D; 0&quot;&gt;
+			&lt;mat-expansion-panel-header&gt;
+				&lt;mat-panel-title&gt;
+					&lt;mat-icon class&#x3D;&quot;expansion-icon&quot; [inline]&#x3D;&quot;true&quot;&gt;{{ openedPanels[0] ? &quot;expand_less&quot; : &quot;expand_more&quot; }}&lt;/mat-icon&gt;
+					&lt;h3 class&#x3D;&quot;mat-subheading-1&quot;&gt;Event Reports&lt;/h3&gt;
+				&lt;/mat-panel-title&gt;
+				&lt;mat-panel-description&gt;
+				&lt;/mat-panel-description&gt;
+			&lt;/mat-expansion-panel-header&gt;
+
+			&lt;mat-table [dataSource]&#x3D;&quot;eventsArray.controls&quot; formArrayName&#x3D;&quot;events&quot;&gt;
+				&lt;ng-container matColumnDef&#x3D;&quot;name&quot;&gt;
+					&lt;mat-header-cell *matHeaderCellDef&gt;Event Name&lt;/mat-header-cell&gt;
+					&lt;mat-cell *matCellDef&#x3D;&quot;let row; let i&#x3D;index&quot; [formGroupName]&#x3D;&quot;i&quot;&gt;
+						{{row.value.name}}
+					&lt;/mat-cell&gt;
+				&lt;/ng-container&gt;
+				&lt;ng-container matColumnDef&#x3D;&quot;date&quot;&gt;
+					&lt;mat-header-cell *matHeaderCellDef&gt;Date&lt;/mat-header-cell&gt;
+					&lt;mat-cell *matCellDef&#x3D;&quot;let row; let i&#x3D;index&quot; [formGroupName]&#x3D;&quot;i&quot;&gt;
+						{{row.value.date | date:&#x27;shortDate&#x27;}}
+					&lt;/mat-cell&gt;
+				&lt;/ng-container&gt;
+				&lt;ng-container matColumnDef&#x3D;&quot;numAttendees&quot;&gt;
+					&lt;mat-header-cell *matHeaderCellDef&gt;Attendance&lt;/mat-header-cell&gt;
+					&lt;mat-cell *matCellDef&#x3D;&quot;let row; let i&#x3D;index&quot; [formGroupName]&#x3D;&quot;i&quot;&gt;
+						{{row.value.numAttendees}}
+					&lt;/mat-cell&gt;
+				&lt;/ng-container&gt;
+				&lt;ng-container matColumnDef&#x3D;&quot;totalService&quot;&gt;
+					&lt;mat-header-cell *matHeaderCellDef&gt;Total Service&lt;/mat-header-cell&gt;
+					&lt;mat-cell *matCellDef&#x3D;&quot;let row; let i&#x3D;index&quot; [formGroupName]&#x3D;&quot;i&quot;&gt;
+						{{row.value.totalService}}
+					&lt;/mat-cell&gt;
+				&lt;/ng-container&gt;
+				&lt;ng-container matColumnDef&#x3D;&quot;totalLeadership&quot;&gt;
+					&lt;mat-header-cell *matHeaderCellDef&gt;Total Leadership&lt;/mat-header-cell&gt;
+					&lt;mat-cell *matCellDef&#x3D;&quot;let row; let i&#x3D;index&quot; [formGroupName]&#x3D;&quot;i&quot;&gt;
+						{{row.value.totalLeadership}}
+					&lt;/mat-cell&gt;
+				&lt;/ng-container&gt;
+				&lt;ng-container matColumnDef&#x3D;&quot;totalFellowship&quot;&gt;
+					&lt;mat-header-cell *matHeaderCellDef&gt;Total Fellowship&lt;/mat-header-cell&gt;
+					&lt;mat-cell *matCellDef&#x3D;&quot;let row; let i&#x3D;index&quot; [formGroupName]&#x3D;&quot;i&quot;&gt;
+						{{row.value.totalFellowship}}
+					&lt;/mat-cell&gt;
+				&lt;/ng-container&gt;
+				&lt;ng-container matColumnDef&#x3D;&quot;tags&quot;&gt;
+					&lt;mat-header-cell *matHeaderCellDef&gt;Tags&lt;/mat-header-cell&gt;
+					&lt;mat-cell *matCellDef&#x3D;&quot;let row; let i&#x3D;index&quot; [formGroupName]&#x3D;&quot;i&quot;&gt;
+						{{row.value.tags.join(&#x27;, &#x27;)}}
+					&lt;/mat-cell&gt;
+				&lt;/ng-container&gt;
+
+				&lt;ng-container matColumnDef&#x3D;&quot;actions&quot;&gt;
+					&lt;mat-header-cell *matHeaderCellDef&gt;Actions&lt;/mat-header-cell&gt;
+					&lt;mat-cell *matCellDef&#x3D;&quot;let row&quot;&gt;
+						&lt;!-- &lt;button mat-icon-button&gt;&lt;mat-icon&gt;edit&lt;/mat-icon&gt;&lt;/button&gt; --&gt;
+						&lt;!-- &lt;button mat-icon-button&gt;&lt;mat-icon&gt;delete&lt;/mat-icon&gt;&lt;/button&gt; --&gt;
+						&lt;button mat-icon-button (click)&#x3D;&quot;toggleEdit()&quot;&gt;&lt;mat-icon&gt;open_in_new&lt;/mat-icon&gt;&lt;/button&gt;
+					&lt;/mat-cell&gt;
+				&lt;/ng-container&gt;
+
+
+				&lt;mat-header-row *matHeaderRowDef&#x3D;&quot;eventsColumns&quot;&gt;&lt;/mat-header-row&gt;
+				&lt;mat-row *matRowDef&#x3D;&quot;let row; columns: eventsColumns;&quot;&gt;&lt;/mat-row&gt;
+			&lt;/mat-table&gt;
+		&lt;/mat-expansion-panel&gt;
+
+	&lt;/mat-accordion&gt;
+&lt;/form&gt;
+
+&lt;ng-template #loading&gt;&lt;h3&gt;loading...&lt;/h3&gt;&lt;/ng-template&gt;</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./mrf.component.css</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">#mrf-header {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+
+}
+#mrf-actions {
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+}
+#mrf-actions h3 {
+	margin: 0;
+}
+#mrf-actions button {
+	margin: 0 5px;
+}
+
+.mat-form-field {
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+#mrf-tabs {
+	display: flex;
+	right: 0;
+	flex-flow: row nowrap;
+	margin-bottom: 16px;
+}
+#mrf-tabs ul {
+	display: flex;	/* Change vertical nav to horizontal nav*/
+	align-self: flex-end;
+	padding: 0;
+	margin: 0;	/* Some style sheet is forcing auto-centering margins onto ul */
+	list-style: none;
+}
+#mrf-tabs ul li {
+	margin: 0 5px;
+}
+
+#main .mat-checkbox {
+	padding: 0 1%;
+}
+
+.mat-elevation-z4 {	/* Using this as an &#x27;active tab&#x27; selector, though we can add a bit more code to separate the two */
+	border-radius: 0 0 4px 4px;
+}
+
+
+
+
+.mat-form-field {
+	padding: 0 5px;
+}
+
+.full-width {	/* text area */
+	width: 100%;
+}
+
+
+h1, h3 {
+	color: #144c83;
+	font-family: &quot;Century Gothic&quot;;
+	font-weight: bold;
+	margin-bottom: 0;
+}
+h1 {
+	font-size: 64px;
+	margin-bottom: 32px;
+}
+.mat-expansion-panel-header-title {
+	display: inline-flex;
+	align-items: center;
+}
+.expansion-icon {
+	margin-right: 5px;
+}
+#main {
+	margin-left: 36px;
+}
+
+.mat-header-row, .mat-row, .mat-footer-row {
+	/*display: inline-flex;*/
+}
+
+.mat-column-actions, .mat-column-facultyAttended, .mat-column-kiwanisAttended {
+	justify-content: center;
+}
+
+.editing {
+	border-bottom: 1px solid #ccc;
+}</code></pre>
+                <p class="comment">
+                    <code>./_mrf.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">.mat-expansion-panel {
+	background: transparent;
+}
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><!-- might want to change ngIf checks to something more explicit, rather than relying on mrfForm not being undefined --><div id="mrf-header">	<p class="mat-body-1">MRF Month: <ng-container *ngIf="mrfForm">{{ mrf.month }}</ng-container></p>	<div id="mrf-actions" *ngIf="mrfForm; else loading">		<mat-spinner *ngIf="false" diameter="36"></mat-spinner>		<button mat-icon-button [disabled]="!mrfForm.dirty || !mrfForm.valid" (click)="saveMrf()"><mat-icon>save</mat-icon></button>	</div></div><mat-divider></mat-divider><form [formGroup]="mrfForm" *ngIf="mrfForm; else loading">	<div id="main">		<h3>General Information</h3>		<mat-form-field appearance="outline">			<mat-label>Year</mat-label>			<input matInput formControlName="year" readonly>		</mat-form-field>		<mat-form-field appearance="outline">			<mat-label>Month</mat-label>			<input matInput formControlName="month" readonly>		</mat-form-field>		<mat-form-field appearance="outline">			<mat-label># Dues Paid Members</mat-label>			<input matInput formControlName="numDuesPaid">		</mat-form-field>	</div>	<mat-accordion displayMode="flat" [multi]="true">		<mat-expansion-panel [class.mat-elevation-z0]="true" [hideToggle]="true" (opened)="openedPanels[1] = 1" (closed)="openedPanels[1] = 0">			<mat-expansion-panel-header>				<mat-panel-title>					<mat-icon class="expansion-icon" [inline]="true">{{ openedPanels[1] ? "expand_less" : "expand_more" }}</mat-icon>					<h3 class="mat-subheading-1">Meeting Attendance</h3>				</mat-panel-title>				<mat-panel-description>				</mat-panel-description>			</mat-expansion-panel-header>			<button mat-icon-button (click)="toggleEdit(1)"><mat-icon>edit</mat-icon></button>			<mat-table [dataSource]="meetingArray.controls" formArrayName="meetings">				<ng-container matColumnDef="date">					<mat-header-cell *matHeaderCellDef>Date</mat-header-cell>					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">						<input  [readonly]="!editingMeetings" [class.editing]="editingMeetings" matInput formControlName="date">					</mat-cell>					<mat-footer-cell *matFooterCellDef>						<mat-form-field class="new-row">							<mat-label>MM-DD-YYYY</mat-label>							<input matInput  [(ngModel)]="newMeeting.date" [ngModelOptions]="{standalone: true}" (keyup.enter)="addMeetingRow()" id="meetingFocus">						</mat-form-field>					</mat-footer-cell>				</ng-container>				<ng-container matColumnDef="numMembers">					<mat-header-cell *matHeaderCellDef>Home club members</mat-header-cell>					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">						<ng-container formGroupName="attendance">							<input [readonly]="!editingMeetings" [class.editing]="editingMeetings" matInput formControlName="numMembers">						</ng-container>					</mat-cell>					<mat-footer-cell *matFooterCellDef>						<mat-form-field class="new-row">							<mat-label>#</mat-label>							<input matInput  [(ngModel)]="newMeeting.attendance.numMembers" [ngModelOptions]="{standalone: true}" (keyup.enter)="addMeetingRow()">						</mat-form-field>					</mat-footer-cell>				</ng-container>				<ng-container matColumnDef="numNonHomeMembers">					<mat-header-cell *matHeaderCellDef>Other CKI members</mat-header-cell>					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">						<ng-container formGroupName="attendance">							<input [readonly]="!editingMeetings" [class.editing]="editingMeetings" matInput formControlName="numNonHomeMembers">						</ng-container>					</mat-cell>					<mat-footer-cell *matFooterCellDef>						<mat-form-field class="new-row">							<mat-label>#</mat-label>							<input matInput  [(ngModel)]="newMeeting.attendance.numNonHomeMembers" [ngModelOptions]="{standalone: true}" (keyup.enter)="addMeetingRow()">						</mat-form-field>					</mat-footer-cell>				</ng-container>				<ng-container matColumnDef="numKiwanis">					<mat-header-cell *matHeaderCellDef>Kiwanians</mat-header-cell>					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">						<ng-container formGroupName="attendance">							<input [readonly]="!editingMeetings" [class.editing]="editingMeetings" matInput formControlName="numKiwanis">						</ng-container>					</mat-cell>					<mat-footer-cell *matFooterCellDef>						<mat-form-field class="new-row">							<mat-label>#</mat-label>							<input matInput  [(ngModel)]="newMeeting.attendance.numKiwanis" [ngModelOptions]="{standalone: true}" (keyup.enter)="addMeetingRow()">						</mat-form-field>					</mat-footer-cell>				</ng-container>				<ng-container matColumnDef="numGuests">					<mat-header-cell *matHeaderCellDef>Other guests</mat-header-cell>					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">						<ng-container formGroupName="attendance">							<input [readonly]="!editingMeetings" [class.editing]="editingMeetings" matInput formControlName="numGuests">						</ng-container>					</mat-cell>					<mat-footer-cell *matFooterCellDef>						<mat-form-field class="new-row">							<mat-label>#</mat-label>							<input matInput  [(ngModel)]="newMeeting.attendance.numGuests" [ngModelOptions]="{standalone: true}" (keyup.enter)="addMeetingRow()">						</mat-form-field>					</mat-footer-cell>				</ng-container>				<ng-container matColumnDef="facultyAttended">					<mat-header-cell *matHeaderCellDef>Faculty advisor</mat-header-cell>					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">						<ng-container formGroupName="advisorAttended">							<mat-checkbox [disabled]="!editingMeetings" formControlName="faculty"></mat-checkbox>						</ng-container>					</mat-cell>					<mat-footer-cell *matFooterCellDef>						<mat-checkbox [(ngModel)]="newMeeting.advisorAttended.faculty" [ngModelOptions]="{standalone: true}"></mat-checkbox>					</mat-footer-cell>				</ng-container>				<ng-container matColumnDef="kiwanisAttended">					<mat-header-cell *matHeaderCellDef>Kiwanis advisor</mat-header-cell>					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">						<ng-container formGroupName="advisorAttended">							<mat-checkbox [disabled]="!editingMeetings" formControlName="kiwanis"></mat-checkbox>						</ng-container>					</mat-cell>					<mat-footer-cell *matFooterCellDef>						<mat-checkbox [(ngModel)]="newMeeting.advisorAttended.kiwanis" [ngModelOptions]="{standalone: true}" (keydown.Tab)="addMeetingRow()"></mat-checkbox>					</mat-footer-cell>				</ng-container>				<ng-container matColumnDef="actions">					<mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>					<mat-cell *matCellDef="let row; let i = index">						<button mat-icon-button (click)="toggleEdit(1)"><mat-icon>edit</mat-icon></button>						<button mat-icon-button (click)="deleteMeeting(i)"><mat-icon>delete</mat-icon></button>					</mat-cell>					<mat-footer-cell *matFooterCellDef>						<button mat-raised-button (click)="addMeetingRow()">+ Add</button>					</mat-footer-cell>				</ng-container>				<mat-header-row *matHeaderRowDef="meetingColumns"></mat-header-row>				<mat-row *matRowDef="let row; columns: meetingColumns;"></mat-row>				<mat-footer-row *matFooterRowDef="meetingColumns"></mat-footer-row>			</mat-table>		</mat-expansion-panel>		<mat-expansion-panel [class.mat-elevation-z0]="true" [hideToggle]="true" (opened)="openedPanels[2] = 1" (closed)="openedPanels[2] = 0">			<mat-expansion-panel-header>				<mat-panel-title>					<mat-icon class="expansion-icon" [inline]="true">{{ openedPanels[2] ? "expand_less" : "expand_more" }}</mat-icon>					<h3 class="mat-subheading-1">Board Meeting Attendance</h3>				</mat-panel-title>				<mat-panel-description>				</mat-panel-description>			</mat-expansion-panel-header>			<button mat-icon-button (click)="toggleEdit(2)"><mat-icon>edit</mat-icon></button>			<mat-table [dataSource]="boardMeetingArray.controls" formArrayName="boardMeetings">				<ng-container matColumnDef="date">					<mat-header-cell *matHeaderCellDef>Date</mat-header-cell>					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">						<input  [readonly]="!editingBoardMeetings" [class.editing]="editingBoardMeetings" matInput formControlName="date">					</mat-cell>					<mat-footer-cell *matFooterCellDef>						<mat-form-field class="new-row">							<mat-label>MM-DD-YYYY</mat-label>							<input matInput  [(ngModel)]="newBoardMeeting.date" [ngModelOptions]="{standalone: true}" (keyup.enter)="addBoardMeetingRow()" id="boardMeetingFocus">						</mat-form-field>					</mat-footer-cell>				</ng-container>				<ng-container matColumnDef="boardMembers">					<mat-header-cell *matHeaderCellDef>Board members</mat-header-cell>					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">						<ng-container formGroupName="attendance">							<input [readonly]="!editingBoardMeetings" [class.editing]="editingBoardMeetings" matInput formControlName="numBoard">						</ng-container>					</mat-cell>					<mat-footer-cell *matFooterCellDef>						<mat-form-field class="new-row">							<mat-label>#</mat-label>							<input matInput  [(ngModel)]="newBoardMeeting.attendance.numBoard" [ngModelOptions]="{standalone: true}" (keyup.enter)="addBoardMeetingRow()">						</mat-form-field>					</mat-footer-cell>				</ng-container>				<ng-container matColumnDef="guests">					<mat-header-cell *matHeaderCellDef>Guests</mat-header-cell>					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">						<ng-container formGroupName="attendance">							<input [readonly]="!editingBoardMeetings" [class.editing]="editingBoardMeetings" matInput formControlName="numGuests">						</ng-container>					</mat-cell>					<mat-footer-cell *matFooterCellDef>						<mat-form-field class="new-row">							<mat-label>#</mat-label>							<input matInput  [(ngModel)]="newBoardMeeting.attendance.numGuests" [ngModelOptions]="{standalone: true}" (keyup.enter)="addBoardMeetingRow()" (keydown.Tab)="addBoardMeetingRow()">						</mat-form-field>					</mat-footer-cell>				</ng-container>				<ng-container matColumnDef="actions">					<mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>					<mat-cell *matCellDef="let row; let i = index">						<button mat-icon-button (click)="toggleEdit(2)"><mat-icon>edit</mat-icon></button>						<button mat-icon-button (click)="deleteBoardMeeting(i)"><mat-icon>delete</mat-icon></button>					</mat-cell>					<mat-footer-cell *matFooterCellDef>						<button mat-raised-button (click)="addBoardMeetingRow()">+ Add</button>					</mat-footer-cell>				</ng-container>				<mat-header-row *matHeaderRowDef="boardMeetingColumns"></mat-header-row>				<mat-row *matRowDef="let row; columns: boardMeetingColumns;"></mat-row>				<mat-footer-row *matFooterRowDef="boardMeetingColumns"></mat-footer-row>			</mat-table>		</mat-expansion-panel>		<mat-expansion-panel [class.mat-elevation-z0]="true" [hideToggle]="true" (opened)="openedPanels[3] = 1" (closed)="openedPanels[3] = 0">			<mat-expansion-panel-header>				<mat-panel-title>					<mat-icon class="expansion-icon" [inline]="true">{{ openedPanels[3] ? "expand_less" : "expand_more" }}</mat-icon>					<h3 class="mat-subheading-1">DCM</h3>				</mat-panel-title>				<mat-panel-description>				</mat-panel-description>			</mat-expansion-panel-header>			<div id="dcms">				<ng-container formGroupName="dcm">					<mat-form-field appearance="outline">						<mat-label>Date</mat-label>						<input matInput [matDatepicker]="dcmDate" formControlName="date">	<!-- scoping -->						<mat-datepicker type="date" #dcmDate></mat-datepicker>						<mat-datepicker-toggle matSuffix [for]="dcmDate"></mat-datepicker-toggle>						<mat-error>Invalid Date Format</mat-error>					</mat-form-field>					<mat-form-field appearance="outline">						<mat-label>Members Attended</mat-label>						<input matInput type="number" formControlName="numMembers">					</mat-form-field>					<mat-form-field appearance="outline">						<mat-label>Next DCM Date</mat-label>						<input matInput [matDatepicker]="dcmDateNext" formControlName="nextDate">	<!-- scoping -->						<mat-datepicker type="date" #dcmDateNext></mat-datepicker>						<mat-datepicker-toggle matSuffix [for]="dcmDateNext"></mat-datepicker-toggle>						<mat-error>Invalid Date Format</mat-error>					</mat-form-field>					<mat-checkbox formControlName="presidentAttended">President Attended?</mat-checkbox>				</ng-container>			</div>		</mat-expansion-panel>		<mat-expansion-panel [class.mat-elevation-z0]="true" [hideToggle]="true" (opened)="openedPanels[4] = 1" (closed)="openedPanels[4] = 0">			<mat-expansion-panel-header>				<mat-panel-title>					<mat-icon class="expansion-icon" [inline]="true">{{ openedPanels[4] ? "expand_less" : "expand_more" }}</mat-icon>					<h3 class="mat-subheading-1">Fundraising</h3>				</mat-panel-title>				<mat-panel-description>				</mat-panel-description>			</mat-expansion-panel-header>			<button mat-icon-button (click)="toggleEdit(3)"><mat-icon>edit</mat-icon></button>			<mat-table [dataSource]="fundraisingArray.controls" formArrayName="fundraising">				<ng-container matColumnDef="source">					<mat-header-cell *matHeaderCellDef>Source</mat-header-cell>					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">						<input  [readonly]="!editingFundraising" [class.editing]="editingFundraising" matInput formControlName="source">					</mat-cell>					<mat-footer-cell *matFooterCellDef>						<mat-form-field class="new-row">							<mat-label>+ Add Fundraiser</mat-label>							<input matInput  [(ngModel)]="newFundraising.source" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()" id="fundraisingFocus">						</mat-form-field>					</mat-footer-cell>				</ng-container>				<ng-container matColumnDef="ptp">					<mat-header-cell *matHeaderCellDef>PTP</mat-header-cell>					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">						<input [readonly]="!editingFundraising" [class.editing]="editingFundraising" matInput formControlName="ptp">					</mat-cell>					<mat-footer-cell *matFooterCellDef>						<mat-form-field class="new-row">							<mat-label>$</mat-label>							<input matInput  [(ngModel)]="newFundraising.ptp" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()">						</mat-form-field>					</mat-footer-cell>				</ng-container>				<ng-container matColumnDef="kfh">					<mat-header-cell *matHeaderCellDef>KFH</mat-header-cell>					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">						<input [readonly]="!editingFundraising" [class.editing]="editingFundraising" matInput formControlName="kfh">					</mat-cell>					<mat-footer-cell *matFooterCellDef>						<mat-form-field class="new-row">							<mat-label>$</mat-label>							<input matInput  [(ngModel)]="newFundraising.kfh" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()">						</mat-form-field>					</mat-footer-cell>				</ng-container>				<ng-container matColumnDef="fa">					<mat-header-cell *matHeaderCellDef>Feeding America</mat-header-cell>					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">						<input [readonly]="!editingFundraising" [class.editing]="editingFundraising" matInput formControlName="fa">					</mat-cell>					<mat-footer-cell *matFooterCellDef>						<mat-form-field class="new-row">							<mat-label>$</mat-label>							<input matInput  [(ngModel)]="newFundraising.fa" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()">						</mat-form-field>					</mat-footer-cell>				</ng-container>				<ng-container matColumnDef="other">					<mat-header-cell *matHeaderCellDef>Other charity</mat-header-cell>					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">						<input [readonly]="!editingFundraising" [class.editing]="editingFundraising" matInput formControlName="other">					</mat-cell>					<mat-footer-cell *matFooterCellDef>						<mat-form-field class="new-row">							<mat-label>$</mat-label>							<input matInput  [(ngModel)]="newFundraising.other" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()">						</mat-form-field>					</mat-footer-cell>				</ng-container>				<ng-container matColumnDef="admin">					<mat-header-cell *matHeaderCellDef>Administrative</mat-header-cell>					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">						<input [readonly]="!editingFundraising" [class.editing]="editingFundraising" matInput formControlName="admin">					</mat-cell>					<mat-footer-cell *matFooterCellDef>						<mat-form-field class="new-row">							<mat-label>$</mat-label>							<input matInput  [(ngModel)]="newFundraising.admin" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()" (keydown.Tab)="addFundraisingRow()">						</mat-form-field>					</mat-footer-cell>				</ng-container>				<ng-container matColumnDef="actions">					<mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>					<mat-cell *matCellDef="let row; let i = index">						<button mat-icon-button (click)="toggleEdit(3)"><mat-icon>edit</mat-icon></button>						<button mat-icon-button (click)="deleteFundraising(i)"><mat-icon>delete</mat-icon></button>					</mat-cell>					<mat-footer-cell *matFooterCellDef>						<button mat-raised-button (click)="addFundraisingRow()">+ Add</button>					</mat-footer-cell>				</ng-container>				<mat-header-row *matHeaderRowDef="fundraisingColumns"></mat-header-row>				<mat-row *matRowDef="let row; columns: fundraisingColumns;"></mat-row>				<mat-footer-row *matFooterRowDef="fundraisingColumns"></mat-footer-row>			</mat-table>		</mat-expansion-panel>		<mat-expansion-panel [class.mat-elevation-z0]="true" [hideToggle]="true" (opened)="openedPanels[5] = 1" (closed)="openedPanels[5] = 0">			<mat-expansion-panel-header>				<mat-panel-title>					<mat-icon class="expansion-icon" [inline]="true">{{ openedPanels[5] ? "expand_less" : "expand_more" }}</mat-icon>					<h3 class="mat-subheading-1">Feedback</h3>				</mat-panel-title>				<mat-panel-description>				</mat-panel-description>			</mat-expansion-panel-header>			<div id="feedback" formGroupName="communications">				<mat-form-field appearance="outline" class="full-width">					<mat-label>LTG</mat-label>					<textarea matInput formControlName="ltg" matTextareaAutosize></textarea>				</mat-form-field>				<mat-form-field appearance="outline" class="full-width">					<mat-label>District Board</mat-label>					<textarea matInput formControlName="dboard" matTextareaAutosize></textarea>				</mat-form-field>			</div>		</mat-expansion-panel>		<mat-expansion-panel [class.mat-elevation-z0]="true" [hideToggle]="true" (opened)="openedPanels[0] = 1" (closed)="openedPanels[0] = 0">			<mat-expansion-panel-header>				<mat-panel-title>					<mat-icon class="expansion-icon" [inline]="true">{{ openedPanels[0] ? "expand_less" : "expand_more" }}</mat-icon>					<h3 class="mat-subheading-1">Event Reports</h3>				</mat-panel-title>				<mat-panel-description>				</mat-panel-description>			</mat-expansion-panel-header>			<mat-table [dataSource]="eventsArray.controls" formArrayName="events">				<ng-container matColumnDef="name">					<mat-header-cell *matHeaderCellDef>Event Name</mat-header-cell>					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">						{{row.value.name}}					</mat-cell>				</ng-container>				<ng-container matColumnDef="date">					<mat-header-cell *matHeaderCellDef>Date</mat-header-cell>					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">						{{row.value.date | date:\'shortDate\'}}					</mat-cell>				</ng-container>				<ng-container matColumnDef="numAttendees">					<mat-header-cell *matHeaderCellDef>Attendance</mat-header-cell>					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">						{{row.value.numAttendees}}					</mat-cell>				</ng-container>				<ng-container matColumnDef="totalService">					<mat-header-cell *matHeaderCellDef>Total Service</mat-header-cell>					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">						{{row.value.totalService}}					</mat-cell>				</ng-container>				<ng-container matColumnDef="totalLeadership">					<mat-header-cell *matHeaderCellDef>Total Leadership</mat-header-cell>					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">						{{row.value.totalLeadership}}					</mat-cell>				</ng-container>				<ng-container matColumnDef="totalFellowship">					<mat-header-cell *matHeaderCellDef>Total Fellowship</mat-header-cell>					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">						{{row.value.totalFellowship}}					</mat-cell>				</ng-container>				<ng-container matColumnDef="tags">					<mat-header-cell *matHeaderCellDef>Tags</mat-header-cell>					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">						{{row.value.tags.join(\', \')}}					</mat-cell>				</ng-container>				<ng-container matColumnDef="actions">					<mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>					<mat-cell *matCellDef="let row">						<!-- <button mat-icon-button><mat-icon>edit</mat-icon></button> -->						<!-- <button mat-icon-button><mat-icon>delete</mat-icon></button> -->						<button mat-icon-button (click)="toggleEdit()"><mat-icon>open_in_new</mat-icon></button>					</mat-cell>				</ng-container>				<mat-header-row *matHeaderRowDef="eventsColumns"></mat-header-row>				<mat-row *matRowDef="let row; columns: eventsColumns;"></mat-row>			</mat-table>		</mat-expansion-panel>	</mat-accordion></form><ng-template #loading><h3>loading...</h3></ng-template></div>'
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'CerfComponent', 'selector': 'app-cerf'},{'name': 'CerfListComponent', 'selector': 'app-cerflist'},{'name': 'ClubAdministrationComponent', 'selector': 'app-administration'},{'name': 'ClubsComponent', 'selector': 'app-clubs'},{'name': 'ConfirmDialogComponent', 'selector': 'app-confirm-dialog'},{'name': 'DialogNewClub', 'selector': 'dialog-new-club'},{'name': 'DialogNewMember', 'selector': 'dialog-new-member'},{'name': 'DivisionsComponent', 'selector': 'app-divisions'},{'name': 'FAQsComponent', 'selector': 'app-faqs'},{'name': 'InfoDialog', 'selector': 'info-dialog'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MrfComponent', 'selector': 'app-mrf'},{'name': 'MrfDistrictComponent', 'selector': 'app-mrf-district'},{'name': 'MrfDivisionComponent', 'selector': 'app-mrf-division'},{'name': 'MrfListComponent', 'selector': 'app-mrflist'},{'name': 'MrfSecretaryComponent', 'selector': 'app-mrf-secretary'},{'name': 'MyCerfsComponent', 'selector': 'app-my-cerfs'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'SettingsComponent', 'selector': 'app-settings'},{'name': 'SignupComponent', 'selector': 'app-signup'},{'name': 'TagsDialog', 'selector': 'tags-dialog'}];
+    var DIRECTIVES = [{'name': 'EqualValidator', 'selector': '[validateEqual][formControlName],[validateEqual][formControl],[validateEqual][ngModel]'},{'name': 'NewFocusInput', 'selector': '[newlyfocus]'}];
+    var ACTUAL_COMPONENT = {'name': 'MrfComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'MrfComponent.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

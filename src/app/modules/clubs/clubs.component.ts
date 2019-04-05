@@ -1,7 +1,7 @@
 import { Component, ViewChild, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { DataService } from '@core/data/data.service';
+import { ApiService } from '@core/services';
 import { AuthService } from '@core/authentication/auth.service';
 import { Member } from '@core/models';
 
@@ -23,9 +23,9 @@ export class ClubsComponent {
 
 	@Input() division = null;
 
-	constructor(private dataService: DataService, private auth: AuthService, private route: ActivatedRoute, private dialog: MatDialog) {
+	constructor(private apiService: ApiService, private auth: AuthService, private route: ActivatedRoute, private dialog: MatDialog) {
 		// this.division = this.auth.getUser().division_id;
-		this.dataService.getClubs(this.division).subscribe( (res: any) => {
+		this.apiService.getClubs(this.division).subscribe( (res: any) => {
 			this.clubs = res.result;
 		});	// if null, it'll grab user's division
 	}
@@ -38,7 +38,7 @@ export class ClubsComponent {
 	}
 	
 	updateList() {
-		this.dataService.getClubs().subscribe(res => {
+		this.apiService.getClubs().subscribe(res => {
 			this.clubs=res;
 			this.list.data=res;
 		});
@@ -51,7 +51,7 @@ export class ClubsComponent {
 
 		dialogRef.afterClosed().subscribe(result => {
 			if(result) {
-				this.dataService.newClub(result.name).subscribe(res => this.updateList());
+				this.apiService.newClub(result.name).subscribe(res => this.updateList());
 			}
 		});
 	}
