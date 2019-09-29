@@ -46,6 +46,12 @@ export class CerfService {
 	loadCerf(id: string) {
 		// make api call and adapt it to local variable
 		console.log(id);
+      if (id == "new")
+      {
+        this.cerf = this.blankCerf();	// new Cerf(response.result)?
+        this.cerfForm.next(this.createReactiveForm(this.cerf));
+        return of(this.cerf);
+      }
 		return this.apiService.getCerf(id).pipe(tap(response => {
 			this.cerf = response.result;	// new Cerf(response.result)?
 			this.cerfForm.next(this.createReactiveForm(this.cerf));
