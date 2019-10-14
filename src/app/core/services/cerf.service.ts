@@ -3,7 +3,7 @@ import { Cerf } from '@core/models';
 import { ApiService } from './api.service';
 import { AuthService } from '@core/authentication/auth.service';
 import { Observable, BehaviorSubject, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 import { FormGroup, FormControl, FormBuilder, FormArray, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 
 @Injectable()
@@ -43,38 +43,38 @@ export class CerfService {
 	 * @returns The API call observable and loading side-effect
 	 * Fetches the CERF from the back-end and loads it into the service
 	 */
-	loadCerf(id: string) {
-		// make api call and adapt it to local variable
-		console.log(id);
-      if (id == "new")
-      {
-        this.cerf = this.blankCerf();	// new Cerf(response.result)?
-        this.cerfForm.next(this.createReactiveForm(this.cerf));
-        return of(this.cerf);
-      }
-		return this.apiService.getCerf(id).pipe(tap(response => {
-			this.cerf = response.result;	// new Cerf(response.result)?
-			this.cerfForm.next(this.createReactiveForm(this.cerf));
-		}));
-		// this.cerfForm.next(this.createReactiveForm(this.blankCerf()));
-	}
+	 loadCerf(id: string): Observable<Cerf> {
+	 	// make api call and adapt it to local variable
+	 	if (id == "new")
+	 	{
+	 		this.cerf = this.blankCerf();	// new Cerf(response.result)?
+	 		this.cerfForm.next(this.createReactiveForm(this.cerf));
+	 		return of(this.cerf);
+	 	} else {
+		 	return this.apiService.getCerf(id).pipe(tap(response => {
+		 		this.cerf = response.result;	// new Cerf(response.result)?
+		 		this.cerfForm.next(this.createReactiveForm(this.cerf));
+		 	}), map(res => (res.result)));
+		 }
+	 	// this.cerfForm.next(this.createReactiveForm(this.blankCerf()));
+	 }
 
-	dispatchNewCerf() {
-		return this.apiService.createNewCerf(this.getCerfFromForm(this.cerfForm.value));
-	}
+	 dispatchNewCerf() {
+	 	return this.apiService.createNewCerf(this.getCerfFromForm(this.cerfForm.value));
+	 }
 
-	dispatchUpdate() {
-		return this.apiService.updateCerf(this.getCerfFromForm(this.cerfForm.value));
-	}
+	 dispatchUpdate() {
+	 	return this.apiService.updateCerf(this.getCerfFromForm(this.cerfForm.value));
+	 }
 
-	getCerf() {
-		return this.cerf;
-	}
+	 getCerf() {
+	 	return this.cerf;
+	 }
 
-	getCerfForm() {
-		console.log(this.cerfForm.value);
-		return this.cerfForm.value;	// return asObservable instead pros/cons?
-	}
+	 getCerfForm() {
+	 	console.log(this.cerfForm.value);
+	 	return this.cerfForm.value;	// return asObservable instead pros/cons?
+	 }
 
 	/*
 	getters for identifiable subcomponents, e.g. attendees
