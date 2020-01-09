@@ -40,3 +40,7 @@ firebase.json
 # System Files
 .DS_Store
 Thumbs.db
+
+# Angular
+.src/browserslist
+.browserslist

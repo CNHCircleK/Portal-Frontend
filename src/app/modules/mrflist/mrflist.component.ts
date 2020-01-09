@@ -4,7 +4,9 @@ import { Mrf } from '@core/models';
 import { AuthService } from '@core/authentication/auth.service';
 import { ApiService } from '@core/services';
 
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
 	selector: 'app-mrflist',

@@ -4,7 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Cerf, Member } from '@core/models';
 import { NgForm } from '@angular/forms';
 import { Location } from '@angular/common';
-import { MatPaginator, MatSort, MatTableDataSource, MatSortable } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort, MatSortable } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 import { AuthService } from '@core/authentication/auth.service';
 

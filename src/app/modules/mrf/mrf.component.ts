@@ -2,7 +2,7 @@ import { Component, ViewChildren, QueryList, Renderer2 } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, AbstractControl, Validators, ValidatorFn } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { MatTable } from '@angular/material';
+import { MatTable } from '@angular/material/table';
 import { Mrf, Cerf } from '@core/models';
 import { MrfService, ApiService } from '@core/services';
 

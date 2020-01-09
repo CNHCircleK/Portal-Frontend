@@ -5,9 +5,10 @@ import { ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Location } from '@angular/common';
 
-import { MatTable, MatSort, MatTableDataSource } from '@angular/material';
+import { MatSort } from '@angular/material/sort';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '@app/modules/confirm-dialog/confirm-dialog.component';
 import { InfoDialog } from '@app/modules/info-dialog/info-dialog';
 import { TagsDialog } from './tags-dialog.component';

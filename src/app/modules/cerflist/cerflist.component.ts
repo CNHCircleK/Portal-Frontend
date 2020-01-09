@@ -1,7 +1,9 @@
 import { Component, ViewChild, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { MatPaginator, MatSort, MatTableDataSource, MatSortable } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort, MatSortable } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 import { Observable } from 'rxjs';
 import { Cerf } from '@core/models';

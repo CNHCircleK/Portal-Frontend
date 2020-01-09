@@ -13,6 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "aot": true,
             "outputPath": "dist/portal",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -26,12 +27,21 @@
               "src/styles/styles.scss"
             ],
             "stylePreprocessorOptions": {
-              "includePaths": ["./src", "./src/themes"]
+              "includePaths": [
+                "./src",
+                "./src/themes"
+              ]
             },
             "scripts": []
           },
           "configurations": {
             "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -127,5 +137,8 @@
       }
     }
   },
-  "defaultProject": "portal"
+  "defaultProject": "portal",
+  "cli": {
+    "analytics": "0c1cc858-4fea-4879-a06c-b05dbbac0315"
+  }
 }
