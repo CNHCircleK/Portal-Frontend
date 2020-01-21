@@ -46,7 +46,7 @@ export class CerfComponent {
 	defaultKfam = {org: "", numAttendees: 0};
 	defaultDriver = {driver: "", milesTo: 0, milesFrom: 0};
 
-	newAttendance = {name: "", service: 0, leadership: 0, fellowship: 0};
+	newAttendance = {name: "Test", service: 1, leadership: 2, fellowship: 3};
 	newKfam = {org: "", numAttendees: 0};
 	newDriver = {driver: "", milesTo: 0, milesFrom: 0};
 
