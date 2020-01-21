@@ -180,7 +180,10 @@ export class CerfComponent {
 		setTimeout(() => element.focus(), 0);
 
 		this.cerfForm.markAsDirty();
-	}
+    }
+  commentChange() { 
+        this.cerfForm.markAsDirty();
+  }
 	deleteAttendee(index) {
 		this.attendanceArray.removeAt(index);
 		this.tables.toArray()[0].renderRows();
@@ -528,7 +531,7 @@ export class CerfComponent {
 	}
 
 	public getCerfFromForm() {
-		let rawCerf = this.cerfForm.getRawValue();
+    let rawCerf = this.cerfForm.getRawValue();
 		// Destructure the form in case 
 		// Object.keys(rawCerf).forEach(key => {
 		// 	if(rawCerf instanceof AbstractControl)
