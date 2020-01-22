@@ -169,18 +169,25 @@ export class CerfComponent {
 
 		this.cerfForm.markAsDirty();
 	}
-	addDriver() {
-		// Validate inputs
+    addDriver() {
+        // Validate inputs
 
-		this.driverArray.push(this.builder.group(this.newDriver));
-		Object.assign(this.newDriver, this.defaultDriver);
+        this.newDriver.driver = this.newDriver.driver.trim();
+        
+        if (this.newDriver.driver != "") {
+            this.driverArray.push(this.builder.group(this.newDriver));
+            Object.assign(this.newDriver, this.defaultDriver);
 
-		this.tables.toArray()[2].renderRows();
-		const element = this.renderer.selectRootElement("#driverFocus");
-		setTimeout(() => element.focus(), 0);
+            this.tables.toArray()[2].renderRows();
+            const element = this.renderer.selectRootElement("#driverFocus");
+            setTimeout(() => element.focus(), 0);
 
-		this.cerfForm.markAsDirty();
-	}
+            this.cerfForm.markAsDirty();
+        }
+    }
+  commentChange() { 
+        this.cerfForm.markAsDirty();
+  }
 	deleteAttendee(index) {
 		this.attendanceArray.removeAt(index);
 		this.tables.toArray()[0].renderRows();
