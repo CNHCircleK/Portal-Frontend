@@ -535,7 +535,7 @@ export class CerfComponent {
 	}
 
 	public getCerfFromForm() {
-		let rawCerf = this.cerfForm.getRawValue();
+    let rawCerf = this.cerfForm.getRawValue();
 		// Destructure the form in case 
 		// Object.keys(rawCerf).forEach(key => {
 		// 	if(rawCerf instanceof AbstractControl)
