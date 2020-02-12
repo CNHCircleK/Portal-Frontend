@@ -96,7 +96,7 @@ export class CerfComponent {
 		this.cerfId = this.route.snapshot.paramMap.get("id"); //this.route.snapshot.data['cerf'];
 		cerfService.loadCerf(this.cerfId).subscribe(done => {
 			this.cerf = cerfService.getCerf(); // move all calculations into the service so we don't need the actual cerf in here
-			this.cerfForm = cerfService.getCerfForm();			
+			this.cerfForm = cerfService.getCerfForm();
 		});
 
 		memberService.getMembers().subscribe(res => {
@@ -109,7 +109,7 @@ export class CerfComponent {
 	//id: number;
 	user: User;
 	cerf: Cerf;
-	
+
 	@ViewChild(MatSort) sort;
 	@ViewChildren(MatTable) tables: QueryList<MatTable<any>>;
 
@@ -145,47 +145,54 @@ export class CerfComponent {
 	addAttendance() {
 		// Validate inputs
 
-		this.attendanceArray.push(this.builder.group(this.newAttendance));
-		this.newAttendance.name = "";
-		this.newAttendance.service = this.cerfForm.get("hoursPerAttendee.service").value;
-		this.newAttendance.leadership = this.cerfForm.get("hoursPerAttendee.leadership").value;
-		this.newAttendance.fellowship = this.cerfForm.get("hoursPerAttendee.fellowship").value;
+		this.newAttendance.name = this.newAttendance.name.trim();
 
-		this.tables.toArray()[0].renderRows();
-		const element = this.renderer.selectRootElement("#attendanceFocus");
-		setTimeout(() => element.focus(), 0);
+		if (this.newAttendance.name != ""){
+			this.attendanceArray.push(this.builder.group(this.newAttendance));
+			this.newAttendance.name = "";
+			this.newAttendance.service = this.cerfForm.get("hoursPerAttendee.service").value;
+			this.newAttendance.leadership = this.cerfForm.get("hoursPerAttendee.leadership").value;
+			this.newAttendance.fellowship = this.cerfForm.get("hoursPerAttendee.fellowship").value;
 
-		this.cerfForm.markAsDirty();
+			this.tables.toArray()[0].renderRows();
+			const element = this.renderer.selectRootElement("#attendanceFocus");
+			setTimeout(() => element.focus(), 0);
+
+			this.cerfForm.markAsDirty();
+		}
 	}
 	addKfam() {
 		// Validate inputs
+		this.newKfam.org = this.newKfam.org.trim();
 
-		this.kfamArray.push(this.builder.group(this.newKfam));
-		Object.assign(this.newKfam, this.defaultKfam);
+		if (this.newKfam.org != ""){
+			this.kfamArray.push(this.builder.group(this.newKfam));
+			Object.assign(this.newKfam, this.defaultKfam);
 
-		this.tables.toArray()[1].renderRows();
-		const element = this.renderer.selectRootElement("#kfamFocus");
-		setTimeout(() => element.focus(), 0);
+			this.tables.toArray()[1].renderRows();
+			const element = this.renderer.selectRootElement("#kfamFocus");
+			setTimeout(() => element.focus(), 0);
 
-		this.cerfForm.markAsDirty();
+			this.cerfForm.markAsDirty();
+		}
 	}
     addDriver() {
-        // Validate inputs
+    	// Validate inputs
 
-        this.newDriver.driver = this.newDriver.driver.trim();
-        
-        if (this.newDriver.driver != "") {
-            this.driverArray.push(this.builder.group(this.newDriver));
-            Object.assign(this.newDriver, this.defaultDriver);
+      this.newDriver.driver = this.newDriver.driver.trim();
 
-            this.tables.toArray()[2].renderRows();
-            const element = this.renderer.selectRootElement("#driverFocus");
-            setTimeout(() => element.focus(), 0);
+      if (this.newDriver.driver != "") {
+	      this.driverArray.push(this.builder.group(this.newDriver));
+	      Object.assign(this.newDriver, this.defaultDriver);
 
-            this.cerfForm.markAsDirty();
-        }
+	      this.tables.toArray()[2].renderRows();
+	      const element = this.renderer.selectRootElement("#driverFocus");
+	      setTimeout(() => element.focus(), 0);
+
+	      this.cerfForm.markAsDirty();
+      }
     }
-  commentChange() { 
+  commentChange() {
         this.cerfForm.markAsDirty();
   }
 	deleteAttendee(index) {
@@ -286,7 +293,7 @@ export class CerfComponent {
 				error => console.log(error));
 			}
 		})
-		
+
 	}
 
 	submitCerf() {
@@ -370,7 +377,7 @@ export class CerfComponent {
 
 
 	/* Structure
-	
+
 	author_id
 	chair_id
 	club_id
@@ -460,7 +467,7 @@ export class CerfComponent {
 
 		return form;
 	}
-	
+
 	private fillDefaults(model: Cerf): void
 	{
 		// For structural changes, need to null-check because these won't be included in legacy CERFs
@@ -485,7 +492,7 @@ export class CerfComponent {
 		model.attendees = model.attendees.map(attendee => ({name: attendee._id, service: model.hoursPerAttendee.service,
 	 		leadership: model.hoursPerAttendee.leadership, fellowship: model.hoursPerAttendee.fellowship})).concat(
 	 		model.overrideHours.map(attendee => ({name: attendee.attendee_id, service: attendee.service, leadership: attendee.leadership, fellowship: attendee.fellowship})));
-	 	
+
 	}
 
 	private cookData(model: Object): FormGroup
@@ -536,7 +543,7 @@ export class CerfComponent {
 
 	public getCerfFromForm() {
     let rawCerf = this.cerfForm.getRawValue();
-		// Destructure the form in case 
+		// Destructure the form in case
 		// Object.keys(rawCerf).forEach(key => {
 		// 	if(rawCerf instanceof AbstractControl)
 		// 		rawCerf[key] = rawCerf[key].getRawValue();
@@ -565,7 +572,7 @@ export class CerfComponent {
 							location, total_attendees, total_drivers, total_mileageTo,
 							total_mileageFrom, totale_mileage, funds_raised, funds_spent,
 							funds_profit, funds_usage, status}) ) (rawCerf);
-							console.log(rawData);*/	
+							console.log(rawData);*/
 		// manually attach time, hours_per_attendee, attendance, tags, drivers, commentary
 		// rawData['time'] = ( ({time_start: start, time_end: end}) => ( {time_start: start, time_end: end}) ) (rawCerf);
 		// rawData['hour_per_attendee'] = ( ({service_hours, leadership_hours, fellowship_hours}) => ( {service_hours, leadership_hours, fellowship_hours}) ) (rawCerf);
@@ -592,7 +599,7 @@ export class CerfComponent {
 	/*
 	@HostListener('window:beforeunload')
 	canDeactivate(): Observable<boolean> | boolean {
-	
+
 	}
 	*/
 }
