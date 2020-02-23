@@ -10,10 +10,7 @@ export * from './cerflist/cerflist.component';
 export * from './mrflist/mrflist.component';
 
 export * from './my-cerfs/my-cerfs.component';
-export * from './mrf-secretary/mrf-secretary.component';
-export * from './mrf-division/mrf-division.component';
-export * from './mrf-district/mrf-district.component';
-
+export * from './mrfs/mrfs.component';
 export * from './administration/administration.component';
 export * from './clubs/clubs.component';
 export * from './divisions/divisions.component';

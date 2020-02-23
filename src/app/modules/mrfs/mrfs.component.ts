@@ -6,12 +6,12 @@ import { filter } from 'rxjs/operators';
 
 
 @Component({
-	selector: 'app-mrf-secretary',
-	templateUrl: './mrf-secretary.component.html',
-	styleUrls: ['./mrf-secretary.component.css', './_mrf-secretary.component.scss'],
+	selector: 'app-mrfs',
+	templateUrl: './mrfs.component.html',
+	styleUrls: ['./mrfs.component.css', './_mrfs.component.scss'],
 })
 
-export class MrfSecretaryComponent {
+export class MrfsComponent {
 	clubId: string;
 	mrfList: Mrf[];
 
@@ -22,9 +22,7 @@ export class MrfSecretaryComponent {
 		// TODO: does back-routing within an MRF preserve the route param?
 		this.route.queryParams.pipe(filter(params => params.clubId))
 			      .subscribe(params => {
-			        console.log(params); // {order: "popular"}
-
-			        this.clubId = params.clubId;
+			      	this.clubId = params.clubId;
 			      });
 	}
 }
