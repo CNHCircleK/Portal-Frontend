@@ -1,5 +1,4 @@
 import { Component, ViewChild, Input } from '@angular/core';
-import { Router } from '@angular/router';
 import { Mrf } from '@core/models';
 import { AuthService } from '@core/authentication/auth.service';
 import { ApiService } from '@core/services';
@@ -36,10 +35,10 @@ export class MrfListComponent {
 	@ViewChild(MatSort) sort;
 
 	@Input() mrfList: Mrf[];
-	// @Input() display: string[];
+	@Input() clubId: string = null;
 	months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-	constructor(private auth: AuthService, private apiService: ApiService, private router: Router) {
+	constructor(private auth: AuthService, private apiService: ApiService) {
 		const user = auth.getUser();
 		this.extraList = user.access.district > 0 ? MrfListComponent.DISTRICT : (user.access.division > 0 ? MrfListComponent.DIVISION : MrfListComponent.NONE);
 

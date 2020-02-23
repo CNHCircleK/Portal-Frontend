@@ -4,6 +4,8 @@ export * from './cerf.model';
 export * from './mrf.model';
 export * from './member.model';
 export * from './user.model';
+export * from './club.model';
+export * from './division.model';
 
 
 // Model-Adapter pattern for consuming API in a Typescript manner: https://blog.florimondmanca.com/consuming-apis-in-angular-the-model-adapter-pattern

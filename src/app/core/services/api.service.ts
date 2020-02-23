@@ -97,8 +97,11 @@ export class ApiService {
 		return of(list);
 	}
 
-	getMrfByDate(year: string, month: string) {
-		return this.http.get<Response<Mrf>>(HttpConfig.baseUrl + "/clubs/" + this.user.club_id + "/mrfs/" + year + "/" + month);
+	getMrfByDate(year: string, month: string, club?: string) {
+		if(!club) {
+			club = this.user.club_id;
+		}
+		return this.http.get<Response<Mrf>>(HttpConfig.baseUrl + "/clubs/" + club + "/mrfs/" + year + "/" + month);
 	}
 
 	updateMrf(data: Mrf) {

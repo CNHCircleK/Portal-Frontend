@@ -3,14 +3,12 @@ import { ActivatedRoute } from '@angular/router';
 
 import { ApiService } from '@core/services';
 import { AuthService } from '@core/authentication/auth.service';
-import { Member } from '@core/models';
+import { Member, Club } from '@core/models';
 
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-
-type Club = { _id: string, name: string };	// move into models
 
 @Component({
 	selector: 'app-clubs',
@@ -21,15 +19,15 @@ export class ClubsComponent {
 
 	clubs: Club[] = [];
 	list: MatTableDataSource<Club>;
-	displayedColumns: string[] = ["name"];
+	displayedColumns: string[] = ["name", "action"];
 
 	@Input() division = null;
 
 	constructor(private apiService: ApiService, private auth: AuthService, private route: ActivatedRoute, private dialog: MatDialog) {
-		// this.division = this.auth.getUser().division_id;
+		this.division = this.auth.getUser().division_id; // TODO: please add division/club name into JWT so we don't have to make an API call to translate
 		this.apiService.getClubs(this.division).subscribe( (res: any) => {
 			this.clubs = res.result;
-		});	// if null, it'll grab user's division
+		});
 	}
 
 	ngOnInit() {
