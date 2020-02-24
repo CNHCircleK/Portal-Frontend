@@ -28,7 +28,7 @@ const routes: Routes = [
 	{ path: 'cerf/:id', component: CerfComponent, canActivate: [AuthGuard] },
 	{ path: 'mrfs', component: MrfsComponent, resolve: { mrfs: MrfSecretaryResolver }, canActivate: [AuthGuard] },
 	{ path: 'mrf/:year/:month', component: MrfComponent, canActivate: [AuthGuard], canDeactivate: [MrfDeactivateGuard] },
-	{ path: 'club', component: ClubAdministrationComponent, resolve: { members: MembersResolver}, canActivate: [AuthGuard]},
+	{ path: 'club', component: ClubAdministrationComponent, canActivate: [AuthGuard]},
 	{ path: 'clubs', component: ClubsComponent, resolve: { clubs: ClubsResolver }, canActivate: [AuthGuard]},
 	{ path: 'divisions', component: DivisionsComponent, canActivate: [AuthGuard]},
 	{ path: 'login', component: LoginComponent, canActivate: [AuthGuard] },

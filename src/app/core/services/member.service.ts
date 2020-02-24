@@ -14,12 +14,9 @@ export class MemberService {
 		this.getMembers().subscribe();
 	}
 
-	getMembers(): Observable<any> {  // stop caching in this service
-		if(this.roster)
-			return of(this.roster);
-		else
-			return this.apiService.fetchMembers().pipe(map(response => {
-				console.log(response);
+	getMembers(clubId?: string): Observable<any> {  // stop caching in this service
+		if(clubId) {
+			return this.apiService.fetchMembers(clubId).pipe(map(response => {
 				if(response && response.success) {
 					this.roster = response.result.map(member => (
 						{name: member.name.first + " " + member.name.last, email: member.email, _id: member._id}) );
@@ -29,6 +26,23 @@ export class MemberService {
 				return this.roster;
 			}
 			));
+		} else {
+			// Default to user's own club
+			if(this.roster)
+				return of(this.roster);
+			else
+				return this.apiService.fetchMembers().pipe(map(response => {
+					console.log(response);
+					if(response && response.success) {
+						this.roster = response.result.map(member => (
+							{name: member.name.first + " " + member.name.last, email: member.email, _id: member._id}) );
+						if(this.roster.length==0)
+							this.roster = [{name: "None", email: "none", _id: ""}];
+					}
+					return this.roster;
+				}
+				));
+		}
 	}
 
 	filterMembers(value: string) {
@@ -86,12 +100,15 @@ export class MemberService {
 	}
 
 	mapIdToClub(_id: string) {
-		if(_id == "5b6d2054f176363426fe5b93") return "Berkeley";
+		if(_id == "5e3a24a6dc788b2ee0c9b237") return "Glucose Guardians (Dummy)";
+		if(_id == "5dc63afc357a5220c81d162f") return "Glucose Guardians (Dummy 2)";
+		if(_id == "5e5326cf0ac7020928156359") return "Honey (Dummy)";
 		return "Club not Found";
 	}
 
 	mapIdToDivision(_id: string) {
-		if(_id == "5b6d1fbfdf9a7b34033f945c") return "Golden Gate";
+		if(_id == "5e3a212917f56d2ee0b4a1e5") return "Dummy";
+		if(_id == "5d9076793e4b2e5f4c296dd9") return "Dummy 2";
 		return "Division not Found";
 	}
 

@@ -16,6 +16,7 @@ export class MrfsComponent {
 	mrfList: Mrf[];
 
 	constructor(private route: ActivatedRoute) {
+		// Loaded in mrf-resolver guard
 		this.mrfList = this.route.snapshot.data['mrfs'];
 
 		// Displaying MRFs under a club (i.e. attach club id to the MRF call)

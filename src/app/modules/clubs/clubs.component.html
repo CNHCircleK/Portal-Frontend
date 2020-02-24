@@ -19,7 +19,8 @@
   <ng-container matColumnDef="action">
     <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
     <mat-cell *matCellDef="let row">
-      <a mat-icon-button [routerLink]="'/mrfs'" [queryParams]="{clubId: row._id}"><mat-icon>open_in_new</mat-icon></a>
+      <a mat-icon-button [routerLink]="'/mrfs'" [queryParams]="{clubId: row._id}" matTooltip="See MRFs"><mat-icon>table_cell</mat-icon></a>
+      <a mat-icon-button [routerLink]="'/club'" [queryParams]="{clubId: row._id}" matTooltip="See Club Administration"><mat-icon>people</mat-icon></a>
     </mat-cell>
   </ng-container>
 

@@ -1,9 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { MemberService } from '@core/services';
 import { AuthService } from '@core/authentication/auth.service';
 import { Member } from '@core/models';
+import { Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -112,12 +114,25 @@ export class ClubAdministrationComponent {
 	expandedMember = null;
 
 	constructor(private memberService: MemberService,
-		private auth: AuthService, private route: ActivatedRoute, private dialog: MatDialog,
+		private auth: AuthService, private route: ActivatedRoute, private router: Router, private dialog: MatDialog,
 		private snackBar: MatSnackBar) {
-		this.members = this.route.snapshot.data['members'];
-		console.log(this.members);
+		// this.members = this.route.snapshot.data['members'];
+		// console.log(this.members);
 
-		this.club = this.auth.getUser().club_id;
+		this.clubId = this.auth.getUser().club_id;
+
+		this.route.queryParams.pipe(filter(params => params.clubId))
+	      .subscribe(params => {
+	      	if(params.clubId) {
+		        this.clubId = params.clubId;
+		        // Refresh the page when param-only change (going to a different clubId param)
+		        router.routeReuseStrategy.shouldReuseRoute = () => false;
+	      	}
+	      	memberService.getMembers(this.clubId).subscribe((res) => {
+	      		console.log(res);
+	      		this.members = res;
+	      	});
+	      });
 	}
 
 	ngOnInit() {

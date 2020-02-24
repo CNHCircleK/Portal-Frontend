@@ -68,7 +68,7 @@ export class MrfComponent {
 		let clubId = null;
 		this.route.queryParams.pipe(filter(params => params.clubId))
 			      .subscribe(params => {
-			        console.log(params); // {order: "popular"}
+			        console.log(params);
 
 			        clubId = params.clubId;
 			      });

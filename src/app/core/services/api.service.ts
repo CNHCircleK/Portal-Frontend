@@ -140,9 +140,10 @@ export class ApiService {
 
 
 
-	fetchMembers() {
+	fetchMembers(clubId?: string) {
 		if(!this.user) return of(null);
-		return this.http.get<any>(HttpConfig.baseUrl + "/clubs/" + this.user.club_id + "/members");
+		if(!clubId) clubId = this.user.club_id
+		return this.http.get<any>(HttpConfig.baseUrl + "/clubs/" + clubId + "/members");
 	}
 
 	addMember(first: string, last: string) {
