@@ -81,8 +81,8 @@ export class MemberService {
 			return _id;
 	}
 
-	newMember(firstName: string, lastName: string) {
-		return this.apiService.addMember(firstName, lastName).pipe(tap((response: any) => {
+	newMember(clubId: string, firstName: string, lastName: string) {
+		return this.apiService.addMember(clubId, firstName, lastName).pipe(tap((response: any) => {
 			if(response.success)
 				this.roster.push({name: firstName + " " + lastName, email: undefined, _id: response.result});
 		}))
@@ -100,15 +100,20 @@ export class MemberService {
 	}
 
 	mapIdToClub(_id: string) {
-		if(_id == "5e3a24a6dc788b2ee0c9b237") return "Glucose Guardians (Dummy)";
-		if(_id == "5dc63afc357a5220c81d162f") return "Glucose Guardians (Dummy 2)";
-		if(_id == "5e5326cf0ac7020928156359") return "Honey (Dummy)";
-		return "Club not Found";
+		if(_id == "5e5c711810044733ac495672") return "Sacramento State";
+		return "Club";
 	}
 
 	mapIdToDivision(_id: string) {
-		if(_id == "5e3a212917f56d2ee0b4a1e5") return "Dummy";
-		if(_id == "5d9076793e4b2e5f4c296dd9") return "Dummy 2";
+		if(_id == "5e5c710f10044733ac495671") return "Capital";
+		if(_id == "5e5c71a010044733ac49567a") return "Central Coast";
+		if(_id == "5e5c719810044733ac495679") return "Citrus";
+		if(_id == "5e5c718910044733ac495677") return "Desert Oasis";
+		if(_id == "5e5c719310044733ac495678") return "Foothill";
+		if(_id == "5e5c717e10044733ac495676") return "Golden Gate";
+		if(_id == "5e5c716c10044733ac495673") return "Metro";
+		if(_id == "5e5c717310044733ac495674") return "Paradise";
+		if(_id == "5e5c717a10044733ac495675") return "Sunset";
 		return "Division not Found";
 	}
 

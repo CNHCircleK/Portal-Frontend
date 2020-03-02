@@ -45,10 +45,13 @@ export class ApiService {
 		return this.http.get<Response<Cerf[]>>(HttpConfig.baseUrl + '/members/' + this.user._id + '/events');
 		// it is not the service's concern to clean up the data for the app to consume (e.g. reading 'success' or returning [])
 	}
-	getPendingCerfs() {
+	getPendingCerfs(clubId?: string) {
 		if(!this.user) return of(null);
+		if(this.user.access.club < 2) return of([]);	// general members have no business with submitted cerfs
+		if(!clubId) clubId = this.user.club_id;
 		let params = new HttpParams().set('status', '1');
-		return this.http.get<Response<Cerf[]>>(HttpConfig.baseUrl + '/clubs/' + this.user.club_id + '/events', { params: params } );
+
+		return this.http.get<Response<Cerf[]>>(HttpConfig.baseUrl + '/clubs/' + clubId + '/events', { params: params } );
 		// This returns all. Endpoint to get it for specific month? Or we can filter and split up, but inefficient
 	}
 
@@ -146,9 +149,9 @@ export class ApiService {
 		return this.http.get<any>(HttpConfig.baseUrl + "/clubs/" + clubId + "/members");
 	}
 
-	addMember(first: string, last: string) {
+	addMember(clubId: string, first: string, last: string) {
 		if(!this.user) return of(false);
-		return this.http.post(HttpConfig.baseUrl + '/clubs/' + this.user.club_id + "/members", {name: {'first': first, 'last': last}});
+		return this.http.post(HttpConfig.baseUrl + '/clubs/' + clubId + "/members", {new: [{name: {'first': first, 'last': last}}]});
 	}
 
 	getMemberCode(id: string) {
@@ -178,9 +181,10 @@ export class ApiService {
 		return this.http.get<any>(HttpConfig.baseUrl + "/divisions/" + divisionId + "/clubs");
 	}
 
-	newClub(name: string) {
+	newClub(name: string, divisionId?: string) {
 		if(!this.user) return of(false);
-		return this.http.post(HttpConfig.baseUrl + '/divisions/' + this.user.division_id + '/clubs', {'name': name});
+		if(!divisionId) divisionId=this.user.division_id;
+		return this.http.post(HttpConfig.baseUrl + '/divisions/' + divisionId + '/clubs', {'name': name});
 	}
 
 	deleteClub(id: string) {

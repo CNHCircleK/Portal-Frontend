@@ -29,7 +29,7 @@ const routes: Routes = [
 	{ path: 'mrfs', component: MrfsComponent, resolve: { mrfs: MrfSecretaryResolver }, canActivate: [AuthGuard] },
 	{ path: 'mrf/:year/:month', component: MrfComponent, canActivate: [AuthGuard], canDeactivate: [MrfDeactivateGuard] },
 	{ path: 'club', component: ClubAdministrationComponent, canActivate: [AuthGuard]},
-	{ path: 'clubs', component: ClubsComponent, resolve: { clubs: ClubsResolver }, canActivate: [AuthGuard]},
+	{ path: 'clubs', component: ClubsComponent, canActivate: [AuthGuard]},
 	{ path: 'divisions', component: DivisionsComponent, canActivate: [AuthGuard]},
 	{ path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
 	{ path: 'signup', component: SignupComponent },

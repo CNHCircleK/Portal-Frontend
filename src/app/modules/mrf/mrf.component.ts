@@ -75,12 +75,17 @@ export class MrfComponent {
 		mrfService.loadMrf(year, month, clubId).subscribe(done => {
 			this.mrf = mrfService.getMrf();
 			this.mrfForm = mrfService.getMrfForm();
+			if(this.apiService.user.club_id != this.mrf.club_id) {
+				this.mrfForm.disable();
+			}
 		});
 		// this.mrfForm = this.dataService.getMrfFormState;
 		// if(!this.mrfForm)
 		// 	this.mrfForm = this.createMrf(this.mrf);
 
 		// this.currentTab = this.dataService.getMrfTabState;
+
+		
 	}
 
 	ngOnInit() {
