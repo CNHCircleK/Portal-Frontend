@@ -54,6 +54,11 @@ export class CerfService {
 		 	return this.apiService.getCerf(id).pipe(tap(response => {
 		 		this.cerf = response.result;	// new Cerf(response.result)?
 		 		this.cerfForm.next(this.createReactiveForm(this.cerf));
+		 		console.log(this.cerf.status);
+		 		if((this.cerf.status == 1 && this.user.access.club <= 1)
+		 			|| (this.cerf.status == 2)) {
+		 			this.cerfForm.value.disable();
+		 		}
 		 	}), map(res => (res.result)));
 		 }
 	 	// this.cerfForm.next(this.createReactiveForm(this.blankCerf()));
@@ -84,7 +89,6 @@ export class CerfService {
 		// Initial thought would be to tie this local object to the DOM, but this object doesn't have to be binded to the DOM form
 		this.cerf = cerf;
 	}
-	// setCerfFromForm(cerf: FormGroup) {}
 
 	/*
 	setters for identifiable subcomponents, e.g. attendees

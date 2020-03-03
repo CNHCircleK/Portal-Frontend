@@ -39,7 +39,9 @@
 			<mat-label>ID</mat-label>
 			<input matInput formControlName="_id" readonly>
 		</mat-form-field> -->
-		<button mat-button (click)="printForm()">Print</button><br/>
+
+		<!-- DEBUGGING: <button mat-button (click)="printForm()">Print</button><br/> -->
+
 		<mat-form-field appearance="outline">
 			<mat-label>Event Name</mat-label>
 			<input matInput formControlName="name" required>
@@ -309,7 +311,7 @@
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="member-cell">
 							<mat-label>+ Add Attendee</mat-label>
-							<input matInput id="attendanceFocus" [value]="newAttendance.name | memberID" [(ngModel)]="newAttendance.name" [ngModelOptions]="{standalone: true}" [matAutocomplete]="auto" (keyup.enter)="addAttendance()">
+							<input matInput [disabled]="cerfForm.disabled" id="attendanceFocus" [value]="newAttendance.name | memberID" [(ngModel)]="newAttendance.name" [ngModelOptions]="{standalone: true}" [matAutocomplete]="auto" (keyup.enter)="addAttendance()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -323,7 +325,7 @@
 					</mat-cell>
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field>
-							<input matInput  [(ngModel)]="newAttendance.service" [ngModelOptions]="{standalone: true}" (keyup.enter)="addAttendance()">
+							<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newAttendance.service" [ngModelOptions]="{standalone: true}" (keyup.enter)="addAttendance()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -336,7 +338,7 @@
 					</mat-cell>
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field>
-							<input matInput  [(ngModel)]="newAttendance.leadership" [ngModelOptions]="{standalone: true}" (keyup.enter)="addAttendance()">
+							<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newAttendance.leadership" [ngModelOptions]="{standalone: true}" (keyup.enter)="addAttendance()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -349,7 +351,7 @@
 					</mat-cell>
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field>
-							<input matInput  [(ngModel)]="newAttendance.fellowship" [ngModelOptions]="{standalone: true}" (keyup.enter)="addAttendance()" (keyup.tab)="addAttendance()">
+							<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newAttendance.fellowship" [ngModelOptions]="{standalone: true}" (keyup.enter)="addAttendance()" (keyup.tab)="addAttendance()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -396,7 +398,7 @@
 				<mat-footer-cell *matFooterCellDef>
 					<mat-form-field>
 						<mat-label>+ Add Org</mat-label>
-						<input matInput  [(ngModel)]="newKfam.org" [ngModelOptions]="{standalone: true}" (keyup.enter)="addKfam()">
+						<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newKfam.org" [ngModelOptions]="{standalone: true}" (keyup.enter)="addKfam()">
 					</mat-form-field>
 				</mat-footer-cell>
 			</ng-container>
@@ -407,7 +409,9 @@
 					<input matInput formControlName="numAttendees">
 				</mat-cell>
 				<mat-footer-cell *matFooterCellDef>
-					<input matInput  [(ngModel)]="newKfam.numAttendees" [ngModelOptions]="{standalone: true}" (keyup.enter)="addKfam()" (keyup.tab)="addKfam()">
+					<mat-form-field>
+						<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newKfam.numAttendees" [ngModelOptions]="{standalone: true}" (keyup.enter)="addKfam()" (keyup.tab)="addKfam()">
+					</mat-form-field>
 				</mat-footer-cell>
 			</ng-container>
 
@@ -457,7 +461,7 @@
 				<mat-footer-cell *matFooterCellDef>
 					<mat-form-field>
 						<mat-label>+ Add Driver</mat-label>
-						<input matInput  [(ngModel)]="newDriver.driver" [ngModelOptions]="{standalone: true}" (keyup.enter)="addDriver()">
+						<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newDriver.driver" [ngModelOptions]="{standalone: true}" (keyup.enter)="addDriver()">
 					</mat-form-field>
 				</mat-footer-cell>
 			</ng-container>
@@ -468,7 +472,9 @@
 					<input matInput formControlName="milesTo">
 				</mat-cell>
 				<mat-footer-cell *matFooterCellDef>
-					<input matInput  [(ngModel)]="newDriver.milesTo" [ngModelOptions]="{standalone: true}" (keyup.enter)="addDriver()">
+					<mat-form-field>
+						<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newDriver.milesTo" [ngModelOptions]="{standalone: true}" (keyup.enter)="addDriver()">
+					</mat-form-field>
 				</mat-footer-cell>
 			</ng-container>
 
@@ -478,7 +484,9 @@
 					<input matInput formControlName="milesFrom">
 				</mat-cell>
 				<mat-footer-cell *matFooterCellDef>
-					<input matInput  [(ngModel)]="newDriver.milesFrom" [ngModelOptions]="{standalone: true}" (keyup.enter)="addDriver()" (keyup.tab)="addDriver()">
+					<mat-form-field>
+						<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newDriver.milesFrom" [ngModelOptions]="{standalone: true}" (keyup.enter)="addDriver()" (keyup.tab)="addDriver()">
+					</mat-form-field>
 				</mat-footer-cell>
 			</ng-container>
 
@@ -536,7 +544,7 @@
 
 
 
-
+<!--
 	  <mat-expansion-panel [class.mat-elevation-z0]="true" [hideToggle]="true"
 	  						(opened)="openedPanels[5] = 1"
 	                       (closed)="openedPanels[5] = 0">
@@ -569,14 +577,14 @@
 	    </mat-form-field>
 
 	  </mat-expansion-panel>
-
+-->
 	</mat-accordion>
-
+<!--
 	<div id="categories">
 
 		<h3>Categories</h3>
 		<p>(for your own cataloging)</p>
-<!-- 
+
 		<div id="categories" formArrayName="categories">
 			<div *ngFor="let category of categoryButtons; let i=index">
 				<button mat-button class="categoryButton" (click)="toggleLabel(category)" [ngClass]="{'mat-elevation-z4': !isLabelActive(category), 'activeCategory': isLabelActive(category)}">{{category}}</button>
@@ -590,9 +598,9 @@
 				<mat-icon matSuffix (click)="newLabel(newCategory.value)">arrow_forward</mat-icon>
 				<mat-icon matSuffix (click)="addingCategory=false">cancel</mat-icon>
 			</mat-form-field>
-		</form> -->
+		</form>
 
-	</div>
+	</div>-->
 
 </form>
 
