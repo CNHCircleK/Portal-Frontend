@@ -84,9 +84,9 @@ h1 {
 #memberTable {
 	max-width: 80%;
 }
-#memberTable input {
+/*#memberTable input {
 	border: 0;
-}
+}*/
 #memberTable mat-row:hover input {
 	background: rgba(0, 0, 0, 0.04);
 }
@@ -216,3 +216,7 @@ input.ng-invalid:not(form)  {
 input.ng-invalid:not(form) ~ span {
   padding-left: 5px;
 }*/
+
+.editing {
+	border-bottom: 1px solid #ccc;
+}

@@ -302,9 +302,7 @@
 					<mat-header-cell *matHeaderCellDef> Members </mat-header-cell>
 					<mat-cell *matCellDef="let member; let i=index" [formGroupName]="i">
 						<!-- <button mat-icon-button (click)="removeMember(i)"> <mat-icon>cancel</mat-icon> </button> -->
-						<mat-form-field>
-							<input matInput formControlName="name" [value]="attendanceArray.controls[i].value.name | memberID" [matAutocomplete]="auto" (keyup)="filterMembers($event)">
-						</mat-form-field>
+						<input matInput formControlName="name" [readonly]="!editingAttendance" [class.editing]="editingAttendance" [value]="attendanceArray.controls[i].value.name | memberID" [matAutocomplete]="auto" (keyup)="filterMembers($event)">
 					</mat-cell>
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="member-cell">
@@ -317,9 +315,7 @@
 				<ng-container matColumnDef="service">
 					<mat-header-cell *matHeaderCellDef> Service </mat-header-cell>
 					<mat-cell *matCellDef="let member; let i=index"  [formGroupName]="i">
-						<mat-form-field>
-							<input matInput formControlName="service">
-						</mat-form-field>
+						<input matInput formControlName="service" [readonly]="!editingAttendance" [class.editing]="editingAttendance">
 					</mat-cell>
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field>
@@ -330,9 +326,7 @@
 				<ng-container matColumnDef="leadership">
 					<mat-header-cell *matHeaderCellDef> Leadership </mat-header-cell>
 					<mat-cell *matCellDef="let member; let i=index"  [formGroupName]="i">
-						<mat-form-field>
-							<input matInput formControlName="leadership">
-						</mat-form-field>
+						<input matInput formControlName="leadership" [readonly]="!editingAttendance" [class.editing]="editingAttendance">
 					</mat-cell>
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field>
@@ -343,9 +337,7 @@
 				<ng-container matColumnDef="fellowship">
 					<mat-header-cell *matHeaderCellDef> Fellowship </mat-header-cell>
 					<mat-cell *matCellDef="let member; let i=index"  [formGroupName]="i">
-						<mat-form-field>
-							<input matInput formControlName="fellowship">
-						</mat-form-field>
+						<input matInput formControlName="fellowship" [readonly]="!editingAttendance" [class.editing]="editingAttendance">
 					</mat-cell>
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field>
@@ -354,14 +346,15 @@
 					</mat-footer-cell>
 				</ng-container>
 
-				<ng-container matColumnDef="delete">
-					<mat-header-cell *matHeaderCellDef></mat-header-cell>
-					<mat-cell *matCellDef="let row; let i=index">
-						<button mat-button (click)="deleteAttendee(i)">
-							<mat-icon>remove_circle</mat-icon>
-						</button>
+				<ng-container matColumnDef="actions">
+					<mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+					<mat-cell *matCellDef="let row; let i = index">
+						<button mat-icon-button (click)="toggleEdit(1)"><mat-icon>edit</mat-icon></button>
+						<button mat-icon-button (click)="deleteAttendee(i)"><mat-icon>delete</mat-icon></button>
 					</mat-cell>
-					<mat-footer-cell *matFooterCellDef></mat-footer-cell>
+					<mat-footer-cell *matFooterCellDef>
+						<button mat-raised-button (click)="addMeeting()">+ Add</button>
+					</mat-footer-cell>
 				</ng-container>
 
 				<mat-header-row *matHeaderRowDef="attendanceColumns"></mat-header-row>
@@ -401,7 +394,7 @@
 			<ng-container matColumnDef="org">
 				<mat-header-cell *matHeaderCellDef>Org</mat-header-cell>
 				<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">
-					<input matInput formControlName="org">
+					<input matInput formControlName="org" [readonly]="!editingKfam" [class.editing]="editingKfam">
 				</mat-cell>
 				<mat-footer-cell *matFooterCellDef>
 					<mat-form-field>
@@ -414,22 +407,23 @@
 			<ng-container matColumnDef="numAttendees">
 				<mat-header-cell *matHeaderCellDef>Num Attendees</mat-header-cell>
 				<mat-cell *matCellDef="let row; let i=index"  [formGroupName]="i">
-					<input matInput formControlName="numAttendees">
+					<input matInput formControlName="numAttendees" [readonly]="!editingKfam" [class.editing]="editingKfam">
 				</mat-cell>
 				<mat-footer-cell *matFooterCellDef>
 					<input matInput  [(ngModel)]="newKfam.numAttendees" [ngModelOptions]="{standalone: true}" (keyup.enter)="addKfam()" (keydown.tab)="addKfam()">
 				</mat-footer-cell>
 			</ng-container>
 
-			<ng-container matColumnDef="delete">
-					<mat-header-cell *matHeaderCellDef></mat-header-cell>
-					<mat-cell *matCellDef="let row; let i=index">
-						<button mat-button (click)="deleteKfam(i)">
-							<mat-icon>remove_circle</mat-icon>
-						</button>
-					</mat-cell>
-					<mat-footer-cell *matFooterCellDef></mat-footer-cell>
-				</ng-container>
+			<ng-container matColumnDef="actions">
+				<mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+				<mat-cell *matCellDef="let row; let i = index">
+					<button mat-icon-button (click)="toggleEdit(2)"><mat-icon>edit</mat-icon></button>
+					<button mat-icon-button (click)="deleteKfam(i)"><mat-icon>delete</mat-icon></button>
+				</mat-cell>
+				<mat-footer-cell *matFooterCellDef>
+					<button mat-raised-button (click)="addKfam()">+ Add</button>
+				</mat-footer-cell>
+			</ng-container>
 
 			<mat-header-row *matHeaderRowDef="kfamColumns"></mat-header-row>
 			<mat-row *matRowDef="let row; columns: kfamColumns;"></mat-row>
@@ -472,7 +466,7 @@
 			<ng-container matColumnDef="driver">
 				<mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
 				<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">
-					<input matInput formControlName="driver">
+					<input matInput formControlName="driver" [readonly]="!editingFundraising" [class.editing]="editingFundraising">
 				</mat-cell>
 				<mat-footer-cell *matFooterCellDef>
 					<mat-form-field>
@@ -485,7 +479,7 @@
 			<ng-container matColumnDef="milesTo">
 				<mat-header-cell *matHeaderCellDef>Miles To</mat-header-cell>
 				<mat-cell *matCellDef="let row; let i=index"  [formGroupName]="i">
-					<input matInput formControlName="milesTo">
+					<input matInput formControlName="milesTo" [readonly]="!editingFundraising" [class.editing]="editingFundraising">
 				</mat-cell>
 				<mat-footer-cell *matFooterCellDef>
 					<input matInput  [(ngModel)]="newDriver.milesTo" [ngModelOptions]="{standalone: true}" (keyup.enter)="addDriver()">
@@ -495,22 +489,23 @@
 			<ng-container matColumnDef="milesFrom">
 				<mat-header-cell *matHeaderCellDef>Miles From</mat-header-cell>
 				<mat-cell *matCellDef="let row; let i=index"  [formGroupName]="i">
-					<input matInput formControlName="milesFrom">
+					<input matInput formControlName="milesFrom" [readonly]="!editingFundraising" [class.editing]="editingFundraising">
 				</mat-cell>
 				<mat-footer-cell *matFooterCellDef>
 					<input matInput id="kfamFocus" [(ngModel)]="newDriver.milesFrom" [ngModelOptions]="{standalone: true}" (keyup.enter)="addDriver()" (keydown.tab)="addDriver()">
 				</mat-footer-cell>
 			</ng-container>
 
-			<ng-container matColumnDef="delete">
-					<mat-header-cell *matHeaderCellDef></mat-header-cell>
-					<mat-cell *matCellDef="let row; let i=index">
-						<button mat-button (click)="deleteDriver(i)">
-							<mat-icon>remove_circle</mat-icon>
-						</button>
-					</mat-cell>
-					<mat-footer-cell *matFooterCellDef></mat-footer-cell>
-				</ng-container>
+			<ng-container matColumnDef="actions">
+				<mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+				<mat-cell *matCellDef="let row; let i = index">
+					<button mat-icon-button (click)="toggleEdit(3)"><mat-icon>edit</mat-icon></button>
+					<button mat-icon-button (click)="deleteDriver(i)"><mat-icon>delete</mat-icon></button>
+				</mat-cell>
+				<mat-footer-cell *matFooterCellDef>
+					<button mat-raised-button (click)="addFundraising()">+ Add</button>
+				</mat-footer-cell>
+			</ng-container>
 
 			<mat-header-row *matHeaderRowDef="driverColumns"></mat-header-row>
 			<mat-row *matRowDef="let row; columns: driverColumns;"></mat-row>

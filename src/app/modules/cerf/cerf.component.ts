@@ -37,9 +37,9 @@ export class CerfComponent {
 	openedPanels: number[] = [0, 0, 0, 0, 0, 0];
 
 	attendees;
-	attendanceColumns = ['members', 'service', 'leadership', 'fellowship', 'delete'];
-	kfamColumns = ['org', 'numAttendees', 'delete'];
-	driverColumns = ['driver', 'milesTo', 'milesFrom', 'delete'];
+	attendanceColumns = ['members', 'service', 'leadership', 'fellowship', 'actions'];
+	kfamColumns = ['org', 'numAttendees', 'actions'];
+	driverColumns = ['driver', 'milesTo', 'milesFrom', 'actions'];
 
 	// For adding new rows
 	defaultAttendance = {name: "", service: 0, leadership: 0, fellowship: 0};	// default should update to current "Default Hours" input
@@ -49,6 +49,9 @@ export class CerfComponent {
 	newAttendance = {name: "", service: 0, leadership: 0, fellowship: 0};
 	newKfam = {org: "", numAttendees: 0};
 	newDriver = {driver: "", milesTo: 0, milesFrom: 0};
+	editingAttendance = false;
+	editingKfam = false;
+	editingDriver = false;
 
 	filteredRoster;
 
@@ -209,6 +212,15 @@ export class CerfComponent {
 		this.driverArray.removeAt(index);
 		this.tables.toArray()[2].renderRows();
 		this.cerfForm.markAsDirty();
+	}
+
+	toggleEdit(num) {
+		if(num==1)
+			this.editingAttendance = !this.editingAttendance;
+		else if(num==2)
+			this.editingKfam = !this.editingKfam;
+		else if(num==3)
+			this.editingDriver = !this.editingDriver;
 	}
 
 	get attendanceArray() {
