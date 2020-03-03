@@ -3,6 +3,7 @@ import { FormGroup, FormArray, FormBuilder, AbstractControl, Validators, Validat
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { MatTable } from '@angular/material/table';
+import { ConfirmDialogComponent } from '@app/modules/confirm-dialog/confirm-dialog.component';
 import { Mrf, Cerf } from '@core/models';
 import { MrfService, ApiService } from '@core/services';
 import { Observable } from 'rxjs';
@@ -298,6 +299,16 @@ export class MrfComponent {
 	}
 
 	goBack() {
-		this._location.back();
+		if(!this.mrfForm.dirty) {	// No changes made. May have to add another condition to check for newly generated (unsaved)
+			this._location.back();
+		} // else
+		const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+
+		});
+		dialogRef.componentInstance.confirmMessage = "You have not saved yet. Leave?";
+		dialogRef.afterClosed().subscribe(result => {
+			if(result) this._location.back();
+			return result;
+		})
 	}
 }
