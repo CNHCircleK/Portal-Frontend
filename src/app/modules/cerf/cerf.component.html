@@ -59,14 +59,14 @@
 			</button> -->
 			<mat-error>Required</mat-error>
 		</mat-form-field>
-		<mat-form-field appearance="outline">
+		<!--<mat-form-field appearance="outline">
 			<mat-label>Person Filling out CERF</mat-label>
 			<input matInput formControlName="author" readonly>
-			<!-- <button mat-icon-button matSuffix *ngIf="comment" matTooltip="{{comment}}">
+			<button mat-icon-button matSuffix *ngIf="comment" matTooltip="{{comment}}">
 				<mat-icon>chat_bubble</mat-icon>
-			</button> -->
+			</button>
 			<mat-error>Required</mat-error>
-		</mat-form-field>
+		</mat-form-field>-->
 
 		<br/>
 
@@ -140,22 +140,21 @@
 	      </mat-panel-description>
 	    </mat-expansion-panel-header>
 
-	    <ng-container formGroupName="tags">
-			<mat-form-field *n appearance="outline"gFor="let tag of tags; let i=index">
-				<mat-label>Tags</mat-label>
-				<input matInput [formControlName]="i">
-			</mat-form-field>
-		</ng-container>
 		<p>Click to display info about each tag <a mat-icon-button (click)="openTagHelp()"><mat-icon [inline]="true">help</mat-icon></a></p>
+		<!--
+		<mat-form-field appearance="outline" *ngFor="let tag of tags; let i=index">
+			<mat-label>Tags</mat-label>
+			<input matInput [formControlName]="i">
+		</mat-form-field>-->
+		
 
-<!-- 		<div id="tags">
-			<div *ngFor="let tag of tagOptions; let i=index">
+		<div id="tags">
+			<div *ngFor="let tag of tagIds; let i=index">
 				<mat-checkbox [checked]="cerfForm.get('tags').value.includes(tag)" [disabled]="cerfForm.disabled" (change)="addRemoveTag(tag, $event.checked)">{{ tagNames[i] }}</mat-checkbox>
 				<p [class.show-tag-hints]="showTagHints">{{ tagDescriptions[i] }}</p>
 			</div>
-
-		</div> -->
-
+		</div>
+<!--
 		<div id="tags">
 
 			<div class="tag-service">
@@ -260,7 +259,7 @@
 
 			
 
-		</div>
+		</div>-->
 
 	  </mat-expansion-panel>
 

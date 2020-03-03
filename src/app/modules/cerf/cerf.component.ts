@@ -58,11 +58,9 @@ export class CerfComponent {
 	categoriesActive: string[] = [];
 	addingCategory: boolean = false;
 
-	tagOptions: string[] = ['CO', 'CA', 'CS', 'DSI', 'ISI', 'AD', 'SD', 'MD', 'FR', /* ? */ 'CK', 'KF', 'IN', 'WB', 'DV', 'DE', 'INT', 'HE'];
-	tagNames: string[] = ['Community Service', 'Campus Service', 'Continuing Service', 'District Service Initiative',
-							'International Service Initiative', 'Administrative', 'Social Event', 'Membership Development', 'Fundraiser',
-							'Circle K', 'Kiwanis Family', 'Interclub', 'Webinar', 'Divisional', 'District', 'International', 'Club Hosted'];
-	tagIds: string[] = ["5c7e30c5d6f264025fe03332", "5c87f48fd434f107fa8c3f64", "5c87f4a0d434f107fa8c3f65", "5c87f4acd434f107fa8c3f66", "5c87f4d8d434f107fa8c3f67", "5c87f4e2d434f107fa8c3f68", "5c87f4e9d434f107fa8c3f69", "5c87f4f1d434f107fa8c3f6a", "5c87f4f7d434f107fa8c3f6b", "5c87f4fdd434f107fa8c3f6c", "5c87f506d434f107fa8c3f6d", "5c87f50ed434f107fa8c3f6e", "5c87f52dd434f107fa8c3f6f", "5c87f538d434f107fa8c3f70", "5c87f53fd434f107fa8c3f71", "5c87f543d434f107fa8c3f72", "5c87f549d434f107fa8c3f73"];
+	tagOptions: string[] = [];
+	tagNames: string[] = [];
+	tagIds: string[] = [];
 	tagDescriptions: string[] = [
 	"An event where your club members are serving for the community without pay",
 	"Any event where your club is doing community service on your school's campus",
@@ -75,7 +73,7 @@ export class CerfComponent {
 		members so it is usually tagged as MD; however, remember that although all SE events are MD-tagged, not all MD events are SE-tagged (e.g. workshops)",
 	"An event that promotes membership recruitment and development",
 	"A home club-hosted event that raises money for a charity or for administrative funds",
-	"An event in which at least two members from your Circle K club and at least two members from another Circle K club are present",
+	// "An event in which at least two members from your Circle K club and at least two members from another Circle K club are present",
 	"An event in which at least two members from your Circle K club and at least two members from another non-Circle K Kiwanis Family club are present",
 	"An event in which there must be a certain amount of members from your Circle K club and the same amount of members from another\
 		Circle K/Kiwanis Family club present, depending on your Circle K club's number of dues paid members. Clubs with less than or equal to\
@@ -119,6 +117,13 @@ export class CerfComponent {
 	}
 
 	ngOnInit() {
+		this.cerfService.getTags().subscribe(result => {
+			result.forEach(element => {
+				this.tagNames.push(element.name);
+				this.tagOptions.push(element.abbrev);
+				this.tagIds.push(element._id);
+			})
+		})
 	}
 
 	 ngAfterContentInit() {
@@ -538,7 +543,7 @@ export class CerfComponent {
 	// }
 
 	public printForm() {
-		console.log(this.cerfForm, this.cerfService.getCerfForm());	// CHECK - this.cerfForm and the form in the service reference the same thing
+		console.log(this.cerf);	// CHECK - this.cerfForm and the form in the service reference the same thing
 	}
 
 	public getCerfFromForm() {

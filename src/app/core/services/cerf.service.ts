@@ -107,6 +107,16 @@ export class CerfService {
 		return this.apiService.changeCerfStatus(this.cerf._id, "UNSUBMIT");
 	}
 
+	getTags() {
+		return this.apiService.getTags().pipe(map( (res: {result: Object[]}) => {
+			if(res && res.success) {
+				return res.result;
+			} else {
+				return [];
+			}
+		}))
+	}
+
 	addToMRF() {
 		return this.apiService.changeCerfStatus(this.cerf._id, "CONFIRM");
 	}
@@ -126,7 +136,6 @@ export class CerfService {
 		let form = this.builder.group({
 			name: [model.name],
 			chair_id: [model.chair._id],
-			author: [model.author.name.first + " " + model.author.name.last],	// could create a name concatenator function...
 			time: this.builder.group(model.time),
 			location: model.location,
 			contact: model.contact,
