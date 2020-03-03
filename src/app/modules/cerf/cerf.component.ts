@@ -37,9 +37,9 @@ export class CerfComponent {
 	openedPanels: number[] = [0, 0, 0, 0, 0, 0];
 
 	attendees;
-	attendanceColumns = ['members', 'service', 'leadership', 'fellowship'];
-	kfamColumns = ['org', 'numAttendees'];
-	driverColumns = ['driver', 'milesTo', 'milesFrom'];
+	attendanceColumns = ['members', 'service', 'leadership', 'fellowship', 'delete'];
+	kfamColumns = ['org', 'numAttendees', 'delete'];
+	driverColumns = ['driver', 'milesTo', 'milesFrom', 'delete'];
 
 	// For adding new rows
 	defaultAttendance = {name: "", service: 0, leadership: 0, fellowship: 0};	// default should update to current "Default Hours" input

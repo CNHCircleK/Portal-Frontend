@@ -349,9 +349,19 @@
 					</mat-cell>
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field>
-							<input matInput  [(ngModel)]="newAttendance.fellowship" [ngModelOptions]="{standalone: true}" (keyup.enter)="addAttendance()" (keyup.tab)="addAttendance()">
+							<input matInput  [(ngModel)]="newAttendance.fellowship" [ngModelOptions]="{standalone: true}" (keyup.enter)="addAttendance()" (keydown.tab)="addAttendance()">
 						</mat-form-field>
 					</mat-footer-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="delete">
+					<mat-header-cell *matHeaderCellDef></mat-header-cell>
+					<mat-cell *matCellDef="let row; let i=index">
+						<button mat-button (click)="deleteAttendee(i)">
+							<mat-icon>remove_circle</mat-icon>
+						</button>
+					</mat-cell>
+					<mat-footer-cell *matFooterCellDef></mat-footer-cell>
 				</ng-container>
 
 				<mat-header-row *matHeaderRowDef="attendanceColumns"></mat-header-row>
@@ -407,9 +417,19 @@
 					<input matInput formControlName="numAttendees">
 				</mat-cell>
 				<mat-footer-cell *matFooterCellDef>
-					<input matInput  [(ngModel)]="newKfam.numAttendees" [ngModelOptions]="{standalone: true}" (keyup.enter)="addKfam()" (keyup.tab)="addKfam()">
+					<input matInput  [(ngModel)]="newKfam.numAttendees" [ngModelOptions]="{standalone: true}" (keyup.enter)="addKfam()" (keydown.tab)="addKfam()">
 				</mat-footer-cell>
 			</ng-container>
+
+			<ng-container matColumnDef="delete">
+					<mat-header-cell *matHeaderCellDef></mat-header-cell>
+					<mat-cell *matCellDef="let row; let i=index">
+						<button mat-button (click)="deleteKfam(i)">
+							<mat-icon>remove_circle</mat-icon>
+						</button>
+					</mat-cell>
+					<mat-footer-cell *matFooterCellDef></mat-footer-cell>
+				</ng-container>
 
 			<mat-header-row *matHeaderRowDef="kfamColumns"></mat-header-row>
 			<mat-row *matRowDef="let row; columns: kfamColumns;"></mat-row>
@@ -457,7 +477,7 @@
 				<mat-footer-cell *matFooterCellDef>
 					<mat-form-field>
 						<mat-label>+ Add Driver</mat-label>
-						<input matInput  [(ngModel)]="newDriver.driver" [ngModelOptions]="{standalone: true}" (keyup.enter)="addDriver()">
+						<input matInput id="driverFocus" [(ngModel)]="newDriver.driver" [ngModelOptions]="{standalone: true}" (keyup.enter)="addDriver()">
 					</mat-form-field>
 				</mat-footer-cell>
 			</ng-container>
@@ -478,9 +498,19 @@
 					<input matInput formControlName="milesFrom">
 				</mat-cell>
 				<mat-footer-cell *matFooterCellDef>
-					<input matInput  [(ngModel)]="newDriver.milesFrom" [ngModelOptions]="{standalone: true}" (keyup.enter)="addDriver()" (keyup.tab)="addDriver()">
+					<input matInput id="kfamFocus" [(ngModel)]="newDriver.milesFrom" [ngModelOptions]="{standalone: true}" (keyup.enter)="addDriver()" (keydown.tab)="addDriver()">
 				</mat-footer-cell>
 			</ng-container>
+
+			<ng-container matColumnDef="delete">
+					<mat-header-cell *matHeaderCellDef></mat-header-cell>
+					<mat-cell *matCellDef="let row; let i=index">
+						<button mat-button (click)="deleteDriver(i)">
+							<mat-icon>remove_circle</mat-icon>
+						</button>
+					</mat-cell>
+					<mat-footer-cell *matFooterCellDef></mat-footer-cell>
+				</ng-container>
 
 			<mat-header-row *matHeaderRowDef="driverColumns"></mat-header-row>
 			<mat-row *matRowDef="let row; columns: driverColumns;"></mat-row>
