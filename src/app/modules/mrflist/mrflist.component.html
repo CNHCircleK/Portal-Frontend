@@ -52,16 +52,6 @@
       <mat-cell *matCellDef="let row">{{row.club_id}}</mat-cell>
     </ng-container> -->
 
-
-    <!-- Action Column -->
-    <ng-container matColumnDef="action">
-      <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
-      <mat-cell *matCellDef="let row; let i=index">
-      	<a mat-icon-button [routerLink]="['/mrf', row.year, row.month]"><mat-icon>open_in_new</mat-icon></a>
-      	<button mat-icon-button><mat-icon>delete_outline</mat-icon></button>
-      </mat-cell>
-    </ng-container>
-
     <!-- Status Column (MRF View Only) -->
     <ng-container matColumnDef="status">
       <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
@@ -73,7 +63,7 @@
 
     <!-- Header columns -->
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;" [routerLink]="['/mrf', row.year, row.month]"></mat-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" [routerLink]="['/mrf', row.year, row.month]" [queryParams]="{clubId: clubId}"></mat-row>
 </mat-table>
 <mat-paginator [pageSizeOptions]="[10, 25, 50]"></mat-paginator>
 

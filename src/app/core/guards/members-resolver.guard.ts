@@ -8,6 +8,7 @@ import { AuthService } from '@core/authentication/auth.service';
 import { Member } from '@core/models';
 
 
+// @Deprecated
 @Injectable( {providedIn: 'root'} )
 export class MembersResolver implements Resolve<Member[]> {
 	constructor(private memberService: MemberService, private router: Router) { }

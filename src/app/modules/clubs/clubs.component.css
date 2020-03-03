@@ -1,0 +1,17 @@
+
+/* Abstract these styles (from CERF and MRFs) */
+h2 {
+	font-size: 48px;
+	margin-bottom: 32px;
+}
+
+.action {
+	display: flex;
+	justify-content: space-between;
+}
+.action button {
+	border-radius: 10px;
+	color: white;
+	background-color: #003366;
+	margin-right: 32px;
+}

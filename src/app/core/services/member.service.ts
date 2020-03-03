@@ -14,12 +14,9 @@ export class MemberService {
 		this.getMembers().subscribe();
 	}
 
-	getMembers(): Observable<any> {  // stop caching in this service
-		if(this.roster)
-			return of(this.roster);
-		else
-			return this.apiService.fetchMembers().pipe(map(response => {
-				console.log(response);
+	getMembers(clubId?: string): Observable<any> {  // stop caching in this service
+		if(clubId) {
+			return this.apiService.fetchMembers(clubId).pipe(map(response => {
 				if(response && response.success) {
 					this.roster = response.result.map(member => (
 						{name: member.name.first + " " + member.name.last, email: member.email, _id: member._id}) );
@@ -29,6 +26,23 @@ export class MemberService {
 				return this.roster;
 			}
 			));
+		} else {
+			// Default to user's own club
+			if(this.roster)
+				return of(this.roster);
+			else
+				return this.apiService.fetchMembers().pipe(map(response => {
+					console.log(response);
+					if(response && response.success) {
+						this.roster = response.result.map(member => (
+							{name: member.name.first + " " + member.name.last, email: member.email, _id: member._id}) );
+						if(this.roster.length==0)
+							this.roster = [{name: "None", email: "none", _id: ""}];
+					}
+					return this.roster;
+				}
+				));
+		}
 	}
 
 	filterMembers(value: string) {
@@ -67,8 +81,8 @@ export class MemberService {
 			return _id;
 	}
 
-	newMember(firstName: string, lastName: string) {
-		return this.apiService.addMember(firstName, lastName).pipe(tap((response: any) => {
+	newMember(clubId: string, firstName: string, lastName: string) {
+		return this.apiService.addMember(clubId, firstName, lastName).pipe(tap((response: any) => {
 			if(response.success)
 				this.roster.push({name: firstName + " " + lastName, email: undefined, _id: response.result});
 		}))
@@ -86,12 +100,20 @@ export class MemberService {
 	}
 
 	mapIdToClub(_id: string) {
-		if(_id == "5b6d2054f176363426fe5b93") return "Berkeley";
-		return "Club not Found";
+		if(_id == "5e5c711810044733ac495672") return "Sacramento State";
+		return "Club";
 	}
 
 	mapIdToDivision(_id: string) {
-		if(_id == "5b6d1fbfdf9a7b34033f945c") return "Golden Gate";
+		if(_id == "5e5c710f10044733ac495671") return "Capital";
+		if(_id == "5e5c71a010044733ac49567a") return "Central Coast";
+		if(_id == "5e5c719810044733ac495679") return "Citrus";
+		if(_id == "5e5c718910044733ac495677") return "Desert Oasis";
+		if(_id == "5e5c719310044733ac495678") return "Foothill";
+		if(_id == "5e5c717e10044733ac495676") return "Golden Gate";
+		if(_id == "5e5c716c10044733ac495673") return "Metro";
+		if(_id == "5e5c717310044733ac495674") return "Paradise";
+		if(_id == "5e5c717a10044733ac495675") return "Sunset";
 		return "Division not Found";
 	}
 

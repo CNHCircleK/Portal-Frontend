@@ -19,8 +19,8 @@ export class MrfService {
 		this.user = this.authService.getUser();
 	}
 
-	loadMrf(year: string, month: string) {
-		return this.apiService.getMrfByDate(year, month).pipe(tap(response => {
+	loadMrf(year: string, month: string, club?: string) {
+		return this.apiService.getMrfByDate(year, month, club).pipe(tap(response => {
 			this.mrf = response.result;
 			this.mrfForm.next(this.createReactiveForm(this.mrf));
 		}));
