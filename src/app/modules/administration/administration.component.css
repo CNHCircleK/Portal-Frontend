@@ -1,12 +1,23 @@
-/*button {
-	margin-bottom: 16px;
-}*/
+h2 {
+	font-family: "Century Gothic";
+	font-size: 48px;
+	margin-bottom: 32px;
+}
+
 #header button {
 	margin-left: 16px;
 }
 
 .selecting mat-row {
 	cursor: pointer;
+}
+
+.addButton {
+	border-radius: 10px;
+	color: white;
+	background-color: #003366;
+	/*margin-right: 32px;*/
+	float: right;
 }
 
 mat-row:not(.member-detail-row):hover {

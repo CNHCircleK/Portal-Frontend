@@ -126,6 +126,7 @@ h1 {
 	grid-template-columns: 1fr 1fr;
 	grid-gap: 0px 20px;
 	grid-auto-flow: row;
+	align-items: start;
 	/*grid-auto-rows: 1fr 1fr;*/
 	/*column-count: 2;
 	-webkit-column-break-inside:avoid;

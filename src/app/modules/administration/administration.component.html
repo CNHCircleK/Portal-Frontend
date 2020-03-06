@@ -1,6 +1,7 @@
-<h1 class="mat-title">{{club | clubID}}</h1>
+<h2 class="mat-title">{{club | clubID}}</h2>
 
 <mat-divider></mat-divider>
+<br />
 
 <form>
 
@@ -78,7 +79,7 @@
   </mat-form-field>
   
   <mat-divider></mat-divider>
-
+  <br />
 
   <h2 class="mat-title">Member Roster</h2>
 
@@ -91,7 +92,7 @@
   </mat-form-field>
 
 
-  <button mat-raised-button (click)="newMember()">Add Member</button>
+  <button mat-raised-button class="addButton" (click)="newMember()">+ Add Member</button>
 
   <mat-table [dataSource]="list" matSort [class.selecting]="memberRegistrationMode" multiTemplateDataRows>
 

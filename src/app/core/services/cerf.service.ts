@@ -108,7 +108,7 @@ export class CerfService {
 	}
 
 	getTags() {
-		return this.apiService.getTags().pipe(map( (res: {result: Object[]}) => {
+		return this.apiService.getTags().pipe(map( res => {
 			if(res && res.success) {
 				return res.result;
 			} else {

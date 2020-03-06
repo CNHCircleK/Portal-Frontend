@@ -49,7 +49,7 @@ export class ClubsComponent {
 	}
 	
 	updateList() {
-		this.apiService.getClubs().subscribe(res => {
+		this.apiService.getClubs(this.division).subscribe(res => {
 			this.clubs=res.result;
 			this.list.data=res.result;
 		});

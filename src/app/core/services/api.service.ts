@@ -85,7 +85,7 @@ export class ApiService {
 	}
 
 	getTags() {
-		return this.http.get<Response<boolean>>(HttpConfig.baseUrl + '/tags');
+		return this.http.get<Response<any>>(HttpConfig.baseUrl + '/tags');
 	}
 
 
