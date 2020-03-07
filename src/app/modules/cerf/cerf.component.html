@@ -18,8 +18,8 @@
 		<!-- Secretary Only -->
 		<ng-container *ngIf="user.access.club==2">
 			<button mat-icon-button *ngIf="cerf.status==1 && cerf.author._id != user._id" (click)="unsubmitCerf()" [disabled]="pendingAction || !cerfForm.valid" matTooltip="Release"><mat-icon>restore</mat-icon></button>
-			<button mat-icon-button *ngIf="cerf.status==1" (click)="approveCerf()" [disabled]="pendingAction || !cerfForm.valid" matTooltip="Add to MRF"><mat-icon>playlist_add</mat-icon></button>
-			<button mat-icon-button *ngIf="cerf.status==2" (click)="unapproveCerf()" [disabled]="pendingAction || !cerfForm.valid" matTooltip="Remove from MRF"><mat-icon>playlist_remove</mat-icon></button>
+			<button mat-icon-button *ngIf="cerf.status==1" (click)="approveCerf()" [disabled]="pendingAction || (!cerfForm.disabled && !cerfForm.valid)" matTooltip="Add to MRF"><mat-icon>cloud_upload</mat-icon></button>
+			<button mat-icon-button *ngIf="cerf.status==2" (click)="unapproveCerf()" [disabled]="pendingAction || (!cerfForm.disabled && !cerfForm.valid)" matTooltip="Remove from MRF"><mat-icon>cloud_off</mat-icon></button>
 		</ng-container>
 
 		<!-- <span *ngIf="cerf.status>=1 && cerf.author_id == user._id" matTooltip="Already approved" [matTooltipDisabled]="cerf.status != 2">

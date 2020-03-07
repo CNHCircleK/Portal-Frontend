@@ -441,7 +441,7 @@
 				<ng-container matColumnDef="tags">
 					<mat-header-cell *matHeaderCellDef>Tags</mat-header-cell>
 					<mat-cell *matCellDef="let row; let i=index" [formGroupName]="i">
-						{{row.value.tags.join(', ')}}
+						{{row.value.tags}}
 					</mat-cell>
 				</ng-container>
 

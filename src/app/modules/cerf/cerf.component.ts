@@ -100,8 +100,6 @@ export class CerfComponent {
 		memberService.getMembers().subscribe(res => {
 			this.filteredRoster = res;
 		});
-
-		console.log(this.cerfForm, this.cerf, this.route);
 	}
 
 	//id: number;
