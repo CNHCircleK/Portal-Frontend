@@ -5,6 +5,8 @@ import { Location } from '@angular/common';
 import { MatTable } from '@angular/material/table';
 import { Mrf, Cerf } from '@core/models';
 import { MrfService, ApiService } from '@core/services';
+import { Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import * as moment from 'moment';
 
@@ -63,15 +65,27 @@ export class MrfComponent {
 		// this.mrf = this.route.snapshot.data['mrf'];
 		let year = this.route.snapshot.paramMap.get("year");
 		let month = this.route.snapshot.paramMap.get("month");
-		mrfService.loadMrf(year, month).subscribe(done => {
+		let clubId = null;
+		this.route.queryParams.pipe(filter(params => params.clubId))
+			      .subscribe(params => {
+			        console.log(params);
+
+			        clubId = params.clubId;
+			      });
+		mrfService.loadMrf(year, month, clubId).subscribe(done => {
 			this.mrf = mrfService.getMrf();
 			this.mrfForm = mrfService.getMrfForm();
+			if(this.apiService.user.club_id != this.mrf.club_id) {
+				this.mrfForm.disable();
+			}
 		});
 		// this.mrfForm = this.dataService.getMrfFormState;
 		// if(!this.mrfForm)
 		// 	this.mrfForm = this.createMrf(this.mrf);
 
 		// this.currentTab = this.dataService.getMrfTabState;
+
+		
 	}
 
 	ngOnInit() {

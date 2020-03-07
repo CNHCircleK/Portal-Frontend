@@ -1,9 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { MemberService } from '@core/services';
 import { AuthService } from '@core/authentication/auth.service';
 import { Member } from '@core/models';
+import { Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -28,7 +30,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 
 export class ClubAdministrationComponent {
 
-	members: Member[];
+	members: Member[] = [];
 	club: string;
 
 	@ViewChild(MatPaginator) paginator;
@@ -111,13 +113,22 @@ export class ClubAdministrationComponent {
 
 	expandedMember = null;
 
-	constructor(private memberService: MemberService,
-		private auth: AuthService, private route: ActivatedRoute, private dialog: MatDialog,
-		private snackBar: MatSnackBar) {
-		this.members = this.route.snapshot.data['members'];
-		console.log(this.members);
+	constructor(private memberService: MemberService, private auth: AuthService,
+		private route: ActivatedRoute, private router: Router,
+		private dialog: MatDialog, private snackBar: MatSnackBar) {
 
 		this.club = this.auth.getUser().club_id;
+
+		this.route.queryParams.pipe(filter(params => params.clubId))
+	      .subscribe(params => {
+	      	if(params.clubId) {
+		        this.club = params.clubId;
+		        // Refresh the page when param-only change (going to a different clubId param)
+		        router.routeReuseStrategy.shouldReuseRoute = () => false;
+	      	}
+
+	      });
+	    this.updateList();
 	}
 
 	ngOnInit() {
@@ -128,6 +139,7 @@ export class ClubAdministrationComponent {
 	ngAfterViewInit() {
 		this.list.paginator = this.paginator;
 		this.list.sort = this.sort;
+		this.list.data=this.members;
 	}
 
 	applyFilter(filterValue: string) { 
@@ -137,7 +149,7 @@ export class ClubAdministrationComponent {
 	}
 
 	updateList() {
-		this.memberService.getMembers().subscribe(res => {
+		this.memberService.getMembers(this.club).subscribe(res => {
 			this.members=res || [];
 			this.list.data=res || [];
 		});
@@ -155,8 +167,7 @@ export class ClubAdministrationComponent {
 
 		dialogRef.afterClosed().subscribe(result => {
 			if(result) {
-				console.log(result);
-				this.memberService.newMember(result.firstName, result.lastName).subscribe(res => this.updateList());
+				this.memberService.newMember(this.club, result.firstName, result.lastName).subscribe(res => this.updateList());
 			}
 		});
 	}
