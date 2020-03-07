@@ -53,7 +53,7 @@
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
 							<mat-label>MM-DD-YYYY</mat-label>
-							<input matInput  [(ngModel)]="newMeeting.date" [ngModelOptions]="{standalone: true}" (keyup.enter)="addMeetingRow()" id="meetingFocus">
+							<input matInput [disabled]="mrfForm.disabled" [(ngModel)]="newMeeting.date" [ngModelOptions]="{standalone: true}" (keyup.enter)="addMeetingRow()" id="meetingFocus">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -67,7 +67,7 @@
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
 							<mat-label>#</mat-label>
-							<input matInput  [(ngModel)]="newMeeting.attendance.numMembers" [ngModelOptions]="{standalone: true}" (keyup.enter)="addMeetingRow()">
+							<input matInput [disabled]="mrfForm.disabled" [(ngModel)]="newMeeting.attendance.numMembers" [ngModelOptions]="{standalone: true}" (keyup.enter)="addMeetingRow()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -81,7 +81,7 @@
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
 							<mat-label>#</mat-label>
-							<input matInput  [(ngModel)]="newMeeting.attendance.numNonHomeMembers" [ngModelOptions]="{standalone: true}" (keyup.enter)="addMeetingRow()">
+							<input matInput [disabled]="mrfForm.disabled" [(ngModel)]="newMeeting.attendance.numNonHomeMembers" [ngModelOptions]="{standalone: true}" (keyup.enter)="addMeetingRow()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -95,7 +95,7 @@
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
 							<mat-label>#</mat-label>
-							<input matInput  [(ngModel)]="newMeeting.attendance.numKiwanis" [ngModelOptions]="{standalone: true}" (keyup.enter)="addMeetingRow()">
+							<input matInput [disabled]="mrfForm.disabled" [(ngModel)]="newMeeting.attendance.numKiwanis" [ngModelOptions]="{standalone: true}" (keyup.enter)="addMeetingRow()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -109,7 +109,7 @@
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
 							<mat-label>#</mat-label>
-							<input matInput  [(ngModel)]="newMeeting.attendance.numGuests" [ngModelOptions]="{standalone: true}" (keyup.enter)="addMeetingRow()">
+							<input matInput [disabled]="mrfForm.disabled" [(ngModel)]="newMeeting.attendance.numGuests" [ngModelOptions]="{standalone: true}" (keyup.enter)="addMeetingRow()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -174,7 +174,7 @@
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
 							<mat-label>MM-DD-YYYY</mat-label>
-							<input matInput  [(ngModel)]="newBoardMeeting.date" [ngModelOptions]="{standalone: true}" (keyup.enter)="addBoardMeetingRow()" id="boardMeetingFocus">
+							<input matInput [disabled]="mrfForm.disabled" [(ngModel)]="newBoardMeeting.date" [ngModelOptions]="{standalone: true}" (keyup.enter)="addBoardMeetingRow()" id="boardMeetingFocus">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -188,7 +188,7 @@
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
 							<mat-label>#</mat-label>
-							<input matInput  [(ngModel)]="newBoardMeeting.attendance.numBoard" [ngModelOptions]="{standalone: true}" (keyup.enter)="addBoardMeetingRow()">
+							<input matInput [disabled]="mrfForm.disabled" [(ngModel)]="newBoardMeeting.attendance.numBoard" [ngModelOptions]="{standalone: true}" (keyup.enter)="addBoardMeetingRow()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -202,7 +202,7 @@
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
 							<mat-label>#</mat-label>
-							<input matInput  [(ngModel)]="newBoardMeeting.attendance.numGuests" [ngModelOptions]="{standalone: true}" (keyup.enter)="addBoardMeetingRow()" (keydown.Tab)="addBoardMeetingRow()">
+							<input matInput [disabled]="mrfForm.disabled" [(ngModel)]="newBoardMeeting.attendance.numGuests" [ngModelOptions]="{standalone: true}" (keyup.enter)="addBoardMeetingRow()" (keydown.Tab)="addBoardMeetingRow()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -281,7 +281,7 @@
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
 							<mat-label>+ Add Fundraiser</mat-label>
-							<input matInput  [(ngModel)]="newFundraising.source" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()" id="fundraisingFocus">
+							<input matInput [disabled]="mrfForm.disabled" [(ngModel)]="newFundraising.source" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()" id="fundraisingFocus">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -293,7 +293,7 @@
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
 							<mat-label>$</mat-label>
-							<input matInput  [(ngModel)]="newFundraising.ptp" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()">
+							<input matInput [disabled]="mrfForm.disabled" [(ngModel)]="newFundraising.ptp" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -305,7 +305,7 @@
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
 							<mat-label>$</mat-label>
-							<input matInput  [(ngModel)]="newFundraising.kfh" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()">
+							<input matInput [disabled]="mrfForm.disabled" [(ngModel)]="newFundraising.kfh" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -317,7 +317,7 @@
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
 							<mat-label>$</mat-label>
-							<input matInput  [(ngModel)]="newFundraising.fa" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()">
+							<input matInput [disabled]="mrfForm.disabled" [(ngModel)]="newFundraising.fa" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -329,7 +329,7 @@
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
 							<mat-label>$</mat-label>
-							<input matInput  [(ngModel)]="newFundraising.other" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()">
+							<input matInput [disabled]="mrfForm.disabled" [(ngModel)]="newFundraising.other" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -341,7 +341,7 @@
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="new-row">
 							<mat-label>$</mat-label>
-							<input matInput  [(ngModel)]="newFundraising.admin" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()" (keydown.Tab)="addFundraisingRow()">
+							<input matInput [disabled]="mrfForm.disabled" [(ngModel)]="newFundraising.admin" [ngModelOptions]="{standalone: true}" (keyup.enter)="addFundraisingRow()" (keydown.Tab)="addFundraisingRow()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
