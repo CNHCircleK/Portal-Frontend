@@ -19,8 +19,8 @@ export class Cerf {
 			leadership: number,
 			fellowship: number
 		},
-		public overrideHours: {
-			attendee_id: string,
+      public overrideHours: {
+      attendee: {_id: string},
 			service: number,
 			leadership: number,
 			fellowship: number
