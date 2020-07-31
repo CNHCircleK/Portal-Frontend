@@ -132,6 +132,7 @@ export class CerfService {
 
 
 	private createReactiveForm(model: Cerf): FormGroup {
+		console.log(model);
 		let form = this.builder.group({
 			name: [model.name],
 			chair_id: [model.chair._id],
