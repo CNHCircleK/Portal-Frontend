@@ -39,6 +39,7 @@ export class MyCerfsComponent {
 
 	ngOnInit() {
 		if(this.cerfs) {
+			console.log("Cerfs")
 			this.list = new MatTableDataSource(this.cerfs);
 			this.pagination = this.cerfs.length > 10 || this.pagination;	// even if not specified, automatically attach pagination when there's enough elements
 		}
@@ -46,6 +47,7 @@ export class MyCerfsComponent {
 
 	ngAfterViewInit() {
 		if(this.list) {
+			console.log("Sorting");
 			this.list.sort = this.sort;
 			this.list.sortingDataAccessor = (data, header) => {
 				switch (header) {
