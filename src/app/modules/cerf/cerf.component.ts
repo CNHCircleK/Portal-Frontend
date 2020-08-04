@@ -46,7 +46,7 @@ export class CerfComponent {
 	defaultKfam = {org: "", numAttendees: 0};
 	defaultDriver = {driver: "", milesTo: 0, milesFrom: 0};
 
-	newAttendance = {name: "", service: 0, leadership: 0, fellowship: 0};
+	newAttendance = {name: "Test", service: 1, leadership: 2, fellowship: 3};
 	newKfam = {org: "", numAttendees: 0};
 	newDriver = {driver: "", milesTo: 0, milesFrom: 0};
 
@@ -191,9 +191,10 @@ export class CerfComponent {
 
 	      this.cerfForm.markAsDirty();
       }
-    }
-  commentChange() {
-        this.cerfForm.markAsDirty(); //This allows comments to be made
+   }
+  commentChange() { 
+        // a commentChange() function was added in order to enable the save button when adding anything to the comment fields
+        this.cerfForm.markAsDirty();
   }
 	deleteAttendee(index) {
 		this.attendanceArray.removeAt(index);
@@ -543,7 +544,11 @@ export class CerfComponent {
 
 	public getCerfFromForm() {
     let rawCerf = this.cerfForm.getRawValue();
+<<<<<<< HEAD
 		// Destructure the form in case
+=======
+		// Destructure the form in case 
+>>>>>>> a commentChange() function was added in order to enable the save button when adding anything to the comment fields
 		// Object.keys(rawCerf).forEach(key => {
 		// 	if(rawCerf instanceof AbstractControl)
 		// 		rawCerf[key] = rawCerf[key].getRawValue();
