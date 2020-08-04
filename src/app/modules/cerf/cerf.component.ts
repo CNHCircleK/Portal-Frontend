@@ -185,20 +185,15 @@ export class CerfComponent {
 	      this.driverArray.push(this.builder.group(this.newDriver));
 	      Object.assign(this.newDriver, this.defaultDriver);
 
-<<<<<<< HEAD
 	      this.tables.toArray()[2].renderRows();
 	      const element = this.renderer.selectRootElement("#driverFocus");
 	      setTimeout(() => element.focus(), 0);
 
 	      this.cerfForm.markAsDirty();
       }
-    }
-  commentChange() {
-=======
-		this.cerfForm.markAsDirty();
-    }
+   }
   commentChange() { 
->>>>>>> a commentChange() function was added in order to enable the save button when adding anything to the comment fields
+        // a commentChange() function was added in order to enable the save button when adding anything to the comment fields
         this.cerfForm.markAsDirty();
   }
 	deleteAttendee(index) {

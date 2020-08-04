@@ -1,12 +1,6 @@
 var HttpConfig = {
-<<<<<<< Updated upstream
-	'schemelessUrl': 'http://backend.terrencejam.es',
-	//'baseUrl': 'http://backend.terrencejam.es',
-	'baseUrl': 'http://localhost:3000',
-=======
-    'schemelessUrl': 'http://backend.terrencejam.es',
-    'baseUrl': 'http://backend.terrencejam.es',
->>>>>>> Stashed changes
+  'schemelessUrl': 'http://backend.terrencejam.es',
+  'baseUrl': 'http://backend.terrencejam.es',
 	'signin': '/signin',
 	'generateCerf': '/new'
 }
