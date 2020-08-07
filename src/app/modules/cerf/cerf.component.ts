@@ -193,7 +193,7 @@ export class CerfComponent {
       }
     }
   commentChange() {
-        this.cerfForm.markAsDirty();
+        this.cerfForm.markAsDirty(); //This allows comments to be made
   }
 	deleteAttendee(index) {
 		this.attendanceArray.removeAt(index);
@@ -602,4 +602,5 @@ export class CerfComponent {
 
 	}
 	*/
+
 }
