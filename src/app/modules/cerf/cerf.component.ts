@@ -46,7 +46,7 @@ export class CerfComponent {
 	defaultKfam = {org: "", numAttendees: 0};
 	defaultDriver = {driver: "", milesTo: 0, milesFrom: 0};
 
-	newAttendance = {name: "Test", service: 1, leadership: 2, fellowship: 3};
+	newAttendance = {name: "", service: 0, leadership: 0, fellowship: 0};
 	newKfam = {org: "", numAttendees: 0};
 	newDriver = {driver: "", milesTo: 0, milesFrom: 0};
 
@@ -492,7 +492,7 @@ export class CerfComponent {
 
 		model.attendees = model.attendees.map(attendee => ({name: attendee._id, service: model.hoursPerAttendee.service,
 	 		leadership: model.hoursPerAttendee.leadership, fellowship: model.hoursPerAttendee.fellowship})).concat(
-	 		model.overrideHours.map(attendee => ({name: attendee.attendee_id, service: attendee.service, leadership: attendee.leadership, fellowship: attendee.fellowship})));
+	 		model.overrideHours.map(attendee => ({name: attendee.attendee._id, service: attendee.service, leadership: attendee.leadership, fellowship: attendee.fellowship})));
 
 	}
 
@@ -544,15 +544,10 @@ export class CerfComponent {
 
 	public getCerfFromForm() {
     let rawCerf = this.cerfForm.getRawValue();
-<<<<<<< HEAD
+
 		// Destructure the form in case
-=======
-		// Destructure the form in case 
->>>>>>> a commentChange() function was added in order to enable the save button when adding anything to the comment fields
-		// Object.keys(rawCerf).forEach(key => {
-		// 	if(rawCerf instanceof AbstractControl)
-		// 		rawCerf[key] = rawCerf[key].getRawValue();
-		// });
+
+
 
 		/* Split up attendees and overrideHours */
 		const defaultHours = this.cerfForm.get('hoursPerAttendee').value;
