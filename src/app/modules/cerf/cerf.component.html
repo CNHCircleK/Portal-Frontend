@@ -585,10 +585,11 @@
 		<h3>Categories</h3>
 		<p>(for your own cataloging)</p>
 
-		<div id="categories" formArrayName="categories">
+		<div id="categories" formArrayName="categories" class="flex-container">
 			<div *ngFor="let category of categoryButtons; let i=index">
 				<button mat-button class="categoryButton" (click)="toggleLabel(category)" [ngClass]="{'mat-elevation-z4': !isLabelActive(category), 'activeCategory': isLabelActive(category)}">{{category}}</button>
 				<button mat-icon-button class="deleteCategory" (click)="removeLabel(i)"> <mat-icon>cancel</mat-icon> </button>
+				<span *ngIf="!isLast">&nbsp;&nbsp;</span>
 			</div>
 		</div>
 		<button mat-button *ngIf="!addingCategory" [disabled]="cerfForm.disabled" (click)="addingCategory=true">+ Add Category</button>

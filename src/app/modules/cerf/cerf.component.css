@@ -181,6 +181,10 @@ h1 {
 	margin: 5px 10px;
 }
 
+.flex-container {
+	display: flex;
+	flex-flow: row wrap;
+}
 
 .categoryButton.activeCategory {
 	background-color: #00a5d9;
