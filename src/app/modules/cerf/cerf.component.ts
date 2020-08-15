@@ -239,6 +239,16 @@ export class CerfComponent {
 	isLabelActive(label: string): boolean {
 		return this.categoriesActive.includes(label);
 	}
+	//sets existing label to an active one marked on the cerf
+	toggleLabel(label: string): void {
+		this.categoriesActive.push(label);
+	}
+
+	newLabel(label: string): void {
+		this.categoryButtons.push(label);
+		this.addingCategory = false;
+
+	}
 
 	get categories() {
 		return (this.cerfForm.controls['categories'] as FormArray);
