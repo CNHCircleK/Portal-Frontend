@@ -586,11 +586,13 @@
 		<p>(for your own cataloging)</p>
 
 		<div id="categories" formArrayName="categories" class="flex-container">
-			<div *ngFor="let category of categoryButtons; let i=index">
-				<button mat-button class="categoryButton" (click)="toggleLabel(category)" [ngClass]="{'mat-elevation-z4': !isLabelActive(category), 'activeCategory': isLabelActive(category)}">{{category}}</button>
-				<button mat-icon-button class="deleteCategory" (click)="removeLabel(i)"> <mat-icon>cancel</mat-icon> </button>
-				<span *ngIf="!isLast">&nbsp;&nbsp;</span>
-			</div>
+			<ng-container *ngFor="let category of categoryButtons; let i=index">
+				<div class="categoryWrapper">
+					<button mat-button class="categoryButton" (click)="toggleLabel(category)" [ngClass]="{'mat-elevation-z4': !isLabelActive(category), 'activeCategory': isLabelActive(category)}">{{category}}</button> 
+					<mat-icon class="deleteCategory" (click)="removeLabel(i)">cancel</mat-icon>
+					<span *ngIf="!isLast">&nbsp;&nbsp;</span>
+				</div>
+			</ng-container>
 		</div>
 		<button mat-button *ngIf="!addingCategory" [disabled]="cerfForm.disabled" (click)="addingCategory=true">+ Add Category</button>
 		<form *ngIf="addingCategory">
