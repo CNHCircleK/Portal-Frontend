@@ -263,6 +263,13 @@ export class CerfComponent {
 	removeLabel(index: number): void {
 		this.categoryButtons.splice(index);
 	}
+	
+	//meant to activate input field and autofocus it (couldn't find alternative to ElementRef?)
+	@ViewChild('newCategory') newCategory: ElementRef;
+	addLabel(): void {
+		this.addingCategory = true;
+		setTimeout (_ => this.newCategory.nativeElement.focus(), 0);
+	}
 
 	get categories() {
 		return (this.cerfForm.controls['categories'] as FormArray);

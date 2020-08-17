@@ -594,9 +594,9 @@
 				</div>
 			</ng-container>
 		</div>
-		<button mat-button *ngIf="!addingCategory" [disabled]="cerfForm.disabled" (click)="addingCategory=true">+ Add Category</button>
+		<button mat-button *ngIf="!addingCategory" [disabled]="cerfForm.disabled" (click)="addLabel()">+ Add Category</button>
 		<form *ngIf="addingCategory">
-			<mat-form-field *ngIf="addingCategory" (keyup.enter)="newLabel(newCategory.value)">
+			<mat-form-field *ngIf="addingCategory" (keyup.enter)="newLabel(newCategory.value)" (keyup.esc)="addingCategory=false">
 				<input matInput #newCategory>
 				<mat-icon matSuffix (click)="newLabel(newCategory.value)">arrow_forward</mat-icon>
 				<mat-icon matSuffix (click)="addingCategory=false">cancel</mat-icon>
