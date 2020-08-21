@@ -246,7 +246,7 @@ export class CerfComponent {
 		if(index == -1) { 	//doesn't exist as an active category
 			this.categoriesActive.push(label);
 		} else { 	//removes the given lable as an active category
-			this.categoriesActive.splice(index);
+			this.categoriesActive.splice(index, 1);
 		}
 	}
 	
@@ -261,7 +261,7 @@ export class CerfComponent {
 
 	//deletes existing labels from the array of categories
 	removeLabel(index: number): void {
-		this.categoryButtons.splice(index);
+		this.categoryButtons.splice(index, 1);
 	}
 	
 	//meant to activate input field and autofocus it (couldn't find alternative to ElementRef?)
