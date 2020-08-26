@@ -1,6 +1,6 @@
 import { Component, Input, Directive, Renderer2, ElementRef, ViewChild, ViewChildren, QueryList } from '@angular/core';
 // import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
-import { FormGroup, FormControl, FormBuilder, FormArray, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, FormArray, Validators, ValidatorFn, AbstractControl, Validator } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Location } from '@angular/common';
@@ -18,6 +18,7 @@ import { AuthService } from '@core/authentication/auth.service';
 import { CerfService, MemberService } from '@core/services';
 
 import { Observable, BehaviorSubject, zip } from 'rxjs';
+import { time } from 'console';
 
 type Attendee = {name: string, service: number, leadership: number, fellowship: number};
 // type Member = {name: string, email: string, _id: string};	// Put into Member interface to be used by MemberService too
@@ -137,6 +138,20 @@ export class CerfComponent {
 	ngAfterViewInit() {
 
 	}
+
+
+	compareDate(time: FormGroup) : {[key:string] : any} | null
+	{
+		if (time.controls.end.value <= time.controls.start.value) {
+			return {'invalidRange': true}
+		}
+		return null;
+	}
+
+
+
+
+
 
 	// inputListReady(name, event) {
 	// 	this.cerfForm.setControl(name, event);
@@ -485,7 +500,8 @@ export class CerfComponent {
 			{ control: 'name', validator: Validators.required },
 			{ control: 'hoursPerAttendee.service', validator: Validators.pattern('^[-]?[0-9]*[.]?[0-9]{0,2}$')},
 			{ control: 'hoursPerAttendee.leadership', validator: Validators.pattern('^[-]?[0-9]*[.]?[0-9]{0,2}$')},
-			{ control: 'hoursPerAttendee.fellowship', validator: Validators.pattern('^[-]?[0-9]*[.]?[0-9]{0,2}$')}
+			{ control: 'hoursPerAttendee.fellowship', validator: Validators.pattern('^[-]?[0-9]*[.]?[0-9]{0,2}$')},
+			{ control: 'time', validator: this.compareDate}
 			]);
 		// for(let x of (form.controls['attendees'] as FormArray).controls) {
 		// 	x.setValidators([this.memberListValidator]);
