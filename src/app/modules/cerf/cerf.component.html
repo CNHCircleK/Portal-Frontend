@@ -80,13 +80,12 @@
 
 			<mat-form-field appearance="outline">
 				<mat-label>End Time</mat-label>
-				<input matInput [matDatepicker]="end" formControlName="end">
+				<input matInput [matDatepicker]="end" formControlName="end" [errorStateMatcher]="timeErrorMatcher">
 				<mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
 				<mat-datepicker type="datetime" #end></mat-datepicker>
-				<mat-error>Invalid Time format</mat-error>
-				<small class="invalid-range" *ngIf="cerfForm.hasError('invalidRange')">Invalid Time Range</small>
+				<!--<mat-error>Invalid Time format</mat-error>-->
+				<mat-error class="invalid-range" *ngIf="cerfForm.hasError(invalid-range) && (cerfForm.touched || cerfForm.dirty)">Invalid Time Range!</mat-error>
 			</mat-form-field>
-			
 		</ng-container>
 
 		<br/>

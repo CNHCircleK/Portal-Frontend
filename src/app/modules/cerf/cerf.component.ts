@@ -1,6 +1,6 @@
 import { Component, Input, Directive, Renderer2, ElementRef, ViewChild, ViewChildren, QueryList } from '@angular/core';
 // import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
-import { FormGroup, FormControl, FormBuilder, FormArray, Validators, ValidatorFn, AbstractControl, Validator } from '@angular/forms';
+import { FormGroup, FormGroupDirective, FormControl, FormBuilder, FormArray, Validators, ValidatorFn, AbstractControl, Validator, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Location } from '@angular/common';
@@ -18,10 +18,29 @@ import { AuthService } from '@core/authentication/auth.service';
 import { CerfService, MemberService } from '@core/services';
 
 import { Observable, BehaviorSubject, zip } from 'rxjs';
-import { time } from 'console';
+import { time, timeEnd } from 'console';
 
+import { ErrorStateMatcher } from '@angular/material/core';
+
+
+export class ParentErrMatcher implements ErrorStateMatcher {
+	isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+	  const invalidCtrl = !!(control && control.invalid);
+	  const invalidParent = !!(control && control.parent && control.parent.invalid);
+  
+	  return (invalidCtrl || invalidParent);
+	}
+  }
+
+export const invalidRangeValidator: ValidatorFn = (control: FormGroup) : ValidationErrors | null =>
+  {
+	const end = control.get('end');
+	const start = control.get('start');
+	return (end && start && end.value < start.value) ? {'invalid-range': true} : null;
+  }  
 type Attendee = {name: string, service: number, leadership: number, fellowship: number};
 // type Member = {name: string, email: string, _id: string};	// Put into Member interface to be used by MemberService too
+
 
 @Component({
 	selector: 'app-cerf',
@@ -29,6 +48,7 @@ type Attendee = {name: string, service: number, leadership: number, fellowship: 
 	styleUrls: ['./cerf.component.css', './_cerf.component.scss'],
 	providers: [ CerfService ]
 })
+
 export class CerfComponent {
 
 	cerfId: string;
@@ -139,14 +159,7 @@ export class CerfComponent {
 
 	}
 
-
-	compareDate(time: FormGroup) : {[key:string] : any} | null
-	{
-		if (time.controls.end.value <= time.controls.start.value) {
-			return {'invalidRange': true}
-		}
-		return null;
-	}
+	timeErrorMatcher = new ParentErrMatcher();
 
 
 
@@ -463,7 +476,7 @@ export class CerfComponent {
 			name: [model.name],
 			chair_id: [model.chair._id],
 			author: [model.author.name.first + " " + model.author.name.last],	// could create a name concatenator function...
-			time: this.builder.group(model.time),
+			time: this.builder.group(model.time, {validators: invalidRangeValidator}),
 			location: model.location,
 			contact: model.contact,
 			tags: this.builder.array(model.tags),
@@ -500,8 +513,7 @@ export class CerfComponent {
 			{ control: 'name', validator: Validators.required },
 			{ control: 'hoursPerAttendee.service', validator: Validators.pattern('^[-]?[0-9]*[.]?[0-9]{0,2}$')},
 			{ control: 'hoursPerAttendee.leadership', validator: Validators.pattern('^[-]?[0-9]*[.]?[0-9]{0,2}$')},
-			{ control: 'hoursPerAttendee.fellowship', validator: Validators.pattern('^[-]?[0-9]*[.]?[0-9]{0,2}$')},
-			{ control: 'time', validator: this.compareDate}
+			{ control: 'hoursPerAttendee.fellowship', validator: Validators.pattern('^[-]?[0-9]*[.]?[0-9]{0,2}$')}
 			]);
 		// for(let x of (form.controls['attendees'] as FormArray).controls) {
 		// 	x.setValidators([this.memberListValidator]);
