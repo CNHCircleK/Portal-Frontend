@@ -20,6 +20,14 @@ import { CerfService, MemberService } from '@core/services';
 import { Observable, BehaviorSubject, zip } from 'rxjs';
 import { time, timeEnd } from 'console';
 
+//import { MatDatepickerModule } from '@angular/material';
+
+/* Asserting End Time before Start Time Validator -Zeven VB
+   Commented out code: cerf.component.ts, cerf.component.html; 
+   core.module.ts, index.ts might be optional?
+	-(Search for invalid-range, invalidRangeValidator, timeErrorMatcher)
+	-Deleted html for ErrorStateMatcher
+
 import { ErrorStateMatcher } from '@angular/material/core';
 
 
@@ -37,7 +45,9 @@ export const invalidRangeValidator: ValidatorFn = (control: FormGroup) : Validat
 	const end = control.get('end');
 	const start = control.get('start');
 	return (end && start && end.value < start.value) ? {'invalid-range': true} : null;
-  }  
+  }
+*/ 
+  
 type Attendee = {name: string, service: number, leadership: number, fellowship: number};
 // type Member = {name: string, email: string, _id: string};	// Put into Member interface to be used by MemberService too
 
@@ -57,6 +67,9 @@ export class CerfComponent {
 
 	openedPanels: number[] = [0, 0, 0, 0, 0, 0];
 
+	maxStartTime: Date; 
+	minEndTime: Date;
+	
 	attendees;
 	attendanceColumns = ['members', 'service', 'leadership', 'fellowship'];
 	kfamColumns = ['org', 'numAttendees'];
@@ -159,10 +172,24 @@ export class CerfComponent {
 
 	}
 
-	timeErrorMatcher = new ParentErrMatcher();
+	//timeErrorMatcher = new ParentErrMatcher();
 
-
-
+	assertDateRange(event, fromStartTime: boolean) {
+		
+		if ( !this.minEndTime && !this.maxStartTime) {
+			if (fromStartTime) {
+				this.minEndTime = event.value;
+			} else {
+				this.maxStartTime = event.value;
+			}
+		} else {
+			if (this.minEndTime && fromStartTime) {
+				this.minEndTime = event.value;
+			} else if (this.maxStartTime && !fromStartTime){
+				this.maxStartTime = event.value;
+			}
+		}
+	}
 
 
 
@@ -476,7 +503,7 @@ export class CerfComponent {
 			name: [model.name],
 			chair_id: [model.chair._id],
 			author: [model.author.name.first + " " + model.author.name.last],	// could create a name concatenator function...
-			time: this.builder.group(model.time, {validators: invalidRangeValidator}),
+			time: this.builder.group(model.time /*, {validators: invalidRangeValidator}*/),
 			location: model.location,
 			contact: model.contact,
 			tags: this.builder.array(model.tags),
