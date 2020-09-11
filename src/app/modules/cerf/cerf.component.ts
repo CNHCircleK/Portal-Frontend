@@ -170,7 +170,8 @@ export class CerfComponent {
 			Object.assign(this.newKfam, this.defaultKfam);
 
 			this.tables.toArray()[1].renderRows();
-			const element = this.renderer.selectRootElement("#kfamFocus");
+			// This line throws an Error and needs to be fixed
+			//const element = this.renderer.selectRootElement("#kfamFocus");
 			setTimeout(() => element.focus(), 0);
 
 			this.cerfForm.markAsDirty();
@@ -185,8 +186,9 @@ export class CerfComponent {
 	      this.driverArray.push(this.builder.group(this.newDriver));
 	      Object.assign(this.newDriver, this.defaultDriver);
 
-	      this.tables.toArray()[2].renderRows();
-	      const element = this.renderer.selectRootElement("#driverFocus");
+		  this.tables.toArray()[2].renderRows();
+		  // This line throws an Error and needs to be fixed
+	      //const element = this.renderer.selectRootElement("#driverFocus");
 	      setTimeout(() => element.focus(), 0);
 
 	      this.cerfForm.markAsDirty();
