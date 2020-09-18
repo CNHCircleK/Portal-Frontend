@@ -239,6 +239,37 @@ export class CerfComponent {
 	isLabelActive(label: string): boolean {
 		return this.categoriesActive.includes(label);
 	}
+	
+	//sets existing label to an active one marked on the cerf
+	toggleLabel(label: string): void {
+		let index = this.categoriesActive.indexOf(label);
+		if(index == -1) { 	//doesn't exist as an active category
+			this.categoriesActive.push(label);
+		} else { 	//removes the given lable as an active category
+			this.categoriesActive.splice(index, 1);
+		}
+	}
+	
+	//creates new label to be used for tags on cerfs
+	newLabel(label: string): void {
+		//label already exists check
+		if (!this.categoryButtons.includes(label)) {
+			this.categoryButtons.push(label);
+		}
+		this.addingCategory = false;
+	}
+
+	//deletes existing labels from the array of categories
+	removeLabel(index: number): void {
+		this.categoryButtons.splice(index, 1);
+	}
+	
+	//meant to activate input field and autofocus it (couldn't find alternative to ElementRef?)
+	@ViewChild('newCategory') newCategory: ElementRef;
+	addLabel(): void {
+		this.addingCategory = true;
+		setTimeout (_ => this.newCategory.nativeElement.focus(), 0);
+	}
 
 	get categories() {
 		return (this.cerfForm.controls['categories'] as FormArray);
