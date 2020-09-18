@@ -265,7 +265,7 @@ export class CerfComponent {
 				if(res.success)
 				{
 					const id = res.result;
-					this._location.replaceState("cerf/" + id);
+					this._location.replaceState("/cerf/" + id);
 					this.cerf._id = id;
 				
 				this.cerfForm.markAsPristine();	// move to service
