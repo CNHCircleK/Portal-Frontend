@@ -18,7 +18,6 @@ import { NewFocusInput } from '@core/utils/newfocusinput';
 /* Our modules */
 import { MaterialsModule } from '@app/modules/';
 import { AppRoutingModule } from '@app/modules/app-routing.module';
-//import { invalidRangeValidator } from '@app/modules';
 
 /* Other modules */
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
