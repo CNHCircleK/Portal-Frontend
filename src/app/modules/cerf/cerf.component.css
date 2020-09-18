@@ -181,20 +181,30 @@ h1 {
 	margin: 5px 10px;
 }
 
-
+.flex-container {
+	display: flex;
+	flex-flow: row wrap;
+}
+.categoryWrapper {
+	position: relative;
+	display: inline-block;
+}
 .categoryButton.activeCategory {
 	background-color: #00a5d9;
 	color: white;
 }
-
+.categoryButton {
+	margin-bottom: 10px;
+}
 .deleteCategory {
 	visibility: hidden;
 	position: absolute;
-	top: -25px;
-	right: -25px;
+	top: -7px;
+	right: 0;
 }
 .categoryButton:hover ~ .deleteCategory, .deleteCategory:hover {
 	visibility: visible;
+	cursor: pointer;
 }
 
 .full-width {	/* text area */
