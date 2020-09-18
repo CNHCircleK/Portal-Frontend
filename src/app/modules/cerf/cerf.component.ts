@@ -114,7 +114,7 @@ export class CerfComponent {
 	@ViewChildren(MatTable) tables: QueryList<MatTable<any>>;
 
 	get editable() {
-		return (this.cerf.status == 0 && this.cerf.author._id == this.user._id) ||
+		return (this.cerf.status == 0 && this.user._id) ||
 		(this.cerf.status <= 1 && this.user.access.club == 2);
 	}
 
@@ -267,15 +267,16 @@ export class CerfComponent {
 					const id = res.result;
 					this._location.replaceState("/cerf/" + id);
 					this.cerf._id = id;
-
-					this.cerfForm.markAsPristine();	// move to service
+				
+				this.cerfForm.markAsPristine();	// move to service
 				} else {
 					// Handle failure
 				}
 			});
-		} else {
-			this.cerfService.dispatchUpdate().subscribe(res => this.cerfForm.markAsPristine());
 		}
+		 else {
+			this.cerfService.dispatchUpdate().subscribe(res => this.cerfForm.markAsPristine());
+		 }
 	}
 
 	deleteCerf() {

@@ -10,8 +10,9 @@
 	<div id="cerf-actions" *ngIf="cerfForm; else loading">
 		<mat-spinner *ngIf="pendingAction" diameter="36"></mat-spinner>
 		<button mat-icon-button [disabled]="pendingAction || (cerf.status > 0 && user.access.club < 2) || (cerf.status > 1)" (click)="deleteCerf()"><mat-icon>delete</mat-icon></button>
-		<button mat-icon-button [disabled]="!editable || !cerfForm.dirty || !cerfForm.valid || pendingAction" (click)="saveCerf()"><mat-icon>save</mat-icon></button>
-		<!-- remove "cerf.status==0" once we change "draft" abstraction definition -->
+		<button mat-icon-button [disabled]="!editable" (click)="saveCerf()"><mat-icon>save</mat-icon></button>
+		<!--button mat-icon-button [disabled]="!editable || !cerfForm.dirty || !cerfForm.valid || pendingAction" (click)="saveCerf()"><mat-icon>save</mat-icon></button>
+		<-- remove "cerf.status==0" once we change "draft" abstraction definition -->
 		<button mat-icon-button *ngIf="cerf.status==0 || user.access.club < 2" [disabled]="!cerfForm.pristine || !cerfForm.valid || pendingAction || cerf.status > 0" (click)="submitCerf()" matTooltip="Submit to Secretary"><mat-icon>send</mat-icon></button>
 
 		<!-- Secretary Only -->
@@ -95,7 +96,7 @@
 			<!-- <button mat-icon-button matSuffix *ngIf="comment" matTooltip="{{comment}}">
 				<mat-icon>chat_bubble</mat-icon>
 			</button> -->
-		</mat-form-field>
+		</mat-form-field>		
 		<mat-form-field appearance="outline">
 			<mat-label>Contact Information</mat-label>
 			<input matInput formControlName="contact">
@@ -103,10 +104,6 @@
 				<mat-icon>chat_bubble</mat-icon>
 			</button> -->
 		</mat-form-field>
-
-		
-
-		
 
 		<!-- <p>Labels</p>
 		<button mat-raised-button [disabled]="cerfForm.disabled" (click)="addLabel()">Add Label</button>
