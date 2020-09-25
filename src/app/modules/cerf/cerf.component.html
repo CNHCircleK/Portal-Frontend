@@ -349,7 +349,7 @@
 					</mat-cell>
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field>
-							<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newAttendance.fellowship" [ngModelOptions]="{standalone: true}" (keyup.enter)="addAttendance()" (keyup.tab)="addAttendance()">
+							<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newAttendance.fellowship" [ngModelOptions]="{standalone: true}" (keyup.enter)="addAttendance()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -396,7 +396,7 @@
 				<mat-footer-cell *matFooterCellDef>
 					<mat-form-field>
 						<mat-label>+ Add Org</mat-label>
-						<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newKfam.org" [ngModelOptions]="{standalone: true}" (keyup.enter)="addKfam()">
+						<input matInput [disabled]="cerfForm.disabled" id="kfamFocus" [(ngModel)]="newKfam.org" [ngModelOptions]="{standalone: true}" (keyup.enter)="addKfam()">
 					</mat-form-field>
 				</mat-footer-cell>
 			</ng-container>
@@ -408,7 +408,7 @@
 				</mat-cell>
 				<mat-footer-cell *matFooterCellDef>
 					<mat-form-field>
-						<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newKfam.numAttendees" [ngModelOptions]="{standalone: true}" (keyup.enter)="addKfam()" (keyup.tab)="addKfam()">
+						<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newKfam.numAttendees" [ngModelOptions]="{standalone: true}" (keyup.enter)="addKfam()">
 					</mat-form-field>
 				</mat-footer-cell>
 			</ng-container>
@@ -459,7 +459,7 @@
 				<mat-footer-cell *matFooterCellDef>
 					<mat-form-field>
 						<mat-label>+ Add Driver</mat-label>
-						<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newDriver.driver" [ngModelOptions]="{standalone: true}" (keyup.enter)="addDriver()">
+						<input matInput [disabled]="cerfForm.disabled" id= "driverFocus" [(ngModel)]="newDriver.driver" [ngModelOptions]="{standalone: true}" (keyup.enter)="addDriver()">
 					</mat-form-field>
 				</mat-footer-cell>
 			</ng-container>
@@ -483,7 +483,7 @@
 				</mat-cell>
 				<mat-footer-cell *matFooterCellDef>
 					<mat-form-field>
-						<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newDriver.milesFrom" [ngModelOptions]="{standalone: true}" (keyup.enter)="addDriver()" (keyup.tab)="addDriver()">
+						<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newDriver.milesFrom" [ngModelOptions]="{standalone: true}" (keyup.enter)="addDriver()">
 					</mat-form-field>
 				</mat-footer-cell>
 			</ng-container>
