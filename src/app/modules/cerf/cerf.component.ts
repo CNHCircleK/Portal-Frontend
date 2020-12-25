@@ -1,6 +1,6 @@
 import { Component, Input, Directive, Renderer2, ElementRef, ViewChild, ViewChildren, QueryList } from '@angular/core';
 // import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
-import { FormGroup, FormControl, FormBuilder, FormArray, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
+import { FormGroup, FormGroupDirective, FormControl, FormBuilder, FormArray, Validators, ValidatorFn, AbstractControl, Validator, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Location } from '@angular/common';
@@ -19,8 +19,36 @@ import { CerfService, MemberService } from '@core/services';
 
 import { Observable, BehaviorSubject, zip } from 'rxjs';
 
+
+/**** Asserting End Time before Start Time Validator -Zeven VB ***********************
+   Commented out code: cerf.component.ts, cerf.component.html; 
+   core.module.ts, index.ts might be optional?
+	-(Search for invalid-range, invalidRangeValidator, timeErrorMatcher)
+	-Deleted html for ErrorStateMatcher
+
+import { ErrorStateMatcher } from '@angular/material/core';
+
+
+export class ParentErrMatcher implements ErrorStateMatcher {
+	isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+	  const invalidCtrl = !!(control && control.invalid);
+	  const invalidParent = !!(control && control.parent && control.parent.invalid);
+  
+	  return (invalidCtrl || invalidParent);
+	}
+  }
+
+export const invalidRangeValidator: ValidatorFn = (control: FormGroup) : ValidationErrors | null =>
+  {
+	const end = control.get('end');
+	const start = control.get('start');
+	return (end && start && end.value < start.value) ? {'invalid-range': true} : null;
+  }
+****************************************************************************************/ 
+  
 type Attendee = {name: string, service: number, leadership: number, fellowship: number};
 // type Member = {name: string, email: string, _id: string};	// Put into Member interface to be used by MemberService too
+
 
 @Component({
 	selector: 'app-cerf',
@@ -28,6 +56,7 @@ type Attendee = {name: string, service: number, leadership: number, fellowship: 
 	styleUrls: ['./cerf.component.css', './_cerf.component.scss'],
 	providers: [ CerfService ]
 })
+
 export class CerfComponent {
 
 	cerfId: string;
@@ -36,6 +65,9 @@ export class CerfComponent {
 
 	openedPanels: number[] = [0, 0, 0, 0, 0, 0];
 
+	maxStartTime: Date; 
+	minEndTime: Date;
+	
 	attendees;
 	attendanceColumns = ['members', 'service', 'leadership', 'fellowship'];
 	kfamColumns = ['org', 'numAttendees'];
@@ -114,7 +146,7 @@ export class CerfComponent {
 	@ViewChildren(MatTable) tables: QueryList<MatTable<any>>;
 
 	get editable() {
-		return (this.cerf.status == 0 && this.cerf.author._id == this.user._id) ||
+		return (this.cerf.status == 0 && this.user._id) ||
 		(this.cerf.status <= 1 && this.user.access.club == 2);
 	}
 
@@ -137,6 +169,27 @@ export class CerfComponent {
 	ngAfterViewInit() {
 
 	}
+
+	//timeErrorMatcher = new ParentErrMatcher();
+
+	assertDateRange(event, fromStartTime: boolean) {
+		
+		if ( !this.minEndTime && !this.maxStartTime) {
+			if (fromStartTime) {
+				this.minEndTime = event.value;
+			} else {
+				this.maxStartTime = event.value;
+			}
+		} else {
+			if (this.minEndTime && fromStartTime) {
+				this.minEndTime = event.value;
+			} else if (this.maxStartTime && !fromStartTime){
+				this.maxStartTime = event.value;
+			}
+		}
+	}
+
+
 
 	// inputListReady(name, event) {
 	// 	this.cerfForm.setControl(name, event);
@@ -248,6 +301,37 @@ export class CerfComponent {
 	isLabelActive(label: string): boolean {
 		return this.categoriesActive.includes(label);
 	}
+	
+	//sets existing label to an active one marked on the cerf
+	toggleLabel(label: string): void {
+		let index = this.categoriesActive.indexOf(label);
+		if(index == -1) { 	//doesn't exist as an active category
+			this.categoriesActive.push(label);
+		} else { 	//removes the given lable as an active category
+			this.categoriesActive.splice(index, 1);
+		}
+	}
+	
+	//creates new label to be used for tags on cerfs
+	newLabel(label: string): void {
+		//label already exists check
+		if (!this.categoryButtons.includes(label)) {
+			this.categoryButtons.push(label);
+		}
+		this.addingCategory = false;
+	}
+
+	//deletes existing labels from the array of categories
+	removeLabel(index: number): void {
+		this.categoryButtons.splice(index, 1);
+	}
+	
+	//meant to activate input field and autofocus it (couldn't find alternative to ElementRef?)
+	@ViewChild('newCategory') newCategory: ElementRef;
+	addLabel(): void {
+		this.addingCategory = true;
+		setTimeout (_ => this.newCategory.nativeElement.focus(), 0);
+	}
 
 	get categories() {
 		return (this.cerfForm.controls['categories'] as FormArray);
@@ -274,17 +358,18 @@ export class CerfComponent {
 				if(res.success)
 				{
 					const id = res.result;
-					this._location.replaceState("cerfs/" + id);
+					this._location.replaceState("/cerf/" + id);
 					this.cerf._id = id;
-
-					this.cerfForm.markAsPristine();	// move to service
+				
+				this.cerfForm.markAsPristine();	// move to service
 				} else {
 					// Handle failure
 				}
 			});
-		} else {
-			this.cerfService.dispatchUpdate().subscribe(res => this.cerfForm.markAsPristine());
 		}
+		 else {
+			this.cerfService.dispatchUpdate().subscribe(res => this.cerfForm.markAsPristine());
+		 }
 	}
 
 	deleteCerf() {
@@ -426,7 +511,7 @@ export class CerfComponent {
 			name: [model.name],
 			chair: [model.chair._id],
 			author: [model.author.name.first + " " + model.author.name.last],	// could create a name concatenator function...
-			time: this.builder.group(model.time),
+			time: this.builder.group(model.time /*, {validators: invalidRangeValidator}*/),
 			location: model.location,
 			contact: model.contact,
 			tags: this.builder.array(model.tags),
