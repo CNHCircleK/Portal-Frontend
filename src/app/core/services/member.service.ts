@@ -72,6 +72,7 @@ export class MemberService {
 	}
 
 	getNameFromId(_id: string) {
+		console.log(_id)
 		if(this.roster===undefined)
 			return _id;
 		const member = this.roster.find(member => member._id == _id);

@@ -46,11 +46,11 @@ export class CerfComponent {
 	defaultKfam = {org: "", numAttendees: 0};
 	defaultDriver = {driver: "", milesTo: 0, milesFrom: 0};
 
-	newAttendance = {name: "", service: 0, leadership: 0, fellowship: 0};
+	newAttendance = {memberId: "", service: 0, leadership: 0, fellowship: 0};
 	newKfam = {org: "", numAttendees: 0};
 	newDriver = {driver: "", milesTo: 0, milesFrom: 0};
 
-	filteredRoster;
+	filteredRoster: {name: string, email: string, _id: string}[];
 
 	cerfForm: FormGroup;
 
@@ -142,14 +142,21 @@ export class CerfComponent {
 	// 	this.cerfForm.setControl(name, event);
 	// }
 
+	displayName(member: any): string { // type: {name: string, email: string, _id: string}[]
+		if (!member) return '';
+		console.log(this);
+		if (!this.memberService) return member;
+		return this.memberService.getNameFromId(member);
+	}
+
 	addAttendance() {
 		// Validate inputs
 
-		this.newAttendance.name = this.newAttendance.name.trim();
+		// this.newAttendance.name = this.newAttendance.name.trim();
 
-		if (this.newAttendance.name != ""){
+		if (this.newAttendance.memberId){
 			this.attendanceArray.push(this.builder.group(this.newAttendance));
-			this.newAttendance.name = "";
+			this.newAttendance.memberId = "";
 			this.newAttendance.service = this.cerfForm.get("hoursPerAttendee.service").value;
 			this.newAttendance.leadership = this.cerfForm.get("hoursPerAttendee.leadership").value;
 			this.newAttendance.fellowship = this.cerfForm.get("hoursPerAttendee.fellowship").value;
@@ -223,6 +230,7 @@ export class CerfComponent {
 	}
 
 	filterMembers(event: any) {
+		console.log(event.target.value);
 		this.filteredRoster = this.memberService.filterMembers(event.target.value);
 	}
 
@@ -380,7 +388,7 @@ export class CerfComponent {
 	/* Structure
 
 	author_id
-	chair_id
+	chair
 	club_id
 	division_id
 	name
@@ -416,7 +424,7 @@ export class CerfComponent {
 
 		let form = this.builder.group({
 			name: [model.name],
-			chair_id: [model.chair._id],
+			chair: [model.chair._id],
 			author: [model.author.name.first + " " + model.author.name.last],	// could create a name concatenator function...
 			time: this.builder.group(model.time),
 			location: model.location,
@@ -552,7 +560,7 @@ export class CerfComponent {
 		/* Split up attendees and overrideHours */
 		const defaultHours = this.cerfForm.get('hoursPerAttendee').value;
 		const attendees = rawCerf.attendees.filter(a => (a.service == defaultHours.service && a.leadership == defaultHours.leadership
-			&& a.fellowship == defaultHours.fellowship)).map(attendee => attendee.member);
+			&& a.fellowship == defaultHours.fellowship)).map(attendee => attendee.member.id || attendee.member); // The back-end will handle the id vs custom name distinction
 		const overrideHours = rawCerf.attendees.filter(a => (a.service != defaultHours.service || a.leadership != defaultHours.leadership
 			|| a.fellowship != defaultHours.fellowship));
 		console.log(overrideHours);
