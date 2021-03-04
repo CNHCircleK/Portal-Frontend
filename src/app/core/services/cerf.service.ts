@@ -21,7 +21,7 @@ export class CerfService {
 		return new Cerf("new","New Event",this.user.club_id,this.user.division_id,
 			{start: new Date(), end: new Date() }, // time
 			{ _id: this.user._id, name: { first: "", last: ""} }, // author
-			{ _id: this.user._id, name: { first: "", last: ""} }, // chair
+			{ _id: this.user._id, name: "" }, // chair
 			"", // location
 			"", // contact
 			[],	// tags
@@ -118,28 +118,28 @@ export class CerfService {
 	addAttendee(name: string, service: number, leadership: number, fellowship: number, paid: boolean)
 	{
 		// update form with new attendee
-	}
-
-
+  }
 
 	private createReactiveForm(model: Cerf): FormGroup {
-		let form = this.builder.group({
-			name: [model.name],
-			chair_id: [model.chair._id],
-			author: [model.author.name.first + " " + model.author.name.last],	// could create a name concatenator function...
-			time: this.builder.group(model.time),
-			location: model.location,
-			contact: model.contact,
-			tags: this.builder.array(model.tags),
-			attendees: this.builder.array(model.attendees.map(eachAttendee => this.builder.group(eachAttendee))),
-			hoursPerAttendee: this.builder.group(model.hoursPerAttendee),
-			overrideHours: this.builder.array(model.overrideHours.map(eachOverride => this.builder.group(eachOverride))),
-			fundraised: this.builder.group(model.fundraised),
-			categories: this.builder.array(model.categories),
-			comments: this.builder.group(model.comments),
-			drivers: this.builder.array(model.drivers.map(eachDriver => this.builder.group(eachDriver))),
-			kfamAttendance: this.builder.array(model.kfamAttendance.map(eachkfam => this.builder.group(eachkfam)))
-		})
+      let form = this.builder.group({
+      name: [model.name],
+      chair: [model.chair],
+      author: [model.author.name.first + " " + model.author.name.last],	// could create a name concatenator function...
+      time: this.builder.group(model.time),
+      location: model.location,
+      contact: model.contact,
+      tags: this.builder.array(model.tags),
+      attendees: this.builder.array(model.attendees.map(attendee => this.builder.group({ memberId: attendee._id, service: model.hoursPerAttendee.service, leadership: model.hoursPerAttendee.leadership, fellowship: model.hoursPerAttendee.fellowship }))
+          .concat(model.overrideHours.map(nonOverride => this.builder.group({ memberId: nonOverride.attendee._id, service: nonOverride.service, leadership: nonOverride.leadership, fellowship: nonOverride.fellowship })))),
+	  hoursPerAttendee: this.builder.group(model.hoursPerAttendee),
+      //overrideHours: this.builder.array(model.overrideHours.map(eachOverride => this.builder.group(eachOverride))),
+	  fundraised: this.builder.group(model.fundraised),
+	  categories: this.builder.array(model.categories),
+	  comments: this.builder.group(model.comments),
+	  drivers: this.builder.array(model.drivers.map(eachDriver => this.builder.group(eachDriver))),
+      kfamAttendance: this.builder.array(model.kfamAttendance.map(eachkfam => this.builder.group(eachkfam)))
+     })
+    console.log(model)
 		return form;
 	}
 
@@ -153,11 +153,11 @@ export class CerfService {
 		/* Split up attendees and overrideHours */
 		const defaultHours = form.get('hoursPerAttendee').value;
 		const attendees = rawCerf.attendees.filter(a => (a.service == defaultHours.service && a.leadership == defaultHours.leadership
-			&& a.fellowship == defaultHours.fellowship)).map(attendee => attendee.member);
+			&& a.fellowship == defaultHours.fellowship)).map(attendee => attendee.memberId);
 		const overrideHours = rawCerf.attendees.filter(a => (a.service != defaultHours.service || a.leadership != defaultHours.leadership
 			|| a.fellowship != defaultHours.fellowship));
 		console.log(overrideHours);
-		overrideHours.forEach((attendee, index, arr) => arr[index]['attendee_id'] = arr[index].member);
+		overrideHours.forEach((attendee, index, arr) => arr[index]['attendee_id'] = arr[index].memberId);
 		rawCerf.attendees = attendees;
 		rawCerf.overrideHours = overrideHours;
 

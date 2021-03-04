@@ -1,7 +1,6 @@
 var HttpConfig = {
-	'schemelessUrl': 'http://backend.terrencejam.es',
-	'baseUrl': 'http://backend.terrencejam.es',
-	//'baseUrl': 'http://localhost:4200',
+  'schemelessUrl': 'http://backend.terrencejam.es',
+  'baseUrl': 'http://backend.terrencejam.es',
 	'signin': '/signin',
 	'generateCerf': '/new'
 }

@@ -53,7 +53,7 @@
 		</mat-form-field>
 		<mat-form-field appearance="outline">
 			<mat-label>Event Chair</mat-label>
-			<input matInput formControlName="chair_id" [value]="cerfForm.get('chair_id').value | memberID" [matAutocomplete]="auto">
+			<input matInput formControlName="chair" [matAutocomplete]="auto" (focus)="filterMembers($event)" (keyup)="filterMembers($event)">
 			<!-- <button mat-icon-button matSuffix *ngIf="comment" matTooltip="{{comment}}">
 				<mat-icon>chat_bubble</mat-icon>
 			</button> -->
@@ -300,16 +300,16 @@
 			<mat-table [dataSource]="attendanceArray.controls" formArrayName="attendees">
 				<ng-container matColumnDef="members">
 					<mat-header-cell *matHeaderCellDef> Members </mat-header-cell>
-					<mat-cell *matCellDef="let member; let i=index" [formGroupName]="i">
+					<mat-cell *matCellDef="let i=index" [formGroupName]="i">
 						<!-- <button mat-icon-button (click)="removeMember(i)"> <mat-icon>cancel</mat-icon> </button> -->
 						<mat-form-field>
-							<input matInput formControlName="name" [value]="attendanceArray.controls[i].value.name | memberID" [matAutocomplete]="auto" (keyup)="filterMembers($event)">
+							<input matInput [disabled]="cerfForm.disabled" formControlName="memberId" [matAutocomplete]="auto">
 						</mat-form-field>
 					</mat-cell>
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="member-cell">
 							<mat-label>+ Add Attendee</mat-label>
-							<input matInput [disabled]="cerfForm.disabled" id="attendanceFocus" [value]="newAttendance.name | memberID" [(ngModel)]="newAttendance.name" [ngModelOptions]="{standalone: true}" [matAutocomplete]="auto" (keyup.enter)="addAttendance()">
+							<input matInput [disabled]="cerfForm.disabled" id="attendanceFocus" [(ngModel)]="newAttendance.memberId" [ngModelOptions]="{standalone: true}" [matAutocomplete]="auto" (focus)="filterMembers($event)" (keyup)="filterMembers($event)" (keyup.enter)="addAttendance()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -349,7 +349,7 @@
 					</mat-cell>
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field>
-							<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newAttendance.fellowship" [ngModelOptions]="{standalone: true}" (keyup.enter)="addAttendance()" (keyup.tab)="addAttendance()">
+							<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newAttendance.fellowship" [ngModelOptions]="{standalone: true}" (keyup.enter)="addAttendance()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -359,7 +359,7 @@
 				<mat-footer-row *matFooterRowDef="attendanceColumns"></mat-footer-row>
 			</mat-table>
 
-			<mat-autocomplete #auto="matAutocomplete">
+			<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayName.bind(this)">
 				<mat-option *ngFor="let option of filteredRoster" [value]="option._id">
 					<p class="mat-body name">{{option.name}}</p>
 					<p class="mat-caption email">{{option.email}}</p>
@@ -396,7 +396,7 @@
 				<mat-footer-cell *matFooterCellDef>
 					<mat-form-field>
 						<mat-label>+ Add Org</mat-label>
-						<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newKfam.org" [ngModelOptions]="{standalone: true}" (keyup.enter)="addKfam()">
+						<input matInput [disabled]="cerfForm.disabled" id="kfamFocus" [(ngModel)]="newKfam.org" [ngModelOptions]="{standalone: true}" (keyup.enter)="addKfam()">
 					</mat-form-field>
 				</mat-footer-cell>
 			</ng-container>
@@ -409,7 +409,7 @@
 				</mat-cell>
 				<mat-footer-cell *matFooterCellDef>
 					<mat-form-field>
-						<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newKfam.numAttendees" [ngModelOptions]="{standalone: true}" (keyup.enter)="addKfam()" (keyup.tab)="addKfam()">
+						<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newKfam.numAttendees" [ngModelOptions]="{standalone: true}" (keyup.enter)="addKfam()">
 					</mat-form-field>
 				</mat-footer-cell>
 			</ng-container>
@@ -448,7 +448,7 @@
 				<mat-footer-cell *matFooterCellDef>
 					<mat-form-field>
 						<mat-label>+ Add Driver</mat-label>
-						<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newDriver.driver" [ngModelOptions]="{standalone: true}" (keyup.enter)="addDriver()">
+						<input matInput [disabled]="cerfForm.disabled" id= "driverFocus" [(ngModel)]="newDriver.driver" [ngModelOptions]="{standalone: true}" (keyup.enter)="addDriver()">
 					</mat-form-field>
 				</mat-footer-cell>
 			</ng-container>
@@ -473,7 +473,7 @@
 				</mat-cell>
 				<mat-footer-cell *matFooterCellDef>
 					<mat-form-field>
-						<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newDriver.milesFrom" [ngModelOptions]="{standalone: true}" (keyup.enter)="addDriver()" (keyup.tab)="addDriver()">
+						<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newDriver.milesFrom" [ngModelOptions]="{standalone: true}" (keyup.enter)="addDriver()">
 					</mat-form-field>
 				</mat-footer-cell>
 			</ng-container>
