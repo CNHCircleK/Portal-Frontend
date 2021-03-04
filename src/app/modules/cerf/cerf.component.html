@@ -346,6 +346,7 @@
 						<mat-form-field>
 							<input matInput formControlName="fellowship">
 						</mat-form-field>
+						<button type="button" (click)="deleteAttendee(i)">X</button>
 					</mat-cell>
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field>
@@ -405,6 +406,7 @@
 				<mat-header-cell *matHeaderCellDef>Num Attendees</mat-header-cell>
 				<mat-cell *matCellDef="let row; let i=index"  [formGroupName]="i">
 					<input matInput formControlName="numAttendees">
+					<button type="button" (click)="deleteKfam(i)">X</button>
 				</mat-cell>
 				<mat-footer-cell *matFooterCellDef>
 					<mat-form-field>
@@ -417,18 +419,6 @@
 			<mat-row *matRowDef="let row; columns: kfamColumns;"></mat-row>
 			<mat-footer-row *matFooterRowDef="kfamColumns"></mat-footer-row>
 		</mat-table>
-<!-- 	    <mat-table>
-
-			<ng-container matColumnDef="members">
-				<mat-header-cell *matHeaderCellDef> Kiwanis Family Club </mat-header-cell>
-				<mat-cell>
-				</mat-cell>
-			</ng-container>
-
-			<mat-header-row *matHeaderRowDef="''"></mat-header-row>
-			<mat-row *matRowDef="let row; columns: attendanceColumns;"></mat-row>
-		</mat-table>
--->
 	  </mat-expansion-panel>
 
 
@@ -480,6 +470,7 @@
 				<mat-header-cell *matHeaderCellDef>Miles From</mat-header-cell>
 				<mat-cell *matCellDef="let row; let i=index"  [formGroupName]="i">
 					<input matInput formControlName="milesFrom">
+					<button type="button" (click)="deleteDriver(i)">X</button> 
 				</mat-cell>
 				<mat-footer-cell *matFooterCellDef>
 					<mat-form-field>
