@@ -45,9 +45,9 @@ export class ApiService {
 		return this.http.get<Response<Cerf[]>>(HttpConfig.baseUrl + '/members/' + this.user._id + '/events');
 		// it is not the service's concern to clean up the data for the app to consume (e.g. reading 'success' or returning [])
 	}
-	getPendingCerfs(clubId?: string) {
+	getPendingCerfs(clubId?: string): Observable<Response<Cerf[]>> {
 		if(!this.user) return of(null);
-		if(this.user.access.club < 2) return of([]);	// general members have no business with submitted cerfs
+		if(this.user.access.club < 2) return of({ success: false, auth: false });	// general members have no business with submitted cerfs
 		if(!clubId) clubId = this.user.club_id;
 		let params = new HttpParams().set('status', '1');
 

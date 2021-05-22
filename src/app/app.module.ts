@@ -37,6 +37,7 @@ import HttpConfig from '@env/api_config';
 import { MemberIDPipe } from '@core/utils/memberid.pipe';
 import { ClubIDPipe } from '@core/utils/clubid.pipe';
 import { DivisionIDPipe } from '@core/utils/divisionid.pipe';
+import { StorageModule } from '@ngx-pwa/local-storage';
 // import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 // export function tokenGetter() {
 //   return localStorage.getItem('access_token');
@@ -73,7 +74,8 @@ import { DivisionIDPipe } from '@core/utils/divisionid.pipe';
     BrowserModule,
     CoreModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    StorageModule.forRoot({ IDBNoWrap: false })
     // JwtModule.forRoot({
     //   config: {
     //     tokenGetter: tokenGetter,

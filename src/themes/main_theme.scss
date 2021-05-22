@@ -10,9 +10,13 @@ $graphic-standard-accent:  #F2E18B;
 $graphic-standard-warn:    #820024;
 
 // Create the theme object (a Sass map containing all of the palettes).
-$graphic-standard-theme: mat-light-theme($graphic-standard-primary, $graphic-standard-accent, $graphic-standard-warn);
+$graphic-standard-theme: mat.define-light-theme($graphic-standard-primary, $graphic-standard-accent, $graphic-standard-warn);
 */
+@use '~@angular/material' as mat;
 /*@import '~@coachcare/datepicker/theming';*/
+@import '~@angular/material/theming';
+@include mat.core();
+@import './graphic_standard_palette.scss';
 
 // https://stackoverflow.com/questions/42786192/angular-2-material-dynamic-themes
 @import '~@coachcare/datepicker/prebuilt-themes/indigo-pink.css';
@@ -72,59 +76,50 @@ $themes: (
 
 
 
-
-
-
-@import '~@angular/material/theming';
-@include mat-core();
-@import './graphic_standard_palette.scss';
-
-
-
 // Light theme
-$light-primary: mat-palette($md-graphicblue);
-$light-accent: mat-palette($md-graphiccyan);
-$light-warn: mat-palette($md-graphicred);
-$light-theme: mat-light-theme($light-primary, $light-accent, $light-warn);
+$light-primary: mat.define-palette($md-graphicblue);
+$light-accent: mat.define-palette($md-graphiccyan);
+$light-warn: mat.define-palette($md-graphicred);
+$light-theme: mat.define-light-theme($light-primary, $light-accent, $light-warn);
 
 
 
 
 // Dark theme
-$dark-primary: mat-palette($md-graphicdarkgrey);
-$dark-accent:  mat-palette($md-graphicolive);
-$dark-warn:    mat-palette($md-graphicorange);
-$dark-theme:   mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
+$dark-primary: mat.define-palette($md-graphicdarkgrey);
+$dark-accent:  mat.define-palette($md-graphicolive);
+$dark-warn:    mat.define-palette($md-graphicorange);
+$dark-theme:   mat.define-dark-theme($dark-primary, $dark-accent, $dark-warn);
 
 
 
-$custom-typography: mat-typography-config(
+$custom-typography: mat.define-typography-config(
   $font-family: 'Century Gothic',
-  $display-4:     mat-typography-level(112px, 112px, 300),
-  $display-3:     mat-typography-level(56px, 56px, 400),
-  $display-2:     mat-typography-level(45px, 48px, 400),
-  $display-1:     mat-typography-level(34px, 40px, 400),
-  $headline:      mat-typography-level(24px, 32px, 400),
-  $title:         mat-typography-level(20px, 32px, 500),
-  $subheading-2:  mat-typography-level(16px, 28px, 400),
-  $subheading-1:  mat-typography-level(15px, 24px, 400),
-  $body-2:        mat-typography-level(14px, 24px, 500),
-  $body-1:        mat-typography-level(14px, 20px, 400),
-  $caption:       mat-typography-level(12px, 20px, 400),
-  $button:        mat-typography-level(14px, 14px, 500),
+  $display-4:     mat.define-typography-level(112px, 112px, 300),
+  $display-3:     mat.define-typography-level(56px, 56px, 400),
+  $display-2:     mat.define-typography-level(45px, 48px, 400),
+  $display-1:     mat.define-typography-level(34px, 40px, 400),
+  $headline:      mat.define-typography-level(24px, 32px, 400),
+  $title:         mat.define-typography-level(20px, 32px, 500),
+  $subheading-2:  mat.define-typography-level(16px, 28px, 400),
+  $subheading-1:  mat.define-typography-level(15px, 24px, 400),
+  $body-2:        mat.define-typography-level(14px, 24px, 500),
+  $body-1:        mat.define-typography-level(14px, 20px, 400),
+  $caption:       mat.define-typography-level(12px, 20px, 400),
+  $button:        mat.define-typography-level(14px, 14px, 500),
   // Line-height must be unit-less fraction of the font-size.
-  $input:         mat-typography-level(inherit, 1.125, 400)
+  $input:         mat.define-typography-level(inherit, 1.125, 400)
 );
 
 .light-theme {
-  @include angular-material-theme($light-theme);
+  @include mat.all-component-themes($light-theme);
 }
 
 .dark-theme {
-  @include angular-material-theme($dark-theme);
+  @include mat.all-component-themes($dark-theme);
 }
 
-@include angular-material-typography($custom-typography);
+@include mat.all-component-typographies($custom-typography);
 
 /* Trying to customize our Material theme by using mixins */
 /*
@@ -133,11 +128,11 @@ $custom-typography: mat-typography-config(
 
 
 // Default colors
-$my-app-primary: mat-palette($mat-teal, 700, 100, 800);
-$my-app-accent:  mat-palette($mat-teal, 700, 100, 800);
+$my-app-primary: mat.define-palette(mat.$teal-palette, 700, 100, 800);
+$my-app-accent:  mat.define-palette(mat.$teal-palette, 700, 100, 800);
 
-$my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
-@include angular-material-theme($my-app-theme);
+$my-app-theme: mat.define-light-theme($my-app-primary, $my-app-accent);
+@include mat.all-component-themes($my-app-theme);
 
 
 
