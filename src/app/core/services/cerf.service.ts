@@ -26,6 +26,7 @@ export class CerfService {
 			"", // contact
 			[],	// tags
 			[],	// attendees
+			[], // unverified attendees
 			{service: 0, leadership: 0, fellowship: 0 },
 			[],	// override hours
 			{ amountRaised: 0, amountSpent: 0, usedFor: "" },
