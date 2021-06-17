@@ -14,6 +14,7 @@ export class Cerf {
 		public contact: string,
 		public tags: string[],
 		public attendees: { _id?: string, name: ({ first: string, last: string } | string), service?: number, leadership?: number, fellowship?: number }[],
+		public unverifiedAttendees: string[],
 		public hoursPerAttendee: {
 			service: number,
 			leadership: number,
