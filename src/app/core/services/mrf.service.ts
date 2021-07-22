@@ -70,7 +70,6 @@ export class MrfService {
 	        submissionTime: this.builder.control(model.submissionTime),
 			importedEvents: this.builder.array(model.importedEvents.map(eachEvent => this.builder.group(eachEvent)))
 	    })
-		console.log(form)
 		return form;
 	}
 
