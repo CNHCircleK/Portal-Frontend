@@ -27,6 +27,7 @@ export class Maker {
 			item.contact,
 			item.tags,
 			item.attendees,
+			item.unverifiedAttendees,
 			item.hoursPerAttendee,
 			item.overrideHours,
 			item.fundraised,

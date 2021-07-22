@@ -26,6 +26,7 @@ export class CerfService {
 			"", // contact
 			[],	// tags
 			[],	// attendees
+			[], // unverified attendees
 			{service: 0, leadership: 0, fellowship: 0 },
 			[],	// override hours
 			{ amountRaised: 0, amountSpent: 0, usedFor: "" },
@@ -129,10 +130,11 @@ export class CerfService {
       location: model.location,
       contact: model.contact,
       tags: this.builder.array(model.tags),
+		//TODO: cleaner code later
       attendees: this.builder.array(model.attendees.map(attendee => this.builder.group({ memberId: attendee._id, service: model.hoursPerAttendee.service, leadership: model.hoursPerAttendee.leadership, fellowship: model.hoursPerAttendee.fellowship }))
-          .concat(model.overrideHours.map(nonOverride => this.builder.group({ memberId: nonOverride.attendee._id, service: nonOverride.service, leadership: nonOverride.leadership, fellowship: nonOverride.fellowship })))),
+          .concat(model.overrideHours.map(nonOverride => this.builder.group({ memberId: nonOverride.attendee._id, service: nonOverride.service, leadership: nonOverride.leadership, fellowship: nonOverride.fellowship }))
+		  	.concat(model.unverifiedAttendees.map(attendee => this.builder.group({ memberId: attendee, service: model.hoursPerAttendee.service, leadership: model.hoursPerAttendee.leadership, fellowship: model.hoursPerAttendee.fellowship }))))),
 	  hoursPerAttendee: this.builder.group(model.hoursPerAttendee),
-      //overrideHours: this.builder.array(model.overrideHours.map(eachOverride => this.builder.group(eachOverride))),
 	  fundraised: this.builder.group(model.fundraised),
 	  categories: this.builder.array(model.categories),
 	  comments: this.builder.group(model.comments),
