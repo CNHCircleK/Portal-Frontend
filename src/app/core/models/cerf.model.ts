@@ -9,18 +9,19 @@ export class Cerf {
 		public division_id: string,
 		public time: { start: Date, end: Date },
 		public author: { _id: string, name: { first: string, last: string } },
-		public chair: { _id: string, name: { first: string, last: string } },
+		public chair: { _id: string, name: string },
 		public location: string,
 		public contact: string,
 		public tags: string[],
 		public attendees: { _id?: string, name: ({ first: string, last: string } | string), service?: number, leadership?: number, fellowship?: number }[],
+		public unverifiedAttendees: string[],
 		public hoursPerAttendee: {
 			service: number,
 			leadership: number,
 			fellowship: number
 		},
-		public overrideHours: {
-			attendee_id: string,
+      public overrideHours: {
+      attendee: {_id: string},
 			service: number,
 			leadership: number,
 			fellowship: number

@@ -182,6 +182,9 @@ export class MrfComponent {
 	get eventsArray() {
 		return this.mrfForm.get('events') as FormArray;
 	}
+	get importedEventsArray() {
+		return this.mrfForm.get('importedEvents') as FormArray;
+	}
 
 	saveMrf() {
 		// this.getMrfFromForm();

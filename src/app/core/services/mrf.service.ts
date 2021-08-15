@@ -68,8 +68,8 @@ export class MrfService {
 	        numDuesPaid: this.builder.control(model.numDuesPaid),
 	        status: this.builder.control(model.status),
 	        submissionTime: this.builder.control(model.submissionTime),
+			importedEvents: this.builder.array(model.importedEvents.map(eachEvent => this.builder.group(eachEvent)))
 	    })
-
 		return form;
 	}
 

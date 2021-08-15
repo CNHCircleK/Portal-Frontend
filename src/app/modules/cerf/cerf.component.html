@@ -11,8 +11,9 @@
 		<mat-spinner *ngIf="pendingAction" diameter="36"></mat-spinner>
 		<button mat-icon-button (click)="goBack()" matTooltip="Go Back"><mat-icon>navigate_before</mat-icon></button>
 		<button mat-icon-button [disabled]="pendingAction || (cerf.status > 0 && user.access.club < 2) || (cerf.status > 1)" (click)="deleteCerf()"><mat-icon>delete</mat-icon></button>
-		<button mat-icon-button [disabled]="!editable || !cerfForm.dirty || !cerfForm.valid || pendingAction" (click)="saveCerf()"><mat-icon>save</mat-icon></button>
-		<!-- remove "cerf.status==0" once we change "draft" abstraction definition -->
+		<button mat-icon-button [disabled]="!editable" (click)="saveCerf()"><mat-icon>save</mat-icon></button>
+		<!--button mat-icon-button [disabled]="!editable || !cerfForm.dirty || !cerfForm.valid || pendingAction" (click)="saveCerf()"><mat-icon>save</mat-icon></button>
+		<-- remove "cerf.status==0" once we change "draft" abstraction definition -->
 		<button mat-icon-button *ngIf="cerf.status==0 || user.access.club < 2" [disabled]="!cerfForm.pristine || !cerfForm.valid || pendingAction || cerf.status > 0" (click)="submitCerf()" matTooltip="Submit to Secretary"><mat-icon>send</mat-icon></button>
 
 		<!-- Secretary Only -->
@@ -53,7 +54,7 @@
 		</mat-form-field>
 		<mat-form-field appearance="outline">
 			<mat-label>Event Chair</mat-label>
-			<input matInput formControlName="chair_id" [value]="cerfForm.get('chair_id').value | memberID" [matAutocomplete]="auto">
+			<input matInput formControlName="chair" [matAutocomplete]="auto" (focus)="filterMembers($event)" (keyup)="filterMembers($event)">
 			<!-- <button mat-icon-button matSuffix *ngIf="comment" matTooltip="{{comment}}">
 				<mat-icon>chat_bubble</mat-icon>
 			</button> -->
@@ -73,7 +74,7 @@
 		<ng-container formGroupName="time">
 			<mat-form-field appearance="outline">
 				<mat-label>Start Time</mat-label>
-				<input matInput [matDatepicker]="start" formControlName="start">
+				<input id="startInput" matInput [matDatepicker]="start" formControlName="start" [max]="maxStartTime" (dateChange)="assertDateRange($event, true)">
 				<mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
 				<mat-datepicker type="datetime" #start></mat-datepicker>
 				<mat-error>Invalid Time format</mat-error>
@@ -81,10 +82,11 @@
 
 			<mat-form-field appearance="outline">
 				<mat-label>End Time</mat-label>
-				<input matInput [matDatepicker]="end" formControlName="end">
+				<input id="endInput" matInput [matDatepicker]="end" formControlName="end" [min]="minEndTime" (dateChange)="assertDateRange($event, false)">
 				<mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
 				<mat-datepicker type="datetime" #end></mat-datepicker>
 				<mat-error>Invalid Time format</mat-error>
+				<!--<mat-error class="invalid-range" *ngIf="cerfForm.hasError(invalid-range) && (cerfForm.touched || cerfForm.dirty)">Invalid Time Range!</mat-error>-->
 			</mat-form-field>
 		</ng-container>
 
@@ -96,7 +98,7 @@
 			<!-- <button mat-icon-button matSuffix *ngIf="comment" matTooltip="{{comment}}">
 				<mat-icon>chat_bubble</mat-icon>
 			</button> -->
-		</mat-form-field>
+		</mat-form-field>		
 		<mat-form-field appearance="outline">
 			<mat-label>Contact Information</mat-label>
 			<input matInput formControlName="contact">
@@ -104,10 +106,6 @@
 				<mat-icon>chat_bubble</mat-icon>
 			</button> -->
 		</mat-form-field>
-
-		
-
-		
 
 		<!-- <p>Labels</p>
 		<button mat-raised-button [disabled]="cerfForm.disabled" (click)="addLabel()">Add Label</button>
@@ -302,16 +300,16 @@
 			<mat-table [dataSource]="attendanceArray.controls" formArrayName="attendees">
 				<ng-container matColumnDef="members">
 					<mat-header-cell *matHeaderCellDef> Members </mat-header-cell>
-					<mat-cell *matCellDef="let member; let i=index" [formGroupName]="i">
+					<mat-cell *matCellDef="let i=index" [formGroupName]="i">
 						<!-- <button mat-icon-button (click)="removeMember(i)"> <mat-icon>cancel</mat-icon> </button> -->
 						<mat-form-field>
-							<input matInput formControlName="name" [value]="attendanceArray.controls[i].value.name | memberID" [matAutocomplete]="auto" (keyup)="filterMembers($event)">
+							<input matInput [disabled]="cerfForm.disabled" formControlName="memberId" [matAutocomplete]="auto">
 						</mat-form-field>
 					</mat-cell>
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field class="member-cell">
 							<mat-label>+ Add Attendee</mat-label>
-							<input matInput [disabled]="cerfForm.disabled" id="attendanceFocus" [value]="newAttendance.name | memberID" [(ngModel)]="newAttendance.name" [ngModelOptions]="{standalone: true}" [matAutocomplete]="auto" (keyup.enter)="addAttendance()">
+							<input matInput [disabled]="cerfForm.disabled" id="attendanceFocus" [(ngModel)]="newAttendance.memberId" [ngModelOptions]="{standalone: true}" [matAutocomplete]="auto" (focus)="filterMembers($event)" (keyup)="filterMembers($event)" (keyup.enter)="addAttendance()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -348,10 +346,11 @@
 						<mat-form-field>
 							<input matInput formControlName="fellowship">
 						</mat-form-field>
+						<button type="button" (click)="deleteAttendee(i)">X</button>
 					</mat-cell>
 					<mat-footer-cell *matFooterCellDef>
 						<mat-form-field>
-							<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newAttendance.fellowship" [ngModelOptions]="{standalone: true}" (keyup.enter)="addAttendance()" (keyup.tab)="addAttendance()">
+							<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newAttendance.fellowship" [ngModelOptions]="{standalone: true}" (keyup.enter)="addAttendance()">
 						</mat-form-field>
 					</mat-footer-cell>
 				</ng-container>
@@ -361,7 +360,7 @@
 				<mat-footer-row *matFooterRowDef="attendanceColumns"></mat-footer-row>
 			</mat-table>
 
-			<mat-autocomplete #auto="matAutocomplete">
+			<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayName.bind(this)">
 				<mat-option *ngFor="let option of filteredRoster" [value]="option._id">
 					<p class="mat-body name">{{option.name}}</p>
 					<p class="mat-caption email">{{option.email}}</p>
@@ -398,7 +397,7 @@
 				<mat-footer-cell *matFooterCellDef>
 					<mat-form-field>
 						<mat-label>+ Add Org</mat-label>
-						<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newKfam.org" [ngModelOptions]="{standalone: true}" (keyup.enter)="addKfam()">
+						<input matInput [disabled]="cerfForm.disabled" id="kfamFocus" [(ngModel)]="newKfam.org" [ngModelOptions]="{standalone: true}" (keyup.enter)="addKfam()">
 					</mat-form-field>
 				</mat-footer-cell>
 			</ng-container>
@@ -407,10 +406,11 @@
 				<mat-header-cell *matHeaderCellDef>Num Attendees</mat-header-cell>
 				<mat-cell *matCellDef="let row; let i=index"  [formGroupName]="i">
 					<input matInput formControlName="numAttendees">
+					<button type="button" (click)="deleteKfam(i)">X</button>
 				</mat-cell>
 				<mat-footer-cell *matFooterCellDef>
 					<mat-form-field>
-						<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newKfam.numAttendees" [ngModelOptions]="{standalone: true}" (keyup.enter)="addKfam()" (keyup.tab)="addKfam()">
+						<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newKfam.numAttendees" [ngModelOptions]="{standalone: true}" (keyup.enter)="addKfam()">
 					</mat-form-field>
 				</mat-footer-cell>
 			</ng-container>
@@ -419,18 +419,6 @@
 			<mat-row *matRowDef="let row; columns: kfamColumns;"></mat-row>
 			<mat-footer-row *matFooterRowDef="kfamColumns"></mat-footer-row>
 		</mat-table>
-<!-- 	    <mat-table>
-
-			<ng-container matColumnDef="members">
-				<mat-header-cell *matHeaderCellDef> Kiwanis Family Club </mat-header-cell>
-				<mat-cell>
-				</mat-cell>
-			</ng-container>
-
-			<mat-header-row *matHeaderRowDef="''"></mat-header-row>
-			<mat-row *matRowDef="let row; columns: attendanceColumns;"></mat-row>
-		</mat-table>
--->
 	  </mat-expansion-panel>
 
 
@@ -461,7 +449,7 @@
 				<mat-footer-cell *matFooterCellDef>
 					<mat-form-field>
 						<mat-label>+ Add Driver</mat-label>
-						<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newDriver.driver" [ngModelOptions]="{standalone: true}" (keyup.enter)="addDriver()">
+						<input matInput [disabled]="cerfForm.disabled" id= "driverFocus" [(ngModel)]="newDriver.driver" [ngModelOptions]="{standalone: true}" (keyup.enter)="addDriver()">
 					</mat-form-field>
 				</mat-footer-cell>
 			</ng-container>
@@ -482,10 +470,11 @@
 				<mat-header-cell *matHeaderCellDef>Miles From</mat-header-cell>
 				<mat-cell *matCellDef="let row; let i=index"  [formGroupName]="i">
 					<input matInput formControlName="milesFrom">
+					<button type="button" (click)="deleteDriver(i)">X</button> 
 				</mat-cell>
 				<mat-footer-cell *matFooterCellDef>
 					<mat-form-field>
-						<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newDriver.milesFrom" [ngModelOptions]="{standalone: true}" (keyup.enter)="addDriver()" (keyup.tab)="addDriver()">
+						<input matInput [disabled]="cerfForm.disabled" [(ngModel)]="newDriver.milesFrom" [ngModelOptions]="{standalone: true}" (keyup.enter)="addDriver()">
 					</mat-form-field>
 				</mat-footer-cell>
 			</ng-container>
@@ -579,28 +568,31 @@
 	  </mat-expansion-panel>
 -->
 	</mat-accordion>
-<!--
+
 	<div id="categories">
 
 		<h3>Categories</h3>
 		<p>(for your own cataloging)</p>
 
-		<div id="categories" formArrayName="categories">
-			<div *ngFor="let category of categoryButtons; let i=index">
-				<button mat-button class="categoryButton" (click)="toggleLabel(category)" [ngClass]="{'mat-elevation-z4': !isLabelActive(category), 'activeCategory': isLabelActive(category)}">{{category}}</button>
-				<button mat-icon-button class="deleteCategory" (click)="removeLabel(i)"> <mat-icon>cancel</mat-icon> </button>
-			</div>
+		<div id="categories" formArrayName="categories" class="flex-container">
+			<ng-container *ngFor="let category of categoryButtons; let i=index">
+				<div class="categoryWrapper">
+					<button mat-button class="categoryButton" (click)="toggleLabel(category)" [ngClass]="{'mat-elevation-z4': !isLabelActive(category), 'activeCategory': isLabelActive(category)}">{{category}}</button> 
+					<mat-icon class="deleteCategory" (click)="removeLabel(i)">cancel</mat-icon>
+					<span *ngIf="!isLast">&nbsp;&nbsp;</span>
+				</div>
+			</ng-container>
 		</div>
-		<button mat-button *ngIf="!addingCategory" [disabled]="cerfForm.disabled" (click)="addingCategory=true">+ Add Category</button>
+		<button mat-button *ngIf="!addingCategory" [disabled]="cerfForm.disabled" (click)="addLabel()">+ Add Category</button>
 		<form *ngIf="addingCategory">
-			<mat-form-field *ngIf="addingCategory" (keyup.enter)="newLabel(newCategory.value)">
+			<mat-form-field *ngIf="addingCategory" (keyup.enter)="newLabel(newCategory.value)" (keyup.esc)="addingCategory=false">
 				<input matInput #newCategory>
 				<mat-icon matSuffix (click)="newLabel(newCategory.value)">arrow_forward</mat-icon>
 				<mat-icon matSuffix (click)="addingCategory=false">cancel</mat-icon>
 			</mat-form-field>
 		</form>
 
-	</div>-->
+	</div>
 
 </form>
 

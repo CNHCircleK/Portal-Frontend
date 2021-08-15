@@ -1,6 +1,7 @@
 export * from './login/login.component';
 export * from './signup/signup.component';
 export { EqualValidator } from './signup/signup.component'; // ehhh
+//export { invalidRangeValidator } from './cerf/cerf.component';
 export * from './faqs/faqs.component';
 export * from './settings/settings.component';
 

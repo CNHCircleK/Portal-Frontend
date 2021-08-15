@@ -75,7 +75,7 @@ export class MrfReuseStrategy implements RouteReuseStrategy {
      * @param future The route the user is going to, as triggered by the router
      * @returns boolean basically indicating true if the user intends to leave the current route
      */
-    shouldReuseRoute(curr: ActivatedRouteSnapshot, future: ActivatedRouteSnapshot): boolean {
+    shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
     	// if(future.routeConfig.path == "mrf/:year/:month" && curr.routeConfig.path == "cerf/:id") {
     	// 	console.log("trying to reload MRF ");
     	// 	return true;

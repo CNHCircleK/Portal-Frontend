@@ -1,6 +1,6 @@
 var HttpConfig = {
-	'schemelessUrl': 'http://backend.terrencejam.es',
-	'baseUrl': 'http://portal.uclacki.org',
+  'schemelessUrl': 'http://localhost:3000',
+  'baseUrl': 'http://localhost:3000',
 	'signin': '/signin',
 	'generateCerf': '/new'
 }
