@@ -54,6 +54,7 @@ export class CerfService {
 	 	} else {
 		 	return this.apiService.getCerf(id).pipe(tap(response => {
 		 		this.cerf = response.result;	// new Cerf(response.result)?
+				this.cerf = this.fillInCerf(this.cerf);
 		 		this.cerfForm.next(this.createReactiveForm(this.cerf));
 		 		console.log(this.cerf.status);
 		 		if((this.cerf.status == 1 && this.user.access.club <= 1)
@@ -120,6 +121,21 @@ export class CerfService {
 	{
 		// update form with new attendee
   }
+
+
+  	private fillInCerf(cerf: Cerf): Cerf {
+		const defaultCerf = this.blankCerf();
+		if(!cerf.fundraised.amountRaised) {
+			cerf.fundraised.amountRaised = defaultCerf.fundraised.amountRaised;
+		}
+		if(!cerf.fundraised.amountSpent) {
+			cerf.fundraised.amountSpent = defaultCerf.fundraised.amountSpent;
+		}
+		if(!cerf.fundraised.usedFor) {
+			cerf.fundraised.usedFor = defaultCerf.fundraised.usedFor;
+		}
+		return cerf;
+	  }
 
 	private createReactiveForm(model: Cerf): FormGroup {
       let form = this.builder.group({
