@@ -135,7 +135,9 @@ export class CerfService {
           .concat(model.overrideHours.map(nonOverride => this.builder.group({ memberId: nonOverride.attendee._id, service: nonOverride.service, leadership: nonOverride.leadership, fellowship: nonOverride.fellowship }))
 		  	.concat(model.unverifiedAttendees.map(attendee => this.builder.group({ memberId: attendee, service: model.hoursPerAttendee.service, leadership: model.hoursPerAttendee.leadership, fellowship: model.hoursPerAttendee.fellowship }))))),
 	  hoursPerAttendee: this.builder.group(model.hoursPerAttendee),
-	  fundraised: this.builder.group(model.fundraised),
+	  fundraised: this.builder.group({
+		  amountRaised: model.fundraised.amountRaised, amountSpent: model.fundraised.amountSpent, usedFor: model.fundraised.usedFor
+	  }),
 	  categories: this.builder.array(model.categories),
 	  comments: this.builder.group(model.comments),
 	  drivers: this.builder.array(model.drivers.map(eachDriver => this.builder.group(eachDriver))),
