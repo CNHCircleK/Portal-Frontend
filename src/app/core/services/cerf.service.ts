@@ -55,7 +55,6 @@ export class CerfService {
 		 	return this.apiService.getCerf(id).pipe(tap(response => {
 		 		this.cerf = response.result;	// new Cerf(response.result)?
 		 		this.cerfForm.next(this.createReactiveForm(this.cerf));
-		 		console.log(this.cerf.status);
 		 		if((this.cerf.status == 1 && this.user.access.club <= 1)
 		 			|| (this.cerf.status == 2)) {
 		 			this.cerfForm.value.disable();
@@ -108,6 +107,16 @@ export class CerfService {
 		return this.apiService.changeCerfStatus(this.cerf._id, "UNSUBMIT");
 	}
 
+	getTags() {
+		return this.apiService.getTags().pipe(map( res => {
+			if(res && res.success) {
+				return res.result;
+			} else {
+				return [];
+			}
+		}))
+	}
+
 	addToMRF() {
 		return this.apiService.changeCerfStatus(this.cerf._id, "CONFIRM");
 	}
@@ -141,7 +150,6 @@ export class CerfService {
 	  drivers: this.builder.array(model.drivers.map(eachDriver => this.builder.group(eachDriver))),
       kfamAttendance: this.builder.array(model.kfamAttendance.map(eachkfam => this.builder.group(eachkfam)))
      })
-    console.log(model)
 		return form;
 	}
 

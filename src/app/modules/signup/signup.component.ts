@@ -56,8 +56,10 @@ export class SignupComponent implements OnInit {
   code: string;
   password: string;
   confirmPassword: string;
-  error: string = "";
+  error: string;
   matchedPass: boolean = true;
+
+  signup_error: string;
 
 
   ngOnInit() { }
@@ -98,6 +100,10 @@ export class SignupComponent implements OnInit {
         (res: any) => {
           if(!res.success)
             this.error = res.error;
+          else {
+            alert("Success!");
+            this.router.navigate(['']);
+          }
         },
         error=>console.error(error),
         ()=> {}

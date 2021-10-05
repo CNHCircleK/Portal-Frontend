@@ -4,6 +4,7 @@
 	<p class="mat-body-1">MRF Month: <ng-container *ngIf="mrfForm">{{ mrf.month }}</ng-container></p>
 	<div id="mrf-actions" *ngIf="mrfForm; else loading">
 		<mat-spinner *ngIf="false" diameter="36"></mat-spinner>
+		<button mat-icon-button (click)="goBack()" matTooltip="Go Back"><mat-icon>navigate_before</mat-icon></button>
 		<button mat-icon-button [disabled]="!mrfForm.dirty || !mrfForm.valid" (click)="saveMrf()"><mat-icon>save</mat-icon></button>
 	</div>
 </div>

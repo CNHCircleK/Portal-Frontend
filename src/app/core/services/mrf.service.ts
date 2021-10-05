@@ -56,7 +56,7 @@ export class MrfService {
 		let form = this.builder.group({
 			communications: this.builder.group(model.communications),
 	        dcm: this.builder.group(model.dcm),
-	        events: this.builder.array(model.events.map(eachEvent => this.builder.group(eachEvent))),
+	        events: this.builder.array(model.importedEvents.map(eachEvent => this.builder.group({ name: this.builder.control(eachEvent.name), date: this.builder.control(eachEvent.time.start), tags: this.builder.array(eachEvent.tags) }))),
 	        goals: this.builder.array(model.goals),
 	        kfamReport: this.builder.control(model.kfamReport),
 	        meetings: this.builder.array(model.meetings.map(eachMeeting => this.builder.group({date: this.builder.control(moment(eachMeeting.date).format("MM-DD-YYYY")), attendance: this.builder.group(eachMeeting.attendance), advisorAttended: this.builder.group(eachMeeting.advisorAttended)}))),

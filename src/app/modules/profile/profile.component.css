@@ -1,0 +1,16 @@
+h2 {
+	font-size: 48px;
+	margin-bottom: 32px;
+}
+
+.header {
+	display: flex;
+	justify-content: space-between;
+}
+
+.logoutButton {
+	border-radius: 10px;
+	color: white;
+	background-color: #f44336;
+	align-self: flex-end;
+}
