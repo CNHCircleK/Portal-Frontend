@@ -54,6 +54,7 @@ export class CerfService {
 	 	} else {
 		 	return this.apiService.getCerf(id).pipe(tap(response => {
 		 		this.cerf = response.result;	// new Cerf(response.result)?
+				this.cerf = this.fillInCerf(this.cerf);
 		 		this.cerfForm.next(this.createReactiveForm(this.cerf));
 		 		if((this.cerf.status == 1 && this.user.access.club <= 1)
 		 			|| (this.cerf.status == 2)) {
@@ -130,6 +131,21 @@ export class CerfService {
 		// update form with new attendee
   }
 
+
+  	private fillInCerf(cerf: Cerf): Cerf {
+		const defaultCerf = this.blankCerf();
+		if(!cerf.fundraised.amountRaised) {
+			cerf.fundraised.amountRaised = defaultCerf.fundraised.amountRaised;
+		}
+		if(!cerf.fundraised.amountSpent) {
+			cerf.fundraised.amountSpent = defaultCerf.fundraised.amountSpent;
+		}
+		if(!cerf.fundraised.usedFor) {
+			cerf.fundraised.usedFor = defaultCerf.fundraised.usedFor;
+		}
+		return cerf;
+	  }
+
 	private createReactiveForm(model: Cerf): FormGroup {
       let form = this.builder.group({
       name: [model.name],
@@ -144,7 +160,9 @@ export class CerfService {
           .concat(model.overrideHours.map(nonOverride => this.builder.group({ memberId: nonOverride.attendee._id, service: nonOverride.service, leadership: nonOverride.leadership, fellowship: nonOverride.fellowship }))
 		  	.concat(model.unverifiedAttendees.map(attendee => this.builder.group({ memberId: attendee, service: model.hoursPerAttendee.service, leadership: model.hoursPerAttendee.leadership, fellowship: model.hoursPerAttendee.fellowship }))))),
 	  hoursPerAttendee: this.builder.group(model.hoursPerAttendee),
-	  fundraised: this.builder.group(model.fundraised),
+	  fundraised: this.builder.group({
+		  amountRaised: model.fundraised.amountRaised, amountSpent: model.fundraised.amountSpent, usedFor: model.fundraised.usedFor
+	  }),
 	  categories: this.builder.array(model.categories),
 	  comments: this.builder.group(model.comments),
 	  drivers: this.builder.array(model.drivers.map(eachDriver => this.builder.group(eachDriver))),
