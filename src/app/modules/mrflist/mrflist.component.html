@@ -8,7 +8,7 @@
 <!-- </div> -->
 
 
-<div id="cerf-list-header">
+<!--<div id="cerf-list-header">
   <nav id="month-tabs">
     <ul>
       <li [class.mat-elevation-z4]="currentTab=='mrfs'">
@@ -20,12 +20,12 @@
       <li [class.mat-elevation-z4]="currentTab=='clubs'">
         <button mat-raised-button [disabled]="!currentDivision" (click)="currentTab='clubs'">Clubs</button>
       </li>
-      <!-- <li [class.mat-elevation-z4]="currentTab=='district'">
+      <li [class.mat-elevation-z4]="currentTab=='district'">
         <button mat-button (click)="currentTab='district'">Show All</button>
-      </li> -->
+      </li>
     </ul>
   </nav>
-</div>
+</div>-->
 <mat-table *ngIf="currentTab=='mrfs'" [dataSource]="list" matSort>
 
 	<!-- Month Column -->

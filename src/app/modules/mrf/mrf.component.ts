@@ -3,6 +3,8 @@ import { FormGroup, FormArray, FormBuilder, AbstractControl, Validators, Validat
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { MatTable } from '@angular/material/table';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '@app/modules/confirm-dialog/confirm-dialog.component';
 import { Mrf, Cerf } from '@core/models';
 import { MrfService, ApiService } from '@core/services';
 import { Observable } from 'rxjs';
@@ -61,7 +63,8 @@ export class MrfComponent {
 	@ViewChildren(MatTable) tables: QueryList<MatTable<any>>;
 
 	constructor(private route: ActivatedRoute, private _location: Location, private builder: FormBuilder,
-				private renderer: Renderer2, private mrfService: MrfService, private apiService: ApiService) {
+				private renderer: Renderer2, private mrfService: MrfService, private apiService: ApiService,
+				public dialog: MatDialog) {
 		// this.mrf = this.route.snapshot.data['mrf'];
 		let year = this.route.snapshot.paramMap.get("year");
 		let month = this.route.snapshot.paramMap.get("month");
@@ -301,6 +304,16 @@ export class MrfComponent {
 	}
 
 	goBack() {
-		this._location.back();
+		if(!this.mrfForm.dirty) {	// No changes made. May have to add another condition to check for newly generated (unsaved)
+			this._location.back();
+		} // else
+		const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+
+		});
+		dialogRef.componentInstance.confirmMessage = "You have not saved yet. Leave?";
+		dialogRef.afterClosed().subscribe(result => {
+			if(result) this._location.back();
+			return result;
+		})
 	}
 }

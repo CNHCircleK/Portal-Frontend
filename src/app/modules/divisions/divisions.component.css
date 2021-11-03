@@ -1,3 +1,7 @@
+h2 {
+	font-size: 48px;
+	margin-bottom: 32px;
+}
 mat-row {
 	cursor: pointer;
 }

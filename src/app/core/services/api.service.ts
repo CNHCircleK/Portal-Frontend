@@ -84,7 +84,9 @@ export class ApiService {
 		return this.http.delete<Response<boolean>>(HttpConfig.baseUrl + "/events/" + id);
 	}
 
-
+	getTags() {
+		return this.http.get<Response<any>>(HttpConfig.baseUrl + '/tags');
+	}
 
 
 	// just a simple array of month-year objects

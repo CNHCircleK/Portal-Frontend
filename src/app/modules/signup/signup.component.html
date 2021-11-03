@@ -51,6 +51,7 @@
 <!-- 			<div *ngIf="isFormUnlocked()">
 				<button mat-raised-button (click)="editUserData(FirstName.value, LastName.value, School.value, Division.value)">Next</button>
 			</div> -->
+			<p *ngIf="error">{{error.password || error.registration}}</p>
 			<button mat-raised-button type="submit" [disabled]="!ConfirmPassword.valid || !Password.valid || !Code.valid || !Email.valid">Submit<mat-icon inline="true">done</mat-icon> </button>
 			<button mat-raised-button type="button" [routerLink]="['/login']">Login instead</button>
 	</form>

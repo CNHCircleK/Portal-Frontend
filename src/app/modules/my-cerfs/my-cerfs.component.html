@@ -4,7 +4,7 @@
 		<button mat-raised-button (click)="newCerf()">+ New Report</button>
 	</div>
 </div>
-<mat-table [(dataSource)]="cerfs" matSort>
+<mat-table [(dataSource)]="list" matSort>
 
 	<!-- CERF name Column -->
   <ng-container matColumnDef="name">

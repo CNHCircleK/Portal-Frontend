@@ -7,7 +7,6 @@ export * from './settings/settings.component';
 
 export * from './cerf/cerf.component';
 export * from './mrf/mrf.component';
-export * from './cerflist/cerflist.component';
 export * from './mrflist/mrflist.component';
 
 export * from './my-cerfs/my-cerfs.component';

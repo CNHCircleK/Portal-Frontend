@@ -11,7 +11,7 @@ import {
     LoginComponent,
     SignupComponent,
 	CerfComponent,
-    CerfListComponent, 
+     
 	MrfComponent,
     MrfListComponent,
     MyCerfsComponent,
@@ -50,7 +50,7 @@ import { StorageModule } from '@ngx-pwa/local-storage';
     SignupComponent,
     CerfComponent,
     MrfComponent,
-    CerfListComponent,
+    
     MrfListComponent,
     MyCerfsComponent,
     MrfsComponent,

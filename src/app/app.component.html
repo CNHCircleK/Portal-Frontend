@@ -1,16 +1,16 @@
   <mat-drawer-container class="menu-container">
     <mat-drawer mode="side" [opened]="(userSubject | async)" class="menu" [autoFocus]="false">
       <mat-nav-list>
-        <img id="cnhlogo" src="/assets/cnh_district_emblem.png" />
+        <img id="cnhlogo" src="/assets/cnhlogo.png" />
         <a mat-list-item *ngFor="let link of authLinks" [routerLink]="link.route" [disableRipple]="true" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active-route">
           <span class="mat-subheading-1">{{ link.text }}</span>
           <mat-icon matListIcon *ngIf="link.icon">{{ link.icon }}</mat-icon>
         </a>
 
-        <a id="settings" mat-list-item [routerLink]="['/settings']" [disableRipple]="true" routerLinkActive="active-route">
+        <!-- <a id="settings" mat-list-item [routerLink]="['/settings']" [disableRipple]="true" routerLinkActive="active-route">
           <span class="mat-subheading-1">Settings</span>
           <mat-icon matListIcon>settings</mat-icon>
-        </a>
+        </a> -->
       </mat-nav-list>
     </mat-drawer>
     <mat-drawer-content>

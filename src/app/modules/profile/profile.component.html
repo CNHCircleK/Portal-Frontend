@@ -1,6 +1,5 @@
-<ng-container *ngIf="user">
-  <h1 class="title">MRF Portal</h1>
-  <h2 class="subtitle">Hello {{user.name}}!</h2>
+<div class="header" *ngIf="user">
+  <h2 class="mat-title">Hello {{user.name}}!</h2>
 
 <mat-divider></mat-divider>
   
@@ -21,9 +20,14 @@
      <input matInput name="district" [(ngModel)]="user.access.district">
    </mat-form-field>
    <button mat-button (click)="setAccess()">Update</button>
- </form>-->
-</ng-container>
+ </form> -->
 
-<button mat-button *ngIf="user" (click)="logout()">Log out</button>
-<!-- <a mat-button *ngIf="!user" (click)="login()"   target="_self">Log in</a> -->
-<!-- <a mat-button (click)="resetData()">reset localhost</a> -->
+ <div>
+  <button mat-raised-button class="logoutButton" *ngIf="user" (click)="logout()">Log out</button>
+</div>
+</div>
+
+<div>
+  <h3 class="mat-body">Welcome to the MRF Portal! The portal will be open for testing for 1 week. Please refer to the bug report form and the prompts shared in the testing group chat for providing feedback.</h3>
+</div>
+
