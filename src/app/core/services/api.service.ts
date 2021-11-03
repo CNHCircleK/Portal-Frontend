@@ -115,7 +115,19 @@ export class ApiService {
 		return this.http.patch<Response<boolean>>(HttpConfig.baseUrl + "/clubs/" + this.user.club_id + "/mrfs/" + data.year + "/" + data.month, data);
 	}
 
+	changeMrfStatus(mrf: Mrf, action: string) {
+		if(action == "SUBMIT") {
+			return this.http.patch<Response<void>>(HttpConfig.baseUrl + "/clubs/" + mrf.club_id + "/mrfs/" + mrf.year + "/" + mrf.month + "/submit", {submit: true});
+		} else if(action == "UNSUBMIT") {
+			return this.http.patch<Response<void>>(HttpConfig.baseUrl + "/clubs/" + mrf.club_id + "/mrfs/" + mrf.year + "/" + mrf.month + "/submit", {submit: false});
+		/*} else if(action == "CONFIRM") {
+			return this.http.patch<Response<void>>(HttpConfig.baseUrl + "/clubs/" + mrf.club_id + "/mrfs/" + mrf.year + "/" + mrf.month + "/confirm", {confirm: true});
+		} else if(action == "UNCONFIRM") {
+			return this.http.patch<Response<void>>(HttpConfig.baseUrl + "/clubs/" + mrf.club_id + "/mrfs/" + mrf.year + "/" + mrf.month + "/confirm", {confirm: false});*/
+		}
 
+		return of(null);
+	}
 
 	// Option 1: RouterReuseStrategy
 	// Option 2: directly save inputted data when routing (this is more predicatable and explicit?)

@@ -5,12 +5,13 @@ import { Location } from '@angular/common';
 import { MatTable } from '@angular/material/table';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '@app/modules/confirm-dialog/confirm-dialog.component';
-import { Mrf, Cerf } from '@core/models';
+import { Mrf, Cerf, User } from '@core/models';
 import { MrfService, ApiService } from '@core/services';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import * as moment from 'moment';
+import { AuthService } from '@app/core/authentication/auth.service';
 
 @Component({
 	selector: 'app-mrf',
@@ -26,6 +27,8 @@ export class MrfComponent {
 	mrfForm: FormGroup;
 	currentTab: string;
 	openedPanels: number[] = [0, 0, 0, 0];
+	user: User;
+	pendingAction: boolean;
 
 	editingMeetings: boolean = false;
 	editingBoardMeetings: boolean = false;
@@ -64,7 +67,7 @@ export class MrfComponent {
 
 	constructor(private route: ActivatedRoute, private _location: Location, private builder: FormBuilder,
 				private renderer: Renderer2, private mrfService: MrfService, private apiService: ApiService,
-				public dialog: MatDialog) {
+				public dialog: MatDialog, private auth: AuthService) {
 		// this.mrf = this.route.snapshot.data['mrf'];
 		let year = this.route.snapshot.paramMap.get("year");
 		let month = this.route.snapshot.paramMap.get("month");
@@ -98,6 +101,14 @@ export class MrfComponent {
 		// this.dataService.getMrfById(id).subscribe(mrf => this.mrf = mrf);
 
 		// console.log("init"); // Lifecycles not executed on route reuse
+	}
+
+	ngAfterContentInit() {
+		this.user = this.auth.getUser();
+	}
+
+	get editable() {
+		return (this.mrf.status == 0 && this.user.access.club >= 2);
 	}
 
 	toggleEdit(num) {
@@ -195,90 +206,44 @@ export class MrfComponent {
 		});
 	}
 
-	private createReactiveForm(model: Mrf): FormGroup {
-		// Make initial FormGroup (this does a shallow construction)
-		// let form = this.builder.group(model);
-
-		/* List of nested arrays/objects we need to define:
-			time: { start, end }
-			tags: []
-			attendees: []
-			hoursPerAttendee: { service, leadership, fellowship }
-			overrideHours: { attendee_id, service, leadership, fellowship }[]
-			fundraised: { amountRaised, amountSpent, usedFor }
-			comments: { summary, strengths, weaknesses, improvements }
-			categories: []
-			drivers: { driver, milesTo, milesFrom }[]
-			kfamAttendance: { org, numAttendees }[]
-		*/
-
-		this.fillDefaults(model);
-
-
-		let form = this.builder.group({
-			communications: this.builder.group(model.communications),
-	        dcm: this.builder.group(model.dcm),
-	        events: this.builder.array(model.events.map(eachEvent => this.builder.group(eachEvent))),
-	        goals: this.builder.array(model.goals),
-	        kfamReport: this.builder.control(model.kfamReport),
-	        meetings: this.builder.array(model.meetings.map(eachMeeting => this.builder.group({date: this.builder.control(moment(eachMeeting.date).format("MM-DD-YYYY")), attendance: this.builder.group(eachMeeting.attendance), advisorAttended: this.builder.group(eachMeeting.advisorAttended)}))),
-	        boardMeetings: this.builder.array(model.boardMeetings.map(eachBoardMeeting => this.builder.group({date: this.builder.control(moment(eachBoardMeeting.date).format("MM-DD-YYYY")), attendance: this.builder.group(eachBoardMeeting.attendance)}))),
-	        fundraising: this.builder.array(model.fundraising.map(eachFundraising => this.builder.group(eachFundraising))),
-	        month: this.builder.control(model.month),
-	        year: this.builder.control(model.year),
-	        club_id: this.builder.control(model.club_id),
-	        numDuesPaid: this.builder.control(model.numDuesPaid),
-	        status: this.builder.control(model.status),
-	        submissionTime: this.builder.control(model.submissionTime)
-	    })
-
-		return form;
-	}
-
-	private createMrf(model: Mrf): FormGroup {
-		/* Fill in CERF with null values so we can at least create a form */
-		/* We're assuming a Cerf IS passed in (i.e. has all the non-optional properties at least) */
-		this.fillDefaults(model);
-		let copyModel = JSON.parse(JSON.stringify(model));	// Cooking the data passes by reference, so nested arrays in objects are altered
-		// const form = this.cookData(copyModel);
-		const form = this.createReactiveForm(copyModel);
-		// this.setValidators(form, [
-		// 	]);
-		console.log(form);
-		return form;
-	}
-
-	private fillDefaults(model: Mrf): void
-	{
-		// Set default values of a Partial<Cerf>
-		if(!model.events)
-		{
-			model.events = [];
-		}
-	}
-
-	private cookData(model: Object): FormGroup
-	{
-		if(model instanceof FormGroup)
-			return model;
-		let formGroup: { [id: string]: AbstractControl; } = {};
-		Object.keys(model).forEach(key => {
-			formGroup[key] = model[key] instanceof Date ? this.builder.control(model[key]) : // making formgroups out of single Dates doesn't make sense
-			model[key] instanceof Array ? this.builder.array(this.helperCookArray(model[key])) :
-			(model[key] instanceof Object ? this.cookData(model[key]) : this.builder.control(model[key]));
-			// Note, Arrays are objects but objects are not arrays
+	submitMrf() {
+		this.pendingAction = true;
+		this.mrfForm.disable();
+		this.mrfService.submitMrf().subscribe(res => {
+			if(res.success)
+				this.mrf.status = 1;	// goes in service
+			this.pendingAction = false;
+			if(this.mrfForm) {
+				this.mrfForm.enable();
+			}
+		},
+		error => {
+			console.log(error);
+			window.alert("Failed Submitting!");
+			this.pendingAction = false;
+			if(this.editable) {
+				this.mrfForm.enable();
+			}
 		});
-		return this.builder.group(formGroup);
 	}
 
-	private helperCookArray(arr: any[]): any[] {
-		arr.forEach((element, index, array) => { 
-			if(element instanceof Object)
-				array[index] = this.cookData(element);
-			else
-				array[index] = this.builder.control(element);
-		});	// Dangerously infinite loop
-		return arr;
+	unsubmitMrf() {
+		this.pendingAction = true;
+		this.mrfForm.disable();
+		this.mrfService.unsubmitMrf().subscribe(res => {
+			if(res.success)
+				this.mrf.status = 0;	// goes in service
+			this.pendingAction = false;
+			if(this.editable) {
+				this.mrfForm.enable();
+			}
+		},
+		error => {
+			console.log(error);
+			window.alert("Failed Unsubmitting!");
+			this.pendingAction = false;
+		},
+		() => {});
 	}
 
 	private setValidators(form: FormGroup, validators: {control: string, validator: ValidatorFn | ValidatorFn[]}[]) {

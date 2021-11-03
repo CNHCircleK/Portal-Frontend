@@ -6,6 +6,8 @@
 		<mat-spinner *ngIf="false" diameter="36"></mat-spinner>
 		<button mat-icon-button (click)="goBack()" matTooltip="Go Back"><mat-icon>navigate_before</mat-icon></button>
 		<button mat-icon-button [disabled]="!mrfForm.dirty || !mrfForm.valid" (click)="saveMrf()"><mat-icon>save</mat-icon></button>
+		<button mat-icon-button *ngIf="mrf.status == 0" [disabled]="!mrfForm.dirty || !mrfForm.valid" (click)="submitMrf()"><mat-icon>send</mat-icon></button>
+		<button mat-icon-button *ngIf="mrf.status == 1" [disabled]="!mrfForm.dirty || !mrfForm.valid" (click)="unsubmitMrf()"><mat-icon>restore</mat-icon></button>
 	</div>
 </div>
 

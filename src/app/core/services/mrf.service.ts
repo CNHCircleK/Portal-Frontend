@@ -38,6 +38,24 @@ export class MrfService {
 		return this.mrfForm.value;
 	}
 
+	submitMrf() {
+		return this.apiService.changeMrfStatus(this.mrf, "SUBMIT");
+	}
+
+	unsubmitMrf() {
+		return this.apiService.changeMrfStatus(this.mrf, "UNSUBMIT");
+	}
+
+	/*
+	approveMrf() {
+		return this.apiService.changeMrfStatus(this.mrf, "CONFIRM");
+	}
+
+	unapproveMrf() {
+		return this.apiService.changeMrfStatus(this.mrf, "UNCONFIRM");
+	}
+	*/
+
 	/*
 	getters for identifiable subcomponents, e.g. meetings
 	*/
@@ -46,6 +64,7 @@ export class MrfService {
 		// Initial thought would be to tie this local object to the DOM, but this object doesn't have to be binded to the DOM form
 		this.mrf = mrf;
 	}
+
 	/*
 	setters for identifiable subcomponents, e.g. meetings
 	*/
@@ -70,6 +89,7 @@ export class MrfService {
 	        submissionTime: this.builder.control(model.submissionTime),
 			importedEvents: this.builder.array(model.importedEvents.map(eachEvent => this.builder.group(eachEvent)))
 	    })
+		console.log(model);
 		return form;
 	}
 
@@ -78,7 +98,6 @@ export class MrfService {
 		rawMrf.meetings.forEach(meeting => meeting.date = new Date(meeting.date).toISOString());
 		rawMrf.boardMeetings.forEach(meeting => meeting.date = new Date(meeting.date).toISOString());
 		Object.assign(this.mrf, rawMrf);
-		// console.log(this.mrf);
 		return this.mrf;
 	}
 }
