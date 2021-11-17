@@ -18,7 +18,7 @@ import { AuthService } from '@core/authentication/auth.service';
 import { CerfService, MemberService } from '@core/services';
 
 import { Observable, BehaviorSubject, zip } from 'rxjs';
-
+import { NgControl } from '@angular/forms';///
 
 /**** Asserting End Time before Start Time Validator -Zeven VB ***********************
    Commented out code: cerf.component.ts, cerf.component.html; 
@@ -49,6 +49,20 @@ export const invalidRangeValidator: ValidatorFn = (control: FormGroup) : Validat
 type Attendee = {name: string, service: number, leadership: number, fellowship: number};
 // type Member = {name: string, email: string, _id: string};	// Put into Member interface to be used by MemberService too
 
+@Directive({
+	selector: '[disableControl]'
+  })
+  export class DisableControlDirective {
+  
+	@Input() set disableControl( condition : boolean ) {
+	  const action = condition ? 'disable' : 'enable';
+	  this.ngControl.control[action]();
+	}
+  
+	constructor( private ngControl : NgControl ) {
+	}
+  
+  }
 
 @Component({
 	selector: 'app-cerf',
