@@ -10,6 +10,7 @@
 	<div id="cerf-actions" *ngIf="cerfForm; else loading">
 		<mat-spinner *ngIf="pendingAction" diameter="36"></mat-spinner>
 		<button mat-icon-button (click)="goBack()" matTooltip="Go Back"><mat-icon>navigate_before</mat-icon></button>
+		<button mat-icon-button (click)="duplicate()"matTooltip="Duplicate"><mat-icon>add</mat-icon></button>
 		<button mat-icon-button [disabled]="pendingAction || (cerf.status > 0 && user.access.club < 2) || (cerf.status > 1)" (click)="deleteCerf()"><mat-icon>delete</mat-icon></button>
 		<button mat-icon-button [disabled]="!editable" (click)="saveCerf()"><mat-icon>save</mat-icon></button>
 		<!--button mat-icon-button [disabled]="!editable || !cerfForm.dirty || !cerfForm.valid || pendingAction" (click)="saveCerf()"><mat-icon>save</mat-icon></button>

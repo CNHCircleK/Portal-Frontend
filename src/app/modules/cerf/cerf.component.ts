@@ -1,7 +1,7 @@
 import { Component, Input, Directive, Renderer2, ElementRef, ViewChild, ViewChildren, QueryList } from '@angular/core';
 // import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { FormGroup, FormGroupDirective, FormControl, FormBuilder, FormArray, Validators, ValidatorFn, AbstractControl, Validator, ValidationErrors } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Location } from '@angular/common';
 
@@ -121,7 +121,8 @@ export class CerfComponent {
 
 	constructor(private route: ActivatedRoute, private memberService: MemberService,
 		private auth: AuthService, private _location: Location, public dialog: MatDialog,
-		private builder: FormBuilder, private renderer: Renderer2, private cerfService: CerfService) {
+		private builder: FormBuilder, private renderer: Renderer2, private cerfService: CerfService, private router: Router) {
+		router.routeReuseStrategy.shouldReuseRoute = () => false;
 		// this.route.data.subscribe(response => this.cerf = response.cerf);
 		this.cerfId = this.route.snapshot.paramMap.get("id"); //this.route.snapshot.data['cerf'];
 		cerfService.loadCerf(this.cerfId).subscribe(done => {
@@ -355,7 +356,7 @@ export class CerfComponent {
 	}
 
 	saveCerf() {
-		if(this.cerf._id == "new")	// would it be cleaner to create a separate component for a new cerf? No, way too redundant
+		if(this.cerf._id == "new")	
 		{
 			this.cerfService.dispatchNewCerf().subscribe(res => {
 				if(res.success)
@@ -470,6 +471,11 @@ export class CerfComponent {
 			this.pendingAction = false;
 		},
 		() => {});
+	}
+
+	duplicate() { 
+		this.cerfService.storeCopy(this.cerfForm);
+		this.router.navigate(['/cerf', 'new']);
 	}
 
 
@@ -638,45 +644,7 @@ export class CerfComponent {
 		console.log(this.cerf);	// CHECK - this.cerfForm and the form in the service reference the same thing
 	}
 
-	public getCerfFromForm() {
-    let rawCerf = this.cerfForm.getRawValue();
-
-		// Destructure the form in case
-
-
-
-		/* Split up attendees and overrideHours */
-		const defaultHours = this.cerfForm.get('hoursPerAttendee').value;
-		const attendees = rawCerf.attendees.filter(a => (a.service == defaultHours.service && a.leadership == defaultHours.leadership
-			&& a.fellowship == defaultHours.fellowship)).map(attendee => attendee.member.id || attendee.member); // The back-end will handle the id vs custom name distinction
-		const overrideHours = rawCerf.attendees.filter(a => (a.service != defaultHours.service || a.leadership != defaultHours.leadership
-			|| a.fellowship != defaultHours.fellowship));
-		console.log(overrideHours);
-		overrideHours.forEach((attendee, index, arr) => arr[index]['attendee_id'] = arr[index].member);
-		rawCerf.attendees = attendees;
-		rawCerf.overrideHours = overrideHours;
-
-		Object.assign(this.cerf, rawCerf);
-		console.log(this.cerf);
-		return this.cerf;
-
-		// Object Destructuring https://stackoverflow.com/questions/17781472/how-to-get-a-subset-of-a-javascript-objects-properties
-		/*let rawData = ( ({cerf_author, chair_id, chair_name, event_contact, event_number,location, total_attendees, total_drivers,
-							total_mileageTo,total_mileageFrom, totale_mileage, funds_raised, funds_spent,
-							funds_profit, funds_usage, status}) =>
-							({cerf_author, chair_id, chair_name, event_contact, event_number,
-							location, total_attendees, total_drivers, total_mileageTo,
-							total_mileageFrom, totale_mileage, funds_raised, funds_spent,
-							funds_profit, funds_usage, status}) ) (rawCerf);
-							console.log(rawData);*/
-		// manually attach time, hours_per_attendee, attendance, tags, drivers, commentary
-		// rawData['time'] = ( ({time_start: start, time_end: end}) => ( {time_start: start, time_end: end}) ) (rawCerf);
-		// rawData['hour_per_attendee'] = ( ({service_hours, leadership_hours, fellowship_hours}) => ( {service_hours, leadership_hours, fellowship_hours}) ) (rawCerf);
-		// rawData['attendees'] = rawCerf['attendees'];
-		// rawData['tags'] = ( ({service_tags, leadership_tags, fellowship_tags, miscellaneous_tags}) => ( {service_tags, leadership_tags, fellowship_tags, miscellaneous_tags}) ) (rawCerf);
-		// rawData['drivers'] = rawCerf['drivers'];
-		// rawData['commentary'] = rawCerf['commentary'];
-	}
+	
 
 	goBack() {
 		if(!this.cerfForm.dirty) {	// No changes made. May have to add another condition to check for newly generated (unsaved)

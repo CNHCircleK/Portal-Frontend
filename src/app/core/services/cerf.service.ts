@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Cerf } from '@core/models';
+import { User } from '@core/models';
 import { ApiService } from './api.service';
 import { AuthService } from '@core/authentication/auth.service';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 import { FormGroup, FormControl, FormBuilder, FormArray, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 
-@Injectable()
+@Injectable({providedIn : "root"})
 export class CerfService {
 	private cerf: Cerf;
 	private cerfForm: BehaviorSubject<FormGroup | undefined> = new BehaviorSubject(undefined);
-	private user;
+	private user: User;
+	private copyCerf: Cerf;
 
 	constructor(private apiService: ApiService, private authService: AuthService, private builder: FormBuilder)
 	{
@@ -47,11 +49,18 @@ export class CerfService {
 	 loadCerf(id: string): Observable<Cerf> {
 	 	// make api call and adapt it to local variable
 	 	if (id == "new")
-	 	{
-	 		this.cerf = this.blankCerf();	// new Cerf(response.result)?
-	 		this.cerfForm.next(this.createReactiveForm(this.cerf));
-	 		return of(this.cerf);
-	 	} else {
+			if (this.copyCerf != null)
+			{
+				this.cerfForm.next(this.createReactiveForm(this.copyCerf));
+				return of(this.copyCerf);
+			}
+			else
+			{
+				this.cerf = this.blankCerf();	// new Cerf(response.result)?
+				this.cerfForm.next(this.createReactiveForm(this.cerf));
+				return of(this.cerf);
+			} 
+		else {
 		 	return this.apiService.getCerf(id).pipe(tap(response => {
 		 		this.cerf = response.result;	// new Cerf(response.result)?
 				this.cerf = this.fillInCerf(this.cerf);
@@ -131,6 +140,19 @@ export class CerfService {
 		// update form with new attendee
   }
 
+  	storeCopy(form: FormGroup) {
+		this.copyCerf = this.getCerfFromForm(form);
+		this.copyCerf.status = 0;
+		this.copyCerf._id = "new";
+
+		let nameComponent = this.user.name.split(" ");			//Assume that the name is first " " last
+		this.copyCerf.author = {_id : this.user._id, name : {	//Author not being used in the backend
+			first : nameComponent[0], last : nameComponent[1]
+		}}
+		this.copyCerf.name = this.copyCerf.name+"[Copy]";
+
+		console.log(this.copyCerf);
+	  }
 
   	private fillInCerf(cerf: Cerf): Cerf {
 		const defaultCerf = this.blankCerf();
