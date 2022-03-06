@@ -46,22 +46,6 @@ export class MrfComponent {
 	newMeeting = { date: "", attendance: { numMembers: 0, numNonHomeMembers: 0, numKiwanis: 0, numGuests: 0}, advisorAttended: {faculty: false, kiwanis: false }};
 	newBoardMeeting = { date: "", attendance: { numBoard: 0, numGuests: 0 } };
 	newFundraising = { source: "", ptp: 0, kfh: 0, fa: 0, other: 0, admin: 0 };
-	// meetingColumns = [{def: "date", title: "Date", footer: "Date", defaultFooter: ""},
-	// 					{def: "numMembers", title: "Home Club Members", footer: "#", defaultFooter: 0},
-	// 					{def: "numNonHomeMembers", title: "Outside CKI Members", footer: "#", defaultFooter: 0},
-	// 					{def: "numKiwanis", title: "Date", footer: "Kiwanis", defaultFooter: 0},
-	// 					{def: "numGuests", title: "Date", footer: "Other Guests", defaultFooter: 0},
-	// 					{def: "advisorAttended.faculty", title: "Faculty advisor", footer: "True/False", defaultFooter: ""},
-	// 					{def: "advisorAttended.kiwanis", title: "Kiwanis advisor", footer: "True/False", defaultFooter: ""}]
-	// boardMeetingColumns = [{def: "date", title: "Date", footer: "Date", defaultFooter: ""},
-	// 					{def: "boardMembers", title: "Board Members", footer: "#", defaultFooter: 0},
-	// 					{def: "guests", title: "Guests", footer: "#", defaultFooter: 0}];
-	// fundraisingColumns = [{def: "source", title: "Source", footer: "+ Add Fundraiser", defaultFooter: ""},
-	// 					{def: "ptp", title: "PTP", footer: "#", defaultFooter: 0},
-	// 					{def: "kfh", title: "KFH", footer: "#", defaultFooter: 0},
-	// 					{def: "fa", title: "Feeding America", footer: "#", defaultFooter: 0},
-	// 					{def: "other", title: "Other charity", footer: "#", defaultFooter: 0},
-	// 					{def: "admin", title: "Administrative", footer: "#", defaultFooter: 0}]
 
 	@ViewChildren(MatTable) tables: QueryList<MatTable<any>>;
 
@@ -85,22 +69,9 @@ export class MrfComponent {
 				this.mrfForm.disable();
 			}
 		});
-		// this.mrfForm = this.dataService.getMrfFormState;
-		// if(!this.mrfForm)
-		// 	this.mrfForm = this.createMrf(this.mrf);
-
-		// this.currentTab = this.dataService.getMrfTabState;
-
-		
 	}
 
 	ngOnInit() {
-		// if(this.mrf.data)
-		// 	this.cerfs=this.mrf.data.events;
-		// let id = this.route.snapshot.params.id;
-		// this.dataService.getMrfById(id).subscribe(mrf => this.mrf = mrf);
-
-		// console.log("init"); // Lifecycles not executed on route reuse
 	}
 
 	ngAfterContentInit() {
@@ -198,15 +169,43 @@ export class MrfComponent {
 	}
 
 	saveMrf() {
-		// this.getMrfFromForm();
-		// this.dataService.updateMrf(this.getMrfFromForm()).subscribe(res => {console.log(res); this.mrfForm.markAsPristine();});
 		this.mrfService.dispatchUpdate().subscribe(result => {
 			this.mrfForm.markAsPristine();
-			console.log(result);
 		});
 	}
 
-	submitMrf() {
+	canSubmit() {
+		return !this.isSubmitted && this.user.access.club == 2;
+	}
+
+	canUnsubmit() {
+		return this.isSubmitted && this.user.access.district > 0;
+	}
+
+	shouldShowDisabledSubmit() {
+		return !this.canUnsubmit() && this.isSubmitted;
+	}
+
+	get submittedOnText() {
+		return "Submitted on " + this.mrf.submissionTime;
+	}
+
+	get isSubmitted() {
+		return this.mrf.status == 1;
+	}
+
+	askSubmitMrf() {
+		const dialogRef = this.dialog.open(ConfirmDialogComponent, { /* options? */	});
+		dialogRef.componentInstance.confirmMessage = "Submit? You will need approval to edit again.";
+		dialogRef.afterClosed().subscribe(result => {
+			if(result)
+			{
+				this.submitMrf();
+			}
+		})
+	}
+
+	private submitMrf() {
 		this.pendingAction = true;
 		this.mrfForm.disable();
 		this.mrfService.submitMrf().subscribe(res => {
@@ -264,7 +263,6 @@ export class MrfComponent {
 		rawMrf.boardMeetings.forEach(meeting => meeting.date = new Date(meeting.date).toISOString());
 		console.log(rawMrf);
 		Object.assign(this.mrf, rawMrf);
-		// console.log(this.mrf);
 		return this.mrf;
 	}
 
