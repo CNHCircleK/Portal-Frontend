@@ -54,7 +54,6 @@ type Attendee = {name: string, service: number, leadership: number, fellowship: 
 	selector: 'app-cerf',
 	templateUrl: './cerf.component.html',
 	styleUrls: ['./cerf.component.css', './_cerf.component.scss'],
-	providers: [ CerfService ]
 })
 
 export class CerfComponent {
