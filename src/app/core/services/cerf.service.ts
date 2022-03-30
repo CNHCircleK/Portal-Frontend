@@ -169,6 +169,7 @@ export class CerfService {
 	  }
 
 	private createReactiveForm(model: Cerf): FormGroup {
+	  console.log(model.overrideHours);
       let form = this.builder.group({
       name: [model.name],
       chair: [model.chair],
@@ -197,6 +198,10 @@ export class CerfService {
 		console.log(this.cerfForm.value);
 	}
 
+	clearCopy() {
+		this.copyCerf = null;
+	}
+
 	public getCerfFromForm(form: FormGroup) {
 		let rawCerf = form.getRawValue();
 
@@ -207,7 +212,11 @@ export class CerfService {
 		const overrideHours = rawCerf.attendees.filter(a => (a.service != defaultHours.service || a.leadership != defaultHours.leadership
 			|| a.fellowship != defaultHours.fellowship));
 		console.log(overrideHours);
-		overrideHours.forEach((attendee, index, arr) => arr[index]['attendee_id'] = arr[index].memberId);
+		overrideHours.forEach((attendee, index, arr) => {
+			arr[index]["attendee"] = {};
+			arr[index]["attendee_id"] = arr[index].memberId;	//This is for the backend because it expects "attendee_id"
+			arr[index]["attendee"]["id"] = arr[index].memberId  //For duplicate cerf
+		});
 		rawCerf.attendees = attendees;
 		rawCerf.overrideHours = overrideHours;
 

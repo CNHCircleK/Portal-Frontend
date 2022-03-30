@@ -12,6 +12,7 @@ import { AuthService } from '@core/authentication/auth.service';
 
 import { Observable, zip } from 'rxjs';
 
+import { CerfService } from '@core/services';
 
 @Component({
 	selector: 'app-my-cerfs',
@@ -31,7 +32,7 @@ export class MyCerfsComponent {
 	resolve;
 
 	constructor(private route: ActivatedRoute, private router: Router,
-		private auth: AuthService, private _location: Location) {
+		private auth: AuthService, private _location: Location, private cerfService: CerfService) {
 		// this.route.data.subscribe(response => this.resolvedData = response.myCerfs);
 		this.cerfs = this.route.snapshot.data['myCerfs'];
 		this.cerfs.concat(this.route.snapshot.data['pendingCerfs']);
@@ -74,6 +75,7 @@ export class MyCerfsComponent {
 	}
 
 	newCerf() {
+		this.cerfService.clearCopy();
 		this.router.navigate(['/cerf', 'new']);	// Router resolver handles generating the blank template
 		//if(this.mrfView)
 			//this.dataService.addCerfToMrf(cerf, this.mrfView);
