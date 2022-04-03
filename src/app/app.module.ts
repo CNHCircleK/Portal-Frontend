@@ -44,49 +44,47 @@ import { StorageModule } from '@ngx-pwa/local-storage';
 // }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    SignupComponent,
-    CerfComponent,
-    MrfComponent,
-    
-    MrfListComponent,
-    MyCerfsComponent,
-    MrfsComponent,
-    ClubAdministrationComponent,
-    DialogNewMember,
-    ClubsComponent,
-    DialogNewClub,
-    ProfileComponent,
-    FAQsComponent,
-    SettingsComponent,
-    ConfirmDialogComponent,
-    InfoDialog,
-    TagsDialog,
-    MemberIDPipe,
-    ClubIDPipe,
-    DivisionIDPipe,
-    EqualValidator,
-    DivisionsComponent
-  ],
-  imports: [
-    BrowserModule,
-    CoreModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    StorageModule.forRoot({ IDBNoWrap: false })
-    // JwtModule.forRoot({
-    //   config: {
-    //     tokenGetter: tokenGetter,
-    //     whitelistedDomains: [HttpConfig.schemelessUrl],
-    //     blacklistedRoutes: []
-    //   }
-    // })
-  ],
-  providers: [httpInterceptorProviders],//, {provide: RouteReuseStrategy, useClass: MrfReuseStrategy}],
-  bootstrap: [AppComponent],
-  entryComponents: [ConfirmDialogComponent, InfoDialog, TagsDialog, DialogNewMember, DialogNewClub]
+    declarations: [
+        AppComponent,
+        LoginComponent,
+        SignupComponent,
+        CerfComponent,
+        MrfComponent,
+        MrfListComponent,
+        MyCerfsComponent,
+        MrfsComponent,
+        ClubAdministrationComponent,
+        DialogNewMember,
+        ClubsComponent,
+        DialogNewClub,
+        ProfileComponent,
+        FAQsComponent,
+        SettingsComponent,
+        ConfirmDialogComponent,
+        InfoDialog,
+        TagsDialog,
+        MemberIDPipe,
+        ClubIDPipe,
+        DivisionIDPipe,
+        EqualValidator,
+        DivisionsComponent
+    ],
+    imports: [
+        BrowserModule,
+        CoreModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        StorageModule.forRoot({ IDBNoWrap: false })
+        // JwtModule.forRoot({
+        //   config: {
+        //     tokenGetter: tokenGetter,
+        //     whitelistedDomains: [HttpConfig.schemelessUrl],
+        //     blacklistedRoutes: []
+        //   }
+        // })
+    ],
+    providers: [httpInterceptorProviders],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }
