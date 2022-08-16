@@ -93,29 +93,7 @@ export class CerfComponent {
 	tagOptions: string[] = [];
 	tagNames: string[] = [];
 	tagIds: string[] = [];
-	tagDescriptions: string[] = [
-	"An event where your club members are serving for the community without pay",
-	"Any event where your club is doing community service on your school's campus",
-	"An event that has been completed with the same organization repeatedly at least once a month for a two-month duration",
-	"Any event that contributes to the current District Service Initiative",
-	"Any event that contributes to the current International Service Initiative",
-	"Any event related to the operation of the club should be tagged as AD. Examples of administrative events include but are not limited to\
-		 attending meetings (e.g. general meetings, board meetings, committee meetings, Kiwanis meetings), and workshops",
-	"Any event in which club members are socially interacting with one another should be tagged as SE. A social event promotes the moral of\
-		members so it is usually tagged as MD; however, remember that although all SE events are MD-tagged, not all MD events are SE-tagged (e.g. workshops)",
-	"An event that promotes membership recruitment and development",
-	"A home club-hosted event that raises money for a charity or for administrative funds",
-	// "An event in which at least two members from your Circle K club and at least two members from another Circle K club are present",
-	"An event in which at least two members from your Circle K club and at least two members from another non-Circle K Kiwanis Family club are present",
-	"An event in which there must be a certain amount of members from your Circle K club and the same amount of members from another\
-		Circle K/Kiwanis Family club present, depending on your Circle K club's number of dues paid members. Clubs with less than or equal to\
-		20 members need a minimum of two members present; clubs with 21-30 members need a minimum of three memberrs present; and clubs with greater\
-		than or equal to 31 members need a minimum of four members present",
-	"An online webinar usualy hosted by the District Board for the District. This tag applies to both District and International webinars",
-	"An event hosted by and for the Division, which is usually hosted by the respective Lieutenant Governor (and Divisional Board)",
-	"An event hosted by and for the District",
-	"An event hosted by Circle K International",
-	"Any event hosted through your Circle K club"];
+	tagDescriptions: string[] = [];
 	showTagHints = false;
 
 
@@ -150,6 +128,7 @@ export class CerfComponent {
 		this.cerfService.getTags().subscribe(result => {
 			result.forEach(element => {
 				this.tagNames.push(element.name);
+				this.tagDescriptions.push(element.description);
 				this.tagOptions.push(element.abbrev);
 				this.tagIds.push(element._id);
 			})
@@ -160,7 +139,7 @@ export class CerfComponent {
 		// this.memberColumns = [{def: "member", title: "Name", footer: "+ Add Member", defaultFooter: ""},
 	 // 		{def: "service", title: "Service", footer: "Service", defaultFooter: this.cerfForm.get('hoursPerAttendee.service')},
 	 // 		{def: "leadership", title: "Leadership", footer: "Leadership", defaultFooter: this.cerfForm.get('hoursPerAttendee.leadership')},
-	 // 		{def: "fellowship", title: "Fellowship", footer: "Fellowship", defaultFooter: this.cerfForm.get('hoursPerAttendee.fellowship')}]
+	 // 		{def: "fellowship", title: "Fellowship", footer: "Fell\owship", defaultFooter: this.cerfForm.get('hoursPerAttendee.fellowship')}]
 
 		this.user = this.auth.getUser();
 
