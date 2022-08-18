@@ -138,18 +138,10 @@
 	      </mat-panel-description>
 	    </mat-expansion-panel-header>
 
-		<p>Click to display info about each tag <a mat-icon-button (click)="openTagHelp()"><mat-icon [inline]="true">help</mat-icon></a></p>
-		<!--
-		<mat-form-field appearance="outline" *ngFor="let tag of tags; let i=index">
-			<mat-label>Tags</mat-label>
-			<input matInput [formControlName]="i">
-		</mat-form-field>-->
-		
-
+		<p>Hover to display info about a tag.</p>
 		<div id="tags">
 			<div *ngFor="let tag of tagIds; let i=index">
-				<mat-checkbox [checked]="cerfForm.get('tags').value.includes(tag)" [disabled]="cerfForm.disabled" (change)="addRemoveTag(tag, $event.checked)">{{ tagNames[i] }}</mat-checkbox>
-				<p [class.show-tag-hints]="showTagHints">{{ tagDescriptions[i] }}</p>
+				<mat-checkbox [checked]="cerfForm.get('tags').value.includes(tag)" [disabled]="cerfForm.disabled" matTooltip = "{{tagDescriptions[i]}}" (change)="addRemoveTag(tag, $event.checked)">{{ tagNames[i] }}</mat-checkbox>
 			</div>
 		</div>
 <!--
