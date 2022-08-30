@@ -31,7 +31,7 @@
     "core-js": "^2.6.5",
     "material": "^0.2.6",
     "moment": "^2.24.0",
-    "moment-timezone": "^0.5.23",
+    "moment-timezone": "^0.5.35",
     "ng-excel": "^1.0.5",
     "ngx-color-picker": "^6.8.0",
     "npm": "^6.13.4",
