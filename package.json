@@ -27,7 +27,7 @@
     "@auth0/angular-jwt": "^2.1.0",
     "@coachcare/datepicker": "^0.9.9",
     "@ngx-pwa/local-storage": "^6.2.3",
-    "angular-cli-ghpages": "^0.5.3",
+    "angular-cli-ghpages": "^1.0.5",
     "core-js": "^2.6.5",
     "material": "^0.2.6",
     "moment": "^2.24.0",
